@@ -12,7 +12,9 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "song/verse1.ogg",
       "song/verse2.ogg",
       "song/verse3.ogg",
+      "step.ogg",
       "sword land.ogg",
+      "treat.ogg",
     ].map(sfx),
   );
   return {
@@ -27,7 +29,9 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       Verse2: sounds[7],
       Verse3: sounds[8],
     },
-    SwordLand: sounds[9],
+    Step: sounds[9],
+    SwordLand: sounds[10],
+    Treat: sounds[11],
   };
 }
 

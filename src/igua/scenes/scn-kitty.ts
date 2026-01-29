@@ -18,6 +18,7 @@ import { container } from "../../lib/pixi/container";
 import { IguaAudio, Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
+import { mxnBoilFlip } from "../mixins/mxn-boil-flip";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnCuesheet } from "../mixins/mxn-cuesheet";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
@@ -150,7 +151,7 @@ function objKitty() {
             const origin = start.add(0, radius);
 
             self.step(() => {
-                const run = Key.isDown("ControlLeft") ? 2 : 1;
+                const run = Key.isDown("KeyX") ? 2 : 1;
                 if (Key.isDown("ArrowLeft")) {
                     delta = approachLinear(delta, run, 0.05);
                 }
@@ -180,6 +181,7 @@ function objKitty() {
                 .coro(function* (self) {
                     while (true) {
                         if (delta !== 0) {
+                            self.play(Sfx.Step.rate(0.8 + self.textureIndex * 0.3 + Rng.float(0.05)));
                             self.textureIndex = (self.textureIndex + 1) % self.textures.length;
                             self.scale.x = Math.sign(delta);
                         }
@@ -191,6 +193,7 @@ function objKitty() {
         .step((self) => {
             const collided = self.collidesOne(Instances(objTreat));
             if (collided?.objTreat?.isActive) {
+                self.play(Sfx.Treat.rate(1, 1.1));
                 collided.destroy();
                 energy += 1;
             }
@@ -283,6 +286,7 @@ function objUfo() {
 function objTreat() {
     return Sprite.from(Tx.Kitty.Treat)
         .anchored(0.5, 0.5)
+        .mixin(mxnBoilFlip)
         .mixin(mxnPlaceAndGlide, "slow_first_half")
         .merge({ objTreat: { isActive: false } })
         .coro(function* (self) {
