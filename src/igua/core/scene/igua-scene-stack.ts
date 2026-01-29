@@ -14,6 +14,9 @@ interface IguaSceneMeta {
 }
 
 function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMeta) {
+    // Won't work with push
+    layers.overlay.localObj.removeAllChildren();
+
     const ticker = new AsshatTicker();
     const root = layers.scene.addChild(new TickerContainer(ticker, false).named(`Scene: ${source.name}`));
 

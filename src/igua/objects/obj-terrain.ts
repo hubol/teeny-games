@@ -1,10 +1,12 @@
 import { DisplayObject, Graphics, SimpleMesh, WRAP_MODES } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { SceneLocal } from "../../lib/game-engine/scene-local";
+import { Bitfield } from "../../lib/math/number-alias-types";
 import { container } from "../../lib/pixi/container";
 import { Empty } from "../../lib/types/empty";
 import { ZIndex } from "../core/scene/z-index";
 import { scene } from "../globals";
+import { TerrainAttributes } from "../systems/terrain-attributes";
 import { StepOrder } from "./step-order";
 
 /**
@@ -29,9 +31,11 @@ type TerrainSegment = TerrainSegmentCoordinates & TerrainSegmentDiscriminator;
 interface Terrain {
     destroyed: boolean;
     dirty: boolean;
+    enabled: boolean;
     // TODO does it need to be on Terrain?
     clean: () => void;
     segments: TerrainSegment[];
+    attributes: Bitfield;
 }
 
 function cleanTerrain() {
@@ -100,7 +104,7 @@ export const CtxTerrain = new SceneLocal(createLocalTerrain, "CtxTerrain");
 
 export const CtxTerrainObj = new SceneLocal(() => {
     // TODO renderable hack is weird, PixiJS sucks
-    return container().step(self => self.renderable = true).show();
+    return container().step(self => self.renderable = true).zIndexed(ZIndex.TerrainEntities).show();
 }, "CtxTerrainObj");
 
 export function objSolidBlock() {
@@ -186,6 +190,8 @@ function constructTerrain(terrainObj: ObjTerrain, weights: TerrainSegment[]) {
 abstract class TerrainGraphics extends Graphics {
     dirty = true;
     segments: TerrainSegment[] = [];
+    enabled = true;
+    attributes = TerrainAttributes.Default;
 
     constructor(readonly weights: TerrainSegment[]) {
         super();
@@ -206,6 +212,8 @@ abstract class TerrainGraphics extends Graphics {
 abstract class TerrainMesh extends SimpleMesh {
     dirty = true;
     segments: TerrainSegment[] = [];
+    enabled = true;
+    attributes = TerrainAttributes.Default;
 
     constructor(readonly weights: TerrainSegment[]) {
         super();
@@ -250,6 +258,8 @@ class SolidSlopeGraphics extends TerrainGraphics {
     }
 }
 
+export const LocalPipeMesh = new SceneLocal(() => ({ texture: NoAtlasTx.Pipe }), "LocalPipeMesh");
+
 class PipeMesh extends TerrainMesh {
     private static readonly _Weights: TerrainSegment[] = [
         { x0: 0, y0: 0, x1: 1, y1: 0, isFloor: true, isPipe: true },
@@ -262,7 +272,7 @@ class PipeMesh extends TerrainMesh {
     constructor(weights = PipeMesh._Weights) {
         super(weights);
 
-        // this.texture = NoAtlasTx.Terrain.Pipe.Gray;
+        this.texture = LocalPipeMesh.value.texture;
     }
 
     onTransformChanged() {

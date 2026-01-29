@@ -19,8 +19,8 @@ async function initialize() {
     try {
         settings.ROUND_PIXELS = true;
         const renderer = createPixiRenderer({
-            width: 500,
-            height: 280,
+            width: 1920 / 4,
+            height: 1080 / 4,
             eventFeatures: { click: false, globalMove: false, move: false, wheel: false },
             eventMode: "none",
         });
