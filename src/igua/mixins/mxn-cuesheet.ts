@@ -9,6 +9,7 @@ export function mxnCuesheet<TCommand>(obj: DisplayObject, track: MusicTrack, cue
     interface Message {
         command: TCommand;
         data: string | null;
+        delta: number;
     }
 
     const startedCueIndices = new Set<Integer>();
@@ -32,7 +33,7 @@ export function mxnCuesheet<TCommand>(obj: DisplayObject, track: MusicTrack, cue
                     const cue = cuesheet[cueIndex];
                     const command = cue[2];
                     const data = cue[3];
-                    self.dispatch("cue:end", { command, data });
+                    self.dispatch("cue:end", { command, data, delta: time - cue[1] });
                 }
                 startedCueIndices.clear();
                 endedCueIndices.clear();
@@ -62,13 +63,13 @@ export function mxnCuesheet<TCommand>(obj: DisplayObject, track: MusicTrack, cue
 
                 if (time >= start || time >= end) {
                     if (!startedCueIndices.has(i)) {
-                        self.dispatch("cue:start", { command, data });
+                        self.dispatch("cue:start", { command, data, delta: time - start });
                         startedCueIndices.add(i);
                     }
                 }
                 if (time >= end) {
                     if (!endedCueIndices.has(i)) {
-                        self.dispatch("cue:end", { command, data });
+                        self.dispatch("cue:end", { command, data, delta: time - end });
                         endedCueIndices.add(i);
                     }
 

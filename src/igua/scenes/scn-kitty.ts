@@ -43,7 +43,7 @@ export function scnKitty() {
                 [0, consts.measure.seconds * 11.5, "ufo", null],
             ])
             .handles("cue:end", (_, message) => {
-                if (message.command === "ufo") {
+                if (message.command === "ufo" && Math.abs(message.delta) < 1) {
                     objUfo().show();
                 }
             })
