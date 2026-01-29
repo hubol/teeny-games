@@ -163,7 +163,7 @@ function objKitty() {
         })
         .mixin(mxnCuesheet, Mzk.KittyOnTheRun, cuesheet)
         .handles("cue:end", (_, message) => {
-            if (Math.abs(message.delta) > 1 || energy <= 0) {
+            if (Math.abs(message.delta) > 0.25 || energy <= 0) {
                 return;
             }
 
