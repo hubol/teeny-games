@@ -3,6 +3,8 @@ import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { Cuesheet } from "../../lib/game-engine/audio/cuesheet";
+import { Sound } from "../../lib/game-engine/audio/sound";
 import { isOnScreen } from "../../lib/game-engine/logic/is-on-screen";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
@@ -86,6 +88,28 @@ function objKitty() {
 
     let delta = 0;
 
+    // @ts-ignore
+    const cuesheet: Cuesheet<"verse" | "chorus"> = [
+        [0, consts.measure.seconds * 2, "verse", null],
+        [0, consts.measure.seconds * 4, "verse", null],
+        [0, consts.measure.seconds * 6, "verse", null],
+        [0, consts.measure.seconds * 8, "chorus", "0"],
+        [0, consts.measure.seconds * 9, "chorus", "1"],
+        [0, consts.measure.seconds * 10, "chorus", "2"],
+        [0, consts.measure.seconds * 11, "chorus", "3"],
+        [0, consts.measure.seconds * 12, "verse", null],
+    ]
+        .map(cue => {
+            // @ts-ignore
+            cue[0] -= consts.measure.seconds / 8;
+            // @ts-ignore
+            cue[1] -= consts.measure.seconds / 8;
+            return cue;
+        });
+
+    let verseIndex = 0;
+    let energy = 0;
+
     return objIndexedSprite(Tx.Kitty.Runnin.split({ count: 2 }))
         .pivoted(33, 62)
         .coro(function* (self) {
@@ -131,6 +155,28 @@ function objKitty() {
                 const radians = unit * Math.PI;
                 self.at(origin).add(vnew(Math.sin(radians), Math.cos(radians)), radius + jumpOffset);
             });
+        })
+        .step(() => {
+            if (Key.justWentDown("KeyE")) {
+                energy += 1;
+            }
+        })
+        .mixin(mxnCuesheet, Mzk.KittyOnTheRun, cuesheet)
+        .handles("cue:end", (_, message) => {
+            if (Math.abs(message.delta) > 1 || energy <= 0) {
+                return;
+            }
+
+            energy -= 1;
+
+            if (message.command === "verse") {
+                (Sfx.Song as Record<string, Sound>)["Verse" + (verseIndex % 4)].play();
+                verseIndex += 1;
+            }
+            else {
+                verseIndex = 0;
+                (Sfx.Song as Record<string, Sound>)["Chorus" + message.data!].play();
+            }
         });
 }
 
