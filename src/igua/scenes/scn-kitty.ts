@@ -1,4 +1,4 @@
-import { BLEND_MODES, Sprite } from "pixi.js";
+import { BLEND_MODES, Graphics, Sprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
@@ -6,13 +6,13 @@ import { Tx } from "../../assets/textures";
 import { Cuesheet } from "../../lib/game-engine/audio/cuesheet";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { isOnScreen } from "../../lib/game-engine/logic/is-on-screen";
-import { factor, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
-import { Jukebox } from "../core/igua-audio";
+import { IguaAudio, Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
@@ -110,18 +110,16 @@ function objKitty() {
     let verseIndex = 0;
     let energy = 0;
 
+    const analyser = IguaAudio.createAnalyser();
+    const speechAnalyser = createSpeechAnalyser(analyser);
+
+    function sing(sfx: Sound) {
+        const instance = sfx.playInstance();
+        instance.connect(analyser);
+    }
+
     return objIndexedSprite(Tx.Kitty.Runnin.split({ count: 2 }))
         .pivoted(33, 62)
-        .coro(function* (self) {
-            while (true) {
-                yield sleep(300);
-                if (delta !== 0) {
-                    self.textureIndex = (self.textureIndex + 1) % self.textures.length;
-                    self.scale.x = Math.sign(delta);
-                }
-                self.rotation = nextRotation;
-            }
-        })
         .coro(function* (self) {
             const start = self.vcpy();
             const radius = 70;
@@ -154,7 +152,17 @@ function objKitty() {
                 nextRotation = (1 - Math.round(unit * 4) / 4) * Math.PI;
                 const radians = unit * Math.PI;
                 self.at(origin).add(vnew(Math.sin(radians), Math.cos(radians)), radius + jumpOffset);
-            });
+            })
+                .coro(function* (self) {
+                    while (true) {
+                        if (delta !== 0) {
+                            self.textureIndex = (self.textureIndex + 1) % self.textures.length;
+                            self.scale.x = Math.sign(delta);
+                        }
+                        self.rotation = nextRotation;
+                        yield sleep(300);
+                    }
+                });
         })
         .step(() => {
             if (Key.justWentDown("KeyE")) {
@@ -170,13 +178,33 @@ function objKitty() {
             energy -= 1;
 
             if (message.command === "verse") {
-                (Sfx.Song as Record<string, Sound>)["Verse" + (verseIndex % 4)].play();
+                sing((Sfx.Song as Record<string, Sound>)["Verse" + (verseIndex % 4)]);
                 verseIndex += 1;
             }
             else {
                 verseIndex = 0;
-                (Sfx.Song as Record<string, Sound>)["Chorus" + message.data!].play();
+                sing((Sfx.Song as Record<string, Sound>)["Chorus" + message.data!]);
             }
+        })
+        .coro(function* (self) {
+            let value = 0;
+            let target = 0;
+
+            new Graphics()
+                .beginFill(0x000000)
+                .drawCircle(0, 0, 5)
+                .step(self => {
+                    const unit = speechAnalyser.speakingIntensity;
+                    if (true || unit === 0 || unit === 1) {
+                        target = unit;
+                    }
+                    value = approachLinear(value, target, 0.05);
+                    const scale = Math.round(value * 3) / 2;
+                    self.scale.set(scale, scale);
+                })
+                .show(self)
+                .at(20, 33)
+                .scaled(0, 0);
         });
 }
 
@@ -196,4 +224,28 @@ function objUfo() {
             yield interpvr(self).factor(factor.sine).to(target).over(Rng.intc(5000, 9000));
             self.destroy();
         });
+}
+
+function createSpeechAnalyser(analyser: AnalyserNode) {
+    analyser.fftSize = 2048;
+    analyser.smoothingTimeConstant = 1;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const data = new Uint8Array(bufferLength);
+
+    function getSpeakingIntensity() {
+        analyser.getByteTimeDomainData(data);
+        let delta = 0;
+        for (const item of data) {
+            delta += Math.abs(item - 128);
+        }
+
+        return Math.min(1, Math.max(0, (delta - 700) / 8000));
+    }
+
+    return {
+        get speakingIntensity() {
+            return getSpeakingIntensity();
+        },
+    };
 }

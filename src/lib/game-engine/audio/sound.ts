@@ -111,6 +111,10 @@ export class SoundInstance {
         }
     }
 
+    connect(destination: AudioNode) {
+        this._sourceNode.connect(destination);
+    }
+
     linearRamp(param: RampableParam, value: number, durationSeconds: Seconds) {
         const audioParam = this._getAudioParam(param);
         const currentValue = audioParam.value;
