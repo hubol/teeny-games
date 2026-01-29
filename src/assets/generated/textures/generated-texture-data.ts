@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 44 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 45 }];
 
 interface TxData {
   id: string;
@@ -31,9 +31,10 @@ function txs<T>(tx: (data: TxData) => T) {
       Stars: tx({ id: "Kitty.Stars", atlas: 0, x: 0, y: 750, width: 428, height: 252 }),
       Treat: tx({ id: "Kitty.Treat", atlas: 0, x: 981, y: 89, width: 36, height: 16 }),
       Ufo: tx({ id: "Kitty.Ufo", atlas: 0, x: 121, y: 675, width: 190, height: 58 }),
+      Voice: tx({ id: "Kitty.Voice", atlas: 0, x: 212, y: 1003, width: 64, height: 20 }),
     },
-    PipeDojo: tx({ id: "PipeDojo", atlas: 0, x: 212, y: 1003, width: 54, height: 20 }),
-    PipeGallery: tx({ id: "PipeGallery", atlas: 0, x: 267, y: 1003, width: 36, height: 18 }),
+    PipeDojo: tx({ id: "PipeDojo", atlas: 0, x: 400, y: 524, width: 54, height: 20 }),
+    PipeGallery: tx({ id: "PipeGallery", atlas: 0, x: 316, y: 1003, width: 36, height: 18 }),
     Pipe: tx({ id: "Pipe", atlas: 0, x: 129, y: 1003, width: 82, height: 18 }),
     Shapes: {
       Ellipse64px24px: tx({ id: "Shapes.Ellipse64px24px", atlas: 0, x: 545, y: 283, width: 64, height: 24 }),
@@ -47,7 +48,7 @@ function txs<T>(tx: (data: TxData) => T) {
       CompleteStar: tx({ id: "World.CompleteStar", atlas: 0, x: 400, y: 481, width: 72, height: 42 }),
       Disabled: tx({ id: "World.Disabled", atlas: 0, x: 546, y: 433, width: 68, height: 70 }),
       EngeniuxIdea: tx({ id: "World.EngeniuxIdea", atlas: 0, x: 503, y: 358, width: 76, height: 74 }),
-      Grass0: tx({ id: "World.Grass0", atlas: 0, x: 400, y: 524, width: 38, height: 20 }),
+      Grass0: tx({ id: "World.Grass0", atlas: 0, x: 277, y: 1003, width: 38, height: 20 }),
       GuardianCat: tx({ id: "World.GuardianCat", atlas: 0, x: 473, y: 481, width: 72, height: 58 }),
       HolyLight: tx({ id: "World.HolyLight", atlas: 0, x: 0, y: 291, width: 120, height: 458 }),
       House: tx({ id: "World.House", atlas: 0, x: 611, y: 293, width: 160, height: 96 }),

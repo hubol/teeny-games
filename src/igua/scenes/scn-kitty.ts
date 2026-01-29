@@ -7,9 +7,10 @@ import { Cuesheet } from "../../lib/game-engine/audio/cuesheet";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
 import { isOnScreen } from "../../lib/game-engine/logic/is-on-screen";
-import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpc, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
@@ -75,8 +76,10 @@ export function scnKitty() {
                 [0, consts.measure.seconds * 10, "treat", null],
                 [0, consts.measure.seconds * 11, "treat", null],
             ])
-            .handles("cue:end", () => {
-                objTreat().show();
+            .handles("cue:end", (_, message) => {
+                if (Math.abs(message.delta) < 0.3) {
+                    objTreat().show();
+                }
             })
             .show();
     }
@@ -232,7 +235,43 @@ function objKitty() {
         .coro(function* (self) {
             const collisionObj = new Graphics().beginFill(0xff0000).drawCircle(28, 27, 18).show(self).invisible();
             self.collisionShape(CollisionShape.DisplayObjects, [collisionObj]);
+        })
+        .coro(function* () {
+            objUiVoice(() => energy).show();
         });
+}
+
+function objUiVoice(getValue: () => Integer) {
+    const textObj = Sprite.from(Tx.Kitty.Voice).tinted(0x000000);
+    const gfx = new Graphics();
+
+    return container(
+        textObj,
+        gfx.at(80, 10),
+    )
+        .step(self => {
+            if (!self.visible && getValue() > 0) {
+                self.visible = true;
+            }
+
+            gfx.clear().beginFill(0xDB4373);
+            for (let i = 0; i < getValue(); i++) {
+                gfx.drawCircle(i * 28, 0, 10);
+            }
+        })
+        .coro(function* () {
+            while (true) {
+                yield () => getValue() > 0;
+                yield interpc(textObj, "tint").steps(3).to(0xDB4373).over(250);
+                yield () => getValue() <= 0;
+                yield sleep(250);
+                yield interpc(textObj, "tint").steps(3).to(0x000000).over(333);
+            }
+        })
+        .mixin(mxnBoilPivot)
+        .invisible()
+        .zIndexed(1001)
+        .at(63, 226);
 }
 
 function objUfo() {
