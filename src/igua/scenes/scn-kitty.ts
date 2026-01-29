@@ -3,6 +3,7 @@ import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { isOnScreen } from "../../lib/game-engine/logic/is-on-screen";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
@@ -13,7 +14,14 @@ import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
+import { mxnCuesheet } from "../mixins/mxn-cuesheet";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
+
+const consts = {
+    measure: {
+        seconds: (60 / 126) * 8,
+    },
+};
 
 export function scnKitty() {
     const lvl = Lvl.Kitty();
@@ -28,10 +36,15 @@ export function scnKitty() {
 
     {
         scene.stage
-            .coro(function* () {
-                while (true) {
+            .mixin(mxnCuesheet, Mzk.KittyOnTheRun, [
+                [0, consts.measure.seconds * 1.75, "ufo", null],
+                [0, consts.measure.seconds * 3.75, "ufo", null],
+                [0, consts.measure.seconds * 5.75, "ufo", null],
+                [0, consts.measure.seconds * 11.5, "ufo", null],
+            ])
+            .handles("cue:end", (_, message) => {
+                if (message.command === "ufo") {
                     objUfo().show();
-                    yield sleep(Rng.intc(5000, 9000));
                 }
             })
             .coro(function* () {
@@ -125,8 +138,14 @@ function objUfo() {
     return Sprite.from(Tx.Kitty.Ufo)
         .mixin(mxnBoilPivot)
         .coro(function* (self) {
+            self.at(renderer.width / 2, renderer.height / 2);
             const unit = Rng.vunit();
-            self.at(unit.vcpy().scale(600).add(renderer.width / 2, renderer.height / 2).vround());
+            let length = Math.min(renderer.width, renderer.height) / 2;
+            while (isOnScreen(self) && length < 500) {
+                self.at(unit.vcpy().scale(length).add(renderer.width / 2, renderer.height / 2).vround());
+                length += 8;
+            }
+
             const target = unit.vcpy().scale(-600).add(renderer.width / 2, renderer.height / 2).vround();
             yield interpvr(self).factor(factor.sine).to(target).over(Rng.intc(5000, 9000));
             self.destroy();
