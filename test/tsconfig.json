@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "target": "ES2017",
+        "types": [ "node" ]
+    },
+    "include": [ "../test/", "../src/", "../tools/lib/" ],
+    "exclude": [ "../src/declarations/parcel.d.ts" ]
+}

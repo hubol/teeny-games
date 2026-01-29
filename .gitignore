@@ -1,0 +1,13 @@
+dist/
+
+public/**/*
+!public/index.html
+!public/index.css
+
+node_modules/
+
+raw/labels/**/*.txt.bak
+raw/labels/**/*.json
+
+.smooch/
+smooch.tgz

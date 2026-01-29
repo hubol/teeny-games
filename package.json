@@ -1,0 +1,29 @@
+{
+  "name": "asshat-project",
+  "version": "0.1.0",
+  "description": "Template for asshat game projects",
+  "scripts": {
+    "postinstall": "npm run patch",
+    "build": "node esbuild.mjs",
+    "patch": "npm run tool -- patch-dependencies",
+    "serve": "node esbuild.mjs serve",
+    "test": "tsx test/run.ts",
+    "test:watch": "npm run tool -- run-tests-in-watch-mode",
+    "tool": "tsx tools/run-tool.ts"
+  },
+  "author": "Hubol",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "devDependencies": {
+    "@hubol/smooch": "^1.0.0-beta.18",
+    "@types/node": "^20.8.8",
+    "dprint": "^0.47.2",
+    "esbuild": "0.19.8",
+    "esbuild-plugin-import-glob": "^0.1.1",
+    "tsx": "^4.7.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "pixi.js": "^7.3.1",
+    "unzipit": "^1.4.3"
+  }
+}

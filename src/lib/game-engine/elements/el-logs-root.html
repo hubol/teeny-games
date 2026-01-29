@@ -1,0 +1,76 @@
+<style>
+.logs {
+    font-family: monospace;
+    font-size: 120%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.logs .count {
+    font-weight: 600;
+}
+
+.logs .log .nature {
+    overflow: hidden;
+    border-radius: 3px 0 0 3px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.logs .log .nature {
+    background-color: #f00000;
+}
+
+.logs .log[data-nature="Misconfigured"] .nature {
+    background-color: #ff8800;
+}
+
+.logs .log[data-nature="Debug"] .nature {
+    background-color: #7070ff;
+}
+
+.logs .log {
+    display: flex;
+    gap: 0.5rem;
+    cursor: pointer;
+
+    background-color: #a00000;
+    padding-right: 0.5rem;
+
+    border-radius: 3px;
+}
+
+.logs .log[data-nature="Debug"] {
+    background-color: #ffffff;
+}
+
+.logs .log .nature ~ * {
+    color: white;
+    text-shadow: 0 -1px 0 #400000;
+}
+
+.logs .log[data-nature="Debug"] .nature ~ * {
+    color: black;
+    text-shadow: none;
+}
+
+.logs .log > * {
+    padding: 0.2rem 0;
+}
+
+.logs .log.empty {
+    display: none;
+}
+
+.logs .unique_count.empty {
+    display: none;
+}
+</style>
+<div class="logs"></div>
