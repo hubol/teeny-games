@@ -1,16 +1,18 @@
-import { BLEND_MODES, Graphics, Sprite } from "pixi.js";
+import { BLEND_MODES, DisplayObject, Graphics, Sprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Cuesheet } from "../../lib/game-engine/audio/cuesheet";
 import { Sound } from "../../lib/game-engine/audio/sound";
+import { Instances } from "../../lib/game-engine/instances";
 import { isOnScreen } from "../../lib/game-engine/logic/is-on-screen";
 import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
+import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { IguaAudio, Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
@@ -58,6 +60,25 @@ export function scnKitty() {
                 }
                 Jukebox.play(Mzk.KittyOnTheRun);
             });
+    }
+
+    {
+        container()
+            .mixin(mxnCuesheet, Mzk.KittyOnTheRun, [
+                [0, consts.measure.seconds * 1, "treat", null],
+                [0, consts.measure.seconds * 3, "treat", null],
+                [0, consts.measure.seconds * 5, "treat", null],
+                [0, consts.measure.seconds * 6, "treat", null],
+                [0, consts.measure.seconds * 7, "treat", null],
+                [0, consts.measure.seconds * 8, "treat", null],
+                [0, consts.measure.seconds * 9, "treat", null],
+                [0, consts.measure.seconds * 10, "treat", null],
+                [0, consts.measure.seconds * 11, "treat", null],
+            ])
+            .handles("cue:end", () => {
+                objTreat().show();
+            })
+            .show();
     }
 
     container(
@@ -164,8 +185,10 @@ function objKitty() {
                     }
                 });
         })
-        .step(() => {
-            if (Key.justWentDown("KeyE")) {
+        .step((self) => {
+            const collided = self.collidesOne(Instances(objTreat));
+            if (collided?.objTreat?.isActive) {
+                collided.destroy();
                 energy += 1;
             }
         })
@@ -205,12 +228,33 @@ function objKitty() {
                 .show(self)
                 .at(20, 33)
                 .scaled(0, 0);
+        })
+        .coro(function* (self) {
+            const collisionObj = new Graphics().beginFill(0xff0000).drawCircle(28, 27, 18).show(self).invisible();
+            self.collisionShape(CollisionShape.DisplayObjects, [collisionObj]);
         });
 }
 
 function objUfo() {
     return Sprite.from(Tx.Kitty.Ufo)
         .mixin(mxnBoilPivot)
+        .mixin(mxnPlaceAndGlide);
+}
+
+function objTreat() {
+    return Sprite.from(Tx.Kitty.Treat)
+        .anchored(0.5, 0.5)
+        .mixin(mxnPlaceAndGlide, "slow_first_half")
+        .merge({ objTreat: { isActive: false } })
+        .coro(function* (self) {
+            yield sleep(200);
+            self.objTreat.isActive = true;
+        })
+        .track(objTreat);
+}
+
+function mxnPlaceAndGlide(obj: DisplayObject, behavior: "default" | "slow_first_half" = "default") {
+    return obj
         .coro(function* (self) {
             self.at(renderer.width / 2, renderer.height / 2);
             const unit = Rng.vunit();
@@ -221,7 +265,13 @@ function objUfo() {
             }
 
             const target = unit.vcpy().scale(-600).add(renderer.width / 2, renderer.height / 2).vround();
-            yield interpvr(self).factor(factor.sine).to(target).over(Rng.intc(5000, 9000));
+            if (behavior === "slow_first_half") {
+                yield interpvr(self).factor(factor.sine).to(renderer.width / 2, renderer.height / 2).over(3500);
+                yield interpvr(self).factor(factor.sine).to(target).over(3000);
+            }
+            else {
+                yield interpvr(self).factor(factor.sine).to(target).over(Rng.intc(5000, 9000));
+            }
             self.destroy();
         });
 }
