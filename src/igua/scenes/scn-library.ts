@@ -5,12 +5,15 @@ import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
+import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnClampPosition } from "../mixins/mxn-clamp-position";
 import { mxnMoved } from "../mixins/mxn-moved";
 
 export function scnLibrary() {
-    Sprite.from(Tx.Library.BackgroundBarnes).show();
+    Sprite.from(Tx.Library.BackgroundBarnes)
+        .mixin(mxnBoilDisplacement, { rate: 0.0125, scale: 2 })
+        .show();
 
     const cartObj = objCart().at(75, 56);
     const lottieObj = objLottie()

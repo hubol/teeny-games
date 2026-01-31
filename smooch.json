@@ -5,7 +5,7 @@
 	},
 	"textures": [
 		{
-			"glob": "raw/textures/**/*.png",
+			"glob": "raw/textures/**/*.{png,jpg}",
 			"atlas": {
 				"directory": "src/assets/generated/textures",
 				"filePrefix": "atlas"
