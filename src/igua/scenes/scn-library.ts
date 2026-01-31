@@ -1,19 +1,54 @@
-import { Graphics, Sprite } from "pixi.js";
+import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
+import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { renderer } from "../current-pixi-renderer";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnClampPosition } from "../mixins/mxn-clamp-position";
+import { mxnCollectible } from "../mixins/mxn-collectible";
 import { mxnMoved } from "../mixins/mxn-moved";
+import { objLibraryBook } from "../objects/obj-library-book";
+import { objLibrarySpawn } from "../objects/obj-library-spawn";
 
 export function scnLibrary() {
     Sprite.from(Tx.Library.BackgroundBarnes)
         .mixin(mxnBoilDisplacement, { rate: 0.0125, scale: 2 })
         .show();
+
+    {
+        function getSpawnPosition() {
+            return vnew(Rng.intc(20, renderer.width - 20), Rng.intc(20, renderer.height - 20));
+        }
+
+        container()
+            .coro(function* (self) {
+                while (true) {
+                    if (Rng.float() < 0.25) {
+                        objLibrarySpawn(
+                            "disappears_fast",
+                            objLibraryBook().mixin(mxnCollectible),
+                        )
+                            .at(getSpawnPosition())
+                            .show(self);
+                    }
+
+                    objLibrarySpawn(
+                        "default",
+                        objLibraryBook().mixin(mxnCollectible),
+                    )
+                        .at(getSpawnPosition())
+                        .show(self);
+
+                    yield () => self.children.length === 0;
+                }
+            })
+            .show();
+    }
 
     const cartObj = objCart().at(75, 56);
     const lottieObj = objLottie()
@@ -36,6 +71,7 @@ export function scnLibrary() {
             );
         })
         .at(20, 20)
+        .zIndexed(999)
         .show();
 }
 

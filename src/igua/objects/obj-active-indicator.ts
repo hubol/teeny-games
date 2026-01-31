@@ -23,6 +23,7 @@ export function objActiveIndicator() {
             ringObj.tint = api.tint;
             fillObj.tint = api.tint;
             self.mask = api.isFilling ? null : maskObj;
+            console.log(api.fillUnit);
             maskObj.visible = !api.isFilling;
             fillObj.scale.set(api.isFilling ? Math.floor(api.fillUnit * 16) / 16 : 1);
             maskObj.y = api.isFilling ? 0 : Math.round((1 - api.fillUnit) * maskObj.height);
