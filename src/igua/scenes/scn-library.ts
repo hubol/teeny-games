@@ -6,9 +6,12 @@ import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
+import { mxnClampPosition } from "../mixins/mxn-clamp-position";
 import { mxnMoved } from "../mixins/mxn-moved";
 
 export function scnLibrary() {
+    Sprite.from(Tx.Library.BackgroundBarnes).show();
+
     const cartObj = objCart().at(75, 56);
     const lottieObj = objLottie()
         .at(-100, 0)
@@ -16,6 +19,7 @@ export function scnLibrary() {
         .handles("moved", (self) => self.objLottie.pedometer += 0.1);
 
     const lottieAndCartObj = container(cartObj, lottieObj)
+        .mixin(mxnClampPosition, { xmin: -70, xmax: 350, ymin: -40, ymax: 190 })
         .coro(function* () {
             yield interpvr(lottieObj).to(0, 0).over(1000);
             yield interp(lottieObj.objLottie, "armExtendedUnit").to(1).over(300);
