@@ -1,3 +1,4 @@
+import { Coro } from "../../lib/game-engine/routines/coro";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { container } from "../../lib/pixi/container";
 import { MxnCollectible } from "../mixins/mxn-collectible";
@@ -17,7 +18,10 @@ export function objLibrarySpawn(mode: "default" | "disappears_fast", collectible
             yield interp(indicatorObj.objActiveIndicator, "fillUnit").to(1).over(mode === "default" ? 1000 : 2000);
             collectibleObj.show(self);
             indicatorObj.objActiveIndicator.isFilling = false;
-            yield interp(indicatorObj.objActiveIndicator, "fillUnit").to(0).over(mode === "default" ? 1000 : 500);
+            yield* Coro.race([
+                interp(indicatorObj.objActiveIndicator, "fillUnit").to(0).over(mode === "default" ? 1000 : 500),
+                () => collectibleObj.destroyed,
+            ]);
             self.destroy();
         });
 }

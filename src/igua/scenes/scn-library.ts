@@ -1,9 +1,11 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { Instances } from "../../lib/game-engine/instances";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
+import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
@@ -69,6 +71,14 @@ export function scnLibrary() {
                     max: 3,
                 },
             );
+            cartObj
+                .step(self => {
+                    const collectibleObj = self.collidesOne(Instances(mxnCollectible));
+                    if (collectibleObj) {
+                        collectibleObj.dispatch("collectible:collect");
+                        collectibleObj.destroy();
+                    }
+                });
         })
         .at(20, 20)
         .zIndexed(999)
@@ -117,6 +127,7 @@ function objLottie() {
 function objCart() {
     const [txCart, txWheel0, txWheel1] = txs.cart;
     const txsCart = txCart.split({ count: 4 });
+    const maskObj = new Graphics().beginFill(0xff0000).drawRect(10, 8, 66, 32);
 
     return container(
         ...txsCart.map((tx, i) =>
@@ -130,5 +141,7 @@ function objCart() {
                 .at(i * tx.width, 0)
         ),
         ...[txWheel0, txWheel1].map(tx => Sprite.from(tx).mixin(mxnBoilPivot)),
-    );
+        maskObj.invisible(),
+    )
+        .collisionShape(CollisionShape.DisplayObjects, [maskObj]);
 }
