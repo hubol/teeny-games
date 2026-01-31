@@ -9,8 +9,7 @@ const prng = new PseudoRng();
 
 const [txBook, ...txsBookDecoration] = Tx.Library.Book.split({ width: 26 });
 
-export function objLibraryBook() {
-    const seed = Rng.intc(1_000_000, 999_000_000);
+export function objLibraryBook(seed = Rng.intc(1_000_000, 999_000_000)) {
     prng.seed = seed;
 
     const api = {

@@ -4,7 +4,6 @@ import { Instances } from "../../lib/game-engine/instances";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
-import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
@@ -23,28 +22,27 @@ export function scnLibrary() {
         .show();
 
     {
-        function getSpawnPosition() {
-            return vnew(Rng.intc(20, renderer.width - 20), Rng.intc(20, renderer.height - 20));
+        function objLibraryBookSpawn(mode: "default" | "disappears_fast") {
+            return objLibrarySpawn(
+                mode,
+                objLibraryBook()
+                    .mixin(mxnCollectible)
+                    .handles(
+                        "collectible:collect",
+                        (self) => cartObj.objCart.contentObjs.push(objLibraryBook(self.objLibraryBook.seed)),
+                    ),
+            )
+                .at(Rng.intc(20, renderer.width - 20), Rng.intc(20, renderer.height - 20));
         }
 
         container()
             .coro(function* (self) {
                 while (true) {
                     if (Rng.float() < 0.25) {
-                        objLibrarySpawn(
-                            "disappears_fast",
-                            objLibraryBook().mixin(mxnCollectible),
-                        )
-                            .at(getSpawnPosition())
-                            .show(self);
+                        objLibraryBookSpawn("disappears_fast").show(self);
                     }
 
-                    objLibrarySpawn(
-                        "default",
-                        objLibraryBook().mixin(mxnCollectible),
-                    )
-                        .at(getSpawnPosition())
-                        .show(self);
+                    objLibraryBookSpawn("default").show(self);
 
                     yield () => self.children.length === 0;
                 }
@@ -129,7 +127,42 @@ function objCart() {
     const txsCart = txCart.split({ count: 4 });
     const maskObj = new Graphics().beginFill(0xff0000).drawRect(10, 8, 66, 32);
 
+    const api = {
+        contentObjs: new Array<DisplayObject>(),
+    };
+
+    const contentsObj = container()
+        .step(self => {
+            if (api.contentObjs.length === self.children.length) {
+                return;
+            }
+
+            while (api.contentObjs.length > 5) {
+                api.contentObjs.shift()?.destroy();
+            }
+
+            for (let i = 0; i < 5; i++) {
+                const contentObj = api.contentObjs[i];
+                if (!contentObj) {
+                    break;
+                }
+                if (!contentObj.parent) {
+                    contentObj.y = -20;
+                    contentObj
+                        .step(self => {
+                            if (self.y < 0) {
+                                self.y += 1;
+                            }
+                        })
+                        .show(self);
+                }
+                contentObj.x = i * 10;
+            }
+        })
+        .at(30, 20);
+
     return container(
+        contentsObj,
         ...txsCart.map((tx, i) =>
             Sprite.from(tx)
                 .coro(function* (self) {
@@ -143,5 +176,6 @@ function objCart() {
         ...[txWheel0, txWheel1].map(tx => Sprite.from(tx).mixin(mxnBoilPivot)),
         maskObj.invisible(),
     )
+        .merge({ objCart: api })
         .collisionShape(CollisionShape.DisplayObjects, [maskObj]);
 }
