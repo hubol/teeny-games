@@ -10,7 +10,11 @@ interface MxnClampPositionArgs {
 
 export function mxnClampPosition(obj: DisplayObject, args: MxnClampPositionArgs) {
     return obj
-        .step(() => {
+        .merge({ mxnClampPosition: { isEnabled: true } })
+        .step((self) => {
+            if (!self.mxnClampPosition.isEnabled) {
+                return;
+            }
             obj.x = Math.max(args.xmin, Math.min(obj.x, args.xmax));
             obj.y = Math.max(args.ymin, Math.min(obj.y, args.ymax));
         }, StepOrder.BeforeCamera);

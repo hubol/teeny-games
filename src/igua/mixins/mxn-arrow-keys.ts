@@ -14,14 +14,19 @@ export function mxnArrowKeys(obj: DisplayObject, args: MxnArrowKeysArgs) {
     const speed = vnew();
 
     return obj
-        .coro(function* () {
-            const position = obj.vcpy();
+        .merge({ mxnArrowKeys: { isEnabled: true } })
+        .coro(function* (self) {
+            const position = self.vcpy();
             const lastRoundedPosition = position.vcpy().vround();
 
-            obj
+            self
                 .step(() => {
-                    if (!vequals(lastRoundedPosition, obj)) {
-                        position.at(obj);
+                    if (!self.mxnArrowKeys.isEnabled) {
+                        return;
+                    }
+
+                    if (!vequals(lastRoundedPosition, self)) {
+                        position.at(self);
                     }
 
                     target.at(0, 0);

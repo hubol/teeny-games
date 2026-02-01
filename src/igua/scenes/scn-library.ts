@@ -4,7 +4,7 @@ import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
-import { interp, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
@@ -18,6 +18,7 @@ import { renderer } from "../current-pixi-renderer";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
+import { mxnBoilSeed } from "../mixins/mxn-boil-seed";
 import { mxnClampPosition } from "../mixins/mxn-clamp-position";
 import { mxnCollectible } from "../mixins/mxn-collectible";
 import { mxnMoved } from "../mixins/mxn-moved";
@@ -31,6 +32,7 @@ export function scnLibrary() {
 
     const minigame = {
         isRunning: false,
+        isEnded: false,
         roundsCount: 0,
         booksCollectedCount: 0,
         fecesCollectedCount: 0,
@@ -167,6 +169,8 @@ export function scnLibrary() {
                     yield () => self.children.length === 0;
                     minigame.roundsCount += 1;
                 }
+
+                minigame.isEnded = true;
             })
             .show();
     }
@@ -182,7 +186,7 @@ export function scnLibrary() {
         .coro(function* () {
             yield interpvr(lottieObj).to(0, 0).over(1000);
             yield interp(lottieObj.objLottie, "armExtendedUnit").to(1).over(300);
-            lottieAndCartObj.mixin(
+            const arrowKeysSelf = lottieAndCartObj.mixin(
                 mxnArrowKeys,
                 {
                     acceleration: 0.2,
@@ -199,6 +203,38 @@ export function scnLibrary() {
                     }
                 });
             minigame.isRunning = true;
+            yield () => minigame.isEnded;
+            arrowKeysSelf.mxnArrowKeys.isEnabled = false;
+            arrowKeysSelf.mxnClampPosition.isEnabled = false;
+            yield sleep(1000);
+
+            objText.XLargeIrregular("Books: " + minigame.booksCollectedCount, { tint: 0x546DFF })
+                .mixin(mxnBoilSeed)
+                .anchored(0.5, 0.5)
+                .at(250, -200)
+                .coro(function* (self) {
+                    yield interpvr(self).factor(factor.sine).to(self.x, 110).over(1000);
+                })
+                .zIndexed(100000)
+                .show();
+
+            yield sleep(500);
+            objText.XLargeIrregular("Brown: " + minigame.fecesCollectedCount, { tint: 0xA06614 })
+                .mixin(mxnBoilSeed)
+                .anchored(0.5, 0.5)
+                .at(250, 500)
+                .coro(function* (self) {
+                    yield interpvr(self).factor(factor.sine).to(self.x, 170).over(1000);
+                })
+                .zIndexed(100000)
+                .show();
+
+            yield sleep(1000);
+
+            arrowKeysSelf
+                .step(self => {
+                    self.x += 2;
+                });
         })
         .at(20, 20)
         .zIndexed(999)
