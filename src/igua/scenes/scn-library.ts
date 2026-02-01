@@ -55,6 +55,8 @@ export function scnLibrary() {
                     .invisible()
                     .show();
 
+                let roundsCount = 0;
+
                 while (true) {
                     yield () => isMinigameRunning;
 
@@ -66,30 +68,32 @@ export function scnLibrary() {
 
                     Sfx.LibraryRoundAdvance.rate(0.95, 1.05).play();
 
+                    const cartCenterPosition = cartObj.objCart.centerPosition;
                     const primaryBookObj = objLibraryBookSpawn("default").show(self);
 
                     if (!expectedPlayerToReturnToCenter) {
-                        while (distance(primaryBookObj, lottieAndCartObj) > 370) {
+                        while (distance(primaryBookObj, cartCenterPosition) > 340) {
                             primaryBookObj.at(generatePosition());
                         }
                     }
 
-                    debugObj.text = "Leg 1 distance: " + Math.round(distance(primaryBookObj, lottieAndCartObj));
+                    debugObj.text = "Leg 1 distance: " + Math.round(distance(primaryBookObj, cartCenterPosition));
 
-                    if (Rng.float() < 0.25) {
+                    if (Rng.float() < 0.33) {
                         const secondaryBookObj = objLibraryBookSpawn("disappears_fast").show(self);
 
-                        const firstStopDistance = distance(primaryBookObj, lottieAndCartObj);
+                        const firstStopDistance = distance(primaryBookObj, cartCenterPosition);
                         let secondStopDistance = 0;
                         // Hack because I am stupid
                         let attempts = 0;
+                        const maxAttempts = 20;
                         while (
                             (secondStopDistance = distance(secondaryBookObj, primaryBookObj),
                                 (
-                                    (firstStopDistance + secondStopDistance) > 490
-                                    || secondStopDistance < 70
+                                    (firstStopDistance + secondStopDistance) > 380
+                                    || secondStopDistance < 52
                                     || secondStopDistance > 200
-                                ) && attempts < 5)
+                                ) && attempts < maxAttempts)
                         ) {
                             secondaryBookObj.at(generatePosition());
                             attempts++;
@@ -98,12 +102,29 @@ export function scnLibrary() {
                         debugObj.text += "\nLeg 2 distance: "
                             + Math.round(distance(primaryBookObj, secondaryBookObj));
 
-                        if (attempts >= 5) {
+                        if (attempts >= maxAttempts) {
                             secondaryBookObj.destroy();
                         }
                     }
 
+                    let interpPositionChance = 0;
+                    if (roundsCount >= 10) {
+                        interpPositionChance = Math.min(80, 30 + (5 * (roundsCount - 10)));
+                    }
+
+                    for (const child of self.children) {
+                        if (Rng.float(100) <= interpPositionChance) {
+                            child
+                                .coro(function* () {
+                                    const target = child.vcpy();
+                                    child.at(generatePosition());
+                                    yield interpvr(child).to(target).over(1000);
+                                });
+                        }
+                    }
+
                     yield () => self.children.length === 0;
+                    roundsCount += 1;
                 }
             })
             .show();
@@ -176,7 +197,7 @@ function objLottie() {
                 legsObj.texture = p ? txLegs0 : txLegs1;
                 if (previousLegsTexture !== legsObj.texture) {
                     const sfx = legsObj.texture === txLegs0 ? Sfx.LottieStep0 : Sfx.LottieStep1;
-                    self.play(sfx.rate(0.95, 1.05));
+                    self.play(sfx.rate(0.7, 0.8));
                 }
                 self.pivot.y = p ? 1 : 0;
                 armObj.pivot.y = self.pivot.y;
@@ -192,8 +213,13 @@ function objCart() {
     const txsCart = txCart.split({ count: 4 });
     const maskObj = new Graphics().beginFill(0xff0000).drawRect(10, 8, 66, 32);
 
+    const centerPosition = vnew();
+
     const api = {
         contentObjs: new Array<DisplayObject>(),
+        get centerPosition() {
+            return centerPosition.at(maskObj.getWorldCenter());
+        },
     };
 
     const contentsObj = container()
