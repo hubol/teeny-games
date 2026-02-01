@@ -1,5 +1,6 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
@@ -38,7 +39,10 @@ export function scnLibrary() {
                     .mixin(mxnCollectible)
                     .handles(
                         "collectible:collect",
-                        (self) => cartObj.objCart.contentObjs.push(objLibraryBook(self.objLibraryBook.seed)),
+                        (self) => {
+                            self.play(Sfx.BookCollect.rate(1, 1.1));
+                            cartObj.objCart.contentObjs.push(objLibraryBook(self.objLibraryBook.seed));
+                        },
                     ),
             )
                 .at(generatePosition());
@@ -59,6 +63,8 @@ export function scnLibrary() {
                     if (expectedPlayerToReturnToCenter) {
                         yield sleep(800);
                     }
+
+                    Sfx.LibraryRoundAdvance.rate(0.95, 1.05).play();
 
                     const primaryBookObj = objLibraryBookSpawn("default").show(self);
 
@@ -166,7 +172,12 @@ function objLottie() {
         )
             .step(self => {
                 const p = Math.floor(api.pedometer) % 2 === 0;
+                const previousLegsTexture = legsObj.texture;
                 legsObj.texture = p ? txLegs0 : txLegs1;
+                if (previousLegsTexture !== legsObj.texture) {
+                    const sfx = legsObj.texture === txLegs0 ? Sfx.LottieStep0 : Sfx.LottieStep1;
+                    self.play(sfx.rate(0.95, 1.05));
+                }
                 self.pivot.y = p ? 1 : 0;
                 armObj.pivot.y = self.pivot.y;
                 scarfObj.pivot.x = -self.pivot.y;
