@@ -8,7 +8,7 @@ export function objLibrarySpawn(mode: "default" | "disappears_fast", collectible
     const indicatorObj = objActiveIndicator().scaled(1.25, 1.25);
 
     if (mode === "disappears_fast") {
-        indicatorObj.objActiveIndicator.tint = 0xff0000;
+        indicatorObj.objActiveIndicator.tint = 0x546DFF;
     }
 
     return container(
