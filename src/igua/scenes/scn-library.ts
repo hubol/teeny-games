@@ -29,13 +29,11 @@ export function scnLibrary() {
         .show();
 
     const minigame = {
-        // TODO isRunning
-        // TODO roundsCount
+        isRunning: false,
+        roundsCount: 0,
         booksCollectedCount: 0,
         fecesCollectedCount: 0,
     };
-
-    let isMinigameRunning = false;
 
     {
         function generatePosition() {
@@ -90,10 +88,8 @@ export function scnLibrary() {
                     .invisible()
                     .show();
 
-                let roundsCount = 0;
-
                 while (true) {
-                    yield () => isMinigameRunning;
+                    yield () => minigame.isRunning;
 
                     const expectedPlayerToReturnToCenter = Rng.bool();
 
@@ -115,7 +111,7 @@ export function scnLibrary() {
 
                     debugObj.text = "Leg 1 distance: " + Math.round(distance(primaryBookObj, cartCenterPosition));
 
-                    if (Rng.float() < 0.33 && roundsCount > 0) {
+                    if (Rng.float() < 0.33 && minigame.roundsCount > 0) {
                         const secondaryBookObj = objLibraryBookSpawn("disappears_fast").show(self);
 
                         const firstStopDistance = distance(primaryBookObj, cartCenterPosition);
@@ -144,8 +140,8 @@ export function scnLibrary() {
                     }
 
                     let interpPositionChance = 0;
-                    if (roundsCount >= 10) {
-                        interpPositionChance = Math.min(80, 30 + (5 * (roundsCount - 10)));
+                    if (minigame.roundsCount >= 10) {
+                        interpPositionChance = Math.min(80, 30 + (5 * (minigame.roundsCount - 10)));
                     }
 
                     for (const child of self.children) {
@@ -160,7 +156,7 @@ export function scnLibrary() {
                     }
 
                     yield () => self.children.length === 0;
-                    roundsCount += 1;
+                    minigame.roundsCount += 1;
                 }
             })
             .show();
@@ -193,7 +189,7 @@ export function scnLibrary() {
                         collectibleObj.destroy();
                     }
                 });
-            isMinigameRunning = true;
+            minigame.isRunning = true;
         })
         .at(20, 20)
         .zIndexed(999)
