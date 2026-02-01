@@ -2,6 +2,7 @@ import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
@@ -11,6 +12,7 @@ import { distance } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
+import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
@@ -25,6 +27,13 @@ export function scnLibrary() {
     Sprite.from(Tx.Library.BackgroundBarnes)
         .mixin(mxnBoilDisplacement, { rate: 0.0125, scale: 2 })
         .show();
+
+    const minigame = {
+        // TODO isRunning
+        // TODO roundsCount
+        booksCollectedCount: 0,
+        fecesCollectedCount: 0,
+    };
 
     let isMinigameRunning = false;
 
@@ -41,8 +50,33 @@ export function scnLibrary() {
                     .handles(
                         "collectible:collect",
                         (self) => {
+                            minigame.booksCollectedCount += 1;
                             self.play(Sfx.BookCollect.rate(1, 1.1));
                             cartObj.objCart.contentObjs.push(objLibraryBook(self.objLibraryBook.seed));
+                        },
+                    ),
+            )
+                .at(generatePosition());
+        }
+
+        let fecesWarningSoundInstance = Null<SoundInstance>();
+
+        function objFecesSpawn() {
+            return objLibrarySpawn(
+                "default",
+                Sprite.from(Tx.Library.Feces)
+                    .anchored(0.5, 0.5)
+                    .mixin(mxnCollectible)
+                    .handles(
+                        "collectible:collect",
+                        () => {
+                            minigame.fecesCollectedCount += 1;
+                            fecesWarningSoundInstance?.stop();
+                            fecesWarningSoundInstance = Sfx.FecesWarning.playInstance();
+                            cartObj.objCart.contentObjs.push(
+                                Sprite.from(Tx.Library.Feces)
+                                    .anchored(0.5, 0.5),
+                            );
                         },
                     ),
             )
@@ -70,7 +104,8 @@ export function scnLibrary() {
                     Sfx.LibraryRoundAdvance.rate(0.95, 1.05).play();
 
                     const cartCenterPosition = cartObj.objCart.centerPosition;
-                    const primaryBookObj = objLibraryBookSpawn("default").show(self);
+                    const spawnFeces = minigame.booksCollectedCount > 0 && Rng.float() < 0.2;
+                    const primaryBookObj = (spawnFeces ? objFecesSpawn() : objLibraryBookSpawn("default")).show(self);
 
                     if (!expectedPlayerToReturnToCenter) {
                         while (distance(primaryBookObj, cartCenterPosition) > 340) {
@@ -80,7 +115,7 @@ export function scnLibrary() {
 
                     debugObj.text = "Leg 1 distance: " + Math.round(distance(primaryBookObj, cartCenterPosition));
 
-                    if (Rng.float() < 0.33) {
+                    if (Rng.float() < 0.33 && roundsCount > 0) {
                         const secondaryBookObj = objLibraryBookSpawn("disappears_fast").show(self);
 
                         const firstStopDistance = distance(primaryBookObj, cartCenterPosition);
