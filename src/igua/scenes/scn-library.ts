@@ -12,6 +12,7 @@ import { distance } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
+import { range } from "../../lib/range";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
@@ -36,6 +37,13 @@ export function scnLibrary() {
     };
 
     {
+        const roundSpawns = [
+            ...range(10).map(() => "feces" as const),
+            ...range(29).map(() => "book" as const),
+        ];
+
+        Rng.shuffle(roundSpawns);
+
         function generatePosition() {
             return vnew(Rng.intc(20, renderer.width - 20), Rng.intc(20, renderer.height - 20));
         }
@@ -88,7 +96,7 @@ export function scnLibrary() {
                     .invisible()
                     .show();
 
-                while (true) {
+                while (roundSpawns.length > 0) {
                     yield () => minigame.isRunning;
 
                     const expectedPlayerToReturnToCenter = Rng.bool();
@@ -100,18 +108,19 @@ export function scnLibrary() {
                     Sfx.LibraryRoundAdvance.rate(0.95, 1.05).play();
 
                     const cartCenterPosition = cartObj.objCart.centerPosition;
-                    const spawnFeces = minigame.booksCollectedCount > 0 && Rng.float() < 0.2;
+                    const spawnFeces = minigame.booksCollectedCount > 0 && roundSpawns.shift() === "feces";
                     const primaryBookObj = (spawnFeces ? objFecesSpawn() : objLibraryBookSpawn("default")).show(self);
 
                     if (!expectedPlayerToReturnToCenter) {
-                        while (distance(primaryBookObj, cartCenterPosition) > 340) {
+                        while (distance(primaryBookObj, cartCenterPosition) > 310) {
                             primaryBookObj.at(generatePosition());
                         }
                     }
 
                     debugObj.text = "Leg 1 distance: " + Math.round(distance(primaryBookObj, cartCenterPosition));
 
-                    if (Rng.float() < 0.33 && minigame.roundsCount > 0) {
+                    if (Rng.float() < 0.33 && minigame.booksCollectedCount > 0 && roundSpawns[0] === "book") {
+                        roundSpawns.shift();
                         const secondaryBookObj = objLibraryBookSpawn("disappears_fast").show(self);
 
                         const firstStopDistance = distance(primaryBookObj, cartCenterPosition);
