@@ -1,9 +1,12 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
+import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
+import { distance } from "../../lib/math/vector";
+import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
@@ -21,7 +24,13 @@ export function scnLibrary() {
         .mixin(mxnBoilDisplacement, { rate: 0.0125, scale: 2 })
         .show();
 
+    let isMinigameRunning = false;
+
     {
+        function generatePosition() {
+            return vnew(Rng.intc(20, renderer.width - 20), Rng.intc(20, renderer.height - 20));
+        }
+
         function objLibraryBookSpawn(mode: "default" | "disappears_fast") {
             return objLibrarySpawn(
                 mode,
@@ -32,17 +41,61 @@ export function scnLibrary() {
                         (self) => cartObj.objCart.contentObjs.push(objLibraryBook(self.objLibraryBook.seed)),
                     ),
             )
-                .at(Rng.intc(20, renderer.width - 20), Rng.intc(20, renderer.height - 20));
+                .at(generatePosition());
         }
 
         container()
             .coro(function* (self) {
+                const debugObj = objText.Medium("", { tint: 0x000000 })
+                    .zIndexed(9999)
+                    .invisible()
+                    .show();
+
                 while (true) {
-                    if (Rng.float() < 0.25) {
-                        objLibraryBookSpawn("disappears_fast").show(self);
+                    yield () => isMinigameRunning;
+
+                    const expectedPlayerToReturnToCenter = Rng.bool();
+
+                    if (expectedPlayerToReturnToCenter) {
+                        yield sleep(800);
                     }
 
-                    objLibraryBookSpawn("default").show(self);
+                    const primaryBookObj = objLibraryBookSpawn("default").show(self);
+
+                    if (!expectedPlayerToReturnToCenter) {
+                        while (distance(primaryBookObj, lottieAndCartObj) > 370) {
+                            primaryBookObj.at(generatePosition());
+                        }
+                    }
+
+                    debugObj.text = "Leg 1 distance: " + Math.round(distance(primaryBookObj, lottieAndCartObj));
+
+                    if (Rng.float() < 0.25) {
+                        const secondaryBookObj = objLibraryBookSpawn("disappears_fast").show(self);
+
+                        const firstStopDistance = distance(primaryBookObj, lottieAndCartObj);
+                        let secondStopDistance = 0;
+                        // Hack because I am stupid
+                        let attempts = 0;
+                        while (
+                            (secondStopDistance = distance(secondaryBookObj, primaryBookObj),
+                                (
+                                    (firstStopDistance + secondStopDistance) > 490
+                                    || secondStopDistance < 70
+                                    || secondStopDistance > 200
+                                ) && attempts < 5)
+                        ) {
+                            secondaryBookObj.at(generatePosition());
+                            attempts++;
+                        }
+
+                        debugObj.text += "\nLeg 2 distance: "
+                            + Math.round(distance(primaryBookObj, secondaryBookObj));
+
+                        if (attempts >= 5) {
+                            secondaryBookObj.destroy();
+                        }
+                    }
 
                     yield () => self.children.length === 0;
                 }
@@ -77,6 +130,7 @@ export function scnLibrary() {
                         collectibleObj.destroy();
                     }
                 });
+            isMinigameRunning = true;
         })
         .at(20, 20)
         .zIndexed(999)
