@@ -104,7 +104,7 @@ export function scnLibrary() {
                     const expectedPlayerToReturnToCenter = Rng.bool();
 
                     if (expectedPlayerToReturnToCenter) {
-                        yield sleep(800);
+                        yield sleep(1000);
                     }
 
                     Sfx.LibraryRoundAdvance.rate(0.95, 1.05).play();

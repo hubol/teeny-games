@@ -19,7 +19,7 @@ export function objLibrarySpawn(mode: "default" | "disappears_fast", collectible
             collectibleObj.show(self);
             indicatorObj.objActiveIndicator.isFilling = false;
             yield* Coro.race([
-                interp(indicatorObj.objActiveIndicator, "fillUnit").to(0).over(mode === "default" ? 1000 : 500),
+                interp(indicatorObj.objActiveIndicator, "fillUnit").to(0).over(mode === "default" ? 1000 : 700),
                 () => collectibleObj.destroyed,
             ]);
             self.destroy();
