@@ -5,6 +5,7 @@ import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { distance } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
@@ -250,10 +251,23 @@ function objCart() {
                 contentObj.x = i * 10;
             }
         })
-        .at(30, 20);
+        .step(self => {
+            if (self.children.length === 4) {
+                self.x = approachLinear(self.x, 28, 1);
+            }
+            else if (self.children.length >= 5) {
+                self.x = approachLinear(self.x, 18, 1);
+            }
+        })
+        .at(38, 20);
+
+    const contentsMaskObj = new Graphics()
+        .beginFill(0xff0000)
+        .drawRect(24, -200, 47, 229);
 
     return container(
-        contentsObj,
+        contentsMaskObj,
+        contentsObj.masked(contentsMaskObj),
         ...txsCart.map((tx, i) =>
             Sprite.from(tx)
                 .coro(function* (self) {
