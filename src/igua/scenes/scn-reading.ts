@@ -2,7 +2,7 @@ import { BLEND_MODES, DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { Logger } from "../../lib/game-engine/logger";
-import { interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
@@ -32,7 +32,7 @@ const consts = {
         maxWidth: 320,
         maxHeight: 210,
         lineHeight: 32,
-        space: 13,
+        space: 26,
     },
 };
 
@@ -46,6 +46,7 @@ function objBook() {
                 .lineStyle(3, 0x000000, 1)
                 .moveTo(0, -3)
                 .lineTo(0, 29)
+                .merge({ objCursor: { isOnLine: true } })
                 .coro(function* (self) {
                     const padding = 20;
                     self.at(-padding, 0);
@@ -55,16 +56,38 @@ function objBook() {
                     const count = pageTextObj.objPageText.lineWidths.length;
                     for (let i = 0; i < count; i++) {
                         const width = pageTextObj.objPageText.lineWidths[i];
-                        const distance = width + padding * 2;
+                        const distance = width + padding + 6;
                         yield interpvr(self).translate(distance, 0).over(distance * 4);
                         if (i + 1 < count) {
-                            yield interpvr(self).to(-padding, (i + 1) * consts.page.lineHeight).over(500);
+                            self.objCursor.isOnLine = false;
+                            yield interpvr(self)
+                                .factor(factor.sine)
+                                .to(-padding, (i + 1) * consts.page.lineHeight)
+                                .over(500);
+                            self.objCursor.isOnLine = true;
                         }
                     }
                 })
-                // .coro(function* (self) {
-                //     yield () => Key.justWentDown("Space")
-                // })
+                .coro(function* (self) {
+                    while (true) {
+                        yield () => Key.isDown("Space") && self.objCursor.isOnLine;
+                        let applyScale = true;
+                        const highlightObj = new Graphics()
+                            .beginFill(0xCB9EFF)
+                            .drawRect(0, 0, 1, 30)
+                            .scaled(0, 1)
+                            .step(() => {
+                                if (applyScale) {
+                                    highlightObj.scale.x = self.x - highlightObj.x;
+                                }
+                            })
+                            .at(self)
+                            .show(self.parent);
+
+                        yield () => Key.isUp("Space") || !self.objCursor.isOnLine;
+                        applyScale = false;
+                    }
+                })
                 .zIndexed(9),
         )
             .autoSorted()
