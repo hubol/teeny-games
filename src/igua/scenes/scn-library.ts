@@ -4,7 +4,7 @@ import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
-import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
@@ -24,15 +24,29 @@ import { mxnCollectible } from "../mixins/mxn-collectible";
 import { mxnMoved } from "../mixins/mxn-moved";
 import { objLibraryBook } from "../objects/obj-library-book";
 import { objLibrarySpawn } from "../objects/obj-library-spawn";
+import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
+
+const consts = (() => {
+    const fecesSpawnsCount = 10;
+    const bookSpawnsCount = 24;
+    return {
+        fecesSpawnsCount,
+        bookSpawnsCount,
+        totalSpawnsCount: fecesSpawnsCount + bookSpawnsCount,
+    };
+})();
 
 export function scnLibrary() {
     Sprite.from(Tx.Library.BackgroundBarnes)
         .mixin(mxnBoilDisplacement, { rate: 0.0125, scale: 2 })
+        .zIndexed(-999)
         .show();
 
     const minigame = {
         isRunning: false,
         isEnded: false,
+        isClosingSoon: false,
+        remainingSpawnsCount: consts.totalSpawnsCount,
         roundsCount: 0,
         booksCollectedCount: 0,
         fecesCollectedCount: 0,
@@ -40,8 +54,8 @@ export function scnLibrary() {
 
     {
         const roundSpawns = [
-            ...range(10).map(() => "feces" as const),
-            ...range(29).map(() => "book" as const),
+            ...range(consts.fecesSpawnsCount).map(() => "feces" as const),
+            ...range(consts.bookSpawnsCount).map(() => "book" as const),
         ];
 
         Rng.shuffle(roundSpawns);
@@ -101,7 +115,7 @@ export function scnLibrary() {
                 while (roundSpawns.length > 0) {
                     yield () => minigame.isRunning;
 
-                    const expectedPlayerToReturnToCenter = Rng.bool();
+                    const expectedPlayerToReturnToCenter = !minigame.isClosingSoon && Rng.bool();
 
                     if (expectedPlayerToReturnToCenter) {
                         yield sleep(1000);
@@ -151,12 +165,12 @@ export function scnLibrary() {
                     }
 
                     let interpPositionChance = 0;
-                    if (minigame.roundsCount >= 10) {
-                        interpPositionChance = Math.min(80, 30 + (5 * (minigame.roundsCount - 10)));
+                    if (minigame.roundsCount >= 7) {
+                        interpPositionChance = Math.min(80, 30 + (5 * (minigame.roundsCount - 7)));
                     }
 
                     for (const child of self.children) {
-                        if (Rng.float(100) <= interpPositionChance) {
+                        if (Rng.float(minigame.isClosingSoon ? 90 : 100) <= interpPositionChance) {
                             child
                                 .coro(function* () {
                                     const target = child.vcpy();
@@ -167,11 +181,43 @@ export function scnLibrary() {
                     }
 
                     yield () => self.children.length === 0;
+                    minigame.remainingSpawnsCount = roundSpawns.length;
                     minigame.roundsCount += 1;
+
+                    if (!minigame.isClosingSoon && minigame.remainingSpawnsCount <= 8) {
+                        minigame.isClosingSoon = true;
+                        yield () => fecesWarningSoundInstance?.ended ?? true;
+                        Sfx.AttentionBarnesAndNoble.gain(0.7).play();
+                        yield sleep(4000);
+                    }
                 }
 
                 minigame.isEnded = true;
             })
+            .show();
+    }
+
+    {
+        objIndexedSprite(Tx.Library.Closing.split({ count: 4 }))
+            .invisible()
+            .mixin(mxnBoilDisplacement, { rate: 0.0167, scale: 2 })
+            .step(self => {
+                if (minigame.remainingSpawnsCount === 0) {
+                    self.textureIndex = 3;
+                }
+                else if (minigame.isClosingSoon) {
+                    self.textureIndex = 2;
+                }
+                else if (minigame.remainingSpawnsCount / consts.totalSpawnsCount < 0.67) {
+                    self.textureIndex = 1;
+                }
+            })
+            .coro(function* (self) {
+                yield () => !lottieAndCartObj.collides(self);
+                self.visible = true;
+            })
+            .at(17, 31)
+            .zIndexed(-999)
             .show();
     }
 

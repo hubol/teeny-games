@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 12 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 13 }];
 
 interface TxData {
   id: string;
@@ -28,6 +28,7 @@ function txs<T>(tx: (data: TxData) => T) {
       BackgroundBarnes: tx({ id: "Library.BackgroundBarnes", atlas: 0, x: 0, y: 107, width: 500, height: 280 }),
       Book: tx({ id: "Library.Book", atlas: 0, x: 814, y: 0, width: 182, height: 32 }),
       Cart: tx({ id: "Library.Cart", atlas: 0, x: 758, y: 338, width: 228, height: 46 }),
+      Closing: tx({ id: "Library.Closing", atlas: 0, x: 0, y: 388, width: 456, height: 12 }),
       Feces: tx({ id: "Library.Feces", atlas: 0, x: 987, y: 338, width: 28, height: 28 }),
     },
     Lottie: {

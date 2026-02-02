@@ -3,6 +3,7 @@
 async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
   const sounds = await Promise.all(
     [
+      "attention barnes and noble.ogg",
       "book collect.ogg",
       "feces warning.ogg",
       "library round advance.ogg",
@@ -12,12 +13,13 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
     ].map(sfx),
   );
   return {
-    BookCollect: sounds[0],
-    FecesWarning: sounds[1],
-    LibraryRoundAdvance: sounds[2],
-    LottieStep0: sounds[3],
-    LottieStep1: sounds[4],
-    Placeholder: sounds[5],
+    AttentionBarnesAndNoble: sounds[0],
+    BookCollect: sounds[1],
+    FecesWarning: sounds[2],
+    LibraryRoundAdvance: sounds[3],
+    LottieStep0: sounds[4],
+    LottieStep1: sounds[5],
+    Placeholder: sounds[6],
   };
 }
 
