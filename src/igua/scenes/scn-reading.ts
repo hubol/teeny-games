@@ -1,11 +1,13 @@
-import { DisplayObject, Sprite } from "pixi.js";
+import { BLEND_MODES, DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { Logger } from "../../lib/game-engine/logger";
+import { interpvr } from "../../lib/game-engine/routines/interp";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
-import { scene } from "../globals";
+import { Key, scene } from "../globals";
 
 export function scnReading() {
     scene.style.backgroundTint = 0x404040;
@@ -38,21 +40,48 @@ function objBook() {
     const pageTextObj = objPageText();
     return container(
         Sprite.from(Tx.Reading.Book),
-        pageTextObj.at(42, 28),
+        container(
+            pageTextObj.zIndexed(1),
+            new Graphics()
+                .lineStyle(3, 0x000000, 1)
+                .moveTo(0, -3)
+                .lineTo(0, 29)
+                .coro(function* (self) {
+                    const padding = 20;
+                    self.at(-padding, 0);
+
+                    yield sleep(1000);
+
+                    const count = pageTextObj.objPageText.lineWidths.length;
+                    for (let i = 0; i < count; i++) {
+                        const width = pageTextObj.objPageText.lineWidths[i];
+                        const distance = width + padding * 2;
+                        yield interpvr(self).translate(distance, 0).over(distance * 4);
+                        if (i + 1 < count) {
+                            yield interpvr(self).to(-padding, (i + 1) * consts.page.lineHeight).over(500);
+                        }
+                    }
+                })
+                // .coro(function* (self) {
+                //     yield () => Key.justWentDown("Space")
+                // })
+                .zIndexed(9),
+        )
+            .autoSorted()
+            .at(42, 28),
     );
 }
 
 function objPageText() {
-    const sentencesObj = container();
+    const obj = container().merge({ objPageText: { lineWidths: [0] } });
 
     let x = 0;
     let y = 0;
-    let linesCount = 0;
     for (let i = 0; i < 4; i++) {
         const sentence = generateSentence(i > 0);
         const words = sentence.split(" ").map(string => string.trim()).filter(string => string);
         const wordObjs = new Array<DisplayObject>();
-        let maybeLinesCount = linesCount;
+        const maybeLineWidths = [...obj.objPageText.lineWidths];
 
         for (const word of words) {
             const wordObj = objWord(word);
@@ -61,24 +90,24 @@ function objPageText() {
                 continue;
             }
             if (wordObj.width + x > consts.page.maxWidth) {
-                maybeLinesCount += 1;
+                maybeLineWidths.push(0);
                 x = 0;
                 y += consts.page.lineHeight;
             }
             if (wordObj.height + y > consts.page.maxHeight) {
-                return sentencesObj;
+                return obj;
             }
 
             wordObjs.push(wordObj.at(x, y));
+            maybeLineWidths[maybeLineWidths.length - 1] = wordObj.x + wordObj.width;
             x += wordObj.width + consts.page.space;
-            linesCount = maybeLinesCount;
         }
 
-        sentencesObj.addChild(...wordObjs);
+        obj.objPageText.lineWidths = maybeLineWidths;
+        obj.addChild(...wordObjs);
     }
 
-    return sentencesObj
-        .merge({ objPageText: { linesCount } });
+    return obj;
 }
 
 function objWord(casedWord: string) {
