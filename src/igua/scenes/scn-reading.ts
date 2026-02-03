@@ -3,15 +3,19 @@ import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
-import { factor, interpvr } from "../../lib/game-engine/routines/interp";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { nlerp } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
+import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { MapRgbFilter } from "../../lib/pixi/filters/map-rgb-filter";
 import { Key, scene } from "../globals";
 import { lottieProgress } from "../lottie-progress";
+import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objLibraryBook } from "../objects/obj-library-book";
 
 export function scnReading() {
@@ -21,12 +25,23 @@ export function scnReading() {
         remainingDesirableWordsCount: 25,
     };
 
+    const readingLottieObj = objReadingLottie()
+        .zIndexed(999)
+        .at(400, 180)
+        .show();
+
     container()
         .coro(function* () {
             let seedIndex = 0;
             while (minigame.remainingDesirableWordsCount > 0) {
                 const seed = lottieProgress.libraryBookSeeds[(seedIndex++) % lottieProgress.libraryBookSeeds.length]
                     ?? Rng.intc(9_000_000, 999_000_000);
+
+                readingLottieObj.objReadingLottie.book.seed = seed;
+                readingLottieObj.objReadingLottie.book.unit = 0;
+
+                yield interp(readingLottieObj.objReadingLottie.book, "unit").to(1).over(1000);
+
                 let bookObj = objBook(Math.min(4, minigame.remainingDesirableWordsCount), seed);
                 if (minigame.remainingDesirableWordsCount < 4) {
                     for (let i = 0; i < 4; i++) {
@@ -37,14 +52,76 @@ export function scnReading() {
                         bookObj = objBook(minigame.remainingDesirableWordsCount, seed);
                     }
                 }
-                bookObj.show();
+                bookObj.at(-340, 0).show();
+                yield interpvr(bookObj).factor(factor.sine).to(0, 0).over(500);
+                yield sleep(1000);
+                bookObj.objBook.isScanning = true;
 
                 yield () => bookObj.objBook.isComplete;
+                yield interpvr(bookObj).factor(factor.sine).to(-400, 0).over(500);
                 minigame.remainingDesirableWordsCount -= bookObj.objBook.desirableWordsCount;
                 bookObj.destroy();
+                yield interp(readingLottieObj.objReadingLottie.book, "unit").steps(6).to(0).over(500);
             }
         })
         .show();
+}
+
+function objReadingLottie() {
+    const [txBody, txFace, txPupils, txBook0, txBook1, txBook2] = Tx.Reading.Lottie.split({ width: 100 });
+
+    const detailedBookObj = container().at(54, 0);
+    const bookObj = Sprite.from(txBook0);
+
+    const api = {
+        looking: vnew(),
+        book: {
+            set seed(value: Integer) {
+                detailedBookObj.removeAllChildren();
+                const libraryBookObj = objLibraryBook(value).show(detailedBookObj);
+                bookObj.filters?.[0]?.destroy();
+                bookObj.filters = [new MapRgbFilter(libraryBookObj.objLibraryBook.bindingColor)];
+            },
+            unit: 0,
+        },
+    };
+
+    return container(
+        Sprite.from(txBody),
+        Sprite.from(txFace).mixin(mxnBoilPivot),
+        Sprite.from(txPupils).step(self => self.position.at(api.looking).scale(6).vround()),
+        detailedBookObj,
+        bookObj,
+    )
+        .step(() => {
+            const unit = api.book.unit;
+
+            if (unit === 0) {
+                detailedBookObj.visible = false;
+                bookObj.visible = false;
+                return;
+            }
+
+            detailedBookObj.visible = unit < 0.3;
+            bookObj.visible = !detailedBookObj.visible;
+
+            if (unit < 0.3) {
+                detailedBookObj.y = nlerp(-10, 26, unit / 0.3);
+            }
+            else if (unit < 0.6) {
+                bookObj.y = nlerp(0, 30, (unit - 0.3) / 0.3);
+                bookObj.texture = txBook0;
+            }
+            else if (unit < 1) {
+                bookObj.y = nlerp(0, 10, (unit - 0.6) / 0.4);
+                bookObj.texture = txBook1;
+            }
+            else {
+                bookObj.at(0, 0);
+                bookObj.texture = txBook2;
+            }
+        })
+        .merge({ objReadingLottie: api });
 }
 
 const consts = {
@@ -80,6 +157,7 @@ function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
 
     const api = {
         desirableWordsCount,
+        isScanning: false,
         isComplete: false,
     };
 
@@ -98,7 +176,7 @@ function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
                     const padding = 20;
                     self.at(-padding, 0);
 
-                    yield sleep(1000);
+                    yield () => api.isScanning;
 
                     const count = pageTextObj.objPageText.lineWidths.length;
                     for (let i = 0; i < count; i++) {
