@@ -62,8 +62,7 @@ export function scnReading() {
 
                 const bookObj = objBook(pageTextObj, seed, scanSpeedDifficulty).at(-340, 0).show();
                 yield interpvr(bookObj).factor(factor.sine).to(0, 0).over(500);
-                yield sleep(1000);
-                bookObj.objBook.isScanning = true;
+                yield interp(bookObj.objBook, "scanReadyUnit").to(1).over(1000);
                 const pupilsControlObj = container()
                     .step(() => {
                         readingLottieObj.objReadingLottie.looking.x = nlerp(1, -1, bookObj.objBook.scanUnit);
@@ -180,7 +179,7 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
 
     const api = {
         desirableWordsCount,
-        isScanning: false,
+        scanReadyUnit: 0,
         isComplete: false,
         scanUnit: 0,
     };
@@ -196,11 +195,14 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                 .moveTo(0, -3)
                 .lineTo(0, 29)
                 .merge({ objCursor: { isOnLine: true } })
+                .step(self => {
+                    self.scale.y = api.scanReadyUnit;
+                })
                 .coro(function* (self) {
                     const padding = 20;
                     self.at(-padding, 0);
 
-                    yield () => api.isScanning;
+                    yield () => api.scanReadyUnit >= 1;
 
                     const count = pageTextObj.objPageText.lineWidths.length;
                     for (let i = 0; i < count; i++) {
