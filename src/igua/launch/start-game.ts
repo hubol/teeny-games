@@ -16,7 +16,7 @@ function getConfig(): GameStartConfig {
 
     if (devConfig === null) {
         return {
-            sceneName: "scnLibrary",
+            sceneName: "scnTitle",
         };
     }
 

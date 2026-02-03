@@ -16,6 +16,9 @@ type NoAtlasTextures = Awaited<ReturnType<typeof createNoAtlasTx>>;
 
 async function createNoAtlasTx(tx: typeof Tx) {
     return {
+        Title: {
+            PressSpace: await wrap(tx.Title.PressSpace, WRAP_MODES.REPEAT),
+        },
         Effects: {
             Displacement: await wrap(tx.Effects.Displacement, WRAP_MODES.MIRRORED_REPEAT),
         },

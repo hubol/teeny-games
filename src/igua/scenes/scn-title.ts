@@ -1,14 +1,18 @@
-import { Sprite } from "pixi.js";
+import { Sprite, TilingSprite } from "pixi.js";
+import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear, nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
+import { Key, sceneStack } from "../globals";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
+import { scnLibrary } from "./scn-library";
 
 export function scnTitle() {
     Sprite.from(Tx.Library.BackgroundBarnesNoLabel).show();
@@ -54,6 +58,28 @@ export function scnTitle() {
                     || subtitleSoundInstance.estimatedPlayheadPosition >= subtitleTimestamps[i];
                 Sprite.from(subtitleTxs[i]).show(subtitleObj);
             }
+
+            const pressSpaceObj = new TilingSprite(NoAtlasTx.Title.PressSpace, 500, 20)
+                .at(500, 260)
+                .step(self => {
+                    if (self.x <= 0) {
+                        self.tilePosition.x -= 2;
+                    }
+                    self.x = approachLinear(self.x, 0, 2);
+                })
+                .show();
+
+            yield () => pressSpaceObj.x <= 480 && Key.justWentDown("Space");
+
+            lottieObj.objLottie.agape = true;
+
+            titleObj.destroy();
+            subtitleObj.destroy();
+            pressSpaceObj.destroy();
+
+            yield interpvr(lottieObj).factor(factor.sine).translate(0, 200).over(500);
+
+            throw new EscapeTickerAndExecute(() => sceneStack.replace(scnLibrary, { useGameplay: true }));
         })
         .show();
 }
