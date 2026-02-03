@@ -3,8 +3,7 @@ import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
-import { Coro } from "../../lib/game-engine/routines/coro";
-import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { nlerp } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -20,6 +19,10 @@ import { objLibraryBook } from "../objects/obj-library-book";
 
 export function scnReading() {
     scene.style.backgroundTint = 0x404040;
+
+    Sprite.from(Tx.Reading.Background)
+        .zIndexed(-999)
+        .show();
 
     const minigame = {
         remainingDesirableWordsCount: 25,
