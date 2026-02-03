@@ -193,7 +193,7 @@ const consts = {
     sentences: [
         "zhe fell down",
         "zhe touched the pieces",
-        "zhe looked exasperated",
+        "zhe smelled flowers",
         "zhe tried different food",
         "zhe saw her world",
         "zhe went away",
@@ -201,7 +201,7 @@ const consts = {
         "zhe became unwell",
         "zhe cried",
         "zhe brushed her hair",
-        "zhe felt alone",
+        "zhe smiled",
     ],
     page: {
         maxWidth: 350,
