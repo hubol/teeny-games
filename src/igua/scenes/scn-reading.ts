@@ -5,6 +5,7 @@ import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
@@ -13,7 +14,31 @@ import { Key, scene } from "../globals";
 export function scnReading() {
     scene.style.backgroundTint = 0x404040;
 
-    const bookObj = objBook().show();
+    const minigame = {
+        remainingDesirableWordsCount: 25,
+    };
+
+    container()
+        .coro(function* () {
+            while (minigame.remainingDesirableWordsCount > 0) {
+                let bookObj = objBook(Math.min(4, minigame.remainingDesirableWordsCount));
+                if (minigame.remainingDesirableWordsCount < 4) {
+                    for (let i = 0; i < 4; i++) {
+                        if (bookObj.objBook.desirableWordsCount === minigame.remainingDesirableWordsCount) {
+                            break;
+                        }
+                        bookObj.destroy();
+                        bookObj = objBook(minigame.remainingDesirableWordsCount);
+                    }
+                }
+                bookObj.show();
+
+                yield () => bookObj.objBook.isComplete;
+                minigame.remainingDesirableWordsCount -= bookObj.objBook.desirableWordsCount;
+                bookObj.destroy();
+            }
+        })
+        .show();
 }
 
 const consts = {
@@ -23,7 +48,7 @@ const consts = {
         "zhe touched the pieces",
         "zhe looked exasperated",
         "zhe tried different food",
-        "zhe saw the world",
+        "zhe saw her world",
         "zhe went away",
         "zhe held her hand",
         "zhe became unwell",
@@ -39,8 +64,17 @@ const consts = {
     },
 };
 
-function objBook() {
-    const pageTextObj = objPageText();
+function objBook(targetDesirableWordsCount: Integer) {
+    const pageTextObj = objPageText(targetDesirableWordsCount);
+
+    const desirableWordsCount = pageTextObj
+        .findIs(objWord)
+        .reduce((sum, wordObj) => wordObj.objWord.isDesirable ? (sum + 1) : sum, 0);
+
+    const api = {
+        desirableWordsCount,
+        isComplete: false,
+    };
 
     let isCursorCompleted = false;
 
@@ -149,10 +183,14 @@ function objBook() {
                         .show(self);
                     yield sleep(100);
                 }
+
+                yield sleep(1000);
+                api.isComplete = true;
             })
             .autoSorted()
             .at(42, 26),
-    );
+    )
+        .merge({ objBook: api });
 }
 
 function objHighlight() {
@@ -169,12 +207,12 @@ function objHighlight() {
         .track(objHighlight);
 }
 
-function objPageText() {
+function objPageText(targetSentencesCount: Integer) {
     const obj = container().merge({ objPageText: { lineWidths: [0] } });
 
     let x = 0;
     let y = 0;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < targetSentencesCount; i++) {
         const sentence = generateSentence(i > 0);
         const words = sentence.split(" ").map(string => string.trim()).filter(string => string);
         const wordObjs = new Array<DisplayObject>();
@@ -212,6 +250,7 @@ function objWord(casedWord: string) {
     const isDesirable = consts.desirableWords.has(normalizedWord);
     return objText.XLargeIrregular(casedWord, { tint: 0x000000 })
         .merge({ objWord: { isDesirable } })
+        .identify(objWord)
         .track(objWord);
 }
 
