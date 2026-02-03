@@ -19,6 +19,7 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "reading/cursor line start.ogg",
       "reading/highlight start.ogg",
       "reading/highlight.ogg",
+      "reading/instructions.ogg",
       "reading/score bad.ogg",
       "reading/score good.ogg",
       "reading/score ok.ogg",
@@ -42,9 +43,10 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       CursorLineStart: sounds[13],
       HighlightStart: sounds[14],
       Highlight: sounds[15],
-      ScoreBad: sounds[16],
-      ScoreGood: sounds[17],
-      ScoreOk: sounds[18],
+      Instructions: sounds[16],
+      ScoreBad: sounds[17],
+      ScoreGood: sounds[18],
+      ScoreOk: sounds[19],
     },
   };
 }

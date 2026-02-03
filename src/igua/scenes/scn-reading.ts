@@ -4,7 +4,8 @@ import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
-import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { factor, interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear, nlerp } from "../../lib/math/number";
 import { Integer, Unit } from "../../lib/math/number-alias-types";
@@ -31,11 +32,14 @@ export function scnReading() {
 
     const readingLottieObj = objReadingLottie()
         .zIndexed(999)
-        .at(400, 180)
+        .at(400, 280)
         .show();
 
     container()
         .coro(function* () {
+            yield interpvr(readingLottieObj).factor(factor.sine).to(400, 180).over(500);
+            yield sleep(500);
+
             let iteration = 0;
             while (minigame.remainingDesirableWordsCount > 0) {
                 const seed = lottieProgress.libraryBookSeeds[(iteration++) % lottieProgress.libraryBookSeeds.length]
@@ -46,6 +50,21 @@ export function scnReading() {
 
                 Sfx.Reading.BookSmallIn.rate(0.975, 1.025).play();
                 yield interp(readingLottieObj.objReadingLottie.book, "unit").to(1).over(1000);
+
+                if (iteration === 1) {
+                    const instructionsObj = Sprite.from(Tx.Reading.Instructions)
+                        .anchored(0.5, 0.5)
+                        .at(250, 420)
+                        .show();
+
+                    yield* Coro.all([
+                        interpv(instructionsObj).factor(factor.sine).to(250, 140).over(1000),
+                    ]);
+
+                    const instructionsSoundInstance = Sfx.Reading.Instructions.playInstance();
+                    yield () => instructionsSoundInstance.ended;
+                    instructionsObj.destroy();
+                }
 
                 const wordSpaceDifficulty = Math.min(1, iteration * 0.2);
 
@@ -69,6 +88,7 @@ export function scnReading() {
                 yield interp(bookObj.objBook, "scanReadyUnit").to(1).over(1000);
                 const pupilsControlObj = container()
                     .step(() => {
+                        readingLottieObj.objReadingLottie.dilated = bookObj.objBook.isHighlighting;
                         readingLottieObj.objReadingLottie.looking.x = nlerp(1, -1, bookObj.objBook.scanUnit);
                         readingLottieObj.objReadingLottie.looking.y = approachLinear(
                             readingLottieObj.objReadingLottie.looking.y,
@@ -80,6 +100,7 @@ export function scnReading() {
 
                 yield () => bookObj.objBook.isComplete;
                 pupilsControlObj.destroy();
+                readingLottieObj.objReadingLottie.dilated = false;
                 Sfx.Reading.BookLargeOut.rate(0.975, 1.025).play();
                 yield interpvr(bookObj).factor(factor.sine).to(-400, 0).over(500);
                 readingLottieObj.objReadingLottie.looking.x = 0;
@@ -94,7 +115,9 @@ export function scnReading() {
 }
 
 function objReadingLottie() {
-    const [txBody, txFace, txPupils, txBook0, txBook1, txBook2] = Tx.Reading.Lottie.split({ width: 100 });
+    const [txBody, txFace, txPupils, txBook0, txBook1, txBook2, txPupilsDilated] = Tx.Reading.Lottie.split({
+        width: 100,
+    });
 
     const detailedBookObj = container().at(54, 0);
     const bookObj = Sprite.from(txBook0);
@@ -110,12 +133,17 @@ function objReadingLottie() {
             },
             unit: 0,
         },
+        dilated: false,
     };
 
     return container(
         Sprite.from(txBody),
         Sprite.from(txFace).mixin(mxnBoilPivot),
-        Sprite.from(txPupils).step(self => self.position.at(api.looking).scale(4).vround()),
+        Sprite.from(txPupils)
+            .step(self => {
+                self.position.at(api.looking).scale(4).vround();
+                self.texture = api.dilated ? txPupilsDilated : txPupils;
+            }),
         detailedBookObj,
         bookObj,
     )
@@ -188,6 +216,7 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
         scanReadyUnit: 0,
         isComplete: false,
         scanUnit: 0,
+        isHighlighting: false,
     };
 
     let isCursorCompleted = false;
@@ -232,8 +261,9 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                     api.scanUnit = Math.max(0, Math.min(1, self.x / consts.page.maxWidth));
                 })
                 .coro(function* (self) {
-                    while (true) {
-                        yield () => Key.isDown("Space") && self.objCursor.isOnLine;
+                    while (!isCursorCompleted) {
+                        yield () => Key.isDown("Space") && self.objCursor.isOnLine && api.scanReadyUnit >= 1;
+                        api.isHighlighting = true;
                         self.play(Sfx.Reading.HighlightStart.rate(0.95, 1.05));
                         const highlightSoundInstance = Sfx.Reading.Highlight.rate(0.95, 1.05).playInstance();
                         let applyScale = true;
@@ -247,6 +277,7 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                             .show(self.parent);
 
                         yield () => Key.isUp("Space") || !self.objCursor.isOnLine;
+                        api.isHighlighting = false;
                         highlightSoundInstance.stop();
                         applyScale = false;
                     }
