@@ -1,10 +1,12 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
+import { Coro } from "../../lib/game-engine/routines/coro";
 import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
@@ -15,6 +17,7 @@ import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { Null } from "../../lib/types/null";
+import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { sceneStack } from "../globals";
 import { lottieProgress } from "../lottie-progress";
@@ -41,6 +44,8 @@ const consts = (() => {
 })();
 
 export function scnLibrary() {
+    Jukebox.warm(Mzk.LibraryFast, Mzk.Reading);
+
     Sprite.from(Tx.Library.BackgroundBarnes)
         .mixin(mxnBoilDisplacement, { rate: 0.0125, scale: 2 })
         .zIndexed(-999)
@@ -191,9 +196,12 @@ export function scnLibrary() {
 
                     if (!minigame.isClosingSoon && minigame.remainingSpawnsCount <= 8) {
                         minigame.isClosingSoon = true;
+                        Jukebox.applyGainRamp(Mzk.Library, 0, 1500);
+                        yield sleep(1500);
                         yield () => fecesWarningSoundInstance?.ended ?? true;
-                        Sfx.AttentionBarnesAndNoble.gain(0.7).play();
+                        Sfx.AttentionBarnesAndNoble.gain(0.5).play();
                         yield sleep(4000);
+                        Jukebox.play(Mzk.LibraryFast);
                     }
                 }
 
@@ -254,7 +262,9 @@ export function scnLibrary() {
                     }
                 });
             minigame.isRunning = true;
+            Jukebox.play(Mzk.Library, 0);
             yield () => minigame.isEnded;
+            Jukebox.applyGainRamp(Mzk.LibraryFast, 0, 500);
             arrowKeysSelf.mxnArrowKeys.isEnabled = false;
             arrowKeysSelf.mxnClampPosition.isEnabled = false;
             yield sleep(1000);

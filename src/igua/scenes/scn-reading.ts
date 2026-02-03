@@ -1,5 +1,6 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
@@ -15,6 +16,7 @@ import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { MapRgbFilter } from "../../lib/pixi/filters/map-rgb-filter";
+import { Jukebox } from "../core/igua-audio";
 import { Key, scene, sceneStack } from "../globals";
 import { lottieProgress } from "../lottie-progress";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
@@ -66,6 +68,7 @@ export function scnReading() {
                     const instructionsSoundInstance = Sfx.Reading.Instructions.playInstance();
                     yield () => instructionsSoundInstance.ended;
                     instructionsObj.destroy();
+                    Jukebox.play(Mzk.Reading);
                 }
 
                 const wordSpaceDifficulty = Math.min(1, iteration * 0.2);
@@ -114,6 +117,7 @@ export function scnReading() {
             }
 
             yield sleep(500);
+            Jukebox.applyGainRamp(Mzk.Reading, 0, 500);
             yield interpvr(readingLottieObj).factor(factor.sine).to(400, 280).over(500);
             throw new EscapeTickerAndExecute(() => sceneStack.replace(scnTacoBell, { useGameplay: false }));
         })

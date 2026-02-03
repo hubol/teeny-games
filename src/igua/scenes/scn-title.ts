@@ -1,4 +1,5 @@
 import { Sprite, TilingSprite } from "pixi.js";
+import { Mzk } from "../../assets/music";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
@@ -8,12 +9,14 @@ import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp"
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear, nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
+import { Jukebox } from "../core/igua-audio";
 import { Key, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
 import { scnLibrary } from "./scn-library";
 
 export function scnTitle() {
+    Jukebox.warm(Mzk.Title, Mzk.Library);
     Sprite.from(Tx.Library.BackgroundBarnesNoLabel).show();
 
     container()
@@ -26,7 +29,7 @@ export function scnTitle() {
             lottieObj.at(96, 100 + lottieObj.height);
             yield interpvr(lottieObj).factor(factor.sine).translate(0, -lottieObj.height).over(1000);
 
-            Sfx.Title.Lottie.play();
+            Sfx.Title.Lottie.gain(0.8).play();
 
             const titleObj = objIndexedSprite(Tx.Title.Title.split({ count: 3 }))
                 .anchored(0.5, 0.5)
@@ -60,6 +63,8 @@ export function scnTitle() {
                 Sprite.from(subtitleTxs[i]).show(subtitleObj);
             }
 
+            Jukebox.play(Mzk.Title);
+
             const pressSpaceObj = new TilingSprite(NoAtlasTx.Title.PressSpace, 500, 20)
                 .at(500, 260)
                 .step(self => {
@@ -72,6 +77,7 @@ export function scnTitle() {
 
             yield () => pressSpaceObj.x <= 480 && Key.justWentDown("Space");
 
+            Jukebox.applyGainRamp(Mzk.Title, 0, 1000);
             Sfx.Title.Space.play();
 
             lottieObj.objLottie.agape = true;

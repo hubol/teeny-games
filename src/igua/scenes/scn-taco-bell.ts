@@ -1,5 +1,6 @@
 import { Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
@@ -11,6 +12,7 @@ import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { SpriteAlphaMaskFilter } from "../../lib/pixi/filters/sprite-alpha-mask-filter";
+import { Jukebox } from "../core/igua-audio";
 import { Key, sceneStack } from "../globals";
 import { getLottiePoints, lottieProgress, resetLottieProgress } from "../lottie-progress";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
@@ -113,6 +115,7 @@ export function scnTacoBell() {
 
             yield sleep(500);
             showRetryButton = true;
+            Jukebox.play(Mzk.Title);
         })
         .show();
 
@@ -132,6 +135,8 @@ export function scnTacoBell() {
             ]);
 
             yield () => Key.justWentDown("Space");
+
+            Jukebox.applyGainRamp(Mzk.Title, 0, 1500);
 
             yield interpvr(self).translate(0, 100).over(500);
 
