@@ -5,7 +5,7 @@ import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
 import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
-import { nlerp } from "../../lib/math/number";
+import { approachLinear, nlerp } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
@@ -55,13 +55,27 @@ export function scnReading() {
                         bookObj = objBook(minigame.remainingDesirableWordsCount, seed);
                     }
                 }
+
                 bookObj.at(-340, 0).show();
                 yield interpvr(bookObj).factor(factor.sine).to(0, 0).over(500);
                 yield sleep(1000);
                 bookObj.objBook.isScanning = true;
+                const pupilsControlObj = container()
+                    .step(() => {
+                        readingLottieObj.objReadingLottie.looking.x = nlerp(1, -1, bookObj.objBook.scanUnit);
+                        readingLottieObj.objReadingLottie.looking.y = approachLinear(
+                            readingLottieObj.objReadingLottie.looking.y,
+                            1,
+                            0.05,
+                        );
+                    })
+                    .show();
 
                 yield () => bookObj.objBook.isComplete;
+                pupilsControlObj.destroy();
                 yield interpvr(bookObj).factor(factor.sine).to(-400, 0).over(500);
+                readingLottieObj.objReadingLottie.looking.x = 0;
+                readingLottieObj.objReadingLottie.looking.y = 0;
                 minigame.remainingDesirableWordsCount -= bookObj.objBook.desirableWordsCount;
                 bookObj.destroy();
                 yield interp(readingLottieObj.objReadingLottie.book, "unit").steps(6).to(0).over(500);
@@ -92,7 +106,7 @@ function objReadingLottie() {
     return container(
         Sprite.from(txBody),
         Sprite.from(txFace).mixin(mxnBoilPivot),
-        Sprite.from(txPupils).step(self => self.position.at(api.looking).scale(6).vround()),
+        Sprite.from(txPupils).step(self => self.position.at(api.looking).scale(4).vround()),
         detailedBookObj,
         bookObj,
     )
@@ -162,6 +176,7 @@ function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
         desirableWordsCount,
         isScanning: false,
         isComplete: false,
+        scanUnit: 0,
     };
 
     let isCursorCompleted = false;
@@ -196,6 +211,9 @@ function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
                         }
                     }
                     isCursorCompleted = true;
+                })
+                .step(self => {
+                    api.scanUnit = Math.max(0, Math.min(1, self.x / consts.page.maxWidth));
                 })
                 .coro(function* (self) {
                     while (true) {
