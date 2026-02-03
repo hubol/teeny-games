@@ -6,7 +6,7 @@ import { Logger } from "../../lib/game-engine/logger";
 import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear, nlerp } from "../../lib/math/number";
-import { Integer } from "../../lib/math/number-alias-types";
+import { Integer, Unit } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
@@ -35,9 +35,9 @@ export function scnReading() {
 
     container()
         .coro(function* () {
-            let seedIndex = 0;
+            let iteration = 0;
             while (minigame.remainingDesirableWordsCount > 0) {
-                const seed = lottieProgress.libraryBookSeeds[(seedIndex++) % lottieProgress.libraryBookSeeds.length]
+                const seed = lottieProgress.libraryBookSeeds[(iteration++) % lottieProgress.libraryBookSeeds.length]
                     ?? Rng.intc(9_000_000, 999_000_000);
 
                 readingLottieObj.objReadingLottie.book.seed = seed;
@@ -45,18 +45,22 @@ export function scnReading() {
 
                 yield interp(readingLottieObj.objReadingLottie.book, "unit").to(1).over(1000);
 
-                let bookObj = objBook(Math.min(4, minigame.remainingDesirableWordsCount), seed);
+                const wordSpaceDifficulty = Math.min(1, iteration * 0.2);
+
+                let pageTextObj = objPageText(Math.min(4, minigame.remainingDesirableWordsCount), wordSpaceDifficulty);
                 if (minigame.remainingDesirableWordsCount < 4) {
                     for (let i = 0; i < 4; i++) {
-                        if (bookObj.objBook.desirableWordsCount === minigame.remainingDesirableWordsCount) {
+                        if (pageTextObj.objPageText.desirableWordsCount === minigame.remainingDesirableWordsCount) {
                             break;
                         }
-                        bookObj.destroy();
-                        bookObj = objBook(minigame.remainingDesirableWordsCount, seed);
+                        pageTextObj.destroy();
+                        pageTextObj = objPageText(minigame.remainingDesirableWordsCount, wordSpaceDifficulty);
                     }
                 }
 
-                bookObj.at(-340, 0).show();
+                const scanSpeedDifficulty = Math.max(0, Math.min(1, (iteration - 1) * 0.3));
+
+                const bookObj = objBook(pageTextObj, seed, scanSpeedDifficulty).at(-340, 0).show();
                 yield interpvr(bookObj).factor(factor.sine).to(0, 0).over(500);
                 yield sleep(1000);
                 bookObj.objBook.isScanning = true;
@@ -160,13 +164,15 @@ const consts = {
         maxWidth: 350,
         maxHeight: 225,
         lineHeight: 32,
-        space: 26,
+        space: {
+            easy: 34,
+            hard: 24,
+        },
     },
 };
 
-function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
+function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
     const tinyBookObj = objLibraryBook(seed);
-    const pageTextObj = objPageText(targetDesirableWordsCount);
 
     const desirableWordsCount = pageTextObj
         .findIs(objWord)
@@ -200,13 +206,13 @@ function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
                     for (let i = 0; i < count; i++) {
                         const width = pageTextObj.objPageText.lineWidths[i];
                         const distance = width + padding + 6;
-                        yield interpvr(self).translate(distance, 0).over(distance * 4);
+                        yield interpvr(self).translate(distance, 0).over(distance * nlerp(4, 3.4, difficulty));
                         if (i + 1 < count) {
                             self.objCursor.isOnLine = false;
                             yield interpvr(self)
                                 .factor(factor.sine)
                                 .to(-padding, (i + 1) * consts.page.lineHeight)
-                                .over(500);
+                                .over(nlerp(500, 300, difficulty));
                             self.objCursor.isOnLine = true;
                         }
                     }
@@ -313,8 +319,18 @@ function objHighlight() {
         .track(objHighlight);
 }
 
-function objPageText(targetSentencesCount: Integer) {
-    const obj = container().merge({ objPageText: { lineWidths: [0] } });
+function objPageText(targetSentencesCount: Integer, difficulty: Unit) {
+    const obj = container()
+        .merge({
+            objPageText: {
+                lineWidths: [0],
+                get desirableWordsCount() {
+                    return obj
+                        .findIs(objWord)
+                        .reduce((sum, wordObj) => wordObj.objWord.isDesirable ? (sum + 1) : sum, 0);
+                },
+            },
+        });
 
     let x = 0;
     let y = 0;
@@ -341,7 +357,7 @@ function objPageText(targetSentencesCount: Integer) {
 
             wordObjs.push(wordObj.at(x, y));
             maybeLineWidths[maybeLineWidths.length - 1] = wordObj.x + wordObj.width;
-            x += wordObj.width + consts.page.space;
+            x += wordObj.width + Math.round(nlerp(consts.page.space.easy, consts.page.space.hard, difficulty));
         }
 
         obj.objPageText.lineWidths = maybeLineWidths;
@@ -350,6 +366,8 @@ function objPageText(targetSentencesCount: Integer) {
 
     return obj;
 }
+
+type ObjPageText = ReturnType<typeof objPageText>;
 
 function objWord(casedWord: string) {
     const normalizedWord = casedWord.toLowerCase().replace(/(\.|\?\!\,)/gm, "").trim();
