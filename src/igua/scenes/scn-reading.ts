@@ -1,4 +1,4 @@
-import { BLEND_MODES, DisplayObject, Graphics, Sprite } from "pixi.js";
+import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
@@ -8,7 +8,6 @@ import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
-import { range } from "../../lib/range";
 import { Key, scene } from "../globals";
 
 export function scnReading() {
@@ -20,18 +19,20 @@ export function scnReading() {
 const consts = {
     desirableWords: new Set(["her", "she", "girls", "girl", "women", "woman", "female", "feminine", "femininity"]),
     sentences: [
-        "she fell down",
-        "she touched the pieces",
-        "she looked exasperated",
-        "she tried different food",
-        "she saw the world",
-        "she went away",
-        "she held her hand",
-        "she became unwell",
-        "she cried",
+        "zhe fell down",
+        "zhe touched the pieces",
+        "zhe looked exasperated",
+        "zhe tried different food",
+        "zhe saw the world",
+        "zhe went away",
+        "zhe held her hand",
+        "zhe became unwell",
+        "zhe cried",
+        "zhe brushed her hair",
+        "zhe felt alone",
     ],
     page: {
-        maxWidth: 320,
+        maxWidth: 350,
         maxHeight: 210,
         lineHeight: 32,
         space: 26,
@@ -218,7 +219,7 @@ function generateSentence(maybeConjunction: boolean) {
     const raw = (maybeConjunction ? Rng.choose("and ", "but ", "") : "")
         + Rng.item(consts.sentences)
             .replaceAll(
-                "she",
+                "zhe",
                 Rng.choose(
                     "she",
                     Rng.choose("women", "the women", "girls", "the girls"),
