@@ -10,6 +10,18 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "lottie step 0.ogg",
       "lottie step 1.ogg",
       "placeholder.ogg",
+      "reading/book large in.ogg",
+      "reading/book large out.ogg",
+      "reading/book small in.ogg",
+      "reading/book small out.ogg",
+      "reading/cursor in.ogg",
+      "reading/cursor line end.ogg",
+      "reading/cursor line start.ogg",
+      "reading/highlight start.ogg",
+      "reading/highlight.ogg",
+      "reading/score bad.ogg",
+      "reading/score good.ogg",
+      "reading/score ok.ogg",
     ].map(sfx),
   );
   return {
@@ -20,6 +32,20 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
     LottieStep0: sounds[4],
     LottieStep1: sounds[5],
     Placeholder: sounds[6],
+    Reading: {
+      BookLargeIn: sounds[7],
+      BookLargeOut: sounds[8],
+      BookSmallIn: sounds[9],
+      BookSmallOut: sounds[10],
+      CursorIn: sounds[11],
+      CursorLineEnd: sounds[12],
+      CursorLineStart: sounds[13],
+      HighlightStart: sounds[14],
+      Highlight: sounds[15],
+      ScoreBad: sounds[16],
+      ScoreGood: sounds[17],
+      ScoreOk: sounds[18],
+    },
   };
 }
 

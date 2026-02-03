@@ -1,5 +1,6 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
@@ -43,6 +44,7 @@ export function scnReading() {
                 readingLottieObj.objReadingLottie.book.seed = seed;
                 readingLottieObj.objReadingLottie.book.unit = 0;
 
+                Sfx.Reading.BookSmallIn.rate(0.975, 1.025).play();
                 yield interp(readingLottieObj.objReadingLottie.book, "unit").to(1).over(1000);
 
                 const wordSpaceDifficulty = Math.min(1, iteration * 0.2);
@@ -61,7 +63,9 @@ export function scnReading() {
                 const scanSpeedDifficulty = Math.max(0, Math.min(1, (iteration - 1) * 0.3));
 
                 const bookObj = objBook(pageTextObj, seed, scanSpeedDifficulty).at(-340, 0).show();
+                Sfx.Reading.BookLargeIn.rate(0.975, 1.025).play();
                 yield interpvr(bookObj).factor(factor.sine).to(0, 0).over(500);
+                Sfx.Reading.CursorIn.play();
                 yield interp(bookObj.objBook, "scanReadyUnit").to(1).over(1000);
                 const pupilsControlObj = container()
                     .step(() => {
@@ -76,11 +80,13 @@ export function scnReading() {
 
                 yield () => bookObj.objBook.isComplete;
                 pupilsControlObj.destroy();
+                Sfx.Reading.BookLargeOut.rate(0.975, 1.025).play();
                 yield interpvr(bookObj).factor(factor.sine).to(-400, 0).over(500);
                 readingLottieObj.objReadingLottie.looking.x = 0;
                 readingLottieObj.objReadingLottie.looking.y = 0;
                 minigame.remainingDesirableWordsCount -= bookObj.objBook.desirableWordsCount;
                 bookObj.destroy();
+                Sfx.Reading.BookSmallOut.rate(0.975, 1.025).play();
                 yield interp(readingLottieObj.objReadingLottie.book, "unit").steps(6).to(0).over(500);
             }
         })
@@ -206,11 +212,13 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
 
                     const count = pageTextObj.objPageText.lineWidths.length;
                     for (let i = 0; i < count; i++) {
+                        self.play(Sfx.Reading.CursorLineStart.rate(0.95, 1.05));
                         const width = pageTextObj.objPageText.lineWidths[i];
                         const distance = width + padding + 6;
                         yield interpvr(self).translate(distance, 0).over(distance * nlerp(4, 3.4, difficulty));
                         if (i + 1 < count) {
                             self.objCursor.isOnLine = false;
+                            self.play(Sfx.Reading.CursorLineEnd.rate(0.95, 1.05));
                             yield interpvr(self)
                                 .factor(factor.sine)
                                 .to(-padding, (i + 1) * consts.page.lineHeight)
@@ -226,6 +234,8 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                 .coro(function* (self) {
                     while (true) {
                         yield () => Key.isDown("Space") && self.objCursor.isOnLine;
+                        self.play(Sfx.Reading.HighlightStart.rate(0.95, 1.05));
+                        const highlightSoundInstance = Sfx.Reading.Highlight.rate(0.95, 1.05).playInstance();
                         let applyScale = true;
                         const highlightObj = objHighlight()
                             .step(() => {
@@ -237,6 +247,7 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                             .show(self.parent);
 
                         yield () => Key.isUp("Space") || !self.objCursor.isOnLine;
+                        highlightSoundInstance.stop();
                         applyScale = false;
                     }
                 })
@@ -247,6 +258,12 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                     bad: Tx.Reading.ScoreBad,
                     ok: Tx.Reading.ScoreOk,
                     good: Tx.Reading.ScoreGood,
+                };
+
+                const scoreSfxs = {
+                    bad: Sfx.Reading.ScoreBad,
+                    ok: Sfx.Reading.ScoreOk,
+                    good: Sfx.Reading.ScoreGood,
                 };
 
                 yield () => isCursorCompleted;
@@ -290,6 +307,7 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
                         .anchored(0.5, 0.5)
                         .at(wordObj.x + wordObj.width / 2, wordObj.y + wordObj.height / 2)
                         .coro(function* (self) {
+                            self.play(scoreSfxs[score as keyof typeof scoreSfxs].rate(0.95, 1.05));
                             yield interpvr(self).factor(factor.sine).translate(0, -20).over(250);
                         })
                         .vround()
