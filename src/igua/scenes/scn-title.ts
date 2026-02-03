@@ -9,7 +9,6 @@ import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear, nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
 import { Key, sceneStack } from "../globals";
-import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
 import { scnLibrary } from "./scn-library";
@@ -19,6 +18,8 @@ export function scnTitle() {
 
     container()
         .coro(function* () {
+            Sfx.Title.Appear.play();
+
             const lottieObj = objLottie().show();
 
             lottieObj.objLottie.agape = true;
@@ -70,6 +71,8 @@ export function scnTitle() {
                 .show();
 
             yield () => pressSpaceObj.x <= 480 && Key.justWentDown("Space");
+
+            Sfx.Title.Space.play();
 
             lottieObj.objLottie.agape = true;
 
