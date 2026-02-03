@@ -12,10 +12,13 @@ const [txBook, ...txsBookDecoration] = Tx.Library.Book.split({ width: 26 });
 export function objLibraryBook(seed = Rng.intc(1_000_000, 999_000_000)) {
     prng.seed = seed;
 
+    const bindingColor = prng.color();
+
     const api = {
         get seed() {
             return seed;
         },
+        bindingColor,
     };
 
     const decorationTx = prng.item(txsBookDecoration);
@@ -32,7 +35,7 @@ export function objLibraryBook(seed = Rng.intc(1_000_000, 999_000_000)) {
         titleObj,
     )
         .pivoted(13, 16)
-        .filtered(new MapRgbFilter(prng.color(), prng.color(), prng.color()))
+        .filtered(new MapRgbFilter(bindingColor, prng.color(), prng.color()))
         .merge({ objLibraryBook: api });
 }
 

@@ -9,7 +9,10 @@ import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
+import { MapRgbFilter } from "../../lib/pixi/filters/map-rgb-filter";
 import { Key, scene } from "../globals";
+import { lottieProgress } from "../lottie-progress";
+import { objLibraryBook } from "../objects/obj-library-book";
 
 export function scnReading() {
     scene.style.backgroundTint = 0x404040;
@@ -20,15 +23,18 @@ export function scnReading() {
 
     container()
         .coro(function* () {
+            let seedIndex = 0;
             while (minigame.remainingDesirableWordsCount > 0) {
-                let bookObj = objBook(Math.min(4, minigame.remainingDesirableWordsCount));
+                const seed = lottieProgress.libraryBookSeeds[(seedIndex++) % lottieProgress.libraryBookSeeds.length]
+                    ?? Rng.intc(9_000_000, 999_000_000);
+                let bookObj = objBook(Math.min(4, minigame.remainingDesirableWordsCount), seed);
                 if (minigame.remainingDesirableWordsCount < 4) {
                     for (let i = 0; i < 4; i++) {
                         if (bookObj.objBook.desirableWordsCount === minigame.remainingDesirableWordsCount) {
                             break;
                         }
                         bookObj.destroy();
-                        bookObj = objBook(minigame.remainingDesirableWordsCount);
+                        bookObj = objBook(minigame.remainingDesirableWordsCount, seed);
                     }
                 }
                 bookObj.show();
@@ -64,7 +70,8 @@ const consts = {
     },
 };
 
-function objBook(targetDesirableWordsCount: Integer) {
+function objBook(targetDesirableWordsCount: Integer, seed: Integer) {
+    const tinyBookObj = objLibraryBook(seed);
     const pageTextObj = objPageText(targetDesirableWordsCount);
 
     const desirableWordsCount = pageTextObj
@@ -79,7 +86,7 @@ function objBook(targetDesirableWordsCount: Integer) {
     let isCursorCompleted = false;
 
     return container(
-        Sprite.from(Tx.Reading.Book),
+        Sprite.from(Tx.Reading.Book).filtered(new MapRgbFilter(tinyBookObj.objLibraryBook.bindingColor)),
         container(
             pageTextObj.zIndexed(1),
             new Graphics()

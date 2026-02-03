@@ -2,6 +2,7 @@ import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
 import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
@@ -15,6 +16,8 @@ import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
+import { sceneStack } from "../globals";
+import { lottieProgress } from "../lottie-progress";
 import { mxnArrowKeys } from "../mixins/mxn-arrow-keys";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
@@ -25,6 +28,7 @@ import { mxnMoved } from "../mixins/mxn-moved";
 import { objLibraryBook } from "../objects/obj-library-book";
 import { objLibrarySpawn } from "../objects/obj-library-spawn";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
+import { scnReading } from "./scn-reading";
 
 const consts = (() => {
     const fecesSpawnsCount = 10;
@@ -72,6 +76,7 @@ export function scnLibrary() {
                     .handles(
                         "collectible:collect",
                         (self) => {
+                            lottieProgress.libraryBookSeeds.push(self.objLibraryBook.seed);
                             minigame.booksCollectedCount += 1;
                             self.play(Sfx.BookCollect.rate(1, 1.1));
                             cartObj.objCart.contentObjs.push(objLibraryBook(self.objLibraryBook.seed));
@@ -281,6 +286,14 @@ export function scnLibrary() {
                 .step(self => {
                     self.x += 2;
                 });
+
+            yield sleep(3000);
+
+            throw new EscapeTickerAndExecute(() => {
+                lottieProgress.score.library.booksCollected = minigame.booksCollectedCount;
+                lottieProgress.score.library.fecesCollected = minigame.fecesCollectedCount;
+                sceneStack.replace(scnReading, { useGameplay: false });
+            });
         })
         .at(20, 20)
         .zIndexed(999)
