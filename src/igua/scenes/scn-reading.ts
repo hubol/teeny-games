@@ -2,6 +2,7 @@ import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { Instances } from "../../lib/game-engine/instances";
 import { Logger } from "../../lib/game-engine/logger";
 import { Coro } from "../../lib/game-engine/routines/coro";
@@ -14,10 +15,11 @@ import { vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { MapRgbFilter } from "../../lib/pixi/filters/map-rgb-filter";
-import { Key, scene } from "../globals";
+import { Key, scene, sceneStack } from "../globals";
 import { lottieProgress } from "../lottie-progress";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objLibraryBook } from "../objects/obj-library-book";
+import { scnTacoBell } from "./scn-taco-bell";
 
 export function scnReading() {
     scene.style.backgroundTint = 0x404040;
@@ -110,6 +112,10 @@ export function scnReading() {
                 Sfx.Reading.BookSmallOut.rate(0.975, 1.025).play();
                 yield interp(readingLottieObj.objReadingLottie.book, "unit").steps(6).to(0).over(500);
             }
+
+            yield sleep(500);
+            yield interpvr(readingLottieObj).factor(factor.sine).to(400, 280).over(500);
+            throw new EscapeTickerAndExecute(() => sceneStack.replace(scnTacoBell, { useGameplay: false }));
         })
         .show();
 }
@@ -332,6 +338,16 @@ function objBook(pageTextObj: ObjPageText, seed: Integer, difficulty: Unit) {
 
                     if (score === "none") {
                         continue;
+                    }
+
+                    if (score === "bad") {
+                        lottieProgress.score.reading.badWords += 1;
+                    }
+                    else if (score === "good") {
+                        lottieProgress.score.reading.goodWords += 1;
+                    }
+                    else if (score === "ok") {
+                        lottieProgress.score.reading.okWords += 1;
                     }
 
                     Sprite.from(scoreTxs[score])

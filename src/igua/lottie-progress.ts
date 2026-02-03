@@ -22,3 +22,24 @@ export let lottieProgress = createLottieProgress();
 export function resetLottieProgress() {
     lottieProgress = createLottieProgress();
 }
+
+export function getLottiePoints() {
+    const booksCollected = 100 * lottieProgress.score.library.booksCollected;
+    const fecesCollected = -100 * lottieProgress.score.library.fecesCollected;
+    const goodWords = 100 * lottieProgress.score.reading.goodWords;
+    const okWords = 50 * lottieProgress.score.reading.okWords;
+    const badWords = -30 * lottieProgress.score.reading.badWords;
+
+    return {
+        library: {
+            booksCollected,
+            fecesCollected,
+        },
+        reading: {
+            goodWords,
+            badWords,
+            okWords,
+        },
+        total: booksCollected + fecesCollected + goodWords + badWords + okWords,
+    };
+}

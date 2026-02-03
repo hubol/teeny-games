@@ -4,10 +4,11 @@ import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
-import { scene } from "../globals";
+import { getLottiePoints, lottieProgress } from "../lottie-progress";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 
@@ -46,8 +47,73 @@ export function scnTacoBell() {
             const soundInstance = hubolDialog.sfx.playInstance();
             yield () => soundInstance.ended;
             dialogTextObj.destroy();
+
+            yield sleep(500);
+
+            const style0 = { tint: 0x546DFF };
+
+            const points = getLottiePoints();
+
+            const scoreObj = container(
+                objText.Large(lottieProgress.score.library.booksCollected + " books", style0)
+                    .anchored(1, 1)
+                    .at(-30, 0),
+                objText.Large(lottieProgress.score.library.fecesCollected + " brown", { tint: 0xA06614 })
+                    .anchored(1, 1)
+                    .at(-30, 20),
+                objText.Large(lottieProgress.score.reading.goodWords + " good", style0)
+                    .anchored(1, 1)
+                    .at(80, -15),
+                objText.Large(lottieProgress.score.reading.okWords + " ok", style0)
+                    .anchored(1, 1)
+                    .at(75, 10),
+                objText.Large(lottieProgress.score.reading.badWords + " bad", style0)
+                    .anchored(1, 1)
+                    .at(98, 35),
+                objPointsText(points.library.booksCollected)
+                    .at(-28, 0),
+                objPointsText(points.library.fecesCollected)
+                    .at(-28, 20),
+                objPointsText(points.reading.goodWords)
+                    .at(82, -15),
+                objPointsText(points.reading.okWords)
+                    .at(77, 10),
+                objPointsText(points.reading.badWords)
+                    .at(100, 35),
+                objText.Medium(`Total: ${points.total}pts`, { tint: 0xCB9EFF })
+                    .anchored(0.5, 0)
+                    .at(-1, 30),
+                objText.Medium(`Total: ${points.total}pts`, style0)
+                    .anchored(0.5, 0)
+                    .at(0, 30),
+            );
+            scoreObj.show(lottieObj.objCharacter.speechObjs);
+
+            scoreObj.children.forEach(obj => obj.invisible());
+
+            for (const child of scoreObj.children) {
+                yield sleep(250);
+                const sfx = Rng.choose(
+                    Sfx.TacoBell.Lottie0,
+                    Sfx.TacoBell.Lottie1,
+                    Sfx.TacoBell.Lottie2,
+                    Sfx.TacoBell.Lottie3,
+                    Sfx.TacoBell.Lottie4,
+                );
+                sfx.rate(0.95, 1.05).play();
+                child.visible = true;
+            }
         })
         .show();
+}
+
+function objPointsText(value: Integer) {
+    return objText.MediumBoldIrregular(
+        `(${value}pts)`,
+        { tint: value === 0 ? 0x808080 : (value < 0 ? 0xa00000 : 0x00a000) },
+    )
+        .pivoted(0, 2)
+        .anchored(0, 1);
 }
 
 function objCharacter(mode: "hubol" | "lottie") {
