@@ -33,7 +33,7 @@ const consts = {
     ],
     page: {
         maxWidth: 350,
-        maxHeight: 210,
+        maxHeight: 225,
         lineHeight: 32,
         space: 26,
     },
@@ -151,7 +151,7 @@ function objBook() {
                 }
             })
             .autoSorted()
-            .at(42, 28),
+            .at(42, 26),
     );
 }
 
