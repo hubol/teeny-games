@@ -1,16 +1,21 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { interpvr } from "../../lib/game-engine/routines/interp";
+import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
-import { getLottiePoints, lottieProgress } from "../lottie-progress";
+import { SpriteAlphaMaskFilter } from "../../lib/pixi/filters/sprite-alpha-mask-filter";
+import { Key, sceneStack } from "../globals";
+import { getLottiePoints, lottieProgress, resetLottieProgress } from "../lottie-progress";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
+import { scnLibrary } from "./scn-library";
 
 const [txSkyline, txInterior, txTable, txHubol, txHubolFace, txHubolMouth] = Tx.Tbell.Scene0.split({ width: 500 });
 const [txLottie, txLottieFace, txLottieMouth, txLottieSpeech, txHubolSpeech] = Tx.Tbell.Scene1.split({ width: 500 });
@@ -35,6 +40,8 @@ export function scnTacoBell() {
 
     const hubolObj = objCharacter("hubol").show();
     const lottieObj = objCharacter("lottie").show();
+
+    let showRetryButton = false;
 
     container()
         .coro(function* () {
@@ -103,6 +110,39 @@ export function scnTacoBell() {
                 sfx.rate(0.95, 1.05).play();
                 child.visible = true;
             }
+
+            yield sleep(500);
+            showRetryButton = true;
+        })
+        .show();
+
+    const retryMaskObj = Sprite.from(Tx.Tbell.RetryMask)
+        .at(33, 172)
+        .show();
+
+    Sprite.from(Tx.Tbell.Retry)
+        .at(177, 230)
+        .filtered(new SpriteAlphaMaskFilter(retryMaskObj))
+        .coro(function* (self) {
+            yield () => showRetryButton;
+
+            yield* Coro.all([
+                interpvr(retryMaskObj).to(177, 227).over(1000),
+                interpv(retryMaskObj.scale).to(1, 2).over(1000),
+            ]);
+
+            yield () => Key.justWentDown("Space");
+
+            yield interpvr(self).translate(0, 100).over(500);
+
+            const overlayObj = new Graphics().beginFill(0x6EA719).drawRect(0, 0, 500, 280).show();
+
+            overlayObj.alpha = 0;
+            yield interp(overlayObj, "alpha").steps(4).to(1).over(500);
+            yield sleep(500);
+
+            resetLottieProgress();
+            throw new EscapeTickerAndExecute(() => sceneStack.replace(scnLibrary, { useGameplay: false }));
         })
         .show();
 }
