@@ -1,8 +1,10 @@
 import { Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { scene } from "../globals";
@@ -11,6 +13,15 @@ import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 
 const [txSkyline, txInterior, txTable, txHubol, txHubolFace, txHubolMouth] = Tx.Tbell.Scene0.split({ width: 500 });
 const [txLottie, txLottieFace, txLottieMouth, txLottieSpeech, txHubolSpeech] = Tx.Tbell.Scene1.split({ width: 500 });
+
+const consts = {
+    hubolDialogs: [
+        { text: "What'd you do this week bitch?", sfx: Sfx.TacoBell.Hubol0 },
+        { text: "What you been up to girl?", sfx: Sfx.TacoBell.Hubol1 },
+        { text: "What the hell have you been doing this week?", sfx: Sfx.TacoBell.Hubol2 },
+        { text: "Anything good this week?", sfx: Sfx.TacoBell.Hubol3 },
+    ],
+};
 
 export function scnTacoBell() {
     Sprite.from(txSkyline)
@@ -26,10 +37,15 @@ export function scnTacoBell() {
 
     container()
         .coro(function* () {
-            yield sleep(500);
-            objText.Large("What you been up to this week bitch?", { tint: 0xD5321C, maxWidth: 200 })
+            yield sleep(1000);
+
+            const hubolDialog = Rng.item(consts.hubolDialogs);
+            const dialogTextObj = objText.Large(hubolDialog.text, { tint: 0xD5321C, maxWidth: 200 })
                 .anchored(0.5, 0.5)
                 .show(hubolObj.objCharacter.speechObjs);
+            const soundInstance = hubolDialog.sfx.playInstance();
+            yield () => soundInstance.ended;
+            dialogTextObj.destroy();
         })
         .show();
 }
@@ -55,9 +71,9 @@ function objCharacter(mode: "hubol" | "lottie") {
                     while (true) {
                         yield () => api.speechObjs.children.length > 0;
                         self.visible = true;
-                        yield sleep(500);
+                        yield sleep(250);
                         self.visible = false;
-                        yield sleep(500);
+                        yield sleep(250);
                     }
                 }),
         )
