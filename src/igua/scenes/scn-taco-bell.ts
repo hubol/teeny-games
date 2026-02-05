@@ -51,84 +51,83 @@ export function scnTacoBell() {
 
     container()
         .coro(function* () {
-            // yield sleep(1000);
+            yield sleep(1000);
 
-            // const hubolDialog = Rng.item(consts.hubolDialogs);
-            // const dialogTextObj = objText.Large(hubolDialog.text, { tint: 0xD5321C, maxWidth: 200 })
-            //     .anchored(0.5, 0.5)
-            //     .show(hubolObj.objCharacter.speechObjs);
-            // const soundInstance = hubolDialog.sfx.playInstance();
-            // yield () => soundInstance.ended;
-            // dialogTextObj.destroy();
+            const hubolDialog = Rng.item(consts.hubolDialogs);
+            const dialogTextObj = objText.Large(hubolDialog.text, { tint: 0xD5321C, maxWidth: 200 })
+                .anchored(0.5, 0.5)
+                .show(hubolObj.objCharacter.speechObjs);
+            const soundInstance = hubolDialog.sfx.playInstance();
+            yield () => soundInstance.ended;
+            dialogTextObj.destroy();
 
-            // yield sleep(500);
+            yield sleep(500);
 
-            // const style0 = { tint: 0x546DFF };
+            const style0 = { tint: 0x546DFF };
 
-            // const points = getLottiePoints();
+            const points = getLottiePoints();
 
-            // const scoreObj = container(
-            //     objText.Large(lottieProgress.score.library.booksCollected + " books", style0)
-            //         .anchored(1, 1)
-            //         .at(-30, 0),
-            //     objText.Large(lottieProgress.score.library.fecesCollected + " brown", { tint: 0xA06614 })
-            //         .anchored(1, 1)
-            //         .at(-30, 20),
-            //     objText.Large(lottieProgress.score.reading.goodWords + " good", style0)
-            //         .anchored(1, 1)
-            //         .at(80, -15),
-            //     objText.Large(lottieProgress.score.reading.okWords + " ok", style0)
-            //         .anchored(1, 1)
-            //         .at(75, 10),
-            //     objText.Large(lottieProgress.score.reading.badWords + " bad", style0)
-            //         .anchored(1, 1)
-            //         .at(98, 35),
-            //     objPointsText(points.library.booksCollected)
-            //         .at(-28, 0),
-            //     objPointsText(points.library.fecesCollected)
-            //         .at(-28, 20),
-            //     objPointsText(points.reading.goodWords)
-            //         .at(82, -15),
-            //     objPointsText(points.reading.okWords)
-            //         .at(77, 10),
-            //     objPointsText(points.reading.badWords)
-            //         .at(100, 35),
-            //     objText.Medium(`Total: ${points.total}pts`, { tint: 0xCB9EFF })
-            //         .anchored(0.5, 0)
-            //         .at(-1, 30),
-            //     objText.Medium(`Total: ${points.total}pts`, style0)
-            //         .anchored(0.5, 0)
-            //         .at(0, 30),
-            // );
-            // scoreObj.show(lottieObj.objCharacter.speechObjs);
+            const scoreObj = container(
+                objText.Large(lottieProgress.score.library.booksCollected + " books", style0)
+                    .anchored(1, 1)
+                    .at(-30, 0),
+                objText.Large(lottieProgress.score.library.fecesCollected + " brown", { tint: 0xA06614 })
+                    .anchored(1, 1)
+                    .at(-30, 20),
+                objText.Large(lottieProgress.score.reading.goodWords + " good", style0)
+                    .anchored(1, 1)
+                    .at(80, -15),
+                objText.Large(lottieProgress.score.reading.okWords + " ok", style0)
+                    .anchored(1, 1)
+                    .at(75, 10),
+                objText.Large(lottieProgress.score.reading.badWords + " bad", style0)
+                    .anchored(1, 1)
+                    .at(98, 35),
+                objPointsText(points.library.booksCollected)
+                    .at(-28, 0),
+                objPointsText(points.library.fecesCollected)
+                    .at(-28, 20),
+                objPointsText(points.reading.goodWords)
+                    .at(82, -15),
+                objPointsText(points.reading.okWords)
+                    .at(77, 10),
+                objPointsText(points.reading.badWords)
+                    .at(100, 35),
+                objText.Medium(`Total: ${points.total}pts`, { tint: 0xCB9EFF })
+                    .anchored(0.5, 0)
+                    .at(-1, 30),
+                objText.Medium(`Total: ${points.total}pts`, style0)
+                    .anchored(0.5, 0)
+                    .at(0, 30),
+            );
+            scoreObj.show(lottieObj.objCharacter.speechObjs);
 
-            // scoreObj.children.forEach(obj => obj.invisible());
+            scoreObj.children.forEach(obj => obj.invisible());
 
-            // for (const child of scoreObj.children) {
-            //     yield sleep(250);
-            //     const sfx = Rng.choose(
-            //         Sfx.TacoBell.Lottie0,
-            //         Sfx.TacoBell.Lottie1,
-            //         Sfx.TacoBell.Lottie2,
-            //         Sfx.TacoBell.Lottie3,
-            //         Sfx.TacoBell.Lottie4,
-            //     );
-            //     sfx.rate(0.95, 1.05).play();
-            //     child.visible = true;
-            // }
+            for (const child of scoreObj.children) {
+                yield sleep(250);
+                const sfx = Rng.choose(
+                    Sfx.TacoBell.Lottie0,
+                    Sfx.TacoBell.Lottie1,
+                    Sfx.TacoBell.Lottie2,
+                    Sfx.TacoBell.Lottie3,
+                    Sfx.TacoBell.Lottie4,
+                );
+                sfx.rate(0.95, 1.05).play();
+                child.visible = true;
+            }
 
-            // yield sleep(500);
+            yield sleep(500);
             showRetryButton = true;
             Jukebox.play(Mzk.Rap);
             lottieObj.objCharacter.animatedSpeech = false;
-
-            lottieObj.objCharacter.speechObjs.removeAllChildren(); // TODO
 
             objElijah()
                 .mixin(mxnCuesheet, Mzk.Rap, cueRap as any)
                 .handles("cue:start", (self, message) => {
                     if (message.command === "elijah") {
                         self.objElijah.on = message.data === "on";
+                        lottieObj.objCharacter.speechObjs.removeAllChildren();
                     }
                     if (message.command === "lyrics") {
                         self.objElijah.lyrics = message.data!;
@@ -253,7 +252,6 @@ function objElijah() {
     const txArms = [txArm0, txArm1];
 
     return container(
-        Sprite.from(txBody),
         Sprite.from(txArm0)
             .pivoted(0, 66)
             .step(self => {
@@ -268,12 +266,13 @@ function objElijah() {
             .at(142, 0)
             .scaled(-1, 1)
             .step(self => {
-                const arm = arm0;
+                const arm = arm1;
                 self.pivot.y = approachLinear(self.pivot.y, arm > -1 ? 0 : 66, 10);
                 if (arm > -1) {
                     self.texture = txArms[arm];
                 }
             }),
+        Sprite.from(txBody),
         container(
             Sprite.from(txFace),
             Sprite.from(txMouth)
@@ -289,6 +288,10 @@ function objElijah() {
                 }),
         )
             .mixin(mxnBoilPivot),
+        objText.XLargeIrregular("", { maxWidth: 440, align: "center" })
+            .anchored(0.5, 0)
+            .at(142, 190)
+            .step(self => self.text = api.lyrics),
     )
         .step(self => self.pivot.y = approachLinear(self.pivot.y, api.on ? 0 : 178, 6))
         .pivoted(142, 178)
@@ -297,7 +300,7 @@ function objElijah() {
 
 const cueRap = [
     [26.582465, 26.582465, "elijah", "on"],
-    [27.328766, 28.107515, "lyrics", "There's a girl"],
+    [27.328766, 28.107515, "lyrics", "\"There's a girl"],
     [28.886264, 29.892148, "lyrics", "I must say"],
     [30.476209, 31.676781, "lyrics", "She's kind of perfect"],
     [31.676781, 33.266726, "lyrics", "And it's now her birthday"],
@@ -314,6 +317,6 @@ const cueRap = [
     [49.564116, 50.756126, "lyrics", "We wait for the novel, tell all"],
     [50.756126, 52.046378, "lyrics", "She is a woman who's loving"],
     [52.046378, 53.230725, "lyrics", "And caring and pretty and baby"],
-    [53.230725, 54.123041, "lyrics", "Window to the wall"],
+    [53.230725, 54.123041, "lyrics", "Window to the wall\"\n-Elijah"],
     [54.642207, 54.642207, "elijah", "off"],
 ];

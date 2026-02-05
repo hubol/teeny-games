@@ -73,6 +73,7 @@ const characters = {
     "7": { x: 129, y: 158, w: 19, h: 23, xadv: 20, yoff: 0 },
     "8": { x: 151, y: 157, w: 15, h: 24, xadv: 16, yoff: -1 },
     "9": { x: 170, y: 157, w: 15, h: 24, xadv: 16, yoff: -1 },
+    "-": { x: 243, y: 125, w: 11, h: 3, xadv: 12, yoff: 9 },
 };
 
 Object.values(characters).forEach(x => x.xadv += 2);
