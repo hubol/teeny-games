@@ -151,7 +151,7 @@ export function scnTacoBell() {
                         clearHubolSpeech();
                     }
                 })
-                .at(250, 0)
+                .at(248, 0)
                 .show();
         })
         .show();
