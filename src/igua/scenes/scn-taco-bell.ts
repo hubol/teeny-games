@@ -177,7 +177,11 @@ export function scnTacoBell() {
 
             yield interpvr(self).translate(0, 100).over(500);
 
-            const overlayObj = new Graphics().beginFill(0x6EA719).drawRect(0, 0, 500, 280).show();
+            const overlayObj = new Graphics()
+                .beginFill(0x6EA719)
+                .drawRect(0, 0, 500, 280)
+                .zIndexed(999)
+                .show();
 
             overlayObj.alpha = 0;
             yield interp(overlayObj, "alpha").steps(4).to(1).over(500);
@@ -323,6 +327,14 @@ const cueRap = [
     [3.449, 3.449, "hmm", null],
     [6.892, 6.892, "hmm", null],
     [10.548, 12.279, "hubol", "Wait a minute... Isn't it your birthday?"],
+    [14.074776, 15.328653, "hubol", "It's her birthday!"],
+    [15.797254, 16.984341, "hubol", "It's her birthday!"],
+    [17.512787, 18.784119, "hubol", "It's her birthday!"],
+    [18.784119, 20.11672, "hubol", "Oh! Today!"],
+    [20.959169, 22.176891, "hubol", "It's her birthday!"],
+    [22.636408, 23.823495, "hubol", "It's her birthday!"],
+    [24.351941, 25.646249, "hubol", "It's her birthday!"],
+    [25.646249, 26.582465, "hubol", "In a big way!"],
     [26.582465, 26.582465, "elijah", "on"],
     [27.328766, 28.107515, "lyrics", "\"There's a girl"],
     [28.886264, 29.892148, "lyrics", "I must say"],
@@ -333,14 +345,14 @@ const cueRap = [
     [37.517396, 38.620624, "lyrics", "A lot of kissing"],
     [38.766639, 40.178122, "lyrics", "Is coming her way"],
     [41.021766, 42.238561, "lyrics", "She's got a glow after all"],
-    [42.676607, 43.92585, "lyrics", "Her femme nice and low for the dolls"],
-    [43.92585, 44.99663, "lyrics", "She has her heart on her sleeve"],
-    [44.99663, 46.213425, "lyrics", "On a shirt on her skin which is"],
+    [42.676607, 43.92585, "lyrics", "Her femme nice and\nlow for the dolls"],
+    [43.92585, 44.99663, "lyrics", "She has her heart\non her sleeve"],
+    [44.99663, 46.213425, "lyrics", "On a shirt on her skin\nwhich is"],
     [46.213425, 47.381548, "lyrics", "Softer than a cotton ball"],
-    [47.88449, 49.101285, "lyrics", "This girl serves looks in the mall"],
-    [49.564116, 50.756126, "lyrics", "We wait for the novel, tell all"],
-    [50.756126, 52.046378, "lyrics", "She is a woman who's loving"],
-    [52.046378, 53.230725, "lyrics", "And caring and pretty and baby"],
+    [47.88449, 49.101285, "lyrics", "This girl serves looks\nin the mall"],
+    [49.564116, 50.756126, "lyrics", "We wait for the novel,\ntell all"],
+    [50.756126, 52.046378, "lyrics", "She is a woman\nwho's loving"],
+    [52.046378, 53.230725, "lyrics", "And caring and pretty,\nand baby"],
     [53.230725, 54.123041, "lyrics", "Window to the wall\"\n-Elijah"],
     [54.642207, 54.642207, "elijah", "off"],
 ];
