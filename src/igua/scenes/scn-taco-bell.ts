@@ -54,12 +54,10 @@ export function scnTacoBell() {
             yield sleep(1000);
 
             const hubolDialog = Rng.item(consts.hubolDialogs);
-            const dialogTextObj = objText.Large(hubolDialog.text, { tint: 0xD5321C, maxWidth: 200 })
-                .anchored(0.5, 0.5)
-                .show(hubolObj.objCharacter.speechObjs);
+            showHubolSpeech(hubolDialog.text);
             const soundInstance = hubolDialog.sfx.playInstance();
             yield () => soundInstance.ended;
-            dialogTextObj.destroy();
+            clearHubolSpeech();
 
             yield sleep(500);
 
@@ -120,14 +118,25 @@ export function scnTacoBell() {
             yield sleep(500);
             showRetryButton = true;
             Jukebox.play(Mzk.Rap);
-            lottieObj.objCharacter.animatedSpeech = false;
 
             objElijah()
                 .mixin(mxnCuesheet, Mzk.Rap, cueRap as any)
                 .handles("cue:start", (self, message) => {
+                    if (message.command === "hubol") {
+                        lottieObj.objCharacter.speechObjs.removeAllChildren();
+                        showHubolSpeech(message.data!);
+                    }
+                    if (message.command === "hmm") {
+                        Sprite.from(Tx.Tbell.Hmm)
+                            .at(369, 68)
+                            .coro(function* (self) {
+                                yield interpvr(self).translate(0, -100).over(1000);
+                                self.destroy();
+                            })
+                            .show();
+                    }
                     if (message.command === "elijah") {
                         self.objElijah.on = message.data === "on";
-                        lottieObj.objCharacter.speechObjs.removeAllChildren();
                     }
                     if (message.command === "lyrics") {
                         self.objElijah.lyrics = message.data!;
@@ -137,6 +146,9 @@ export function scnTacoBell() {
                 .handles("cue:end", (self, message) => {
                     if (message.command === "lyrics" && message.data === self.objElijah.lyrics) {
                         self.objElijah.lyrics = "";
+                    }
+                    if (message.command === "hubol") {
+                        clearHubolSpeech();
                     }
                 })
                 .at(250, 0)
@@ -161,7 +173,7 @@ export function scnTacoBell() {
 
             yield () => Key.justWentDown("Space");
 
-            Jukebox.applyGainRamp(Mzk.Title, 0, 1500);
+            Jukebox.applyGainRamp(Mzk.Rap, 0, 1500);
 
             yield interpvr(self).translate(0, 100).over(500);
 
@@ -175,6 +187,16 @@ export function scnTacoBell() {
             throw new EscapeTickerAndExecute(() => sceneStack.replace(scnLibrary, { useGameplay: false }));
         })
         .show();
+
+    function clearHubolSpeech() {
+        hubolObj.objCharacter.speechObjs.removeAllChildren();
+    }
+
+    function showHubolSpeech(message: string) {
+        objText.Large(message, { tint: 0xD5321C, maxWidth: 200 })
+            .anchored(0.5, 0.5)
+            .show(hubolObj.objCharacter.speechObjs);
+    }
 }
 
 function objPointsText(value: Integer) {
@@ -195,7 +217,6 @@ function objCharacter(mode: "hubol" | "lottie") {
 
     const api = {
         speechObjs: container().at(speechObjsPosition),
-        animatedSpeech: true,
     };
 
     return container(
@@ -206,7 +227,7 @@ function objCharacter(mode: "hubol" | "lottie") {
                 .invisible()
                 .coro(function* (self) {
                     while (true) {
-                        yield () => api.speechObjs.children.length > 0 && api.animatedSpeech;
+                        yield () => api.speechObjs.children.length > 0;
                         self.visible = true;
                         yield sleep(250);
                         self.visible = false;
@@ -299,6 +320,9 @@ function objElijah() {
 }
 
 const cueRap = [
+    [3.449, 3.449, "hmm", null],
+    [6.892, 6.892, "hmm", null],
+    [10.548, 12.279, "hubol", "Wait a minute... Isn't it your birthday?"],
     [26.582465, 26.582465, "elijah", "on"],
     [27.328766, 28.107515, "lyrics", "\"There's a girl"],
     [28.886264, 29.892148, "lyrics", "I must say"],
