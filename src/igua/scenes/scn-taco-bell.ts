@@ -33,6 +33,8 @@ const consts = {
     ],
 };
 
+let everHeardRap = false;
+
 export function scnTacoBell() {
     Jukebox.warm(Mzk.Rap);
 
@@ -116,7 +118,12 @@ export function scnTacoBell() {
             }
 
             yield sleep(500);
-            showRetryButton = true;
+            if (everHeardRap) {
+                showRetryButton = true;
+            }
+
+            everHeardRap = true;
+
             Jukebox.play(Mzk.Rap);
 
             objElijah()
@@ -137,6 +144,9 @@ export function scnTacoBell() {
                     }
                     if (message.command === "elijah") {
                         self.objElijah.on = message.data === "on";
+                        if (!self.objElijah.on) {
+                            showRetryButton = true;
+                        }
                     }
                     if (message.command === "lyrics") {
                         self.objElijah.lyrics = message.data!;
