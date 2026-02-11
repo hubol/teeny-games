@@ -1,13 +1,18 @@
-import { Texture } from "pixi.js";
+import { Rectangle, Sprite, Texture } from "pixi.js";
+import { interpv } from "../../lib/game-engine/routines/interp";
 import { Integer } from "../../lib/math/number-alias-types";
-import { IRectangle } from "../../lib/math/rectangle";
+import { Rng } from "../../lib/math/rng";
+import { container } from "../../lib/pixi/container";
 import { TextureProcessing } from "../../lib/pixi/texture-processing";
 
-interface TextureFrame extends IRectangle {
+interface Frame {
+    x: Integer;
+    y: Integer;
+    texture: Texture;
     opaquePixelsCount: Integer;
 }
 
-const textureFramesCache: Record<Integer, WeakMap<Texture, ReadonlyArray<TextureFrame>>> = {};
+const textureFramesCache: Record<Integer, WeakMap<Texture, ReadonlyArray<Frame>>> = {};
 
 function getTextureFrames(tx: Texture, size: Integer) {
     if (!textureFramesCache[size]) {
@@ -19,7 +24,7 @@ function getTextureFrames(tx: Texture, size: Integer) {
         return cached;
     }
 
-    const frames = new Array<TextureFrame>();
+    const frames = new Array<Frame>();
 
     const tw = tx.width;
     const th = tx.height;
@@ -47,7 +52,8 @@ function getTextureFrames(tx: Texture, size: Integer) {
             }
 
             if (opaquePixelsCount > 0) {
-                frames.push({ x: fx, y: fy, width: w, height: h, opaquePixelsCount });
+                const frame = new Rectangle(tx.frame.x + fx, tx.frame.y + fy, w, h);
+                frames.push({ x: fx, y: fy, texture: new Texture(tx.baseTexture, frame), opaquePixelsCount });
             }
         }
     }
@@ -58,5 +64,15 @@ function getTextureFrames(tx: Texture, size: Integer) {
 }
 
 export function objDestructibleSprite(tx: Texture, size: Integer) {
-    console.log(getTextureFrames(tx, size));
+    const frames = getTextureFrames(tx, size);
+    return container(
+        ...frames.map((frame) => Sprite.from(frame.texture).at(frame)),
+    )
+        .coro(function* (self) {
+            while (self.children.length) {
+                const child = Rng.item(self.children);
+                yield interpv(child.scale).to(0, 0).over(500);
+                child.destroy();
+            }
+        });
 }
