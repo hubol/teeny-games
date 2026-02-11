@@ -1,10 +1,6 @@
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { onMutate } from "../../lib/game-engine/routines/on-mutate";
-import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
-import { sleep } from "../../lib/game-engine/routines/sleep";
-import { Rng } from "../../lib/math/rng";
-import { vnew } from "../../lib/math/vector-type";
+import { Vector, vnew } from "../../lib/math/vector-type";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { Mouse } from "../globals";
 import { objDestructibleSprite } from "../objects/obj-destructible-sprite";
@@ -36,7 +32,10 @@ export function scnPlaceholder() {
                 const collidedObjs = self.collidesAll(container.children);
                 for (const obj of collidedObjs) {
                     if (!obj.is(mxnDestroyed)) {
-                        (obj as DisplayObject).mixin(mxnDestroyed);
+                        (obj as DisplayObject).mixin(
+                            mxnDestroyed,
+                            self.objCursor.inferredSpeed.vcpy().normalize().scale(2),
+                        );
                     }
                 }
             }
@@ -54,16 +53,15 @@ export function scnPlaceholder() {
         .show();
 }
 
-function mxnDestroyed(obj: DisplayObject) {
-    const speed = vnew(Rng.float(-1, 1), Rng.float(-2, 0));
+function mxnDestroyed(obj: DisplayObject, speed: Vector) {
+    let stepsCount = 0;
 
     return obj
         .step(() => {
             obj.add(speed);
             speed.add(0, 0.4);
-        })
-        .coro(function* () {
-            yield sleep(500);
-            obj.destroy();
+            if (stepsCount++ >= 30) {
+                obj.destroy();
+            }
         });
 }
