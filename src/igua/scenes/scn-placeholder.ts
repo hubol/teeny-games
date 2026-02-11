@@ -1,24 +1,13 @@
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { Instances } from "../../lib/game-engine/instances";
 import { Vector, vnew } from "../../lib/math/vector-type";
-import { CollisionShape } from "../../lib/pixi/collision";
 import { Mouse } from "../globals";
-import { objDestructibleSprite } from "../objects/obj-destructible-sprite";
-
-const txsFag = Tx.Nudes.DemoFag.split({ count: 3 });
+import { objNude } from "../objects/obj-nude";
 
 export function scnPlaceholder() {
-    Sprite.from(txsFag[0]).show();
-    const underwearObj = objDestructibleSprite(txsFag[1], 8)
-        .collisionShape(CollisionShape.Children)
-        .merge({ objUnderwear: { isConcealed: true } })
-        .step(self => {
-            if (self.objUnderwear.isConcealed) {
-                self.objUnderwear.isConcealed = Boolean(self.collidesOne(clothesObj.children));
-            }
-        })
-        .show();
-    const clothesObj = objDestructibleSprite(txsFag[2], 8).show();
+    objNude().at(0, 0).show();
+    objNude().at(200, 0).show();
 
     Sprite.from(Tx.Heart)
         .anchored(0.5, 0.5)
@@ -43,9 +32,11 @@ export function scnPlaceholder() {
             self
                 .step(() => {
                     if (self.objCursor.inferredSpeed.vlength > 2) {
-                        tryDestroyCollidedChildren(clothesObj);
-                        if (!underwearObj.objUnderwear.isConcealed) {
-                            tryDestroyCollidedChildren(underwearObj);
+                        for (const nudeObj of Instances(objNude)) {
+                            tryDestroyCollidedChildren(nudeObj.objNude.clothesObj);
+                            if (!nudeObj.objNude.underwearObj.objUnderwear.isConcealed) {
+                                tryDestroyCollidedChildren(nudeObj.objNude.underwearObj);
+                            }
                         }
                     }
                 });
