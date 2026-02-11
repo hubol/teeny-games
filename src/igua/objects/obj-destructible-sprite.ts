@@ -1,7 +1,5 @@
 import { Rectangle, Sprite, Texture } from "pixi.js";
-import { interpvr } from "../../lib/game-engine/routines/interp";
 import { Integer } from "../../lib/math/number-alias-types";
-import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { TextureProcessing } from "../../lib/pixi/texture-processing";
 
@@ -68,12 +66,5 @@ export function objDestructibleSprite(tx: Texture, size: Integer) {
     return container(
         ...frames.map((frame) => Sprite.from(frame.texture).at(frame)),
     )
-        .autoSorted()
-        .coro(function* (self) {
-            while (self.children.length) {
-                const child = Rng.item(self.children).zIndexed(1);
-                yield interpvr(child).translate(Rng.intc(-10, 10), 100).over(200);
-                child.destroy();
-            }
-        });
+        .autoSorted();
 }
