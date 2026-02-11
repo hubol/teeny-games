@@ -5,9 +5,11 @@ import { Vector, vnew } from "../../lib/math/vector-type";
 import { Mouse } from "../globals";
 import { objNude } from "../objects/obj-nude";
 
+const txsFag = Tx.Nudes.DemoFag.split({ count: 3 });
+
 export function scnPlaceholder() {
-    objNude().at(0, 0).show();
-    objNude().at(200, 0).show();
+    objNude(txsFag).at(0, 0).show();
+    objNude(Tx.Nudes.BadlyDressed.split({ count: 3 })).at(200, 0).show();
 
     Sprite.from(Tx.Heart)
         .anchored(0.5, 0.5)
