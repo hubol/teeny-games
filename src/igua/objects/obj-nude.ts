@@ -10,10 +10,15 @@ interface ObjNudeArgs {
 }
 
 export function objNude({ bodyObj, clothesTx, underwearTx }: ObjNudeArgs) {
-    const underwearObj = objDestructibleSprite([underwearTx], 8)
+    const underwearBaseObj = objDestructibleSprite([underwearTx], 8);
+
+    const maxUnderwearObjsCount = underwearBaseObj.children.length;
+
+    const underwearObj = underwearBaseObj
         .collisionShape(CollisionShape.Children)
-        .merge({ objUnderwear: { isConcealed: true } })
+        .merge({ objUnderwear: { isConcealed: true, coverageUnit: 1 } })
         .step(self => {
+            self.objUnderwear.coverageUnit = self.children.length / maxUnderwearObjsCount;
             if (self.objUnderwear.isConcealed) {
                 self.objUnderwear.isConcealed = Boolean(self.collidesOne(clothesObj.children));
             }
@@ -28,3 +33,5 @@ export function objNude({ bodyObj, clothesTx, underwearTx }: ObjNudeArgs) {
         .merge({ objNude: { underwearObj, clothesObj } })
         .track(objNude);
 }
+
+export type ObjNude = ReturnType<typeof objNude>;

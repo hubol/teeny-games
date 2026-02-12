@@ -1,13 +1,16 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { holdf } from "../../lib/game-engine/routines/hold";
+import { interpvr } from "../../lib/game-engine/routines/interp";
 import { approachLinear } from "../../lib/math/number";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Mouse, scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objFucka } from "../objects/obj-fucka";
-import { objNude } from "../objects/obj-nude";
+import { ObjNude, objNude } from "../objects/obj-nude";
 
 const txsFag = Tx.Nudes.DemoFag.split({ count: 4 });
 const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 4 });
@@ -27,23 +30,44 @@ function objStaticNude(txs: Texture[]) {
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x5537a8;
 
-    objStaticNude(txsFag)
-        .at(10, 10)
-        .show();
-
-    objStaticNude(txsBadlyDressed)
-        .at(300, 10)
-        .show();
-
-    objFucka()
+    const fuckaObj = objFucka()
         .at(150, 0)
         .show();
 
-    objStaticNude(txsLong)
-        .at(0, 100)
-        .show();
+    scene.stage
+        .coro(function* () {
+            yield* coroProbablyNude(fuckaObj);
+
+            const fagObj = objStaticNude(txsFag)
+                .at(10, 10)
+                .pivoted(200, 0)
+                .show();
+
+            const badlyDressedObj = objStaticNude(txsBadlyDressed)
+                .at(300, 10)
+                .pivoted(-200, 0)
+                .show();
+
+            yield* Coro.all([
+                interpvr(fagObj.pivot).to(0, 0).over(1000),
+                interpvr(badlyDressedObj.pivot).to(0, 0).over(1000),
+            ]);
+
+            yield* Coro.all([
+                coroProbablyNude(fagObj),
+                coroProbablyNude(badlyDressedObj),
+            ]);
+
+            const longObj = objStaticNude(txsLong)
+                .at(0, 100)
+                .pivoted(650, 0)
+                .show();
+
+            yield interpvr(longObj.pivot).to(0, 0).over(1000);
+        });
 
     Sprite.from(Tx.Heart)
+        .zIndexed(99)
         .anchored(0.5, 0.5)
         .merge({ objCursor: { inferredSpeed: vnew() } })
         .step(self => {
@@ -80,6 +104,13 @@ export function scnPlaceholder() {
                 });
         })
         .show();
+}
+
+function* coroProbablyNude(nudeObj: ObjNude) {
+    yield* Coro.race([
+        holdf(() => nudeObj.objNude.underwearObj.objUnderwear.coverageUnit <= 0.1, 30),
+        () => nudeObj.objNude.underwearObj.objUnderwear.coverageUnit <= 0.01,
+    ]);
 }
 
 function mxnDestroyed(obj: DisplayObject, speed: Vector) {
