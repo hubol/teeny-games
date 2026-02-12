@@ -5,7 +5,7 @@ import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
-import { interpvr } from "../../lib/game-engine/routines/interp";
+import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
@@ -52,8 +52,30 @@ function objStaticNude(id: StaticNudeId) {
         .pivoted(-startOffset.x, -startOffset.y);
 }
 
+const consts = {
+    dark: 0x8c72aa,
+};
+
 export function scnPlaceholder() {
     const lvl = Lvl.Start();
+
+    Sprite.from(Tx.UseMouse)
+        .step((self) => {
+            if (!self.visible && Mouse.isPositionKnown) {
+                self.destroy();
+            }
+        })
+        .invisible()
+        .coro(function* (self) {
+            yield sleep(2000);
+            self.visible = true;
+            self.alpha = 0;
+            yield interp(self, "alpha").steps(3).to(1).over(750);
+            yield () => Mouse.isPositionKnown;
+            yield interp(self, "alpha").steps(3).to(0).over(250);
+            self.destroy();
+        })
+        .show();
 
     scene.stage
         .coro(function* () {
@@ -78,7 +100,7 @@ export function scnPlaceholder() {
                 obj.scale.set(2);
                 yield () => heartObj.collides(obj) && Mouse.isDown;
                 sfxs[i].play();
-                obj.tint = 0x8c72aa;
+                obj.tint = consts.dark;
                 yield () => !Mouse.isDown;
                 obj.tint = 0xffffff;
             }
@@ -145,6 +167,7 @@ export function scnPlaceholder() {
         .anchored(0.5, 0.5)
         .merge({ objCursor: { inferredSpeed: vnew() } })
         .step(self => {
+            self.visible = Mouse.isPositionKnown;
             self.objCursor.inferredSpeed.at(Mouse).add(self, -1);
             self.at(Mouse);
 
