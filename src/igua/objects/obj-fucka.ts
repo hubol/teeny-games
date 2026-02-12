@@ -57,3 +57,10 @@ export function objFucka() {
     })
         .filtered(new MapRgbFilter(red, green, blue));
 }
+
+export function objFuckaPalette() {
+    return container(
+        ...consts.colors
+            .map((color, i) => Sprite.from(Tx.Palette).filtered(new MapRgbFilter(color, color, color)).at(i * 24, 0)),
+    );
+}
