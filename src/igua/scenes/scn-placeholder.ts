@@ -85,6 +85,12 @@ export function scnPlaceholder() {
                 .show();
 
             yield interpvr(longObj.pivot).to(0, 0).over(1000);
+
+            yield* coroProbablyNude(longObj);
+
+            Sprite.from(Tx.Ending)
+                .mixin(mxnBoilPivot)
+                .show();
         });
 
     const heartObj = Sprite.from(Tx.Heart)
