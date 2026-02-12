@@ -36,35 +36,35 @@ export function scnPlaceholder() {
 
     scene.stage
         .coro(function* () {
-            // lvl.TextGroup.children.forEach(obj => obj.visible = false);
+            lvl.TextGroup.children.forEach(obj => obj.visible = false);
 
-            // yield sleep(250);
+            yield sleep(250);
 
-            // const sfxs = [
-            //     Sfx.Dialog.Lets,
-            //     Sfx.Dialog.Hear,
-            //     Sfx.Dialog.It,
-            //     Sfx.Dialog.For,
-            //     Sfx.Dialog.The,
-            //     Sfx.Dialog.Boys,
-            // ];
+            const sfxs = [
+                Sfx.Dialog.Lets,
+                Sfx.Dialog.Hear,
+                Sfx.Dialog.It,
+                Sfx.Dialog.For,
+                Sfx.Dialog.The,
+                Sfx.Dialog.Boys,
+            ];
 
-            // for (let i = 0; i < sfxs.length; i++) {
-            //     const obj = lvl.TextGroup.children[i];
-            //     obj.mixin(mxnBoilPivot);
-            //     obj.step(() => obj.scale.set(approachLinear(obj.scale.x, 1, 0.08)));
-            //     obj.visible = true;
-            //     obj.scale.set(2);
-            //     yield () => heartObj.collides(obj) && Mouse.isDown;
-            //     sfxs[i].play();
-            //     obj.tint = 0x8c72aa;
-            //     yield () => !Mouse.isDown;
-            //     obj.tint = 0xffffff;
-            // }
+            for (let i = 0; i < sfxs.length; i++) {
+                const obj = lvl.TextGroup.children[i];
+                obj.mixin(mxnBoilPivot);
+                obj.step(() => obj.scale.set(approachLinear(obj.scale.x, 1, 0.08)));
+                obj.visible = true;
+                obj.scale.set(2);
+                yield () => heartObj.collides(obj) && Mouse.isDown;
+                sfxs[i].play();
+                obj.tint = 0x8c72aa;
+                yield () => !Mouse.isDown;
+                obj.tint = 0xffffff;
+            }
 
-            // lvl.TextGroup.destroy();
+            lvl.TextGroup.destroy();
 
-            // yield sleep(500);
+            yield sleep(500);
 
             const fuckaObj = objFucka()
                 .at(150, 0)
@@ -97,7 +97,7 @@ export function scnPlaceholder() {
             Sfx.Advance.play();
 
             const longObj = objStaticNude(txsLong)
-                .at(0, 100)
+                .at(0, 93)
                 .pivoted(650, 0)
                 .show();
 
