@@ -3,13 +3,16 @@ import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { approachLinear } from "../../lib/math/number";
 import { Vector, vnew } from "../../lib/math/vector-type";
-import { Mouse } from "../globals";
+import { Mouse, scene } from "../globals";
+import { objFucka } from "../objects/obj-fucka";
 import { objNude } from "../objects/obj-nude";
 
 const txsFag = Tx.Nudes.DemoFag.split({ count: 3 });
 const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 3 });
 
 export function scnPlaceholder() {
+    scene.style.backgroundTint = 0x5537a8;
+
     objNude({
         bodyObj: Sprite.from(txsFag[0]),
         underwearTx: txsFag[1],
@@ -24,6 +27,10 @@ export function scnPlaceholder() {
         clothesTx: [txsBadlyDressed[2]],
     })
         .at(200, 0)
+        .show();
+
+    objFucka()
+        .at(100, 0)
         .show();
 
     Sprite.from(Tx.Heart)
