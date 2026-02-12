@@ -1,4 +1,4 @@
-import { Container, DisplayObject, Sprite } from "pixi.js";
+import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { approachLinear } from "../../lib/math/number";
@@ -11,34 +11,36 @@ import { objNude } from "../objects/obj-nude";
 
 const txsFag = Tx.Nudes.DemoFag.split({ count: 4 });
 const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 4 });
+const txsLong = Tx.Nudes.Long.split({ count: 4 });
+
+function objStaticNude(txs: Texture[]) {
+    return objNude({
+        bodyObj: container(
+            Sprite.from(txs[0]),
+            Sprite.from(txs[1]).mixin(mxnBoilPivot),
+        ),
+        underwearTx: txs[2],
+        clothesTx: [txs[3]],
+    });
+}
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x5537a8;
 
-    objNude({
-        bodyObj: container(
-            Sprite.from(txsFag[0]),
-            Sprite.from(txsFag[1]).mixin(mxnBoilPivot),
-        ),
-        underwearTx: txsFag[2],
-        clothesTx: [txsFag[3]],
-    })
+    objStaticNude(txsFag)
         .at(10, 10)
         .show();
 
-    objNude({
-        bodyObj: container(
-            Sprite.from(txsBadlyDressed[0]),
-            Sprite.from(txsBadlyDressed[1]).mixin(mxnBoilPivot),
-        ),
-        underwearTx: txsBadlyDressed[2],
-        clothesTx: [txsBadlyDressed[3]],
-    })
+    objStaticNude(txsBadlyDressed)
         .at(300, 10)
         .show();
 
     objFucka()
         .at(150, 0)
+        .show();
+
+    objStaticNude(txsLong)
+        .at(0, 100)
         .show();
 
     Sprite.from(Tx.Heart)
