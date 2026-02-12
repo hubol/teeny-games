@@ -1,5 +1,6 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
@@ -38,12 +39,23 @@ export function scnPlaceholder() {
 
             yield sleep(250);
 
-            for (const obj of lvl.TextGroup.children) {
+            const sfxs = [
+                Sfx.Dialog.Lets,
+                Sfx.Dialog.Hear,
+                Sfx.Dialog.It,
+                Sfx.Dialog.For,
+                Sfx.Dialog.The,
+                Sfx.Dialog.Boys,
+            ];
+
+            for (let i = 0; i < sfxs.length; i++) {
+                const obj = lvl.TextGroup.children[i];
                 obj.mixin(mxnBoilPivot);
                 obj.step(() => obj.scale.set(approachLinear(obj.scale.x, 1, 0.08)));
                 obj.visible = true;
                 obj.scale.set(2);
                 yield () => heartObj.collides(obj) && Mouse.isDown;
+                sfxs[i].play();
                 obj.tint = 0x8c72aa;
                 yield () => !Mouse.isDown;
                 obj.tint = 0xffffff;
@@ -87,6 +99,8 @@ export function scnPlaceholder() {
             yield interpvr(longObj.pivot).to(0, 0).over(1000);
 
             yield* coroProbablyNude(longObj);
+
+            Sfx.Dialog.YouAreGay.play();
 
             Sprite.from(Tx.Ending)
                 .mixin(mxnBoilPivot)
