@@ -1,6 +1,7 @@
 import { Container, DisplayObject, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
+import { approachLinear } from "../../lib/math/number";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { Mouse } from "../globals";
 import { objNude } from "../objects/obj-nude";
@@ -17,6 +18,10 @@ export function scnPlaceholder() {
         .step(self => {
             self.objCursor.inferredSpeed.at(Mouse).add(self, -1);
             self.at(Mouse);
+
+            let scale = self.scale.x;
+            scale = approachLinear(scale, Mouse.isDown ? 10 : 1, Mouse.isDown ? 0.2 : 1);
+            self.scale.set(scale);
         })
         .coro(function* (self) {
             function tryDestroyCollidedChildren(container: Container) {
@@ -33,7 +38,7 @@ export function scnPlaceholder() {
 
             self
                 .step(() => {
-                    if (self.objCursor.inferredSpeed.vlength > 2) {
+                    if (self.scale.x > 1 || self.objCursor.inferredSpeed.vlength > 2) {
                         for (const nudeObj of Instances(objNude)) {
                             tryDestroyCollidedChildren(nudeObj.objNude.clothesObj);
                             if (!nudeObj.objNude.underwearObj.objUnderwear.isConcealed) {
