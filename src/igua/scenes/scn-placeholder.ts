@@ -8,6 +8,7 @@ import { holdf } from "../../lib/game-engine/routines/hold";
 import { interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
+import { Rng } from "../../lib/math/rng";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Mouse, scene } from "../globals";
@@ -71,6 +72,8 @@ export function scnPlaceholder() {
 
             yield* coroProbablyNude(fuckaObj);
 
+            Sfx.Advance.play();
+
             const fagObj = objStaticNude(txsFag)
                 .at(10, 10)
                 .pivoted(200, 0)
@@ -91,6 +94,8 @@ export function scnPlaceholder() {
                 coroProbablyNude(badlyDressedObj),
             ]);
 
+            Sfx.Advance.play();
+
             const longObj = objStaticNude(txsLong)
                 .at(0, 100)
                 .pivoted(650, 0)
@@ -106,6 +111,14 @@ export function scnPlaceholder() {
                 .mixin(mxnBoilPivot)
                 .show();
         });
+
+    const impactSfxs = [
+        Sfx.Impact.Undress0,
+        Sfx.Impact.Undress1,
+        Sfx.Impact.Undress2,
+        Sfx.Impact.Undress3,
+        Sfx.Impact.Undress4,
+    ];
 
     const heartObj = Sprite.from(Tx.Heart)
         .zIndexed(99)
@@ -127,7 +140,8 @@ export function scnPlaceholder() {
                         (obj as DisplayObject).mixin(
                             mxnDestroyed,
                             self.objCursor.inferredSpeed.vcpy().normalize().scale(2),
-                        );
+                        )
+                            .play(Rng.item(impactSfxs).rate(Rng.float(0.5, 2)));
                     }
                 }
             }
