@@ -11,13 +11,14 @@ import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
-import { Mouse, scene } from "../globals";
+import { Mouse, scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
 
 const txsFag = Tx.Nudes.DemoFag.split({ count: 4 });
 const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 4 });
+const txsTall = Tx.Nudes.Tall.split({ count: 4 });
 const txsLong = Tx.Nudes.Long.split({ count: 4 });
 
 function objStaticNude(txs: Texture[]) {
@@ -79,10 +80,20 @@ export function scnPlaceholder() {
                 .pivoted(200, 0)
                 .show();
 
-            const badlyDressedObj = objStaticNude(txsBadlyDressed)
-                .at(300, 10)
-                .pivoted(-200, 0)
-                .show();
+            const mode = Rng.choose("badly_dressed", "tall");
+
+            const badlyDressedObj = objStaticNude(mode === "badly_dressed" ? txsBadlyDressed : txsTall).show();
+
+            if (mode === "tall") {
+                badlyDressedObj
+                    .at(340, -20)
+                    .pivoted(0, 280);
+            }
+            else {
+                badlyDressedObj
+                    .at(300, 10)
+                    .pivoted(-200, 0);
+            }
 
             yield* Coro.all([
                 interpvr(fagObj.pivot).to(0, 0).over(1000),
@@ -110,6 +121,10 @@ export function scnPlaceholder() {
             Sprite.from(Tx.Ending)
                 .mixin(mxnBoilPivot)
                 .show();
+
+            yield sleep(3000);
+
+            sceneStack.replace(scnPlaceholder, { useGameplay: false });
         });
 
     const impactSfxs = [
