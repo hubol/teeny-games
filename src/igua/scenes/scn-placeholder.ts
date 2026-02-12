@@ -13,6 +13,7 @@ import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Mouse, scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
+import { mxnSpill } from "../mixins/mxn-spill";
 import { objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
 
@@ -116,13 +117,17 @@ export function scnPlaceholder() {
 
             yield* coroProbablyNude(longObj);
 
-            Sfx.Dialog.YouAreGay.play();
+            const youAreGaySfx = Sfx.Dialog.YouAreGay.playInstance();
 
-            Sprite.from(Tx.Ending)
+            const endingObj = Sprite.from(Tx.Ending)
                 .mixin(mxnBoilPivot)
                 .show();
 
-            yield sleep(3000);
+            yield () => youAreGaySfx.estimatedPlayheadPosition >= 1.237;
+
+            endingObj.mixin(mxnSpill);
+
+            yield sleep(2000);
 
             sceneStack.replace(scnPlaceholder, { useGameplay: false });
         });
