@@ -9,19 +9,36 @@ import { interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
-import { Vector, vnew } from "../../lib/math/vector-type";
+import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Mouse, scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
 
-const txsFag = Tx.Nudes.DemoFag.split({ count: 4 });
-const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 4 });
-const txsTall = Tx.Nudes.Tall.split({ count: 4 });
-const txsLong = Tx.Nudes.Long.split({ count: 4 });
+const staticNudes = (function () {
+    function create(tx: Texture, endPosition: VectorSimple, startOffset: VectorSimple) {
+        return {
+            txs: tx.split({ count: 4 }),
+            endPosition,
+            startOffset,
+        };
+    }
 
-function objStaticNude(txs: Texture[]) {
+    return {
+        fag: create(Tx.Nudes.DemoFag, [10, 40], [-200, 0]),
+        badlyDressed: create(Tx.Nudes.BadlyDressed, [300, 10], [200, 0]),
+        tall: create(Tx.Nudes.Tall, [340, -20], [0, -280]),
+        long: create(Tx.Nudes.Long, [0, 93], [-650, 0]),
+        pinkerton: create(Tx.Nudes.Pinkerton, [10, 15], [-200, 0]),
+    };
+})();
+
+type StaticNudeId = keyof typeof staticNudes;
+
+function objStaticNude(id: StaticNudeId) {
+    const { txs, endPosition, startOffset } = staticNudes[id];
+
     return objNude({
         bodyObj: container(
             Sprite.from(txs[0]),
@@ -29,7 +46,9 @@ function objStaticNude(txs: Texture[]) {
         ),
         underwearTx: txs[2],
         clothesTx: [txs[3]],
-    });
+    })
+        .at(endPosition)
+        .pivoted(-startOffset.x, -startOffset.y);
 }
 
 export function scnPlaceholder() {
@@ -75,42 +94,23 @@ export function scnPlaceholder() {
 
             Sfx.Advance.play();
 
-            const fagObj = objStaticNude(txsFag)
-                .at(10, 10)
-                .pivoted(200, 0)
-                .show();
+            const leftNudeObj = objStaticNude(Rng.choose("fag", "pinkerton")).show();
 
-            const mode = Rng.choose("badly_dressed", "tall");
-
-            const badlyDressedObj = objStaticNude(mode === "badly_dressed" ? txsBadlyDressed : txsTall).show();
-
-            if (mode === "tall") {
-                badlyDressedObj
-                    .at(340, -20)
-                    .pivoted(0, 280);
-            }
-            else {
-                badlyDressedObj
-                    .at(300, 10)
-                    .pivoted(-200, 0);
-            }
+            const rightNudeObj = objStaticNude(Rng.choose("badlyDressed", "tall")).show();
 
             yield* Coro.all([
-                interpvr(fagObj.pivot).to(0, 0).over(1000),
-                interpvr(badlyDressedObj.pivot).to(0, 0).over(1000),
+                interpvr(leftNudeObj.pivot).to(0, 0).over(1000),
+                interpvr(rightNudeObj.pivot).to(0, 0).over(1000),
             ]);
 
             yield* Coro.all([
-                coroProbablyNude(fagObj),
-                coroProbablyNude(badlyDressedObj),
+                coroProbablyNude(leftNudeObj),
+                coroProbablyNude(rightNudeObj),
             ]);
 
             Sfx.Advance.play();
 
-            const longObj = objStaticNude(txsLong)
-                .at(0, 93)
-                .pivoted(650, 0)
-                .show();
+            const longObj = objStaticNude("long").show();
 
             yield interpvr(longObj.pivot).to(0, 0).over(1000);
 
