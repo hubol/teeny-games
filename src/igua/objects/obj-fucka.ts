@@ -18,6 +18,7 @@ const consts = {
         0xFFD100,
         0xB2D100,
         0x74D100,
+        0x1AA85C,
         0x74D1C2,
         0x59BEE1,
         0x5971E1,
