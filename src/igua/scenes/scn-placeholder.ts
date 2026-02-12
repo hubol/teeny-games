@@ -23,7 +23,7 @@ export function scnPlaceholder() {
         underwearTx: txsFag[2],
         clothesTx: [txsFag[3]],
     })
-        .at(0, 0)
+        .at(10, 10)
         .show();
 
     objNude({
@@ -34,11 +34,11 @@ export function scnPlaceholder() {
         underwearTx: txsBadlyDressed[2],
         clothesTx: [txsBadlyDressed[3]],
     })
-        .at(200, 0)
+        .at(300, 10)
         .show();
 
     objFucka()
-        .at(100, 0)
+        .at(150, 0)
         .show();
 
     Sprite.from(Tx.Heart)
