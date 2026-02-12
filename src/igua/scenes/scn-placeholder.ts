@@ -3,28 +3,36 @@ import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { approachLinear } from "../../lib/math/number";
 import { Vector, vnew } from "../../lib/math/vector-type";
+import { container } from "../../lib/pixi/container";
 import { Mouse, scene } from "../globals";
+import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objFucka } from "../objects/obj-fucka";
 import { objNude } from "../objects/obj-nude";
 
-const txsFag = Tx.Nudes.DemoFag.split({ count: 3 });
-const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 3 });
+const txsFag = Tx.Nudes.DemoFag.split({ count: 4 });
+const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 4 });
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x5537a8;
 
     objNude({
-        bodyObj: Sprite.from(txsFag[0]),
-        underwearTx: txsFag[1],
-        clothesTx: [txsFag[2]],
+        bodyObj: container(
+            Sprite.from(txsFag[0]),
+            Sprite.from(txsFag[1]).mixin(mxnBoilPivot),
+        ),
+        underwearTx: txsFag[2],
+        clothesTx: [txsFag[3]],
     })
         .at(0, 0)
         .show();
 
     objNude({
-        bodyObj: Sprite.from(txsBadlyDressed[0]),
-        underwearTx: txsBadlyDressed[1],
-        clothesTx: [txsBadlyDressed[2]],
+        bodyObj: container(
+            Sprite.from(txsBadlyDressed[0]),
+            Sprite.from(txsBadlyDressed[1]).mixin(mxnBoilPivot),
+        ),
+        underwearTx: txsBadlyDressed[2],
+        clothesTx: [txsBadlyDressed[3]],
     })
         .at(200, 0)
         .show();

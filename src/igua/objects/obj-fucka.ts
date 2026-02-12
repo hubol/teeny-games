@@ -2,6 +2,7 @@ import { Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { PseudoRng, Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
+import { MapRgbFilter } from "../../lib/pixi/filters/map-rgb-filter";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objNude } from "./obj-nude";
 
@@ -10,10 +11,27 @@ const txs = Object.fromEntries(
         .map(([key, tx]) => [key, tx.split({ width: 144 })]),
 ) as Record<keyof typeof Tx["Fucka"], Texture[]>;
 
+const consts = {
+    colors: [
+        0xFF5151,
+        0xFF9F00,
+        0xFFD100,
+        0xB2D100,
+        0x74D100,
+        0x74D1C2,
+        0x59BEE1,
+        0x5971E1,
+        0xD5A3F7,
+        0xF78AF7,
+    ],
+};
+
 const rng = new PseudoRng();
 
 export function objFucka() {
     rng.seed = Rng.intc(10_000_000, 999_999_999);
+
+    const [red, green, blue] = rng.shuffle([...consts.colors]);
 
     const bodyObj = container(
         Sprite.from(rng.item(txs.Mullet)),
@@ -35,5 +53,6 @@ export function objFucka() {
         bodyObj,
         underwearTx: rng.item(txs.Underwear),
         clothesTx: [rng.item(txs.Footwear), rng.item(txs.Bottoms), rng.item(txs.Top)],
-    });
+    })
+        .filtered(new MapRgbFilter(red, green, blue));
 }
