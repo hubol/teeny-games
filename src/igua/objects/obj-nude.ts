@@ -1,15 +1,15 @@
-import { Sprite, Texture } from "pixi.js";
+import { DisplayObject, Sprite, Texture } from "pixi.js";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { objDestructibleSprite } from "./obj-destructible-sprite";
 
 interface ObjNudeArgs {
-    bodyTx: Texture;
+    bodyObj: DisplayObject;
     clothesTx: Texture[];
     underwearTx: Texture;
 }
 
-export function objNude({ bodyTx, clothesTx, underwearTx }: ObjNudeArgs) {
+export function objNude({ bodyObj, clothesTx, underwearTx }: ObjNudeArgs) {
     const underwearObj = objDestructibleSprite([underwearTx], 8)
         .collisionShape(CollisionShape.Children)
         .merge({ objUnderwear: { isConcealed: true } })
@@ -21,7 +21,7 @@ export function objNude({ bodyTx, clothesTx, underwearTx }: ObjNudeArgs) {
     const clothesObj = objDestructibleSprite(clothesTx, 8);
 
     return container(
-        Sprite.from(bodyTx),
+        bodyObj,
         underwearObj,
         clothesObj,
     )

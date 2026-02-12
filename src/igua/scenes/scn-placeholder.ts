@@ -11,7 +11,7 @@ const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 3 });
 
 export function scnPlaceholder() {
     objNude({
-        bodyTx: txsFag[0],
+        bodyObj: Sprite.from(txsFag[0]),
         underwearTx: txsFag[1],
         clothesTx: [txsFag[2]],
     })
@@ -19,7 +19,7 @@ export function scnPlaceholder() {
         .show();
 
     objNude({
-        bodyTx: txsBadlyDressed[0],
+        bodyObj: Sprite.from(txsBadlyDressed[0]),
         underwearTx: txsBadlyDressed[1],
         clothesTx: [txsBadlyDressed[2]],
     })
