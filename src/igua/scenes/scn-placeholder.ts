@@ -1,9 +1,11 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
+import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { interpvr } from "../../lib/game-engine/routines/interp";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
@@ -28,14 +30,33 @@ function objStaticNude(txs: Texture[]) {
 }
 
 export function scnPlaceholder() {
-    scene.style.backgroundTint = 0x5537a8;
-
-    const fuckaObj = objFucka()
-        .at(150, 0)
-        .show();
+    const lvl = Lvl.Start();
 
     scene.stage
         .coro(function* () {
+            lvl.TextGroup.children.forEach(obj => obj.visible = false);
+
+            yield sleep(250);
+
+            for (const obj of lvl.TextGroup.children) {
+                obj.mixin(mxnBoilPivot);
+                obj.step(() => obj.scale.set(approachLinear(obj.scale.x, 1, 0.08)));
+                obj.visible = true;
+                obj.scale.set(2);
+                yield () => heartObj.collides(obj) && Mouse.isDown;
+                obj.tint = 0x8c72aa;
+                yield () => !Mouse.isDown;
+                obj.tint = 0xffffff;
+            }
+
+            lvl.TextGroup.destroy();
+
+            yield sleep(500);
+
+            const fuckaObj = objFucka()
+                .at(150, 0)
+                .show();
+
             yield* coroProbablyNude(fuckaObj);
 
             const fagObj = objStaticNude(txsFag)
@@ -66,7 +87,7 @@ export function scnPlaceholder() {
             yield interpvr(longObj.pivot).to(0, 0).over(1000);
         });
 
-    Sprite.from(Tx.Heart)
+    const heartObj = Sprite.from(Tx.Heart)
         .zIndexed(99)
         .anchored(0.5, 0.5)
         .merge({ objCursor: { inferredSpeed: vnew() } })

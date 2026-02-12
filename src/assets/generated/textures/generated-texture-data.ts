@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 23 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 29 }];
 
 interface TxData {
   id: string;
@@ -13,11 +13,19 @@ interface TxData {
 
 function txs<T>(tx: (data: TxData) => T) {
   return {
+    Boot: {
+      Boys: tx({ id: "Boot.Boys", atlas: 0, x: 3180, y: 346, width: 124, height: 72 }),
+      For: tx({ id: "Boot.For", atlas: 0, x: 3980, y: 489, width: 84, height: 44 }),
+      Hear: tx({ id: "Boot.Hear", atlas: 0, x: 3980, y: 362, width: 114, height: 52 }),
+      It: tx({ id: "Boot.It", atlas: 0, x: 3309, y: 337, width: 50, height: 56 }),
+      Lets: tx({ id: "Boot.Lets", atlas: 0, x: 3180, y: 419, width: 122, height: 48 }),
+      The: tx({ id: "Boot.The", atlas: 0, x: 3980, y: 440, width: 88, height: 48 }),
+    },
     Font: {
       Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 3180, y: 337, width: 128, height: 8 }),
       ErotixLight: tx({ id: "Font.ErotixLight", atlas: 0, x: 3180, y: 267, width: 160, height: 34 }),
       Erotix: tx({ id: "Font.Erotix", atlas: 0, x: 3180, y: 302, width: 160, height: 34 }),
-      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 3980, y: 362, width: 102, height: 24 }),
+      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 3980, y: 415, width: 102, height: 24 }),
       GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 3835, y: 233, width: 256, height: 128 }),
     },
     Fucka: {
@@ -36,7 +44,7 @@ function txs<T>(tx: (data: TxData) => T) {
       Top: tx({ id: "Fucka.Top", atlas: 0, x: 866, y: 189, width: 432, height: 232 }),
       Underwear: tx({ id: "Fucka.Underwear", atlas: 0, x: 2166, y: 189, width: 288, height: 232 }),
     },
-    Heart: tx({ id: "Heart", atlas: 0, x: 3309, y: 337, width: 22, height: 20 }),
+    Heart: tx({ id: "Heart", atlas: 0, x: 4069, y: 440, width: 22, height: 20 }),
     Nudes: {
       BadlyDressed: tx({ id: "Nudes.BadlyDressed", atlas: 0, x: 2601, y: 0, width: 760, height: 266 }),
       DemoFag: tx({ id: "Nudes.DemoFag", atlas: 0, x: 3362, y: 233, width: 472, height: 210 }),
