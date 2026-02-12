@@ -61,10 +61,11 @@ function getTextureFrames(tx: Texture, size: Integer) {
     return frames;
 }
 
-export function objDestructibleSprite(tx: Texture, size: Integer) {
-    const frames = getTextureFrames(tx, size);
+export function objDestructibleSprite(textures: Texture[], size: Integer) {
     return container(
-        ...frames.map((frame) => Sprite.from(frame.texture).at(frame)),
+        ...textures
+            .flatMap(texture => getTextureFrames(texture, size))
+            .map((frame) => Sprite.from(frame.texture).at(frame)),
     )
         .autoSorted();
 }

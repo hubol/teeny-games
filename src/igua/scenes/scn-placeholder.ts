@@ -7,10 +7,24 @@ import { Mouse } from "../globals";
 import { objNude } from "../objects/obj-nude";
 
 const txsFag = Tx.Nudes.DemoFag.split({ count: 3 });
+const txsBadlyDressed = Tx.Nudes.BadlyDressed.split({ count: 3 });
 
 export function scnPlaceholder() {
-    objNude(txsFag).at(0, 0).show();
-    objNude(Tx.Nudes.BadlyDressed.split({ count: 3 })).at(200, 0).show();
+    objNude({
+        bodyTx: txsFag[0],
+        underwearTx: txsFag[1],
+        clothesTx: [txsFag[2]],
+    })
+        .at(0, 0)
+        .show();
+
+    objNude({
+        bodyTx: txsBadlyDressed[0],
+        underwearTx: txsBadlyDressed[1],
+        clothesTx: [txsBadlyDressed[2]],
+    })
+        .at(200, 0)
+        .show();
 
     Sprite.from(Tx.Heart)
         .anchored(0.5, 0.5)
