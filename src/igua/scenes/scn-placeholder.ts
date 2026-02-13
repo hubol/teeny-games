@@ -34,6 +34,7 @@ const staticNudes = (function () {
         tall: create(Tx.Nudes.Tall, [340, -20], [0, -280]),
         long: create(Tx.Nudes.Long, [0, 93], [-650, 0]),
         pinkerton: create(Tx.Nudes.Pinkerton, [10, 15], [-200, 0]),
+        slut: create(Tx.Nudes.Slut, [70, 50], [420, 0]),
     };
 })();
 
@@ -161,11 +162,11 @@ export function scnPlaceholder() {
 
             Sfx.Advance.play();
 
-            const longObj = objStaticNude("long").show();
+            const finalNudeObj = objStaticNude(Rng.choose("slut", "long")).show();
 
-            yield interpvr(longObj.pivot).to(0, 0).over(1000);
+            yield interpvr(finalNudeObj.pivot).to(0, 0).over(1000);
 
-            yield* coroProbablyNude(longObj);
+            yield* coroProbablyNude(finalNudeObj);
 
             yield* waitUntilBeat();
             const youAreGaySfx = Sfx.Dialog.YouAreGay.playInstance();
