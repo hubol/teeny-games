@@ -147,23 +147,28 @@ export function scnMain() {
                 }
 
                 lvl.TextGroup.destroy();
+
+                if (!(yield* waitUntilBeat())) {
+                    yield sleep(500);
+                }
+
+                Jukebox.applyGainRamp(Mzk.Cupid, 1, 50);
+                Jukebox.play(Mzk.Cupid);
             }
             else {
                 Sfx.Advance.play();
                 const surpriseDressUpObj = Sprite.from(Tx.SurpriseDressUp).at(0, -280).show();
                 yield interpvr(surpriseDressUpObj).factor(factor.sine).to(0, 0).over(1000);
                 Sfx.Dialog.PickACuteOutfit.play();
-                yield sleep(1400);
+                yield sleep(1150);
+                yield* waitUntilBeat();
+
+                Jukebox.applyGainRamp(Mzk.Cupid, 1, 50);
+                Jukebox.play(Mzk.Cupid);
+
                 fuckaConfig = yield* playDressUp();
                 surpriseDressUpObj.destroy();
             }
-
-            if (!(yield* waitUntilBeat())) {
-                yield sleep(500);
-            }
-
-            Jukebox.applyGainRamp(Mzk.Cupid, 1, 50);
-            Jukebox.play(Mzk.Cupid);
 
             const fuckaObj = objFucka(fuckaConfig)
                 .at(150, 0)
