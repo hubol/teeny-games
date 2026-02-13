@@ -119,7 +119,7 @@ export function scnMain() {
 
             yield sleep(250);
 
-            const surpriseDressUp = clearsCount === 2 || (clearsCount > 3 && Rng.float() < 0.33);
+            const surpriseDressUp = clearsCount >= 2;
 
             let fuckaConfig = createFuckaConfig();
 
