@@ -13,6 +13,15 @@ interface ObjNudeArgs {
 export function objNude({ bodyObj, clothesTxs, genitalCoveringTx, underwearTxs }: ObjNudeArgs) {
     const strippableObjs = new Array<Container>();
 
+    const api = {
+        isStrippable: true,
+        get genitalCoverageUnit() {
+            return genitalCoveringObj.objGenitalCovering.coverageUnit;
+        },
+        strippableObjs: strippableObjs as ReadonlyArray<Container>,
+        peekLayer: "top" as ObjNude.PeekLayer,
+    };
+
     const genitalCoveringBaseObj = objDestructibleSprite([genitalCoveringTx], 8);
 
     const maxUnderwearObjsCount = genitalCoveringBaseObj.children.length;
@@ -30,8 +39,10 @@ export function objNude({ bodyObj, clothesTxs, genitalCoveringTx, underwearTxs }
 
     return container(
         bodyObj,
-        ...underwearObjs,
-        clothesObj,
+        container(...underwearObjs)
+            .step(self => self.visible = api.peekLayer !== "nude"),
+        clothesObj
+            .step(self => self.visible = api.peekLayer === "top"),
     )
         .step(() => {
             strippableObjs.length = 0;
@@ -42,16 +53,12 @@ export function objNude({ bodyObj, clothesTxs, genitalCoveringTx, underwearTxs }
                 }
             }
         })
-        .merge({
-            objNude: {
-                isStrippable: true,
-                get genitalCoverageUnit() {
-                    return genitalCoveringObj.objGenitalCovering.coverageUnit;
-                },
-                strippableObjs: strippableObjs as ReadonlyArray<Container>,
-            },
-        })
+        .merge({ objNude: api })
         .track(objNude);
 }
 
 export type ObjNude = ReturnType<typeof objNude>;
+
+export namespace ObjNude {
+    export type PeekLayer = "top" | "underwear" | "nude";
+}

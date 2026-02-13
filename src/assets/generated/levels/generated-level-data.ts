@@ -10,17 +10,20 @@ export const Lvl = {
   DressUp: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x800045 });
     return {
-      TextMarker0: e(r["Marker"], { x: 88, y: 40, values: { name: "TextMarker0", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker1: e(r["Marker"], { x: 112, y: 80, values: { name: "TextMarker1", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker2: e(r["Marker"], { x: 80, y: 120, values: { name: "TextMarker2", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker3: e(r["Marker"], { x: 80, y: 200, values: { name: "TextMarker3", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker4: e(r["Marker"], { x: 416, y: 112, values: { name: "TextMarker4", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker5: e(r["Marker"], { x: 384, y: 72, values: { name: "TextMarker5", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker6: e(r["Marker"], { x: 344, y: 32, values: { name: "TextMarker6", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker7: e(r["Marker"], { x: 362, y: 152, values: { name: "TextMarker7", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker0: e(r["Marker"], { x: 72, y: 24, values: { name: "TextMarker0", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker1: e(r["Marker"], { x: 96, y: 56, values: { name: "TextMarker1", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker2: e(r["Marker"], { x: 64, y: 88, values: { name: "TextMarker2", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker3: e(r["Marker"], { x: 440, y: 24, values: { name: "TextMarker3", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker4: e(r["Marker"], { x: 408, y: 112, values: { name: "TextMarker4", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker5: e(r["Marker"], { x: 376, y: 72, values: { name: "TextMarker5", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker6: e(r["Marker"], { x: 336, y: 32, values: { name: "TextMarker6", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker7: e(r["Marker"], { x: 362, y: 160, values: { name: "TextMarker7", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       TextMarker8: e(r["Marker"], { x: 402, y: 200, values: { name: "TextMarker8", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      TextMarker9: e(r["Marker"], { x: 412, y: 240, values: { name: "TextMarker9", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker9: e(r["Marker"], { x: 412, y: 236, values: { name: "TextMarker9", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       FuckaMarker: e(r["Marker"], { x: 168, y: 24, values: { name: "FuckaMarker", depth: 0 }, tint: 0x2400ff }, "MarkerEntities"),
+      Marker: e(r["Marker"], { x: 80, y: 208, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_1: e(r["Marker"], { x: 80, y: 248, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_2: e(r["Marker"], { x: 80, y: 168, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
   Placeholder: () => {
