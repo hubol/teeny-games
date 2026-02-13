@@ -1,8 +1,11 @@
 import { Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { PseudoRng, Rng } from "../../lib/math/rng";
+import { cyclic } from "../../lib/math/number";
+import { Integer } from "../../lib/math/number-alias-types";
+import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { MapRgbFilter } from "../../lib/pixi/filters/map-rgb-filter";
+import { range } from "../../lib/range";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objNude } from "./obj-nude";
 
@@ -27,36 +30,84 @@ const consts = {
     ],
 };
 
-const rng = new PseudoRng();
+export function createFuckaConfig() {
+    const [red, green, blue] = Rng.shuffle(range(consts.colors.length));
 
-export function objFucka() {
-    rng.seed = Rng.intc(10_000_000, 999_999_999);
+    return {
+        colors: {
+            red,
+            green,
+            blue,
+        },
+        mullet: Rng.int(txs.Mullet.length),
+        body: Rng.int(txs.Body.length),
+        abdomen: Rng.int(txs.Abdomen.length),
+        pubes: Rng.int(txs.Pubes.length),
+        penis: Rng.int(txs.Penis.length),
+        hair: Rng.int(txs.Hair.length),
+        face: {
+            eyes: Rng.int(txs.Eyes.length),
+            nose: Rng.int(txs.Nose.length),
+            mouth: Rng.int(txs.Mouth.length),
+            decoration: Rng.int(txs.Decoration.length),
+        },
+        clothes: {
+            underwear: Rng.int(txs.Underwear.length),
+            footwear: Rng.int(txs.Footwear.length),
+            bottoms: Rng.int(txs.Bottoms.length),
+            top: Rng.int(txs.Top.length),
+        },
+    };
+}
 
-    const [red, green, blue] = rng.shuffle([...consts.colors]);
+function tx(key: keyof typeof txs, index: Integer) {
+    return txs[key][cyclic(index, 0, txs[key].length)];
+}
 
+function sprite(key: keyof typeof txs, index: Integer) {
+    return Sprite.from(tx(key, index));
+}
+
+function color(index: Integer) {
+    return consts.colors[cyclic(index, 0, consts.colors.length)];
+}
+
+type FuckaConfig = ReturnType<typeof createFuckaConfig>;
+
+export function objFucka(config: FuckaConfig) {
     const bodyObj = container(
-        Sprite.from(rng.item(txs.Mullet)),
-        Sprite.from(rng.item(txs.Body)),
-        Sprite.from(rng.item(txs.Abdomen)),
-        Sprite.from(rng.item(txs.Pubes)),
-        Sprite.from(rng.item(txs.Penis)),
-        Sprite.from(rng.item(txs.Hair)),
+        sprite("Mullet", config.mullet),
+        sprite("Body", config.body),
+        sprite("Abdomen", config.abdomen),
+        sprite("Pubes", config.pubes),
+        sprite("Penis", config.penis),
+        sprite("Hair", config.hair),
         container(
-            Sprite.from(rng.item(txs.Eyes)),
-            Sprite.from(rng.item(txs.Nose)),
-            Sprite.from(rng.item(txs.Mouth)),
-            Sprite.from(rng.item(txs.Decoration)),
+            sprite("Eyes", config.face.eyes),
+            sprite("Nose", config.face.nose),
+            sprite("Mouth", config.face.mouth),
+            sprite("Decoration", config.face.decoration),
         )
             .mixin(mxnBoilPivot),
     );
 
     return objNude({
         bodyObj,
-        genitalCoveringTx: rng.item(txs.Underwear),
-        clothesTxs: [rng.item(txs.Footwear), rng.item(txs.Bottoms), rng.item(txs.Top)],
+        genitalCoveringTx: tx("Underwear", config.clothes.underwear),
+        clothesTxs: [
+            tx("Footwear", config.clothes.footwear),
+            tx("Bottoms", config.clothes.bottoms),
+            tx("Top", config.clothes.top),
+        ],
         underwearTxs: [],
     })
-        .filtered(new MapRgbFilter(red, green, blue));
+        .filtered(
+            new MapRgbFilter(
+                color(config.colors.red),
+                color(config.colors.green),
+                color(config.colors.blue),
+            ),
+        );
 }
 
 export function objFuckaPalette() {

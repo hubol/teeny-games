@@ -17,7 +17,7 @@ import { Jukebox } from "../core/igua-audio";
 import { Mouse, scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnSpill } from "../mixins/mxn-spill";
-import { objFucka } from "../objects/obj-fucka";
+import { createFuckaConfig, objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
 
 const staticNudes = (function () {
@@ -146,7 +146,7 @@ export function scnMain() {
             Jukebox.applyGainRamp(Mzk.Cupid, 1, 50);
             Jukebox.play(Mzk.Cupid);
 
-            const fuckaObj = objFucka()
+            const fuckaObj = objFucka(createFuckaConfig())
                 .at(150, 0)
                 .show();
 
