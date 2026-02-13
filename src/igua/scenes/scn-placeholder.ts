@@ -232,6 +232,10 @@ export function scnPlaceholder() {
                 .step(() => {
                     if (self.scale.x > 1 || self.objCursor.inferredSpeed.vlength > 2) {
                         for (const nudeObj of Instances(objNude)) {
+                            if (!nudeObj.objNude.isStrippable) {
+                                continue;
+                            }
+
                             for (const strippableObj of nudeObj.objNude.strippableObjs) {
                                 tryDestroyCollidedChildren(strippableObj);
                             }

@@ -44,6 +44,7 @@ export function objNude({ bodyObj, clothesTxs, genitalCoveringTx, underwearTxs }
         })
         .merge({
             objNude: {
+                isStrippable: true,
                 get genitalCoverageUnit() {
                     return genitalCoveringObj.objGenitalCovering.coverageUnit;
                 },
