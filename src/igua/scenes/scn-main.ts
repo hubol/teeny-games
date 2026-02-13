@@ -23,6 +23,9 @@ import { ObjNude, objNude } from "../objects/obj-nude";
 import { playDressUp } from "./scn-dress-up";
 
 let clearsCount = 0;
+let lastDressUpAtClearsCount = 0;
+
+const dressUpChances = [0, 25, 50, 75, 90, 100];
 
 const staticNudes = (function () {
     function create(
@@ -119,7 +122,9 @@ export function scnMain() {
 
             yield sleep(250);
 
-            const surpriseDressUp = clearsCount >= 2;
+            const dressUpChance = dressUpChances[clearsCount - lastDressUpAtClearsCount] ?? dressUpChances.last;
+            const surpriseDressUp = clearsCount === 2
+                || (clearsCount > 2 && Rng.intc(0, 100) <= dressUpChance);
 
             let fuckaConfig = createFuckaConfig();
 
@@ -156,6 +161,7 @@ export function scnMain() {
                 Jukebox.play(Mzk.Cupid);
             }
             else {
+                lastDressUpAtClearsCount = clearsCount;
                 Sfx.Advance.play();
                 const surpriseDressUpObj = Sprite.from(Tx.SurpriseDressUp).at(0, -280).show();
                 yield interpvr(surpriseDressUpObj).factor(factor.sine).to(0, 0).over(1000);
