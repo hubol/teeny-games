@@ -20,7 +20,7 @@ export const Lvl = {
       TextMarker7: e(r["Marker"], { x: 362, y: 160, values: { name: "TextMarker7", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       TextMarker8: e(r["Marker"], { x: 402, y: 200, values: { name: "TextMarker8", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       TextMarker9: e(r["Marker"], { x: 412, y: 236, values: { name: "TextMarker9", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
-      FuckaMarker: e(r["Marker"], { x: 168, y: 24, values: { name: "FuckaMarker", depth: 0 }, tint: 0x2400ff }, "MarkerEntities"),
+      FuckaMarker: e(r["Marker"], { x: 168, y: 8, values: { name: "FuckaMarker", depth: 0 }, tint: 0x2400ff }, "MarkerEntities"),
       Marker: e(r["Marker"], { x: 80, y: 208, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       Marker_1: e(r["Marker"], { x: 80, y: 248, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       Marker_2: e(r["Marker"], { x: 80, y: 168, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),

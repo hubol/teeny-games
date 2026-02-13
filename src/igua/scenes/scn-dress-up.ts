@@ -1,8 +1,10 @@
-import { DisplayObject, Graphics } from "pixi.js";
+import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { holdf } from "../../lib/game-engine/routines/hold";
+import { interp } from "../../lib/game-engine/routines/interp";
 import { onMutate } from "../../lib/game-engine/routines/on-mutate";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { Null } from "../../lib/types/null";
@@ -56,6 +58,25 @@ export function scnDressUp(configProvider: (config: FuckaConfig) => void = () =>
         })
         .show();
 
+    function mxnMouseable(obj: DisplayObject) {
+        const api = {
+            get isHovered() {
+                return hoveredObj === obj;
+            },
+            get isPressed() {
+                return hoveredObj === obj && Mouse.isDown;
+            },
+        };
+
+        return obj
+            .step(self => {
+                if (cursorObj.collides(self)) {
+                    hoveredObj = self;
+                }
+            })
+            .merge({ mxnMouseable: api });
+    }
+
     {
         const controlConfigPositions = Instances(objMarker, obj => obj.tint === 0x00ff00);
         for (let i = 0; i < controlConfigPositions.length; i++) {
@@ -67,21 +88,17 @@ export function scnDressUp(configProvider: (config: FuckaConfig) => void = () =>
             }
 
             objText.XLargeIrregular(config.text)
+                .mixin(mxnMouseable)
                 .anchored(0.5, 0.5)
                 .at(position)
-                .step(self => {
-                    if (cursorObj.collides(self)) {
-                        hoveredObj = self;
-                    }
-                })
                 .step((self) => {
-                    if (hoveredObj === self) {
+                    if (self.mxnMouseable.isHovered) {
                         peekLayer = config.peekLayer;
                     }
                 }, 1)
                 .coro(function* (self) {
                     while (true) {
-                        yield () => Mouse.isDown && hoveredObj === self;
+                        yield () => self.mxnMouseable.isPressed;
                         config.mutateFn(fuckaConfig);
                         self.tint = 0xEF759E;
                         yield () => !Mouse.isDown;
@@ -92,19 +109,38 @@ export function scnDressUp(configProvider: (config: FuckaConfig) => void = () =>
         }
     }
 
-    scene.stage
-        .coro(function* () {
-            while (true) {
-                const fuckaObj = objFucka(fuckaConfig)
-                    .step(self => self.objNude.peekLayer = peekLayer)
-                    .at(lvl.FuckaMarker)
-                    .show();
+    {
+        let mutationsCount = 0;
 
-                fuckaObj.objNude.peekLayer = peekLayer;
-                yield onMutate(fuckaConfig);
-                fuckaObj.destroy();
-            }
-        });
+        scene.stage
+            .coro(function* () {
+                while (true) {
+                    const fuckaObj = objFucka(fuckaConfig)
+                        .step(self => self.objNude.peekLayer = peekLayer)
+                        .at(lvl.FuckaMarker)
+                        .show();
+
+                    fuckaObj.objNude.peekLayer = peekLayer;
+                    yield onMutate(fuckaConfig);
+                    mutationsCount++;
+                    fuckaObj.destroy();
+                }
+            });
+
+        Sprite.from(Tx.Done)
+            .at(193, 234)
+            .invisible()
+            .coro(function* (self) {
+                yield () => mutationsCount >= 1;
+                self.visible = true;
+                self.alpha = 0;
+                yield interp(self, "alpha").steps(3).to(1).over(500);
+                const mouseableObj = self.mixin(mxnMouseable);
+                yield () => mouseableObj.mxnMouseable.isPressed;
+                configProvider(fuckaConfig);
+            }, 999)
+            .show();
+    }
 }
 
 export function* playDressUp() {
