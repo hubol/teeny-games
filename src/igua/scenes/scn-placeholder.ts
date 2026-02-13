@@ -1,5 +1,6 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
@@ -11,6 +12,7 @@ import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { Jukebox } from "../core/igua-audio";
 import { Mouse, scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnSpill } from "../mixins/mxn-spill";
@@ -57,6 +59,8 @@ const consts = {
 };
 
 export function scnPlaceholder() {
+    Jukebox.warm(Mzk.Cupid);
+
     const lvl = Lvl.Start();
 
     Sprite.from(Tx.UseMouse)
@@ -108,6 +112,8 @@ export function scnPlaceholder() {
             lvl.TextGroup.destroy();
 
             yield sleep(500);
+
+            Jukebox.play(Mzk.Cupid);
 
             const fuckaObj = objFucka()
                 .at(150, 0)
