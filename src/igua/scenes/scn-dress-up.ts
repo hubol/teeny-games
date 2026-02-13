@@ -87,7 +87,7 @@ export function scnDressUp(configProvider: (config: FuckaConfig) => void = () =>
                         yield () => !Mouse.isDown;
                         self.tint = 0xffffff;
                     }
-                })
+                }, 1)
                 .show();
         }
     }
