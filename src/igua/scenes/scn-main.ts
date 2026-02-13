@@ -85,7 +85,7 @@ function* waitUntilBeat() {
     return false;
 }
 
-export function scnPlaceholder() {
+export function scnMain() {
     Jukebox.warm(Mzk.Cupid);
     Jukebox.applyGainRamp(Mzk.Cupid, 0, 0);
 
@@ -190,7 +190,7 @@ export function scnPlaceholder() {
 
             yield sleep(2000);
 
-            sceneStack.replace(scnPlaceholder, { useGameplay: false });
+            sceneStack.replace(scnMain, { useGameplay: false });
         });
 
     const impactSfxs = [
