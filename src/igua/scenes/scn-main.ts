@@ -6,7 +6,7 @@ import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
-import { interp, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -20,6 +20,9 @@ import { mxnSpill } from "../mixins/mxn-spill";
 import { objCursor } from "../objects/obj-cursor";
 import { createFuckaConfig, objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
+import { playDressUp } from "./scn-dress-up";
+
+let clearsCount = 0;
 
 const staticNudes = (function () {
     function create(
@@ -116,29 +119,44 @@ export function scnMain() {
 
             yield sleep(250);
 
-            const sfxs = [
-                Sfx.Dialog.Lets,
-                Sfx.Dialog.Hear,
-                Sfx.Dialog.It,
-                Sfx.Dialog.For,
-                Sfx.Dialog.The,
-                Sfx.Dialog.Boys,
-            ];
+            const surpriseDressUp = clearsCount === 2 || (clearsCount > 3 && Rng.float() < 0.33);
 
-            for (let i = 0; i < sfxs.length; i++) {
-                const obj = lvl.TextGroup.children[i];
-                obj.mixin(mxnBoilPivot);
-                obj.step(() => obj.scale.set(approachLinear(obj.scale.x, 1, 0.08)));
-                obj.visible = true;
-                obj.scale.set(2);
-                yield () => heartObj.collides(obj) && Mouse.isDown;
-                sfxs[i].play();
-                obj.tint = consts.dark;
-                yield () => !Mouse.isDown;
-                obj.tint = 0xffffff;
+            let fuckaConfig = createFuckaConfig();
+
+            if (!surpriseDressUp) {
+                const sfxs = [
+                    Sfx.Dialog.Lets,
+                    Sfx.Dialog.Hear,
+                    Sfx.Dialog.It,
+                    Sfx.Dialog.For,
+                    Sfx.Dialog.The,
+                    Sfx.Dialog.Boys,
+                ];
+
+                for (let i = 0; i < sfxs.length; i++) {
+                    const obj = lvl.TextGroup.children[i];
+                    obj.mixin(mxnBoilPivot);
+                    obj.step(() => obj.scale.set(approachLinear(obj.scale.x, 1, 0.08)));
+                    obj.visible = true;
+                    obj.scale.set(2);
+                    yield () => heartObj.collides(obj) && Mouse.isDown;
+                    sfxs[i].play();
+                    obj.tint = consts.dark;
+                    yield () => !Mouse.isDown;
+                    obj.tint = 0xffffff;
+                }
+
+                lvl.TextGroup.destroy();
             }
-
-            lvl.TextGroup.destroy();
+            else {
+                Sfx.Advance.play();
+                const surpriseDressUpObj = Sprite.from(Tx.SurpriseDressUp).at(0, -280).show();
+                yield interpvr(surpriseDressUpObj).factor(factor.sine).to(0, 0).over(1000);
+                Sfx.Dialog.PickACuteOutfit.play();
+                yield sleep(1400);
+                fuckaConfig = yield* playDressUp();
+                surpriseDressUpObj.destroy();
+            }
 
             if (!(yield* waitUntilBeat())) {
                 yield sleep(500);
@@ -147,7 +165,7 @@ export function scnMain() {
             Jukebox.applyGainRamp(Mzk.Cupid, 1, 50);
             Jukebox.play(Mzk.Cupid);
 
-            const fuckaObj = objFucka(createFuckaConfig())
+            const fuckaObj = objFucka(fuckaConfig)
                 .at(150, 0)
                 .show();
 
@@ -191,6 +209,7 @@ export function scnMain() {
 
             yield sleep(2000);
 
+            clearsCount++;
             sceneStack.replace(scnMain, { useGameplay: false });
         });
 
