@@ -1,36 +1,55 @@
-import { DisplayObject, Sprite, Texture } from "pixi.js";
+import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { CollisionShape } from "../../lib/pixi/collision";
 import { container } from "../../lib/pixi/container";
 import { objDestructibleSprite } from "./obj-destructible-sprite";
 
 interface ObjNudeArgs {
     bodyObj: DisplayObject;
-    clothesTx: Texture[];
-    underwearTx: Texture;
+    clothesTxs: Texture[];
+    underwearTxs: Texture[];
+    genitalCoveringTx: Texture;
 }
 
-export function objNude({ bodyObj, clothesTx, underwearTx }: ObjNudeArgs) {
-    const underwearBaseObj = objDestructibleSprite([underwearTx], 8);
+export function objNude({ bodyObj, clothesTxs, genitalCoveringTx, underwearTxs }: ObjNudeArgs) {
+    const strippableObjs = new Array<Container>();
 
-    const maxUnderwearObjsCount = underwearBaseObj.children.length;
+    const genitalCoveringBaseObj = objDestructibleSprite([genitalCoveringTx], 8);
 
-    const underwearObj = underwearBaseObj
+    const maxUnderwearObjsCount = genitalCoveringBaseObj.children.length;
+
+    const underwearObjs = underwearTxs.map(tx => objDestructibleSprite([tx], 8));
+
+    const genitalCoveringObj = genitalCoveringBaseObj
         .collisionShape(CollisionShape.Children)
-        .merge({ objUnderwear: { isConcealed: true, coverageUnit: 1 } })
-        .step(self => {
-            self.objUnderwear.coverageUnit = self.children.length / maxUnderwearObjsCount;
-            if (self.objUnderwear.isConcealed) {
-                self.objUnderwear.isConcealed = Boolean(self.collidesOne(clothesObj.children));
-            }
-        });
-    const clothesObj = objDestructibleSprite(clothesTx, 8);
+        .merge({ objGenitalCovering: { coverageUnit: 1 } })
+        .step(self => self.objGenitalCovering.coverageUnit = self.children.length / maxUnderwearObjsCount);
+
+    underwearObjs.push(genitalCoveringObj);
+
+    const clothesObj = objDestructibleSprite(clothesTxs, 8);
 
     return container(
         bodyObj,
-        underwearObj,
+        ...underwearObjs,
         clothesObj,
     )
-        .merge({ objNude: { underwearObj, clothesObj } })
+        .step(() => {
+            strippableObjs.length = 0;
+            strippableObjs.push(clothesObj);
+            for (const underwearObj of underwearObjs) {
+                if (!underwearObj.collidesOne(clothesObj.children)) {
+                    strippableObjs.push(underwearObj);
+                }
+            }
+        })
+        .merge({
+            objNude: {
+                get genitalCoverageUnit() {
+                    return genitalCoveringObj.objGenitalCovering.coverageUnit;
+                },
+                strippableObjs: strippableObjs as ReadonlyArray<Container>,
+            },
+        })
         .track(objNude);
 }
 

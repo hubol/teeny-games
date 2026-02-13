@@ -52,8 +52,9 @@ export function objFucka() {
 
     return objNude({
         bodyObj,
-        underwearTx: rng.item(txs.Underwear),
-        clothesTx: [rng.item(txs.Footwear), rng.item(txs.Bottoms), rng.item(txs.Top)],
+        genitalCoveringTx: rng.item(txs.Underwear),
+        clothesTxs: [rng.item(txs.Footwear), rng.item(txs.Bottoms), rng.item(txs.Top)],
+        underwearTxs: [],
     })
         .filtered(new MapRgbFilter(red, green, blue));
 }

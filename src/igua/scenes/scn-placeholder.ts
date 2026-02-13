@@ -9,6 +9,7 @@ import { holdf } from "../../lib/game-engine/routines/hold";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
@@ -20,21 +21,26 @@ import { objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
 
 const staticNudes = (function () {
-    function create(tx: Texture, endPosition: VectorSimple, startOffset: VectorSimple) {
+    function create(
+        tx: Texture,
+        endPosition: VectorSimple,
+        startOffset: VectorSimple,
+        underwearTexturesCount: Integer,
+    ) {
         return {
-            txs: tx.split({ count: 4 }),
+            txs: tx.split({ count: 4 + underwearTexturesCount }),
             endPosition,
             startOffset,
         };
     }
 
     return {
-        fag: create(Tx.Nudes.DemoFag, [10, 40], [-200, 0]),
-        badlyDressed: create(Tx.Nudes.BadlyDressed, [300, 10], [200, 0]),
-        tall: create(Tx.Nudes.Tall, [340, -20], [0, -280]),
-        long: create(Tx.Nudes.Long, [0, 93], [-650, 0]),
-        pinkerton: create(Tx.Nudes.Pinkerton, [10, 15], [-200, 0]),
-        slut: create(Tx.Nudes.Slut, [70, 50], [420, 0]),
+        fag: create(Tx.Nudes.DemoFag, [10, 40], [-200, 0], 0),
+        badlyDressed: create(Tx.Nudes.BadlyDressed, [300, 10], [200, 0], 2),
+        tall: create(Tx.Nudes.Tall, [340, -20], [0, -280], 0),
+        long: create(Tx.Nudes.Long, [0, 93], [-650, 0], 1),
+        pinkerton: create(Tx.Nudes.Pinkerton, [10, 15], [-200, 0], 0),
+        slut: create(Tx.Nudes.Slut, [70, 50], [420, 0], 0),
     };
 })();
 
@@ -42,14 +48,16 @@ type StaticNudeId = keyof typeof staticNudes;
 
 function objStaticNude(id: StaticNudeId) {
     const { txs, endPosition, startOffset } = staticNudes[id];
+    const [bodyTx, faceTx, genitalCoveringTx, clothesTx, ...underwearTxs] = txs;
 
     return objNude({
         bodyObj: container(
-            Sprite.from(txs[0]),
-            Sprite.from(txs[1]).mixin(mxnBoilPivot),
+            Sprite.from(bodyTx),
+            Sprite.from(faceTx).mixin(mxnBoilPivot),
         ),
-        underwearTx: txs[2],
-        clothesTx: [txs[3]],
+        genitalCoveringTx,
+        clothesTxs: [clothesTx],
+        underwearTxs,
     })
         .at(endPosition)
         .pivoted(-startOffset.x, -startOffset.y);
@@ -224,9 +232,8 @@ export function scnPlaceholder() {
                 .step(() => {
                     if (self.scale.x > 1 || self.objCursor.inferredSpeed.vlength > 2) {
                         for (const nudeObj of Instances(objNude)) {
-                            tryDestroyCollidedChildren(nudeObj.objNude.clothesObj);
-                            if (!nudeObj.objNude.underwearObj.objUnderwear.isConcealed) {
-                                tryDestroyCollidedChildren(nudeObj.objNude.underwearObj);
+                            for (const strippableObj of nudeObj.objNude.strippableObjs) {
+                                tryDestroyCollidedChildren(strippableObj);
                             }
                         }
                     }
@@ -237,8 +244,8 @@ export function scnPlaceholder() {
 
 function* coroProbablyNude(nudeObj: ObjNude) {
     yield* Coro.race([
-        holdf(() => nudeObj.objNude.underwearObj.objUnderwear.coverageUnit <= 0.1, 30),
-        () => nudeObj.objNude.underwearObj.objUnderwear.coverageUnit <= 0.01,
+        holdf(() => nudeObj.objNude.genitalCoverageUnit <= 0.1, 30),
+        () => nudeObj.objNude.genitalCoverageUnit <= 0.01,
     ]);
 }
 
