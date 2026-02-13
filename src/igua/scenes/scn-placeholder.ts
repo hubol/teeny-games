@@ -58,8 +58,27 @@ const consts = {
     dark: 0x8c72aa,
 };
 
+function* waitUntilBeat() {
+    const beatLength = (60 / 90) / 2;
+
+    if (Jukebox.isPlaying(Mzk.Cupid)) {
+        yield sleep(250);
+        const previous = Jukebox.getEstimatedPlayheadPosition(Mzk.Cupid);
+        const next = Math.ceil(previous / beatLength) * beatLength;
+        yield () => {
+            const value = Jukebox.getEstimatedPlayheadPosition(Mzk.Cupid);
+            return value < previous || value >= next;
+        };
+
+        return true;
+    }
+
+    return false;
+}
+
 export function scnPlaceholder() {
     Jukebox.warm(Mzk.Cupid);
+    Jukebox.applyGainRamp(Mzk.Cupid, 0, 0);
 
     const lvl = Lvl.Start();
 
@@ -111,8 +130,11 @@ export function scnPlaceholder() {
 
             lvl.TextGroup.destroy();
 
-            yield sleep(500);
+            if (!(yield* waitUntilBeat())) {
+                yield sleep(500);
+            }
 
+            Jukebox.applyGainRamp(Mzk.Cupid, 1, 50);
             Jukebox.play(Mzk.Cupid);
 
             const fuckaObj = objFucka()
@@ -145,7 +167,9 @@ export function scnPlaceholder() {
 
             yield* coroProbablyNude(longObj);
 
+            yield* waitUntilBeat();
             const youAreGaySfx = Sfx.Dialog.YouAreGay.playInstance();
+            Jukebox.applyGainRamp(Mzk.Cupid, 0, 50);
 
             const endingObj = Sprite.from(Tx.Ending)
                 .mixin(mxnBoilPivot)
