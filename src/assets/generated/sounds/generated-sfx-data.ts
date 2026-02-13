@@ -4,6 +4,7 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
   const sounds = await Promise.all(
     [
       "advance.ogg",
+      "control.ogg",
       "dialog/boys.ogg",
       "dialog/for.ogg",
       "dialog/hear.ogg",
@@ -11,6 +12,7 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "dialog/lets.ogg",
       "dialog/pick a cute outfit.ogg",
       "dialog/the.ogg",
+      "dialog/yeah.ogg",
       "dialog/you are gay.ogg",
       "impact/undress0.ogg",
       "impact/undress1.ogg",
@@ -22,24 +24,26 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
   );
   return {
     Advance: sounds[0],
+    Control: sounds[1],
     Dialog: {
-      Boys: sounds[1],
-      For: sounds[2],
-      Hear: sounds[3],
-      It: sounds[4],
-      Lets: sounds[5],
-      PickACuteOutfit: sounds[6],
-      The: sounds[7],
-      YouAreGay: sounds[8],
+      Boys: sounds[2],
+      For: sounds[3],
+      Hear: sounds[4],
+      It: sounds[5],
+      Lets: sounds[6],
+      PickACuteOutfit: sounds[7],
+      The: sounds[8],
+      Yeah: sounds[9],
+      YouAreGay: sounds[10],
     },
     Impact: {
-      Undress0: sounds[9],
-      Undress1: sounds[10],
-      Undress2: sounds[11],
-      Undress3: sounds[12],
-      Undress4: sounds[13],
+      Undress0: sounds[11],
+      Undress1: sounds[12],
+      Undress2: sounds[13],
+      Undress3: sounds[14],
+      Undress4: sounds[15],
     },
-    Placeholder: sounds[14],
+    Placeholder: sounds[16],
   };
 }
 

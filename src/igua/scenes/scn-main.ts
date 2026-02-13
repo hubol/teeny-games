@@ -167,6 +167,7 @@ export function scnMain() {
                 Jukebox.play(Mzk.Cupid);
 
                 fuckaConfig = yield* playDressUp();
+                Sfx.Dialog.Yeah.play();
                 surpriseDressUpObj.destroy();
             }
 

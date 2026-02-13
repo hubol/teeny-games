@@ -1,6 +1,7 @@
 import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { holdf } from "../../lib/game-engine/routines/hold";
@@ -99,6 +100,7 @@ export function scnDressUp(configProvider: (config: FuckaConfig) => void = () =>
                 .coro(function* (self) {
                     while (true) {
                         yield () => self.mxnMouseable.isPressed;
+                        self.play(Sfx.Control.rate(0.5, 2));
                         config.mutateFn(fuckaConfig);
                         self.tint = 0xEF759E;
                         yield () => !Mouse.isDown;
