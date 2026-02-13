@@ -6,6 +6,7 @@ import { fntErotix } from "./bitmap-fonts/fnt-erotix";
 import { fntErotixLight } from "./bitmap-fonts/fnt-erotix-light";
 import { fntFlaccid } from "./bitmap-fonts/fnt-flaccid";
 import { fntGoodBoy } from "./bitmap-fonts/fnt-good-boy";
+import { fntOldMaiden } from "./bitmap-fonts/fnt-old-maiden";
 
 type Style = Partial<Omit<IBitmapTextStyle, "fontName">>;
 
@@ -30,5 +31,8 @@ export const objText = {
     },
     Large(text = "", style: Style = {}) {
         return new BitmapText(text, { fontName: fntGoodBoy.font, ...style });
+    },
+    XLargeIrregular(text = "", style: Style = {}) {
+        return new IrregularBitmapText(text, { fontName: fntOldMaiden.font, ...style });
     },
 };

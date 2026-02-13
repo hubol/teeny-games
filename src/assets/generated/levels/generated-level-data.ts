@@ -7,6 +7,22 @@ import { Tx } from "../../../assets/textures";
 const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = OgmoFactory;
 
 export const Lvl = {
+  DressUp: () => {
+    applyLevel({ width: 500, height: 280, backgroundTint: 0x800045 });
+    return {
+      TextMarker0: e(r["Marker"], { x: 80, y: 56, values: { name: "TextMarker0", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker1: e(r["Marker"], { x: 72, y: 128, values: { name: "TextMarker1", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker2: e(r["Marker"], { x: 96, y: 184, values: { name: "TextMarker2", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker3: e(r["Marker"], { x: 72, y: 240, values: { name: "TextMarker3", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker4: e(r["Marker"], { x: 336, y: 40, values: { name: "TextMarker4", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker5: e(r["Marker"], { x: 448, y: 72, values: { name: "TextMarker5", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker6: e(r["Marker"], { x: 368, y: 120, values: { name: "TextMarker6", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker7: e(r["Marker"], { x: 432, y: 160, values: { name: "TextMarker7", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker8: e(r["Marker"], { x: 376, y: 216, values: { name: "TextMarker8", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      TextMarker9: e(r["Marker"], { x: 432, y: 256, values: { name: "TextMarker9", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      FuckaMarker: e(r["Marker"], { x: 168, y: 24, values: { name: "FuckaMarker", depth: 0 }, tint: 0x2400ff }, "MarkerEntities"),
+    };
+  },
   Placeholder: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x408000 });
     return {
@@ -38,6 +54,7 @@ export const Lvl = {
 };
 
 export namespace LvlType {
+  export type DressUp = ReturnType<(typeof Lvl)["DressUp"]>;
   export type Placeholder = ReturnType<(typeof Lvl)["Placeholder"]>;
   export type Start = ReturnType<(typeof Lvl)["Start"]>;
 }

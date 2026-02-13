@@ -17,6 +17,7 @@ import { Jukebox } from "../core/igua-audio";
 import { Mouse, scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnSpill } from "../mixins/mxn-spill";
+import { objCursor } from "../objects/obj-cursor";
 import { createFuckaConfig, objFucka } from "../objects/obj-fucka";
 import { ObjNude, objNude } from "../objects/obj-nude";
 
@@ -201,19 +202,7 @@ export function scnMain() {
         Sfx.Impact.Undress4,
     ];
 
-    const heartObj = Sprite.from(Tx.Heart)
-        .zIndexed(99)
-        .anchored(0.5, 0.5)
-        .merge({ objCursor: { inferredSpeed: vnew() } })
-        .step(self => {
-            self.visible = Mouse.isPositionKnown;
-            self.objCursor.inferredSpeed.at(Mouse).add(self, -1);
-            self.at(Mouse);
-
-            let scale = self.scale.x;
-            scale = approachLinear(scale, Mouse.isDown ? 10 : 1, Mouse.isDown ? 0.2 : 1);
-            self.scale.set(scale);
-        })
+    const heartObj = objCursor()
         .coro(function* (self) {
             function tryDestroyCollidedChildren(container: Container) {
                 const collidedObjs = self.collidesAll(container.children);

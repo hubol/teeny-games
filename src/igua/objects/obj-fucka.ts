@@ -72,7 +72,7 @@ function color(index: Integer) {
     return consts.colors[cyclic(index, 0, consts.colors.length)];
 }
 
-type FuckaConfig = ReturnType<typeof createFuckaConfig>;
+export type FuckaConfig = ReturnType<typeof createFuckaConfig>;
 
 export function objFucka(config: FuckaConfig) {
     const bodyObj = container(
