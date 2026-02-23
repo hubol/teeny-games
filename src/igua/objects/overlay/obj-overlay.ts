@@ -1,5 +1,6 @@
 import { Graphics, Rectangle } from "pixi.js";
 import { objText } from "../../../assets/fonts";
+import { Sfx } from "../../../assets/sounds";
 import { approachLinear } from "../../../lib/math/number";
 import { container } from "../../../lib/pixi/container";
 import { mxnBoilDisplacement } from "../../mixins/mxn-boil-displacement";
@@ -51,7 +52,12 @@ function objInteractiveOverlay() {
             const targetText = focusedObj.mxnInteractive.text;
 
             if (textObj.text === targetText.substring(0, textObj.text.length)) {
-                textObj.text = targetText.substring(0, textObj.text.length + 1);
+                if (textObj.text.length !== targetText.length) {
+                    if (textObj.text.length % 2 === 0) {
+                        Sfx.Type.rate(1, 2).play();
+                    }
+                    textObj.text = targetText.substring(0, textObj.text.length + 1);
+                }
             }
             else {
                 textObj.text = "";
