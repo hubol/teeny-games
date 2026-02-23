@@ -2,6 +2,7 @@ import { DisplayObject, Graphics, LINE_CAP, Point, Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
+import { Instances } from "../../lib/game-engine/instances";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { approachLinear } from "../../lib/math/number";
 import { Unit } from "../../lib/math/number-alias-types";
@@ -10,6 +11,7 @@ import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { Mouse } from "../globals";
+import { LocalInteractive, mxnInteractive } from "../mixins/mxn-interactive";
 
 const [
     txMishaBody,
@@ -27,6 +29,9 @@ export function objMisha() {
         lookPriorityVector: [vnew(1, 0)],
         handRelativePositionVector: vnew(),
         pedometer: 0,
+        get pointerObj() {
+            return handObj;
+        },
     };
 
     function getLookVector() {
@@ -154,5 +159,10 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 stepObj.destroy();
                 mishaObj.objMisha.pedometer = 0;
             }
-        }, -1);
+        }, -1)
+        .step(() => {
+            const collidedObj = mishaObj.objMisha.pointerObj
+                .collidesOne(Instances(mxnInteractive, obj => obj.mxnInteractive.enabled));
+            LocalInteractive.value.focusedObj = collidedObj;
+        });
 }
