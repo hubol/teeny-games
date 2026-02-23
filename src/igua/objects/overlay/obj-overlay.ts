@@ -1,6 +1,7 @@
 import { Graphics, Rectangle } from "pixi.js";
 import { objText } from "../../../assets/fonts";
 import { container } from "../../../lib/pixi/container";
+import { mxnBoilDisplacement } from "../../mixins/mxn-boil-displacement";
 import { mxnBoilSeed } from "../../mixins/mxn-boil-seed";
 import { LocalInteractive } from "../../mixins/mxn-interactive";
 
@@ -17,7 +18,8 @@ function objInteractiveOverlay() {
         .XLargeIrregular("", { tint: 0xffffff })
         .anchored(0.5, 1)
         .mixin(mxnBoilSeed);
-    const highlightObj = new Graphics();
+    const highlightObj = new Graphics()
+        .mixin(mxnBoilDisplacement, { rate: 0.2, scale: 4 });
 
     return container(
         highlightObj,
