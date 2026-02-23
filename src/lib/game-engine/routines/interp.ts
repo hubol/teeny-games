@@ -1,6 +1,7 @@
 import { ColorSource } from "pixi.js";
 import { nlerp } from "../../math/number";
 import { Unit } from "../../math/number-alias-types";
+import { distance } from "../../math/vector";
 import { VectorSimple, vnew } from "../../math/vector-type";
 import { AdjustColor } from "../../pixi/adjust-color";
 import { PropertiesLike } from "../../types/properties-like";
@@ -157,6 +158,7 @@ export function interpvr(vector: VectorSimple) {
 
 type Interpv_Chain_Over = {
     over(ms: number): Coro.Predicate;
+    by(delta: number): Coro.Predicate;
 };
 
 type Interpv_Chain_ToTranslate = {
@@ -170,8 +172,8 @@ function vectorToFn<T>(
     round: boolean,
     factorFn?: FactorFn,
 ) {
-    const fn: Interpv_Chain_ToTranslate = (vector_x: VectorSimple | number, y?: number) => ({
-        over: (ms: number) => {
+    const fn: Interpv_Chain_ToTranslate = (vector_x: VectorSimple | number, y?: number) => {
+        const interpImpl = (ms?: number, delta?: number) => {
             let currentTick = 0;
 
             const startVector = vnew();
@@ -191,11 +193,18 @@ function vectorToFn<T>(
                     if (isTranslate) {
                         targetVector.add(startVector);
                     }
+
+                    if (delta !== undefined) {
+                        ms = (distance(startVector, targetVector) / delta) * (1000 / 60);
+                        if (isNaN(ms)) {
+                            ms = 0;
+                        }
+                    }
                 }
                 currentTick++;
                 // TODO Fixed FPS
                 const currentMs = (currentTick * 1000) / 60;
-                let factor = Math.min(currentMs / ms, 1);
+                let factor = Math.min(currentMs / ms!, 1);
 
                 if (factorFn) {
                     factor = factorFn(factor);
@@ -215,8 +224,12 @@ function vectorToFn<T>(
 
                 return factor >= 1;
             };
-        },
-    });
+        };
+        return {
+            over: (ms: number) => interpImpl(ms),
+            by: (delta: number) => interpImpl(undefined, delta),
+        };
+    };
 
     return fn;
 }
