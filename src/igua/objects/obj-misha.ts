@@ -1,5 +1,7 @@
 import { Graphics, LINE_CAP, Point, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { sleep } from "../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../lib/math/number";
 import { Unit } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
@@ -21,6 +23,7 @@ export function objMisha() {
         agapeUnit: 0 as Unit,
         lookPriorityVector: [vnew(1, 0)],
         handRelativePositionVector: vnew(),
+        pedometer: 0,
     };
 
     const legLeftObj = Sprite.from(txMishaLegLeft);
@@ -71,7 +74,28 @@ export function objMisha() {
             }),
     )
         .pivoted(35, 80)
-        .merge({ objMisha: api });
+        .merge({ objMisha: api })
+        .step(self => {
+            self.pivot.y = 80 + Math.round(Math.sin((api.pedometer / 15) * Math.PI));
+
+            const f = api.pedometer === 0 ? 0 : 1;
+
+            legLeftObj.pivot.y = approachLinear(
+                legLeftObj.pivot.y,
+                f * Math.round((Math.sin((api.pedometer / 15) * Math.PI) + 1) * 4),
+                1,
+            );
+
+            legLeftObj.pivot.x = Math.round(legLeftObj.pivot.y / 3);
+
+            legRightObj.pivot.y = approachLinear(
+                legRightObj.pivot.y,
+                f * Math.round((Math.sin((1 + api.pedometer / 15) * Math.PI) + 1) * 4),
+                1,
+            );
+
+            legRightObj.pivot.x = Math.round(legRightObj.pivot.y / -3);
+        });
 }
 
 type ObjMisha = ReturnType<typeof objMisha>;
@@ -85,5 +109,16 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 .at(Mouse)
                 .add(mishaObj, -1)
                 .add(mishaObj.pivot);
-        }, -1);
+        }, -1)
+        .coro(function* () {
+            while (true) {
+                const stepObj = container()
+                    .step(() => mishaObj.objMisha.pedometer += 1)
+                    .show();
+                yield sleep(2000);
+                stepObj.destroy();
+                mishaObj.objMisha.pedometer = 0;
+                yield sleep(1000);
+            }
+        });
 }
