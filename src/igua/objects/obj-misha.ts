@@ -1,4 +1,4 @@
-import { Graphics, Sprite } from "pixi.js";
+import { Graphics, LINE_CAP, Point, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Unit } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
@@ -14,6 +14,8 @@ const [
     txMishaFaceAgape,
 ] = Tx.Character.Misha.split({ width: 76 });
 
+const p = new Point();
+
 export function objMisha() {
     const api = {
         agapeUnit: 0 as Unit,
@@ -24,7 +26,7 @@ export function objMisha() {
     const legLeftObj = Sprite.from(txMishaLegLeft);
     const legRightObj = Sprite.from(txMishaLegRight);
 
-    const wristObj = container();
+    const handObj = Sprite.from(Tx.Character.MishaHand);
 
     return container(
         Sprite.from(txMishaBody),
@@ -41,11 +43,8 @@ export function objMisha() {
                     }
                 }
             }),
-        container(
-            Sprite.from(Tx.Character.MishaHand)
-                .pivoted(17, 0),
-            wristObj,
-        )
+        handObj
+            .pivoted(17, 0)
             .step(self => {
                 self.at(api.handRelativePositionVector);
                 if (api.handRelativePositionVector.x !== 0) {
@@ -53,6 +52,22 @@ export function objMisha() {
                 }
                 self.rotation = Math.PI / 2 - Math.round(vdir(api.handRelativePositionVector) * 4 / Math.PI) * Math.PI
                         / 4;
+            }),
+        new Graphics()
+            .step(self => {
+                handObj.transform.updateLocalTransform();
+                const { x, y } = handObj.localTransform.apply(p.at(23, 45), p);
+
+                self
+                    .clear()
+                    .lineStyle({ cap: LINE_CAP.ROUND, width: 10, color: 0x00AEEF })
+                    .moveTo(21, 57)
+                    .quadraticCurveTo(
+                        Math.round(x / (3 * 16)) * 16,
+                        Math.round(y / ((api.handRelativePositionVector.y < 0 ? -8 : 2) * 16)) * 16,
+                        x,
+                        y,
+                    );
             }),
     )
         .pivoted(35, 80)
@@ -70,5 +85,5 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 .at(Mouse)
                 .add(mishaObj, -1)
                 .add(mishaObj.pivot);
-        });
+        }, -1);
 }
