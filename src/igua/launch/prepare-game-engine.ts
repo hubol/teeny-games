@@ -1,4 +1,5 @@
 import { KeyListener } from "../../lib/browser/key-listener";
+import { MouseListener } from "../../lib/browser/mouse-listener";
 import { Animator } from "../../lib/game-engine/animator";
 import { AsshatTicker } from "../../lib/game-engine/asshat-ticker";
 import { setEngineConfig } from "../../lib/game-engine/engine-config";
@@ -24,8 +25,11 @@ export function prepareGameEngine(renderer: PixiRenderer) {
 
     const animator = new Animator(60);
 
-    setIguaGlobals(rootStage, keyListener, forceGameLoop, animator.start.bind(animator));
+    const mouseListener = new MouseListener(renderer.view);
+
+    setIguaGlobals(rootStage, keyListener, forceGameLoop, animator.start.bind(animator), mouseListener);
     keyListener.start();
+    mouseListener.start();
 
     function gameLoop() {
         do {
@@ -35,6 +39,7 @@ export function prepareGameEngine(renderer: PixiRenderer) {
             rootTicker.tick();
             Collision.recycleRectangles();
             keyListener.tick();
+            mouseListener.tick();
         }
         while (gameLoopForced);
 
