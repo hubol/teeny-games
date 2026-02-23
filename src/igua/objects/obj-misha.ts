@@ -1,5 +1,7 @@
-import { Graphics, LINE_CAP, Point, Sprite } from "pixi.js";
+import { DisplayObject, Graphics, LINE_CAP, Point, Sprite } from "pixi.js";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { Sound } from "../../lib/game-engine/audio/sound";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { approachLinear } from "../../lib/math/number";
 import { Unit } from "../../lib/math/number-alias-types";
@@ -38,8 +40,10 @@ export function objMisha() {
         return api.lookPriorityVector[0];
     }
 
-    const legLeftObj = Sprite.from(txMishaLegLeft);
-    const legRightObj = Sprite.from(txMishaLegRight);
+    const legLeftObj = Sprite.from(txMishaLegLeft)
+        .mixin(mxnPlayFootstepSfx, Sfx.Step0);
+    const legRightObj = Sprite.from(txMishaLegRight)
+        .mixin(mxnPlayFootstepSfx, Sfx.Step1);
 
     const legsObj = container(legLeftObj, legRightObj);
 
@@ -83,8 +87,6 @@ export function objMisha() {
         .pivoted(35, 80)
         .merge({ objMisha: api })
         .step(self => {
-            // self.pivot.y = 80 + Math.round(Math.sin((api.pedometer / 15) * Math.PI));
-
             const f = api.pedometer === 0 ? 0 : 1;
 
             legLeftObj.pivot.y = approachLinear(
@@ -105,6 +107,17 @@ export function objMisha() {
 
             legsObj.pivot.x = Math.round(getLookVector().x * 2);
         }, 1);
+}
+
+function mxnPlayFootstepSfx(obj: DisplayObject, sound: Sound) {
+    return obj
+        .coro(function* () {
+            while (true) {
+                yield () => obj.pivot.y > 0;
+                yield () => obj.pivot.y === 0;
+                obj.play(sound.rate(1, 1.2));
+            }
+        });
 }
 
 type ObjMisha = ReturnType<typeof objMisha>;
