@@ -1,4 +1,5 @@
 import { Graphics, Sprite } from "pixi.js";
+import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
 import { Tx } from "../../assets/textures";
 import { Jukebox } from "../core/igua-audio";
@@ -8,7 +9,7 @@ import { mxnMishaControlled, objMisha } from "../objects/obj-misha";
 
 export function scnMain() {
     Jukebox.play(Mzk.Mishang);
-    scene.style.backgroundTint = 0x280284;
+    const lvl = Lvl.Main();
 
     objMisha()
         .mixin(mxnMishaControlled)
@@ -16,8 +17,11 @@ export function scnMain() {
         .zIndexed(999)
         .show();
 
-    Sprite.from(Tx.Item.Skillet)
-        .at(300, 100)
-        .mixin(mxnInteractive, { text: "Take skillet" })
-        .show();
+    {
+        lvl.ItemSkillet.mixin(mxnInteractive, { text: "Take skillet" });
+    }
+
+    {
+        lvl.ItemWhiskyGlass.mixin(mxnInteractive, { text: "Take whisky glass" });
+    }
 }

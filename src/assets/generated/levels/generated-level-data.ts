@@ -7,6 +7,10 @@ import { Tx } from "../../../assets/textures";
 const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = OgmoFactory;
 
 export const Lvl = {
+  Main: () => {
+    applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
+    return { ItemSkillet: d(Tx.Item.Skillet, { x: 312, y: 120, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"), ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 352, y: 216, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals") };
+  },
   Placeholder: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x408000 });
     return {
@@ -26,5 +30,6 @@ export const Lvl = {
 };
 
 export namespace LvlType {
+  export type Main = ReturnType<(typeof Lvl)["Main"]>;
   export type Placeholder = ReturnType<(typeof Lvl)["Placeholder"]>;
 }
