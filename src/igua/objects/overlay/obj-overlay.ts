@@ -6,7 +6,7 @@ import { container } from "../../../lib/pixi/container";
 import { renderer } from "../../current-pixi-renderer";
 import { mxnBoilDisplacement } from "../../mixins/mxn-boil-displacement";
 import { mxnBoilSeed } from "../../mixins/mxn-boil-seed";
-import { LocalInteractive } from "../../mixins/mxn-interactive";
+import { LocalInteractive, MxnInteractive } from "../../mixins/mxn-interactive";
 
 export function objOverlay() {
     return container(
@@ -50,7 +50,7 @@ function objInteractiveOverlay() {
             highlightObj.drawRoundedRect(center.x - wh - 4, center.y - hh - 4, wh * 2 + 8, hh * 2 + 8, 8);
             textObj.at(center.x, center.y - hh - 10);
 
-            const targetText = focusedObj.mxnInteractive.text;
+            const targetText = getInteractiveText(focusedObj);
 
             if (textObj.text === targetText.substring(0, textObj.text.length)) {
                 if (textObj.text.length !== targetText.length) {
@@ -79,6 +79,15 @@ function objInteractiveOverlay() {
                 textObj.y -= textBounds.bottom - renderer.height;
             }
         });
+}
+
+function getInteractiveText(interactiveObj: MxnInteractive) {
+    const text = interactiveObj.mxnInteractive.text;
+    if (typeof text === "string") {
+        return text;
+    }
+
+    return text(LocalInteractive.value.mishaObj?.objMisha?.heldItem?.ref ?? null);
 }
 
 export type ObjOverlay = ReturnType<typeof objOverlay>;

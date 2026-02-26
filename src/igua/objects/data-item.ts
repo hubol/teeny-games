@@ -1,6 +1,7 @@
-import { DisplayObject, Resource, Texture } from "pixi.js";
+import { DisplayObject, Graphics, Resource, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
+import { container } from "../../lib/pixi/container";
 
 export abstract class Item {
     abstract readonly name: string;
@@ -17,7 +18,7 @@ export abstract class Item {
         }
         const result1 = item1.combine(item0) ?? { kind: "impossible" };
         if (result1.kind === "combined") {
-            return result1;
+            return { kind: "combined", description: result1.description, item0: result1.item1, item1: result1.item0 };
         }
         if (result1.kind === "failed") {
             return result1;
@@ -30,11 +31,17 @@ namespace Item {
     export type CombineResult =
         | { kind: "impossible" }
         | { kind: "failed"; reason: string }
-        | { kind: "combined"; description: string; item0: Item; item1: Item };
+        | { kind: "combined"; description: string; item0: Item | null; item1: Item | null };
 }
 
 function objDummy(name: string) {
-    return () => objText.Medium(name).anchored(0.5, 0.5);
+    return () =>
+        container(
+            new Graphics().beginFill(0x000000).drawCircle(15, 15, 30),
+            objText.Medium(name)
+                .at(15, 15)
+                .anchored(0.5, 0.5),
+        );
 }
 
 class Potato extends Item {

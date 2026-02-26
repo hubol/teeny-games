@@ -1,14 +1,18 @@
 import { DisplayObject } from "pixi.js";
 import { SceneLocal } from "../../lib/game-engine/scene-local";
 import { Null } from "../../lib/types/null";
+import { Item } from "../objects/data-item";
+import { ObjMisha } from "../objects/obj-misha";
 
 interface MxnInteractiveApi {
     enabled: boolean;
-    text: string;
+    text: string | ((heldItem: Item | null) => string);
+    interact: (heldItem: { ref: Item | null }) => void;
 }
 
 export const LocalInteractive = new SceneLocal(() => ({
     focusedObj: Null<MxnInteractive>(),
+    mishaObj: Null<ObjMisha>(),
 }), "LocalInteractive");
 
 export function mxnInteractive(obj: DisplayObject, partialApi: Partial<MxnInteractiveApi> = {}) {
@@ -18,6 +22,9 @@ export function mxnInteractive(obj: DisplayObject, partialApi: Partial<MxnIntera
     if (partialApi.text === undefined) {
         partialApi.text = "";
     }
+    if (partialApi.interact === undefined) {
+        partialApi.interact = () => {};
+    }
     const api = partialApi as MxnInteractiveApi;
 
     return obj
@@ -25,4 +32,4 @@ export function mxnInteractive(obj: DisplayObject, partialApi: Partial<MxnIntera
         .track(mxnInteractive);
 }
 
-type MxnInteractive = ReturnType<typeof mxnInteractive>;
+export type MxnInteractive = ReturnType<typeof mxnInteractive>;

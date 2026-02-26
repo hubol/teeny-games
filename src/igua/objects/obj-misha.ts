@@ -144,9 +144,11 @@ function mxnPlayFootstepSfx(obj: DisplayObject, sound: Sound) {
         });
 }
 
-type ObjMisha = ReturnType<typeof objMisha>;
+export type ObjMisha = ReturnType<typeof objMisha>;
 
 export function mxnMishaControlled(mishaObj: ObjMisha) {
+    LocalInteractive.value.mishaObj = mishaObj;
+
     let targetPosition = Null<Vector>();
 
     return mishaObj
@@ -163,10 +165,8 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 yield () => Mouse.justWentDown;
                 yield () => !Mouse.isDown;
 
-                if (LocalInteractive.value.focusedObj?.is(objItem)) {
-                    mishaObj.objMisha.heldItem.ref = LocalInteractive.value.focusedObj.mxnItem.item;
-                    LocalInteractive.value.focusedObj.destroy();
-                    LocalInteractive.value.focusedObj = null;
+                if (LocalInteractive.value.focusedObj) {
+                    LocalInteractive.value.focusedObj.mxnInteractive.interact(mishaObj.objMisha.heldItem);
                 }
                 else {
                     targetPosition = vnew(Mouse);
