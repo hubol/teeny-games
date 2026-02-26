@@ -589,7 +589,9 @@
             "Lighter",
             "Egg",
             "MixingBowl",
-            "Scooper"
+            "Scooper",
+            "Flour",
+            "HalfCup"
           ],
           "defaults": 0
         },

@@ -170,6 +170,26 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Scooper", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 12,
+          "_eid": "09222736",
+          "x": 64,
+          "y": 344,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Flour", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 13,
+          "_eid": "09222736",
+          "x": 368,
+          "y": 344,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "HalfCup", "name": ""}
         }
       ]
     },

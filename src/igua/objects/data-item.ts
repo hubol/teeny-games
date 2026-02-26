@@ -387,6 +387,43 @@ class Scooper extends Item {
     }
 }
 
+class Flour extends Item {
+    name = "Bagged Flour";
+    view = Tx.Item.Flour;
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Scooper) {
+            return "Incorrect measurement.";
+        }
+
+        if (item1 instanceof HalfCup) {
+            if (item1.state.hasFlour) {
+                return "Already full.";
+            }
+
+            return {
+                description: "Scoop flour",
+                item0: new Flour(),
+                item1: new HalfCup({ ...item1.state, hasFlour: true }),
+            };
+        }
+    }
+}
+
+class HalfCup extends Item {
+    constructor(readonly state = { hasFlour: false }) {
+        super();
+    }
+
+    get name() {
+        return this.state.hasFlour ? "Half Cup Flour" : "Half Cup";
+    }
+
+    get view() {
+        return this.state.hasFlour ? Tx.Item.HalfCupFlour : Tx.Item.HalfCup;
+    }
+}
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
@@ -400,6 +437,8 @@ export namespace DataItem {
         Egg,
         MixingBowl,
         Scooper,
+        Flour,
+        HalfCup,
     };
 
     export type Id = keyof typeof Manifest;
