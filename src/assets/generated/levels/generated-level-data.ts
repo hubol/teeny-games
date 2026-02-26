@@ -9,7 +9,7 @@ const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = Og
 export const Lvl = {
   Main: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
-    return { ItemSkillet: d(Tx.Item.Skillet, { x: 312, y: 120, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"), ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 408, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals") };
+    return { ItemSkillet: d(Tx.Item.Skillet, { x: 312, y: 120, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"), ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 408, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"), ItemBox: d(Tx.Item.Box, { x: 100, y: 236, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals") };
   },
   Placeholder: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x408000 });
