@@ -3,20 +3,30 @@ import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { container } from "../../lib/pixi/container";
 
+function prepareCombineResultForPublic(result: Item.Protected.CombineResult): Item.CombineResult {
+    if (!result) {
+        return { kind: "impossible" };
+    }
+    if (typeof result === "string") {
+        return { kind: "failed", reason: result };
+    }
+    return { kind: "combined", ...result };
+}
+
 export abstract class Item {
     abstract readonly name: string;
     abstract readonly view: Texture | (() => DisplayObject);
 
     /** Should be implemented to NOT mutate state */
-    protected combine(item1: Item): Item.CombineResult | void {
+    protected combine(item1: Item): Item.Protected.CombineResult {
     }
 
     static combine(item0: Item, item1: Item): Item.CombineResult {
-        const result0 = item0.combine(item1) ?? { kind: "impossible" };
+        const result0 = prepareCombineResultForPublic(item0.combine(item1));
         if (result0.kind === "combined") {
             return result0;
         }
-        const result1 = item1.combine(item0) ?? { kind: "impossible" };
+        const result1 = prepareCombineResultForPublic(item1.combine(item0));
         if (result1.kind === "combined") {
             return { kind: "combined", description: result1.description, item0: result1.item1, item1: result1.item0 };
         }
@@ -28,6 +38,13 @@ export abstract class Item {
 }
 
 namespace Item {
+    export namespace Protected {
+        export type CombineResult =
+            | { description: string; item0: Item | null; item1: Item | null }
+            | string
+            | void;
+    }
+
     export type CombineResult =
         | { kind: "impossible" }
         | { kind: "failed"; reason: string }
@@ -61,40 +78,29 @@ class Potato extends Item {
         return "Potato";
     }
 
-    protected combine(item1: Item): void | Item.CombineResult {
+    protected combine(item1: Item) {
         if (item1 instanceof Peeler) {
             if (!this.state.peeled) {
                 return {
-                    kind: "combined",
                     description: "Peel potato",
                     item0: new Potato({ ...this.state, peeled: true }),
                     item1,
                 };
             }
-            return {
-                kind: "failed",
-                reason: "Already peeled.",
-            };
+            return "Already peeled.";
         }
         if (item1 instanceof Grater) {
             if (!this.state.peeled) {
-                return {
-                    kind: "failed",
-                    reason: "Grate first.",
-                };
+                return "Grate first.";
             }
             if (!this.state.shredded) {
                 return {
-                    kind: "combined",
                     description: "Grate potato",
                     item0: new Potato({ ...this.state, shredded: true }),
                     item1,
                 };
             }
-            return {
-                kind: "failed",
-                reason: "Already grated.",
-            };
+            return "Already grated.";
         }
     }
 
@@ -107,6 +113,55 @@ class Potato extends Item {
         }
         return Potato.txs[0];
     }
+}
+
+class Garlic extends Item {
+    constructor(readonly state = { smashed: false, grated: false }) {
+        super();
+    }
+
+    get name() {
+        if (this.state.grated) {
+            return "Fine Garlic";
+        }
+        if (this.state.smashed) {
+            return "Smashed Garlic";
+        }
+        return "Garlic";
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Hammer) {
+            if (this.state.smashed) {
+                return "Already smashed.";
+            }
+            return {
+                description: "Smash garlic",
+                item0: new Garlic({ ...this.state, smashed: true }),
+                item1,
+            };
+        }
+        if (item1 instanceof Grater) {
+            if (!this.state.smashed) {
+                return "Smash first.";
+            }
+            if (this.state.grated) {
+                return "Already grated.";
+            }
+            return {
+                description: "Grate garlic",
+                item0: new Garlic({ ...this.state, grated: true }),
+                item1,
+            };
+        }
+    }
+
+    view = objDummy("garlic");
+}
+
+class Hammer extends Item {
+    name = "Hammer";
+    view = objDummy("hammer");
 }
 
 class Peeler extends Item {
@@ -124,6 +179,8 @@ export namespace DataItem {
         Potato,
         Peeler,
         Grater,
+        Garlic,
+        Hammer,
     };
 
     export type Id = keyof typeof Manifest;
