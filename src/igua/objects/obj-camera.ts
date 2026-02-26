@@ -3,11 +3,12 @@ import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
+import { LocalInteractive } from "../mixins/mxn-interactive";
 import { StepOrder } from "./step-order";
 
 type CameraMode = "follow_player";
 
-function getCameraPositionToFrameSubject(vector: DisplayObject | Vector, subjectObj: DisplayObject) {
+function getCameraPositionToFrameSubject(vector: DisplayObject | Vector, subjectObj: DisplayObject | null) {
     if (subjectObj && !subjectObj.destroyed) {
         vector.at(subjectObj).add(-renderer.width / 2, -renderer.height / 2);
         vector.x = Math.max(0, Math.min(vector.x, scene.level.width - renderer.width));
@@ -24,7 +25,7 @@ export function objCamera() {
     // TODO not sure if mode should be exposed...
     const obj = container().merge({ mode: <CameraMode> "follow_player" }).step(self => {
         if (self.mode === "follow_player") {
-            // getCameraPositionToFrameSubject(self, playerObj);
+            getCameraPositionToFrameSubject(self, LocalInteractive.value.mishaObj);
         }
 
         // TODO switch for this?

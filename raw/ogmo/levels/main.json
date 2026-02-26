@@ -1,7 +1,7 @@
 {
   "ogmoVersion": "3.4.0-hubol",
-  "width": 500,
-  "height": 280,
+  "width": 744,
+  "height": 440,
   "offsetX": 0,
   "offsetY": 0,
   "values": {"Terrain Color": "#000000"},
@@ -14,8 +14,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 93,
+      "gridCellsY": 55,
       "entities": []
     },
     {
@@ -25,8 +25,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 93,
+      "gridCellsY": 55,
       "entities": []
     },
     {
@@ -36,8 +36,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 93,
+      "gridCellsY": 55,
       "decals": [],
       "folder": "../textures"
     },
@@ -48,8 +48,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 93,
+      "gridCellsY": 55,
       "entities": [
         {
           "name": "Item",
@@ -130,8 +130,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 93,
+      "gridCellsY": 55,
       "decals": [
         {
           "x": 408,

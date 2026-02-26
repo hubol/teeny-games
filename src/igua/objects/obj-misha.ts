@@ -16,6 +16,7 @@ import { LocalInteractive, mxnInteractive } from "../mixins/mxn-interactive";
 import { mxnItem } from "../mixins/mxn-item";
 import { Item } from "./data-item";
 import { objItem } from "./obj-item";
+import { StepOrder } from "./step-order";
 
 const [
     txMishaBody,
@@ -154,13 +155,17 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
 
     return mishaObj
         .step(() => {
-            const lookVector = mishaObj.objMisha.lookPriorityVector[0].at(Mouse).add(mishaObj, -1);
+            const lookVector = mishaObj.objMisha.lookPriorityVector[0]
+                .at(Mouse)
+                .add(scene.camera)
+                .add(mishaObj, -1);
             lookVector.vlength = Math.min(1, lookVector.vlength / 16);
             mishaObj.objMisha.handRelativePositionVector
                 .at(Mouse)
                 .add(mishaObj, -1)
-                .add(mishaObj.pivot);
-        })
+                .add(mishaObj.pivot)
+                .add(scene.camera);
+        }, StepOrder.Camera)
         .coro(function* () {
             const padding = 10;
 
@@ -188,7 +193,7 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                     mishaObj.objMisha.heldItem.ref = null;
                 }
                 else {
-                    targetPosition = vnew(Mouse);
+                    targetPosition = vnew(Mouse).add(scene.camera);
                 }
             }
         }, -1)

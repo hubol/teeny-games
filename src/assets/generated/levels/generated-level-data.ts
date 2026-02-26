@@ -8,7 +8,7 @@ const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = Og
 
 export const Lvl = {
   Main: () => {
-    applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
+    applyLevel({ width: 744, height: 440, backgroundTint: 0x20154f });
     return {
       ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 408, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
       ItemBox: d(Tx.Item.Box, { x: 100, y: 236, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
