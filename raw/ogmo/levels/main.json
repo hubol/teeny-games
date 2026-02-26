@@ -120,6 +120,26 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Garlic", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 7,
+          "_eid": "09222736",
+          "x": 648,
+          "y": 208,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Cigarette", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 8,
+          "_eid": "09222736",
+          "x": 504,
+          "y": 336,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Lighter", "name": ""}
         }
       ]
     },

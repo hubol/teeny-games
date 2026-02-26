@@ -1,6 +1,9 @@
-import { DisplayObject, Graphics, Resource, Texture } from "pixi.js";
+import { DisplayObject, Graphics, Rectangle, Resource, Sprite, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
+import { factor, interpvr } from "../../lib/game-engine/routines/interp";
+import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 
 function prepareCombineResultForPublic(result: Item.Protected.CombineResult): Item.CombineResult {
@@ -179,6 +182,62 @@ class Skillet extends Item {
     view = Tx.Item.Skillet;
 }
 
+class Cigarette extends Item {
+    private static readonly objCigaretteLit = () =>
+        Sprite.from(Tx.Item.CigaretteLit)
+            .coro(function* (self) {
+                while (true) {
+                    const smokeObj = Sprite.from(Tx.Item.Smoke)
+                        .anchored(0.5, 1)
+                        .at(self.getWorldPosition())
+                        .add(66, 6)
+                        .zIndexed(9999)
+                        .coro(function* (self) {
+                            yield interpvr(self)
+                                .steps(5)
+                                .translate(0, -40)
+                                .over(Rng.intc(200, 400));
+
+                            self.destroy();
+                        })
+                        .step(self => self.alpha -= 0.005)
+                        .show();
+
+                    yield () => smokeObj.destroyed;
+                }
+            });
+
+    constructor(readonly state = { lit: false }) {
+        super();
+    }
+
+    name = "Cigarette";
+    get view() {
+        return this.state.lit
+            ? Cigarette.objCigaretteLit
+            : Tx.Item.Cigarette;
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Lighter) {
+            if (this.state.lit) {
+                return "Already lit.";
+            }
+
+            return {
+                description: "Light cigarette",
+                item0: new Cigarette({ ...this.state, lit: true }),
+                item1,
+            };
+        }
+    }
+}
+
+class Lighter extends Item {
+    name = "Lighter";
+    view = Tx.Item.Lighter;
+}
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
@@ -187,6 +246,8 @@ export namespace DataItem {
         Garlic,
         Hammer,
         Skillet,
+        Cigarette,
+        Lighter,
     };
 
     export type Id = keyof typeof Manifest;

@@ -19,6 +19,8 @@ export const Lvl = {
       Item_4: e(r["Item"], { x: 336, y: 224, values: { itemId: "Grater", name: "" } }, "Entities"),
       Item_5: e(r["Item"], { x: 272, y: 168, values: { itemId: "Hammer", name: "" } }, "Entities"),
       Item_6: e(r["Item"], { x: 424, y: 88, values: { itemId: "Garlic", name: "" } }, "Entities"),
+      Item_7: e(r["Item"], { x: 648, y: 208, values: { itemId: "Cigarette", name: "" } }, "Entities"),
+      Item_8: e(r["Item"], { x: 504, y: 336, values: { itemId: "Lighter", name: "" } }, "Entities"),
     };
   },
   Placeholder: () => {

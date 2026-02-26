@@ -584,7 +584,9 @@
             "Grater",
             "Garlic",
             "Hammer",
-            "Skillet"
+            "Skillet",
+            "Cigarette",
+            "Lighter"
           ],
           "defaults": 0
         },
