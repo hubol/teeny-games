@@ -12,6 +12,9 @@ import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { Mouse } from "../globals";
 import { LocalInteractive, mxnInteractive } from "../mixins/mxn-interactive";
+import { mxnItem } from "../mixins/mxn-item";
+import { Item } from "./data-item";
+import { objItem } from "./obj-item";
 
 const [
     txMishaBody,
@@ -24,6 +27,7 @@ const [
 const p = new Point();
 
 export function objMisha() {
+    const heldItem = { ref: Null<Item>() };
     const api = {
         agapeUnit: 0 as Unit,
         lookPriorityVector: [vnew(1, 0)],
@@ -31,6 +35,9 @@ export function objMisha() {
         pedometer: 0,
         get pointerObj() {
             return pointerObj;
+        },
+        get heldItem() {
+            return heldItem;
         },
     };
 
@@ -60,6 +67,8 @@ export function objMisha() {
         .invisible()
         .show(handObj);
 
+    const heldItemObj = container().mixin(mxnItem, api.heldItem, [0.5, 0.5]);
+
     return container(
         Sprite.from(txMishaBody),
         legsObj,
@@ -77,23 +86,27 @@ export function objMisha() {
                 }
                 self.rotation = Math.PI / 2 - Math.round(vdir(api.handRelativePositionVector) * 4 / Math.PI) * Math.PI
                         / 4;
+                self.texture = api.heldItem.ref ? Tx.Character.MishaHandOpened : Tx.Character.MishaHand;
             }, 2),
         new Graphics()
             .step(self => {
                 handObj.transform.updateLocalTransform();
-                const { x, y } = handObj.localTransform.apply(p.at(23, 45), p);
+                const palmPosition = handObj.localTransform.apply(p.at(24, 30), p);
+                heldItemObj.at(palmPosition);
+                const wristPosition = handObj.localTransform.apply(p.at(23, 45), p);
 
                 self
                     .clear()
                     .lineStyle({ cap: LINE_CAP.ROUND, width: 10, color: 0x00AEEF })
                     .moveTo(21, 57)
                     .quadraticCurveTo(
-                        Math.round(x / (3 * 16)) * 16,
-                        Math.round(y / ((api.handRelativePositionVector.y < 0 ? -8 : 2) * 16)) * 16,
-                        x,
-                        y,
+                        Math.round(wristPosition.x / (3 * 16)) * 16,
+                        Math.round(wristPosition.y / ((api.handRelativePositionVector.y < 0 ? -8 : 2) * 16)) * 16,
+                        wristPosition.x,
+                        wristPosition.y,
                     );
             }, 2),
+        heldItemObj,
     )
         .pivoted(35, 80)
         .merge({ objMisha: api })
@@ -150,7 +163,14 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 yield () => Mouse.justWentDown;
                 yield () => !Mouse.isDown;
 
-                targetPosition = vnew(Mouse);
+                if (LocalInteractive.value.focusedObj?.is(objItem)) {
+                    mishaObj.objMisha.heldItem.ref = LocalInteractive.value.focusedObj.mxnItem.item;
+                    LocalInteractive.value.focusedObj.destroy();
+                    LocalInteractive.value.focusedObj = null;
+                }
+                else {
+                    targetPosition = vnew(Mouse);
+                }
             }
         }, -1)
         .coro(function* () {

@@ -2,7 +2,7 @@ import { DisplayObject, Resource, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 
-abstract class Item {
+export abstract class Item {
     abstract readonly name: string;
     abstract readonly view: Texture | (() => DisplayObject);
 
