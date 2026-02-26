@@ -1,14 +1,19 @@
+import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { mxnInteractive } from "../mixins/mxn-interactive";
 import { mxnItem } from "../mixins/mxn-item";
 import { DataItem, Item } from "./data-item";
 
-export function objItem(itemId: DataItem.Id) {
-    const item = { ref: new DataItem.Manifest[itemId]() as Item };
+export function objItem(itemOrId: DataItem.Id | Item, pivotUnit: VectorSimple = vnew()) {
+    const item = {
+        ref: itemOrId instanceof Item
+            ? itemOrId
+            : new DataItem.Manifest[itemOrId](),
+    };
 
     const obj = container();
     return obj
-        .mixin(mxnItem, item, [0, 0])
+        .mixin(mxnItem, item, pivotUnit)
         .mixin(
             mxnInteractive,
             {

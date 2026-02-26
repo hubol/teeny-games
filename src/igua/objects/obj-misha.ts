@@ -10,7 +10,7 @@ import { vdir } from "../../lib/math/vector";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
-import { Mouse } from "../globals";
+import { Mouse, scene } from "../globals";
 import { LocalInteractive, mxnInteractive } from "../mixins/mxn-interactive";
 import { mxnItem } from "../mixins/mxn-item";
 import { Item } from "./data-item";
@@ -167,6 +167,13 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
 
                 if (LocalInteractive.value.focusedObj) {
                     LocalInteractive.value.focusedObj.mxnInteractive.interact(mishaObj.objMisha.heldItem);
+                }
+                else if (mishaObj.objMisha.heldItem.ref) {
+                    objItem(mishaObj.objMisha.heldItem.ref, [0.5, 0.5])
+                        .at(scene.camera)
+                        .add(Mouse)
+                        .show();
+                    mishaObj.objMisha.heldItem.ref = null;
                 }
                 else {
                     targetPosition = vnew(Mouse);
