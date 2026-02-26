@@ -10,6 +10,7 @@ import { vdir } from "../../lib/math/vector";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
+import { renderer } from "../current-pixi-renderer";
 import { Mouse, scene } from "../globals";
 import { LocalInteractive, mxnInteractive } from "../mixins/mxn-interactive";
 import { mxnItem } from "../mixins/mxn-item";
@@ -161,9 +162,20 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 .add(mishaObj.pivot);
         })
         .coro(function* () {
+            const padding = 10;
+
             while (true) {
                 yield () => Mouse.justWentDown;
                 yield () => !Mouse.isDown;
+
+                if (
+                    Mouse.x < -padding
+                    || Mouse.y < -padding
+                    || Mouse.x > renderer.width + padding
+                    || Mouse.y > renderer.height + padding
+                ) {
+                    continue;
+                }
 
                 if (LocalInteractive.value.focusedObj) {
                     LocalInteractive.value.focusedObj.mxnInteractive.interact(mishaObj.objMisha.heldItem);
