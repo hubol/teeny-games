@@ -76,6 +76,26 @@ class Potato extends Item {
                 reason: "Already peeled.",
             };
         }
+        if (item1 instanceof Grater) {
+            if (!this.state.peeled) {
+                return {
+                    kind: "failed",
+                    reason: "Grate first.",
+                };
+            }
+            if (!this.state.shredded) {
+                return {
+                    kind: "combined",
+                    description: "Grate potato",
+                    item0: new Potato({ ...this.state, shredded: true }),
+                    item1,
+                };
+            }
+            return {
+                kind: "failed",
+                reason: "Already grated.",
+            };
+        }
     }
 
     get view() {
@@ -94,10 +114,16 @@ class Peeler extends Item {
     view = objDummy("peeler");
 }
 
+class Grater extends Item {
+    name = "Grater";
+    view = objDummy("grater");
+}
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
         Peeler,
+        Grater,
     };
 
     export type Id = keyof typeof Manifest;

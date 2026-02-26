@@ -29,5 +29,6 @@ export function scnMain() {
     {
         objItem("Potato").at(50, 50).show();
         objItem("Peeler").at(100, 100).show();
+        objItem("Grater").at(200, 200).show();
     }
 }
