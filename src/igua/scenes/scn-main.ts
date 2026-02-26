@@ -32,5 +32,6 @@ export function scnMain() {
         objItem("Grater").at(200, 200).show();
         objItem("Garlic").at(300, 200).show();
         objItem("Hammer").at(400, 100).show();
+        objItem("Skillet").at(450, 80).show();
     }
 }

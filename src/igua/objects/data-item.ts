@@ -174,6 +174,11 @@ class Grater extends Item {
     view = objDummy("grater");
 }
 
+class Skillet extends Item {
+    name = "Skillet";
+    view = Tx.Item.Skillet;
+}
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
@@ -181,6 +186,7 @@ export namespace DataItem {
         Grater,
         Garlic,
         Hammer,
+        Skillet,
     };
 
     export type Id = keyof typeof Manifest;
