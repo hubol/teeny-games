@@ -140,6 +140,16 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Lighter", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 9,
+          "_eid": "09222736",
+          "x": 232,
+          "y": 368,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Egg", "name": ""}
         }
       ]
     },

@@ -238,6 +238,34 @@ class Lighter extends Item {
     view = Tx.Item.Lighter;
 }
 
+class Egg extends Item {
+    constructor(readonly state = { broken: false }) {
+        super();
+    }
+
+    get name() {
+        return this.state.broken ? "Broken Egg" : "Egg";
+    }
+
+    get view() {
+        return this.state.broken ? Tx.Item.EggBroken : Tx.Item.Egg;
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Hammer) {
+            if (this.state.broken) {
+                return "Already broken.";
+            }
+
+            return {
+                description: "Break egg",
+                item0: new Egg({ ...this.state, broken: true }),
+                item1,
+            };
+        }
+    }
+}
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
@@ -248,6 +276,7 @@ export namespace DataItem {
         Skillet,
         Cigarette,
         Lighter,
+        Egg,
     };
 
     export type Id = keyof typeof Manifest;
