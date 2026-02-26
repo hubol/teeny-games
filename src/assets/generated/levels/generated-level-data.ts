@@ -9,7 +9,14 @@ const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = Og
 export const Lvl = {
   Main: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
-    return { ItemSkillet: d(Tx.Item.Skillet, { x: 312, y: 120, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"), ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 408, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"), ItemBox: d(Tx.Item.Box, { x: 100, y: 236, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals") };
+    return {
+      ItemSkillet: d(Tx.Item.Skillet, { x: 312, y: 120, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 408, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      ItemBox: d(Tx.Item.Box, { x: 100, y: 236, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      Item: e(r["Item"], { x: 224, y: 224, values: { itemId: "Potato", name: "" } }, "Entities"),
+      Item_1: e(r["Item"], { x: 304, y: 224, values: { itemId: "Potato", name: "" } }, "Entities"),
+      Item_2: e(r["Item"], { x: 392, y: 176, values: { itemId: "Potato", name: "" } }, "Entities"),
+    };
   },
   Placeholder: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x408000 });

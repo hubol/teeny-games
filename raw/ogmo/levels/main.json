@@ -4,8 +4,8 @@
   "height": 280,
   "offsetX": 0,
   "offsetY": 0,
-  "backgroundColor": "#20154f",
   "values": {"Terrain Color": "#000000"},
+  "backgroundColor": "#20154f",
   "layers": [
     {
       "name": "MarkerEntities",
@@ -50,7 +50,38 @@
       "gridCellHeight": 8,
       "gridCellsX": 64,
       "gridCellsY": 35,
-      "entities": []
+      "entities": [
+        {
+          "name": "Item",
+          "id": 0,
+          "_eid": "09222736",
+          "x": 224,
+          "y": 224,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Potato", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 1,
+          "_eid": "09222736",
+          "x": 304,
+          "y": 224,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Potato", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 2,
+          "_eid": "09222736",
+          "x": 392,
+          "y": 176,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Potato", "name": ""}
+        }
+      ]
     },
     {
       "name": "BackDecals",
@@ -72,7 +103,8 @@
           "texture": "item/skillet.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 408,
@@ -84,7 +116,8 @@
           "texture": "item/whisky glass.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 100,
@@ -96,7 +129,8 @@
           "texture": "item/box.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         }
       ],
       "folder": "../textures"

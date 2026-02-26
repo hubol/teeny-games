@@ -2,10 +2,13 @@ import { Graphics, Rectangle, Sprite } from "pixi.js";
 import { objText } from "../../../assets/fonts";
 import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
+import { Environment } from "../../../lib/environment";
 import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../../lib/math/number";
 import { container } from "../../../lib/pixi/container";
 import { renderer } from "../../current-pixi-renderer";
+import { devUpdateOgmoProject } from "../../dev/dev-update-ogmo-project";
+import { Key } from "../../globals";
 import { mxnBoilDisplacement } from "../../mixins/mxn-boil-displacement";
 import { mxnBoilSeed } from "../../mixins/mxn-boil-seed";
 import { LocalInteractive, MxnInteractive } from "../../mixins/mxn-interactive";
@@ -36,6 +39,10 @@ export function objOverlay() {
         objInteractiveOverlay(),
         errorsObj,
     )
+        .coro(function* () {
+            yield () => Environment.isDev && Key.isDown("ShiftLeft") && Key.justWentDown("KeyZ");
+            setTimeout(devUpdateOgmoProject);
+        })
         .merge(api);
 }
 

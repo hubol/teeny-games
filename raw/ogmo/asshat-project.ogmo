@@ -1,74 +1,143 @@
 {
   "name": "Asshat Project",
   "ogmoVersion": "3.4.0-hubol",
-  "levelPaths": ["./levels"],
+  "levelPaths": [
+    "./levels"
+  ],
   "backgroundColor": "#408000",
   "gridColor": "#3c4049cc",
   "anglesRadians": false,
   "directoryDepth": 5,
-  "layerGridDefaultSize": {"x": 8, "y": 8},
-  "levelDefaultSize": {"x": 256, "y": 256},
-  "levelMinSize": {"x": 500, "y": 280},
-  "levelMaxSize": {"x": 4096, "y": 4096},
+  "layerGridDefaultSize": {
+    "x": 8,
+    "y": 8
+  },
+  "levelDefaultSize": {
+    "x": 256,
+    "y": 256
+  },
+  "levelMinSize": {
+    "x": 500,
+    "y": 280
+  },
+  "levelMaxSize": {
+    "x": 4096,
+    "y": 4096
+  },
   "levelValues": [
-    {"name": "Terrain Color", "definition": "RGB", "display": 0, "defaults": "#000000"}
+    {
+      "name": "Terrain Color",
+      "definition": "RGB",
+      "display": 0,
+      "defaults": "#000000"
+    }
   ],
   "defaultExportMode": ".json",
   "compactExport": false,
   "externalScript": "asshat-project.js",
   "playCommand": "",
-  "entityTags": ["Terrain", "Marker", "Region"],
+  "entityTags": [
+    "Terrain",
+    "Marker",
+    "Region"
+  ],
   "layers": [
     {
       "definition": "entity",
       "name": "MarkerEntities",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {
+        "x": 8,
+        "y": 8
+      },
       "exportID": "73166939",
-      "requiredTags": ["Marker"],
+      "requiredTags": [
+        "Marker"
+      ],
       "excludedTags": []
     },
     {
       "definition": "entity",
       "name": "RegionEntities",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {
+        "x": 8,
+        "y": 8
+      },
       "exportID": "01831167",
-      "requiredTags": ["Region"],
+      "requiredTags": [
+        "Region"
+      ],
       "excludedTags": []
     },
     {
       "definition": "decal",
       "name": "FrontDecals",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {
+        "x": 8,
+        "y": 8
+      },
       "exportID": "17577176",
       "folder": "../textures",
       "includeImageSequence": true,
       "scaleable": true,
       "rotatable": true,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": null, "useDefaultTint": false},
+      "tintable": {
+        "enabled": true,
+        "defaultTint": "#ffffff",
+        "rgbLevelValueName": "",
+        "useDefaultTint": false
+      },
       "values": [
-        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        }
       ]
     },
     {
       "definition": "entity",
       "name": "Entities",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {
+        "x": 8,
+        "y": 8
+      },
       "exportID": "93086020",
       "requiredTags": [],
-      "excludedTags": ["Marker", "Region"]
+      "excludedTags": [
+        "Marker",
+        "Region"
+      ]
     },
     {
       "definition": "decal",
       "name": "BackDecals",
-      "gridSize": {"x": 8, "y": 8},
+      "gridSize": {
+        "x": 8,
+        "y": 8
+      },
       "exportID": "64691217",
       "folder": "../textures",
       "includeImageSequence": true,
       "scaleable": true,
       "rotatable": true,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": null, "useDefaultTint": true},
+      "tintable": {
+        "enabled": true,
+        "defaultTint": "#ffffff",
+        "rgbLevelValueName": "",
+        "useDefaultTint": true
+      },
       "values": [
-        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        }
       ]
     }
   ],
@@ -77,24 +146,51 @@
       "exportID": "93117141",
       "name": "Block",
       "limit": -1,
-      "size": {"x": 16, "y": 16},
-      "origin": {"x": 0, "y": 0},
+      "size": {
+        "x": 16,
+        "y": 16
+      },
+      "origin": {
+        "x": 0,
+        "y": 0
+      },
       "originAnchored": true,
       "shape": {
         "label": "Rectangle",
         "points": [
-          {"x": -1, "y": -1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": 1}
+          {
+            "x": -1,
+            "y": -1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          }
         ]
       },
       "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {
+        "x": 16,
+        "y": 16
+      },
       "resizeableX": true,
       "resizeableY": true,
       "rotatable": false,
@@ -108,36 +204,82 @@
       "nodeLimit": 0,
       "nodeDisplay": 0,
       "nodeGhost": true,
-      "tags": ["Terrain"],
+      "tags": [
+        "Terrain"
+      ],
       "values": [
-        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true},
-        {"name": "visible", "definition": "Boolean", "display": 0, "defaults": true}
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        },
+        {
+          "name": "visible",
+          "definition": "Boolean",
+          "display": 0,
+          "defaults": true
+        }
       ],
       "isRegion": false,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": "Terrain Color", "useDefaultTint": false}
+      "tintable": {
+        "enabled": true,
+        "defaultTint": "#ffffff",
+        "rgbLevelValueName": "Terrain Color",
+        "useDefaultTint": false
+      }
     },
     {
       "exportID": "95675713",
       "name": "Slope",
       "limit": -1,
-      "size": {"x": 32, "y": 32},
-      "origin": {"x": 0, "y": 0},
+      "size": {
+        "x": 32,
+        "y": 32
+      },
+      "origin": {
+        "x": 0,
+        "y": 0
+      },
       "originAnchored": false,
       "shape": {
         "label": "Rectangle",
         "points": [
-          {"x": -1, "y": -1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": 1}
+          {
+            "x": -1,
+            "y": -1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          }
         ]
       },
       "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {
+        "x": 16,
+        "y": 16
+      },
       "resizeableX": true,
       "resizeableY": true,
       "rotatable": false,
@@ -151,13 +293,32 @@
       "nodeLimit": 0,
       "nodeDisplay": 0,
       "nodeGhost": true,
-      "tags": ["Terrain"],
+      "tags": [
+        "Terrain"
+      ],
       "values": [
-        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true},
-        {"name": "visible", "definition": "Boolean", "display": 0, "defaults": true}
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        },
+        {
+          "name": "visible",
+          "definition": "Boolean",
+          "display": 0,
+          "defaults": true
+        }
       ],
       "isRegion": false,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": "Terrain Color", "useDefaultTint": false},
+      "tintable": {
+        "enabled": true,
+        "defaultTint": "#ffffff",
+        "rgbLevelValueName": "Terrain Color",
+        "useDefaultTint": false
+      },
       "texture": "preview-images/slope.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAGUExURf///wAAAFXC034AAAACdFJOU/8A5bcwSgAAAAlwSFlzAAAOwQAADsEBuJFr7QAAAHhJREFUOE+FykkCgCAMBEH8/6dlKRFQSJ1gOuk6S8FBCg5yPx6Ufjqo/XDQ+v5A3x7I2wM1MyzEwjLTKtNEamwjBeNAeFhf9s7cmV/2h3UgYBwpjW0iVaaZVlgWYmZYqdveD3y/ou7A50/U64Hnv6jnA4+dqAdSugFtuwHxO+a3awAAAABJRU5ErkJggg=="
     },
@@ -165,24 +326,51 @@
       "exportID": "73148747",
       "name": "Marker",
       "limit": -1,
-      "size": {"x": 17, "y": 17},
-      "origin": {"x": 8, "y": 8},
+      "size": {
+        "x": 17,
+        "y": 17
+      },
+      "origin": {
+        "x": 8,
+        "y": 8
+      },
       "originAnchored": true,
       "shape": {
         "label": "Rectangle",
         "points": [
-          {"x": -1, "y": -1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": 1}
+          {
+            "x": -1,
+            "y": -1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          }
         ]
       },
       "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {
+        "x": 16,
+        "y": 16
+      },
       "resizeableX": false,
       "resizeableY": false,
       "rotatable": false,
@@ -196,13 +384,35 @@
       "nodeLimit": 0,
       "nodeDisplay": 0,
       "nodeGhost": true,
-      "tags": ["Marker"],
+      "tags": [
+        "Marker"
+      ],
       "values": [
-        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true},
-        {"name": "depth", "definition": "Integer", "display": 0, "defaults": 0, "bounded": false, "min": -500, "max": 0}
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        },
+        {
+          "name": "depth",
+          "definition": "Integer",
+          "display": 0,
+          "defaults": 0,
+          "bounded": false,
+          "min": -500,
+          "max": 0
+        }
       ],
       "isRegion": false,
-      "tintable": {"enabled": true, "defaultTint": "#00ff00", "rgbLevelValueName": "", "useDefaultTint": true},
+      "tintable": {
+        "enabled": true,
+        "defaultTint": "#00ff00",
+        "rgbLevelValueName": "",
+        "useDefaultTint": true
+      },
       "texture": "preview-images/marker.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsEAAA7BAbiRa+0AAACZSURBVDhPlZIBEoAgCASx///ZPBQDBaWdUVOPHWoqRFTbELDPMuseTLVWHnjElKDFZ02XCEkRCzTSvrkohY+9V3NzOngThfc6BKJgKACrBGwFJwHwJMCIBE8AIgnYOsLCm4VI8qsT858MvA6Ycb7ZV4knaMtZpFtzBbzphPcSugkEN4c5KxC2vPkmCQFoMRvB7tPeBZpRR/QC+6xtAAiXvLgAAAAASUVORK5CYII="
     },
@@ -210,24 +420,51 @@
       "exportID": "11908607",
       "name": "Region",
       "limit": -1,
-      "size": {"x": 32, "y": 32},
-      "origin": {"x": 0, "y": 0},
+      "size": {
+        "x": 32,
+        "y": 32
+      },
+      "origin": {
+        "x": 0,
+        "y": 0
+      },
       "originAnchored": true,
       "shape": {
         "label": "Rectangle",
         "points": [
-          {"x": -1, "y": -1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": -1},
-          {"x": -1, "y": 1},
-          {"x": 1, "y": 1}
+          {
+            "x": -1,
+            "y": -1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          }
         ]
       },
       "color": "#ff0000ff",
       "tileX": false,
       "tileY": false,
-      "tileSize": {"x": 16, "y": 16},
+      "tileSize": {
+        "x": 16,
+        "y": 16
+      },
       "resizeableX": true,
       "resizeableY": true,
       "rotatable": false,
@@ -241,15 +478,134 @@
       "nodeLimit": 0,
       "nodeDisplay": 0,
       "nodeGhost": true,
-      "tags": ["Region"],
+      "tags": [
+        "Region"
+      ],
       "values": [
-        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true},
-        {"name": "depth", "definition": "Integer", "display": 0, "defaults": 0, "bounded": false, "min": -500, "max": 0}
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        },
+        {
+          "name": "depth",
+          "definition": "Integer",
+          "display": 0,
+          "defaults": 0,
+          "bounded": false,
+          "min": -500,
+          "max": 0
+        }
       ],
       "isRegion": true,
-      "tintable": {"enabled": true, "defaultTint": "#00ff00", "rgbLevelValueName": "", "useDefaultTint": true},
+      "tintable": {
+        "enabled": true,
+        "defaultTint": "#00ff00",
+        "rgbLevelValueName": "",
+        "useDefaultTint": true
+      },
       "texture": "preview-images/region.png",
       "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABPSURBVFhH7dcxCgAgDATB0/WSOKQuxzzS4Ipsq0aZJGPFsb4CLE9gdYv8rOzgyoYtydfc++AAAAAAAAAAAAAAAAACBfRnV9p5mjC7AlTcXvEDMTrZ50AAAAAElFTkSuQmCC"
+    },
+    {
+      "exportID": "09222736",
+      "name": "Item",
+      "limit": -1,
+      "size": {
+        "x": 54,
+        "y": 56
+      },
+      "origin": {
+        "x": 27,
+        "y": 28
+      },
+      "originAnchored": true,
+      "shape": {
+        "label": "Rectangle",
+        "points": [
+          {
+            "x": -1,
+            "y": -1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": -1
+          },
+          {
+            "x": -1,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 1
+          }
+        ]
+      },
+      "color": "#ff0000ff",
+      "tileX": false,
+      "tileY": false,
+      "tileSize": {
+        "x": 16,
+        "y": 16
+      },
+      "resizeableX": false,
+      "resizeableY": false,
+      "rotatable": false,
+      "rotationDegrees": 360,
+      "canFlipX": false,
+      "canFlipY": false,
+      "flipOnlyScales": false,
+      "canSetColor": false,
+      "hasNodes": false,
+      "hasUid": false,
+      "nodeLimit": 0,
+      "nodeDisplay": 0,
+      "nodeGhost": true,
+      "tags": [],
+      "values": [
+        {
+          "name": "itemId",
+          "definition": "Enum",
+          "display": 1,
+          "choices": [
+            "Potato",
+            "Peeler",
+            "Grater",
+            "Garlic",
+            "Hammer",
+            "Skillet"
+          ],
+          "defaults": 0
+        },
+        {
+          "name": "name",
+          "definition": "String",
+          "display": 0,
+          "defaults": "",
+          "maxLength": 0,
+          "trimWhitespace": true
+        }
+      ],
+      "isRegion": false,
+      "tintable": {
+        "enabled": false,
+        "defaultTint": "#ffffff",
+        "rgbLevelValueName": null,
+        "useDefaultTint": true
+      },
+      "texture": "preview-images/item.png",
+      "textureImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAAA4CAYAAAC2TwutAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGVSURBVGhD7ZlbjsMgDEVpN9NuY2bh7Tba1XTkUYgoMWAcGzDi/DTKS5xc7Dx6cQq8bj+fbbGK+/spNh6RE3FFKHBlT4lpCsXUCrLEWgrFUAWrxHoKhVDkyGKjSHlKciSx0aQ8Obmi2KhSnpRcVmx0KQ8md91+D1iRSoEmZlEqTu0gpi11ez22Jefe999t6TzdxEKhEC25rxqzXlchyeZhkTCYXaxHWpLTMGaqxAAf0H+xzVRbADSR6RLzTCt2aTkNtW7OGN0SS92wpVg1Zo0lZo0lZo0lZo0lJs20j1TaNBOLnw3XsyKTJmLa6WBMm5j6i2YurVRnjI/hdNAr9k+FFKUpiG2XmLbgpPaVChsgXHnOwGsTUxNLSXmocpwp6GegaPOAAZekAM6Aa9nrqzY1zavOJewXqu2+lxSwi8UbzgBCLaUwvmRafjyVBAvlsMKaXGqmoSutyOXKJ7lhZDlKP8juMKIctckVdxpJjioFkHbsLVcj5CEf0FqOIxNSfbC24FkhD/skkoJSMiEiJ8xJagy6jHN/S5S5i+uwnXIAAAAASUVORK5CYII="
     }
   ],
   "tilesets": []

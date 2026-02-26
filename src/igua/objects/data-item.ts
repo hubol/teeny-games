@@ -190,4 +190,8 @@ export namespace DataItem {
     };
 
     export type Id = keyof typeof Manifest;
+
+    export function listIds() {
+        return Object.keys(Manifest);
+    }
 }
