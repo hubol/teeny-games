@@ -3,6 +3,7 @@ import { objText } from "../../../assets/fonts";
 import { Sfx } from "../../../assets/sounds";
 import { approachLinear } from "../../../lib/math/number";
 import { container } from "../../../lib/pixi/container";
+import { renderer } from "../../current-pixi-renderer";
 import { mxnBoilDisplacement } from "../../mixins/mxn-boil-displacement";
 import { mxnBoilSeed } from "../../mixins/mxn-boil-seed";
 import { LocalInteractive } from "../../mixins/mxn-interactive";
@@ -61,6 +62,21 @@ function objInteractiveOverlay() {
             }
             else {
                 textObj.text = "";
+            }
+
+            const textBounds = textObj.getBounds(false, r);
+            if (textBounds.left < 0) {
+                textObj.x -= textBounds.left;
+            }
+            else if (textBounds.right >= renderer.width) {
+                textObj.x -= textBounds.right - renderer.width;
+            }
+
+            if (textBounds.top < 0) {
+                textObj.y -= textBounds.top;
+            }
+            else if (textBounds.bottom >= renderer.height) {
+                textObj.y -= textBounds.bottom - renderer.height;
             }
         });
 }
