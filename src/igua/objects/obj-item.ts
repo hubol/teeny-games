@@ -1,5 +1,6 @@
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { layers } from "../globals";
 import { mxnInteractive } from "../mixins/mxn-interactive";
 import { mxnItem } from "../mixins/mxn-item";
 import { DataItem, Item } from "./data-item";
@@ -38,10 +39,10 @@ export function objItem(itemOrId: DataItem.Id | Item, pivotUnit: VectorSimple = 
                     }
                     const result = Item.combine(item.ref, heldItem.ref);
                     if (result.kind === "impossible") {
-                        // TODO error
+                        layers.overlay.showError("Nothing happens.");
                     }
                     else if (result.kind === "failed") {
-                        // TODO error
+                        layers.overlay.showError(result.reason);
                     }
                     else {
                         if (result.item0 === null) {

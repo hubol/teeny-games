@@ -71,6 +71,10 @@ class Potato extends Item {
                     item1,
                 };
             }
+            return {
+                kind: "failed",
+                reason: "Already peeled.",
+            };
         }
     }
 

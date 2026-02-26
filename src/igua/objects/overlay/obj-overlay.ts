@@ -1,6 +1,8 @@
-import { Graphics, Rectangle } from "pixi.js";
+import { Graphics, Rectangle, Sprite } from "pixi.js";
 import { objText } from "../../../assets/fonts";
 import { Sfx } from "../../../assets/sounds";
+import { Tx } from "../../../assets/textures";
+import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../../lib/math/number";
 import { container } from "../../../lib/pixi/container";
 import { renderer } from "../../current-pixi-renderer";
@@ -9,9 +11,32 @@ import { mxnBoilSeed } from "../../mixins/mxn-boil-seed";
 import { LocalInteractive, MxnInteractive } from "../../mixins/mxn-interactive";
 
 export function objOverlay() {
+    const errorsObj = container();
+
+    const api = {
+        showError(message: string) {
+            errorsObj.coro(function* () {
+                errorsObj.removeAllChildren();
+                container(
+                    Sprite.from(Tx.Ui.Error),
+                    objText.XLargeIrregular(message, { align: "center", maxWidth: 386 })
+                        .anchored(0.5, 0.5)
+                        .at(248, 239),
+                )
+                    .coro(function* (self) {
+                        yield sleep(1000);
+                        self.destroy();
+                    })
+                    .show(errorsObj);
+            });
+        },
+    };
+
     return container(
         objInteractiveOverlay(),
-    );
+        errorsObj,
+    )
+        .merge(api);
 }
 
 const r = new Rectangle();
