@@ -30,7 +30,7 @@ export function objMisha() {
         handRelativePositionVector: vnew(),
         pedometer: 0,
         get pointerObj() {
-            return handObj;
+            return pointerObj;
         },
     };
 
@@ -53,6 +53,12 @@ export function objMisha() {
     const legsObj = container(legLeftObj, legRightObj);
 
     const handObj = Sprite.from(Tx.Character.MishaHand);
+    const pointerObj = new Graphics()
+        .beginFill(0xff0000)
+        .drawRect(-2, -2, 4, 4)
+        .at(16, 2)
+        .invisible()
+        .show(handObj);
 
     return container(
         Sprite.from(txMishaBody),
