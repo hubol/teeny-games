@@ -3,7 +3,11 @@ import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
-import { factor, interpvr } from "../../lib/game-engine/routines/interp";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { holdf } from "../../lib/game-engine/routines/hold";
+import { factor, interpc, interpv, interpvr } from "../../lib/game-engine/routines/interp";
+import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Unit } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
@@ -12,6 +16,7 @@ import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { Mouse, scene } from "../globals";
+import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { LocalInteractive, mxnInteractive } from "../mixins/mxn-interactive";
 import { mxnItem } from "../mixins/mxn-item";
 import { Item } from "./data-item";
@@ -153,6 +158,25 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
 
     let targetPosition = Null<Vector>();
 
+    Sprite.from(Tx.Ui.Target)
+        .anchored(0.5, 1)
+        .scaled(0, 0)
+        .zIndexed(998)
+        .coro(function* (self) {
+            while (true) {
+                yield holdf(() => Boolean(targetPosition), 3);
+                yield interpv(self.scale).steps(3).to(1, 1).over(300);
+                yield () => !targetPosition;
+                yield interpv(self.scale).steps(3).to(0, 0).over(300);
+            }
+        })
+        .step(self => {
+            if (targetPosition) {
+                self.at(targetPosition);
+            }
+        })
+        .show();
+
     return mishaObj
         .step(() => {
             const lookVector = mishaObj.objMisha.lookPriorityVector[0]
@@ -183,6 +207,7 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 }
 
                 if (LocalInteractive.value.focusedObj) {
+                    targetPosition = null;
                     LocalInteractive.value.focusedObj.mxnInteractive.interact(mishaObj.objMisha.heldItem);
                 }
                 else if (mishaObj.objMisha.heldItem.ref) {
@@ -205,7 +230,33 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                 const stepObj = container()
                     .step(() => mishaObj.objMisha.pedometer += 1)
                     .show();
+                const targetObj = Sprite.from(Tx.Ui.Target)
+                    .anchored(0.5, 1)
+                    .at(position)
+                    .tinted(0x00AEEF)
+                    .coro(function* (self) {
+                        while (true) {
+                            yield sleep(400);
+                            yield interpc(self, "tint").steps(2).to(0xFFFFFF).over(200);
+                            yield sleep(100);
+                            yield interpc(self, "tint").steps(2).to(0x00AEEF).over(200);
+                            yield sleep(100);
+                        }
+                    })
+                    .coro(function* (self) {
+                        while (true) {
+                            yield interpvr(self.pivot).to(0, 10).over(300);
+                            yield interpvr(self.pivot).to(0, 0).over(300);
+                        }
+                    })
+                    .zIndexed(998)
+                    .show();
                 yield interpvr(mishaObj).factor(factor.sine).to(position).by(2);
+                targetObj
+                    .coro(function* () {
+                        yield interpv(targetObj.scale).steps(3).to(0, 0).over(300);
+                        targetObj.destroy();
+                    });
                 stepObj.destroy();
                 mishaObj.objMisha.pedometer = 0;
             }
