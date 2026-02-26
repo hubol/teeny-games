@@ -150,6 +150,26 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Egg", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 10,
+          "_eid": "09222736",
+          "x": 576,
+          "y": 80,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "MixingBowl", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 11,
+          "_eid": "09222736",
+          "x": 656,
+          "y": 384,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Scooper", "name": ""}
         }
       ]
     },

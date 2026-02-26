@@ -587,7 +587,9 @@
             "Skillet",
             "Cigarette",
             "Lighter",
-            "Egg"
+            "Egg",
+            "MixingBowl",
+            "Scooper"
           ],
           "defaults": 0
         },

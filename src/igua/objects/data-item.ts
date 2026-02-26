@@ -266,6 +266,127 @@ class Egg extends Item {
     }
 }
 
+class MixingBowl extends Item {
+    constructor(readonly state = { gratedPotatoes: 0, dicedGarlics: 0, brokenEggs: 0 }) {
+        super();
+    }
+
+    name = "Mixing Bowl";
+
+    view = Tx.Item.MixingBowl;
+
+    private createNextMixingBowl(partialState: Partial<MixingBowl["state"]>) {
+        const state = { ...this.state, ...partialState };
+        if (
+            state.gratedPotatoes >= 3
+            && state.dicedGarlics >= 1
+            && state.brokenEggs >= 1
+        ) {
+            return new MixingBowlAssembled();
+        }
+
+        return new MixingBowl(state);
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Scooper) {
+            return "Not assembled yet.";
+        }
+
+        if (item1 instanceof Potato) {
+            if (this.state.gratedPotatoes >= 3) {
+                return "At maximum.";
+            }
+
+            if (!item1.state.shredded) {
+                return "Shred first.";
+            }
+
+            return {
+                description: "Add potato",
+                item0: this.createNextMixingBowl({ gratedPotatoes: this.state.gratedPotatoes + 1 }),
+                item1: null,
+            };
+        }
+
+        if (item1 instanceof Garlic) {
+            if (this.state.dicedGarlics >= 1) {
+                return "At maximum.";
+            }
+
+            if (!item1.state.grated) {
+                return "Grate first.";
+            }
+
+            return {
+                description: "Add garlic",
+                item0: this.createNextMixingBowl({ dicedGarlics: this.state.dicedGarlics + 1 }),
+                item1: null,
+            };
+        }
+
+        if (item1 instanceof Egg) {
+            if (this.state.brokenEggs >= 1) {
+                return "At maximum.";
+            }
+
+            if (!item1.state.broken) {
+                return "Break first.";
+            }
+
+            return {
+                description: "Add egg",
+                item0: this.createNextMixingBowl({ brokenEggs: this.state.brokenEggs + 1 }),
+                item1: null,
+            };
+        }
+    }
+}
+
+class MixingBowlAssembled extends Item {
+    constructor(readonly state = { remainingLatkes: 9 }) {
+        super();
+    }
+
+    get name() {
+        return `Bowl w. ${this.state.remainingLatkes} Latkes`;
+    }
+
+    view = Tx.Item.MixingBowl;
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (this.state.remainingLatkes > 0) {
+            if (item1 instanceof Scooper) {
+                if (item1.state.hasLatke) {
+                    return "Already full.";
+                }
+
+                return {
+                    description: "Scoop latke",
+                    item0: new MixingBowlAssembled({ ...this.state, remainingLatkes: this.state.remainingLatkes - 1 }),
+                    item1: new Scooper({ ...item1.state, hasLatke: true }),
+                };
+            }
+
+            return "Needs scooping.";
+        }
+    }
+}
+
+class Scooper extends Item {
+    constructor(readonly state = { hasLatke: false }) {
+        super();
+    }
+
+    get name() {
+        return this.state.hasLatke ? "Full Scooper" : "Scooper";
+    }
+
+    get view() {
+        return this.state.hasLatke ? Tx.Item.ScooperWithLatke : Tx.Item.Scooper;
+    }
+}
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
@@ -277,6 +398,8 @@ export namespace DataItem {
         Cigarette,
         Lighter,
         Egg,
+        MixingBowl,
+        Scooper,
     };
 
     export type Id = keyof typeof Manifest;
