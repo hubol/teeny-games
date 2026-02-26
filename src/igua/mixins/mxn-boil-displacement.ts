@@ -15,8 +15,14 @@ export function mxnBoilDisplacement(obj: DisplayObject, args: MxnBoilDisplacemen
     return obj
         .merge({ mxnBoilDisplacement: args })
         .coro(function* (self) {
-            // displacementObj is never destroyed...
-            const displacementObj = Sprite.from(NoAtlasTx.Fx.Displacement).show();
+            const displacementObj = Sprite.from(NoAtlasTx.Fx.Displacement)
+                .step(() => {
+                    if (self.destroyed) {
+                        displacementObj.destroy();
+                        filter.destroy();
+                    }
+                })
+                .show();
             const filter = new DisplacementFilter(displacementObj, args.scale);
             filter.padding = 10;
 
