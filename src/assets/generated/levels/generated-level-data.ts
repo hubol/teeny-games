@@ -10,12 +10,15 @@ export const Lvl = {
   Main: () => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
     return {
-      ItemSkillet: d(Tx.Item.Skillet, { x: 312, y: 120, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
       ItemWhiskyGlass: d(Tx.Item.WhiskyGlass, { x: 408, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
       ItemBox: d(Tx.Item.Box, { x: 100, y: 236, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
-      Item: e(r["Item"], { x: 224, y: 224, values: { itemId: "Potato", name: "" } }, "Entities"),
-      Item_1: e(r["Item"], { x: 304, y: 224, values: { itemId: "Potato", name: "" } }, "Entities"),
-      Item_2: e(r["Item"], { x: 392, y: 176, values: { itemId: "Potato", name: "" } }, "Entities"),
+      Item: e(r["Item"], { x: 64, y: 152, values: { itemId: "Potato", name: "" } }, "Entities"),
+      Item_1: e(r["Item"], { x: 128, y: 96, values: { itemId: "Potato", name: "" } }, "Entities"),
+      Item_2: e(r["Item"], { x: 40, y: 48, values: { itemId: "Potato", name: "" } }, "Entities"),
+      Item_3: e(r["Item"], { x: 216, y: 224, values: { itemId: "Peeler", name: "" } }, "Entities"),
+      Item_4: e(r["Item"], { x: 336, y: 224, values: { itemId: "Grater", name: "" } }, "Entities"),
+      Item_5: e(r["Item"], { x: 272, y: 168, values: { itemId: "Hammer", name: "" } }, "Entities"),
+      Item_6: e(r["Item"], { x: 424, y: 88, values: { itemId: "Garlic", name: "" } }, "Entities"),
     };
   },
   Placeholder: () => {

@@ -1,11 +1,6 @@
-import { Graphics, Sprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
-import { Tx } from "../../assets/textures";
 import { Jukebox } from "../core/igua-audio";
-import { scene } from "../globals";
-import { mxnInteractive } from "../mixins/mxn-interactive";
-import { objItem } from "../objects/obj-item";
 import { mxnMishaControlled, objMisha } from "../objects/obj-misha";
 
 export function scnMain() {
@@ -17,21 +12,4 @@ export function scnMain() {
         .at(250, 140)
         .zIndexed(999)
         .show();
-
-    {
-        lvl.ItemSkillet.mixin(mxnInteractive, { text: "Take skillet" });
-    }
-
-    {
-        lvl.ItemWhiskyGlass.mixin(mxnInteractive, { text: "Take whisky glass" });
-    }
-
-    {
-        objItem("Potato").at(50, 50).show();
-        objItem("Peeler").at(100, 100).show();
-        objItem("Grater").at(200, 200).show();
-        objItem("Garlic").at(300, 200).show();
-        objItem("Hammer").at(400, 100).show();
-        objItem("Skillet").at(450, 80).show();
-    }
 }

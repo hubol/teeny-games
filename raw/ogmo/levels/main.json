@@ -55,8 +55,8 @@
           "name": "Item",
           "id": 0,
           "_eid": "09222736",
-          "x": 224,
-          "y": 224,
+          "x": 64,
+          "y": 152,
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Potato", "name": ""}
@@ -65,8 +65,8 @@
           "name": "Item",
           "id": 1,
           "_eid": "09222736",
-          "x": 304,
-          "y": 224,
+          "x": 128,
+          "y": 96,
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Potato", "name": ""}
@@ -75,11 +75,51 @@
           "name": "Item",
           "id": 2,
           "_eid": "09222736",
-          "x": 392,
-          "y": 176,
+          "x": 40,
+          "y": 48,
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "Potato", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 3,
+          "_eid": "09222736",
+          "x": 216,
+          "y": 224,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Peeler", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 4,
+          "_eid": "09222736",
+          "x": 336,
+          "y": 224,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Grater", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 5,
+          "_eid": "09222736",
+          "x": 272,
+          "y": 168,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Hammer", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 6,
+          "_eid": "09222736",
+          "x": 424,
+          "y": 88,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Garlic", "name": ""}
         }
       ]
     },
@@ -93,19 +133,6 @@
       "gridCellsX": 64,
       "gridCellsY": 35,
       "decals": [
-        {
-          "x": 312,
-          "y": 120,
-          "scaleX": 1,
-          "scaleY": 1,
-          "rotation": 0,
-          "tint": "#ffffff",
-          "texture": "item/skillet.png",
-          "originX": 0.5,
-          "originY": 0.5,
-          "values": {"name": ""},
-          "groupName": null
-        },
         {
           "x": 408,
           "y": 232,
