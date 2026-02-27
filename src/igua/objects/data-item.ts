@@ -25,6 +25,10 @@ export abstract class Item {
     abstract readonly name: string;
     abstract readonly view: Texture | ((item: ItemRef) => DisplayObject);
 
+    take(): Item.TakeResult {
+        return { success: true, item: this };
+    }
+
     /** Should be implemented to NOT mutate state */
     protected combine(item1: Item): Item.Protected.CombineResult {
     }
@@ -57,6 +61,8 @@ namespace Item {
         | { kind: "impossible" }
         | { kind: "failed"; reason: string }
         | { kind: "combined"; description: string; item0: Item | null; item1: Item | null };
+
+    export type TakeResult = { success: true; item: Item } | { success: false; reason: string };
 }
 
 function objDummy(name: string) {
@@ -629,7 +635,7 @@ class SmokeAlarm extends Item {
             });
     }
 
-    constructor(readonly state = { triggered: true }) {
+    constructor(readonly state = { triggered: false }) {
         super();
     }
 
@@ -646,6 +652,53 @@ class SmokeAlarm extends Item {
                 };
             }
         }
+    }
+}
+
+class Whisky extends Item {
+    constructor(readonly state = { hasPermission: false }) {
+        super();
+    }
+
+    name = "Whisky";
+    view = Tx.Item.Whisky;
+
+    take(): Item.TakeResult {
+        if (this.state.hasPermission) {
+            return super.take();
+        }
+
+        return { success: false, reason: "Need permission." };
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof WhiskyGlass) {
+            if (!this.state.hasPermission) {
+                return "Need permission.";
+            }
+
+            if (item1.state.filled) {
+                return "Already full.";
+            }
+
+            return {
+                description: "Fill glass",
+                item0: this,
+                item1: new WhiskyGlass({ ...item1.state, filled: true }),
+            };
+        }
+    }
+}
+
+class WhiskyGlass extends Item {
+    constructor(readonly state = { filled: false }) {
+        super();
+    }
+
+    name = "Whisky Glass";
+
+    get view() {
+        return this.state.filled ? Tx.Item.WhiskyGlassFull : Tx.Item.WhiskyGlass;
     }
 }
 
@@ -686,6 +739,8 @@ export namespace DataItem {
         Pepper,
         OliveOil,
         SmokeAlarm,
+        Whisky,
+        WhiskyGlass,
     };
 
     export type Id = keyof typeof Manifest;

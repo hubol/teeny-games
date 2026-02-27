@@ -86,6 +86,8 @@ export const Lvl = {
       Item_15: e(r["Item"], { x: 1152, y: 928, values: { itemId: "Salt", name: "" } }, "Entities"),
       Item_16: e(r["Item"], { x: 1264, y: 928, values: { itemId: "Pepper", name: "" } }, "Entities"),
       Item_17: e(r["Item"], { x: 808, y: 448, values: { itemId: "SmokeAlarm", name: "" } }, "Entities"),
+      Item_18: e(r["Item"], { x: 1056, y: 184, values: { itemId: "WhiskyGlass", name: "" } }, "Entities"),
+      Item_19: e(r["Item"], { x: 1160, y: 184, values: { itemId: "WhiskyGlass", name: "" } }, "Entities"),
       PlayerStartMarker: e(r["Marker"], { x: 728, y: 536, values: { name: "PlayerStartMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       AidarMarker: e(r["Marker"], { x: 360, y: 120, values: { name: "AidarMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };

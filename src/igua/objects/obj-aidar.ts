@@ -1,6 +1,6 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { CollisionShape } from "../../lib/pixi/collision";
@@ -9,6 +9,8 @@ import { layers } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnInteractive } from "../mixins/mxn-interactive";
 import { DataItem } from "./data-item";
+import { objItem } from "./obj-item";
+import { objIndexedSprite } from "./utils/obj-indexed-sprite";
 
 const [txSleepyBody, txSleepyFace0, txSleepyFace1, txShockedBody, txShockedFace, ...txsShockedFx] = Tx.Character
     .AidarSleeping.split({ count: 8 });
@@ -45,17 +47,54 @@ export function objAidar() {
                 return state.isAsleep ? "Aidar, Asleep" : "Aidar";
             },
             interact(heldItem) {
+                if (!state.isAsleep) {
+                    return;
+                }
                 if (heldItem.ref instanceof DataItem.Manifest.SmokeAlarm && heldItem.ref.state.triggered) {
                     state.isAsleep = false;
                     heldItem.ref = new DataItem.Manifest.SmokeAlarm({ ...heldItem.ref.state, triggered: false });
                 }
                 else {
-                    layers.overlay.showError("Doesn't do anything.");
+                    layers.overlay.showError("Doesn't wake him.");
                 }
             },
             boundsObj: maskObj,
         })
-        .collisionShape(CollisionShape.DisplayObjects, [maskObj]);
+        .collisionShape(CollisionShape.DisplayObjects, [maskObj])
+        .coro(function* (self) {
+            self.zIndex += 1;
+            const whiskyObj = objItem("Whisky").at(self).add(90, 20).show();
+            yield () => !state.isAsleep;
+            self.mxnInteractive.enabled = false;
+            whiskyObj.objItem.item.ref = new DataItem.Manifest.Whisky({ hasPermission: true });
+            self.removeAllChildren();
+            const shockedObj = container(
+                Sprite.from(txShockedBody).mixin(mxnBoilPivot),
+                Sprite.from(txShockedFace).mixin(mxnBoilPivot),
+                objIndexedSprite(txsShockedFx)
+                    .mixin(mxnBoilPivot)
+                    .step(self => {
+                        self.textureIndex = (self.textureIndex + 0.125) * 1.1;
+                        if (self.textureIndex >= 3.5) {
+                            self.destroy();
+                        }
+                    }),
+            )
+                .coro(function* (self) {
+                    yield interpvr(self).factor(factor.sine).to(0, -8).over(300);
+                    yield interpvr(self).to(0, 0).over(120);
+                })
+                .show(self);
+
+            yield sleep(400);
+
+            shockedObj.destroy();
+            const bodyObj = Sprite.from(txBody).show(self);
+            Sprite.from(txFace).mixin(mxnBoilPivot).show(self);
+            self.mxnInteractive.enabled = true;
+            self.collisionShape(CollisionShape.DisplayObjects, [bodyObj]);
+            self.mxnInteractive.boundsObj = bodyObj;
+        });
 }
 
 function objFxSnooze() {

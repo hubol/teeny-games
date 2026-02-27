@@ -11,10 +11,22 @@ interface MxnInteractiveApi {
     boundsObj: DisplayObject;
 }
 
-export const LocalInteractive = new SceneLocal(() => ({
-    focusedObj: Null<MxnInteractive>(),
-    mishaObj: Null<ObjMisha>(),
-}), "LocalInteractive");
+export const LocalInteractive = new SceneLocal(() => {
+    let focusedObj = Null<MxnInteractive>();
+
+    return ({
+        get focusedObj() {
+            if (!focusedObj) {
+                return focusedObj;
+            }
+            return focusedObj.mxnInteractive.enabled ? focusedObj : null;
+        },
+        set focusedObj(value: typeof focusedObj) {
+            focusedObj = value;
+        },
+        mishaObj: Null<ObjMisha>(),
+    });
+}, "LocalInteractive");
 
 export function mxnInteractive(obj: DisplayObject, partialApi: Partial<MxnInteractiveApi> = {}) {
     if (partialApi.enabled === undefined) {

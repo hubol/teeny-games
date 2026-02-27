@@ -597,7 +597,9 @@
             "Salt",
             "Pepper",
             "OliveOil",
-            "SmokeAlarm"
+            "SmokeAlarm",
+            "Whisky",
+            "WhiskyGlass"
           ],
           "defaults": 0
         },

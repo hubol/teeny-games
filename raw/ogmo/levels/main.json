@@ -263,6 +263,26 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "SmokeAlarm", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 19,
+          "_eid": "09222736",
+          "x": 1056,
+          "y": 184,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "WhiskyGlass", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 20,
+          "_eid": "09222736",
+          "x": 1160,
+          "y": 184,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "WhiskyGlass", "name": ""}
         }
       ]
     },
@@ -936,7 +956,8 @@
           "texture": "world/text/kitchen.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 638,
@@ -948,7 +969,8 @@
           "texture": "world/text/farm.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 624,
@@ -960,7 +982,8 @@
           "texture": "shapes/mess 0.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 410,
@@ -972,7 +995,8 @@
           "texture": "shapes/mess 0.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 331,
@@ -984,7 +1008,8 @@
           "texture": "shapes/mess 0.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 366,
@@ -996,7 +1021,8 @@
           "texture": "shapes/mess 0.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         },
         {
           "x": 379,

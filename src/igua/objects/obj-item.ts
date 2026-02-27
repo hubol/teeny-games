@@ -14,6 +14,7 @@ export function objItem(itemOrId: DataItem.Id | Item, pivotUnit: VectorSimple = 
 
     const obj = container();
     return obj
+        .merge({ objItem: { item } })
         .mixin(mxnItem, item, pivotUnit)
         .mixin(
             mxnInteractive,
@@ -33,8 +34,15 @@ export function objItem(itemOrId: DataItem.Id | Item, pivotUnit: VectorSimple = 
                 },
                 interact(heldItem) {
                     if (!heldItem.ref) {
-                        heldItem.ref = item.ref;
-                        obj.destroy();
+                        const result = item.ref.take();
+                        if (result.success) {
+                            heldItem.ref = result.item;
+                            obj.destroy();
+                        }
+                        else {
+                            layers.overlay.showError(result.reason);
+                        }
+
                         return;
                     }
                     const result = Item.combine(item.ref, heldItem.ref);
