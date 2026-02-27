@@ -119,7 +119,7 @@ export function scnMain() {
             .coro(function* () {
                 yield () => storageObjs.every(obj => obj.mxnItemStorage.isStored);
 
-                const glowObjs = [...storageObjs, mishaObj];
+                const glowObjs = [...storageObjs.map(obj => obj.mxnItemStorage.itemObj!), mishaObj];
 
                 for (let i = 0; i < glowObjs.length; i++) {
                     const obj = glowObjs[i];

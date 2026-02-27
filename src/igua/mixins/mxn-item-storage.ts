@@ -1,6 +1,7 @@
 import { DisplayObject } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { container } from "../../lib/pixi/container";
+import { Null } from "../../lib/types/null";
 import { layers } from "../globals";
 import { Item } from "../objects/data-item";
 import { ItemRef } from "../objects/item-ref";
@@ -22,6 +23,7 @@ export function mxnItemStorage<TItem extends typeof Item>(obj: DisplayObject, ar
                 get isStored() {
                     return item.ref !== null;
                 },
+                itemObj: Null<DisplayObject>(),
             },
         })
         .mixin(mxnInteractive, {
@@ -52,7 +54,7 @@ export function mxnItemStorage<TItem extends typeof Item>(obj: DisplayObject, ar
         })
         .step(self => self.visible = !self.mxnItemStorage.isStored)
         .coro(function* (self) {
-            container()
+            self.mxnItemStorage.itemObj = container()
                 .mixin(mxnItem, item, [0.5, 1])
                 .at(self)
                 .show();
