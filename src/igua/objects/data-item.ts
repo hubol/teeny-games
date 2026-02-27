@@ -232,13 +232,13 @@ class Carrot extends Item {
 }
 
 class Salt extends Item {
-    name = "Salt Shaker";
-    view = objDummy("salt");
+    name = "Salt";
+    view = Tx.Item.SaltShaker;
 }
 
 class Pepper extends Item {
-    name = "Pepper Shaker";
-    view = objDummy("pepper");
+    name = "Pepper";
+    view = Tx.Item.PepperShaker;
 }
 
 class OliveOil extends Item {
@@ -583,8 +583,8 @@ const latkesRecipe = new RecipeBuilder()
     .addIngredient(Onion, item => item.state.grated ? true : "Grate first.", 1)
     .addIngredient(Carrot, item => item.state.grated ? true : "Grate first.", 1)
     .addIngredient(Egg, item => item.state.broken ? true : "Break first.", 1)
-    .addIngredient(Salt, () => true, 1)
-    .addIngredient(Pepper, () => true, 1)
+    .addIngredient(Salt, () => true, 1, () => new Salt())
+    .addIngredient(Pepper, () => true, 1, () => new Pepper())
     .addIngredient(
         HalfCup,
         (item) => item.state.hasFlour ? true : "Need flour.",
