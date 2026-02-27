@@ -1,11 +1,11 @@
-import { DisplayObject, Graphics, Rectangle, Resource, Sprite, Texture } from "pixi.js";
+import { DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
-import { factor, interpvr } from "../../lib/game-engine/routines/interp";
-import { sleep } from "../../lib/game-engine/routines/sleep";
+import { interpvr } from "../../lib/game-engine/routines/interp";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
+import { ItemRef } from "./item-ref";
 
 function prepareCombineResultForPublic(result: Item.Protected.CombineResult): Item.CombineResult {
     if (!result) {
@@ -19,7 +19,7 @@ function prepareCombineResultForPublic(result: Item.Protected.CombineResult): It
 
 export abstract class Item {
     abstract readonly name: string;
-    abstract readonly view: Texture | (() => DisplayObject);
+    abstract readonly view: Texture | ((item: ItemRef) => DisplayObject);
 
     /** Should be implemented to NOT mutate state */
     protected combine(item1: Item): Item.Protected.CombineResult {
@@ -160,7 +160,15 @@ class Garlic extends Item {
         }
     }
 
-    view = objDummy("garlic");
+    get view() {
+        if (this.state.grated) {
+            return Tx.Item.GarlicGrated;
+        }
+        if (this.state.smashed) {
+            return Tx.Item.GarlicSmashed;
+        }
+        return Tx.Item.Garlic;
+    }
 }
 
 class Onion extends Item {
@@ -172,7 +180,13 @@ class Onion extends Item {
         return this.state.grated ? "Grated Onion" : "Onion";
     }
 
-    view = objDummy("onion");
+    get view() {
+        if (this.state.grated) {
+            return Tx.Item.OnionGrated;
+        }
+
+        return Tx.Item.Onion;
+    }
 
     protected combine(item1: Item): Item.Protected.CombineResult {
         if (item1 instanceof Grater) {
@@ -198,7 +212,9 @@ class Carrot extends Item {
         return this.state.grated ? "Grated Carrot" : "Carrot";
     }
 
-    view = objDummy("carrot");
+    get view() {
+        return this.state.grated ? Tx.Item.CarrotGrated : Tx.Item.Carrot;
+    }
 
     protected combine(item1: Item): Item.Protected.CombineResult {
         if (item1 instanceof Grater) {
@@ -232,17 +248,17 @@ class OliveOil extends Item {
 
 class Hammer extends Item {
     name = "Hammer";
-    view = objDummy("hammer");
+    view = Tx.Item.Hammer;
 }
 
 class Peeler extends Item {
     name = "Peeler";
-    view = objDummy("peeler");
+    view = Tx.Item.Peeler;
 }
 
 class Grater extends Item {
     name = "Grater";
-    view = objDummy("grater");
+    view = Tx.Item.Grater;
 }
 
 class Skillet extends Item {
@@ -353,7 +369,11 @@ class RecipeBuilder {
 }
 
 class Recipe {
+    readonly totalIngredientsCount: Integer;
+
     constructor(readonly ingredients: Recipe.Ingredients) {
+        this.totalIngredientsCount = ingredients
+            .reduce((sum, ingredient) => sum + ingredient.count, 0);
     }
 
     createState(): Recipe.State {
@@ -418,6 +438,24 @@ namespace Recipe {
 }
 
 class MixingBowl extends Item {
+    private static objMixingBowl(item: ItemRef) {
+        return container(
+            Sprite.from(Tx.Item.MixingBowl),
+            objText.MediumBoldIrregular("", { tint: 0x808E72 })
+                .anchored(0.5, 0.5)
+                .at(43, 25)
+                .step(self => {
+                    if (!(item.ref instanceof MixingBowl)) {
+                        return;
+                    }
+
+                    const remainingIngredientsCount = latkesRecipe.totalIngredientsCount
+                        - item.ref.state.recipe.reduce((sum, value) => sum + value, 0);
+                    self.text = remainingIngredientsCount + " left";
+                }),
+        );
+    }
+
     constructor(
         readonly state = { recipe: latkesRecipe.createState() },
     ) {
@@ -426,7 +464,7 @@ class MixingBowl extends Item {
 
     name = "Mixing Bowl";
 
-    view = Tx.Item.MixingBowl;
+    view = MixingBowl.objMixingBowl;
 
     protected combine(item1: Item): Item.Protected.CombineResult {
         if (item1 instanceof Scooper) {

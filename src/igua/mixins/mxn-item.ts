@@ -1,10 +1,10 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { VectorSimple } from "../../lib/math/vector-type";
 import { Null } from "../../lib/types/null";
-import { Item } from "../objects/data-item";
+import { ItemRef } from "../objects/item-ref";
 
-export function mxnItem(obj: Container, item: { ref: Item | null }, pivotUnit: VectorSimple) {
-    let previousView = Null<Texture | (() => DisplayObject)>();
+export function mxnItem(obj: Container, item: ItemRef, pivotUnit: VectorSimple) {
+    let previousView = Null<Texture | ((item: ItemRef) => DisplayObject)>();
 
     const api = {
         get item() {
@@ -22,7 +22,7 @@ export function mxnItem(obj: Container, item: { ref: Item | null }, pivotUnit: V
                     Sprite.from(view).show(self);
                 }
                 else if (view) {
-                    view().show(self);
+                    view(item).show(self);
                 }
                 self.pivotedUnit(pivotUnit);
                 previousView = view;
