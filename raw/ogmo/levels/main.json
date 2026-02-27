@@ -26,7 +26,7 @@
           "originX": 8,
           "originY": 8,
           "tint": "#00ff00",
-          "values": {"name": "PlayerStartMarker", "depth": 0}
+          "values": {"name": "PlayerStartMarkerOld", "depth": 0}
         },
         {
           "name": "Marker",
@@ -137,6 +137,17 @@
           "originY": 8,
           "tint": "#ff0000",
           "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 11,
+          "_eid": "73148747",
+          "x": 968,
+          "y": 240,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#00ff00",
+          "values": {"name": "PlayerStartMarker", "depth": 0}
         }
       ]
     },
@@ -367,7 +378,7 @@
           "name": "Item",
           "id": 19,
           "_eid": "09222736",
-          "x": 1056,
+          "x": 1096,
           "y": 184,
           "originX": 27,
           "originY": 28,
@@ -377,7 +388,7 @@
           "name": "Item",
           "id": 20,
           "_eid": "09222736",
-          "x": 1160,
+          "x": 1152,
           "y": 184,
           "originX": 27,
           "originY": 28,
@@ -435,113 +446,13 @@
         },
         {
           "name": "Item",
-          "id": 28,
-          "_eid": "09222736",
-          "x": 1608,
-          "y": 800,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "MixingBowlAssembled", "name": ""}
-        },
-        {
-          "name": "Item",
           "id": 29,
           "_eid": "09222736",
-          "x": 1112,
-          "y": 88,
+          "x": 1064,
+          "y": 128,
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "ServingPlatter", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 30,
-          "_eid": "09222736",
-          "x": 1328,
-          "y": 88,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 31,
-          "_eid": "09222736",
-          "x": 1304,
-          "y": 168,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 32,
-          "_eid": "09222736",
-          "x": 1400,
-          "y": 184,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 33,
-          "_eid": "09222736",
-          "x": 1424,
-          "y": 104,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 34,
-          "_eid": "09222736",
-          "x": 1496,
-          "y": 208,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 35,
-          "_eid": "09222736",
-          "x": 1528,
-          "y": 112,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 36,
-          "_eid": "09222736",
-          "x": 1592,
-          "y": 240,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 37,
-          "_eid": "09222736",
-          "x": 1616,
-          "y": 112,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
-        },
-        {
-          "name": "Item",
-          "id": 38,
-          "_eid": "09222736",
-          "x": 1680,
-          "y": 192,
-          "originX": 27,
-          "originY": 28,
-          "values": {"itemId": "Latke", "name": ""}
         }
       ]
     },
@@ -555,6 +466,30 @@
       "gridCellsX": 251,
       "gridCellsY": 128,
       "decals": [
+        {
+          "x": 1140,
+          "y": 232,
+          "scaleX": 2,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#170d41",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1253,
+          "y": 77,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
         {
           "x": 667,
           "y": 1033,
@@ -1474,6 +1409,270 @@
           "originX": 0.5,
           "originY": 1,
           "values": {"name": "PlatterRegion"}
+        },
+        {
+          "x": 1139,
+          "y": 168,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/shelf.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 109,
+          "y": 61,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 110,
+          "y": 172,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 237,
+          "y": 61,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 354,
+          "y": 173,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 483,
+          "y": 61,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1509,
+          "y": 77,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1552,
+          "y": 188,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1637,
+          "y": 77,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1762,
+          "y": 188,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1883,
+          "y": 77,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1509,
+          "y": 301,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1510,
+          "y": 412,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1637,
+          "y": 301,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1754,
+          "y": 413,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 1883,
+          "y": 301,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 765,
+          "y": 317,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 805,
+          "y": 429,
+          "scaleX": 1,
+          "scaleY": -1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 243,
+          "y": 244,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#2b5214",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 11,
+          "y": 242,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#2b5214",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 567,
+          "y": 242,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#2b5214",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 427,
+          "y": 490,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#2b5214",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
         }
       ],
       "folder": "../textures"
