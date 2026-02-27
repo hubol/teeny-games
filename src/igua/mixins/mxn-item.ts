@@ -27,5 +27,6 @@ export function mxnItem(obj: Container, item: { ref: Item | null }, pivotUnit: V
                 self.pivotedUnit(pivotUnit);
                 previousView = view;
             }
-        });
+        })
+        .track(mxnItem);
 }

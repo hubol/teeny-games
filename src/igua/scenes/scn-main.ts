@@ -16,11 +16,6 @@ export function scnMain() {
         .show();
 
     {
-        function mxnRecipeStep(obj: DisplayObject) {
-            return obj
-                .step(() => obj.visible = lvl.RecipeBookOpened.visible);
-        }
-
         lvl.RecipeBookOpened.step(self => self.visible = lvl.RecipeBook.destroyed);
         lvl.RecipeBook
             .mixin(mxnInteractive, {
@@ -29,17 +24,5 @@ export function scnMain() {
                     lvl.RecipeBook.destroy();
                 },
             });
-
-        lvl.StepPotatoGroup.mixin(mxnRecipeStep);
-        lvl.StepCarrotGroup.mixin(mxnRecipeStep);
-        lvl.StepOnionGroup.mixin(mxnRecipeStep);
-        lvl.StepGarlicGroup.mixin(mxnRecipeStep);
-        lvl.StepSaltGroup.mixin(mxnRecipeStep);
-        lvl.StepPepperGroup.mixin(mxnRecipeStep);
-        lvl.StepFlourGroup.mixin(mxnRecipeStep);
-        lvl.StepCombinedGroup.mixin(mxnRecipeStep);
-        lvl.StepOliveOilGroup.mixin(mxnRecipeStep);
-        lvl.StepScoopedGroup.mixin(mxnRecipeStep);
-        lvl.StepServedGroup.mixin(mxnRecipeStep);
     }
 }
