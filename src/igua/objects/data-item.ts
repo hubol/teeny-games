@@ -607,6 +607,18 @@ class SmokeAlarm extends Item {
 
     name = "Smoke Alarm";
     view = SmokeAlarm.objSmokeAlarm;
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Cigarette) {
+            if (item1.state.lit) {
+                return {
+                    description: "Trigger smoke alarm",
+                    item0: new SmokeAlarm({ ...this.state, triggered: true }),
+                    item1,
+                };
+            }
+        }
+    }
 }
 
 const latkesRecipe = new RecipeBuilder()
