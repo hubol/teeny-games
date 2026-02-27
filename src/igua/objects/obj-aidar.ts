@@ -1,4 +1,5 @@
 import { Graphics, Sprite } from "pixi.js";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
@@ -31,10 +32,12 @@ export function objAidar() {
             .coro(function* (self) {
                 while (true) {
                     self.texture = txSleepyFace0;
-                    yield sleep(Rng.intc(500, 700));
+                    yield sleep(Rng.intc(850, 950) + 400);
+                    const soundInstance = self.playInstance(Rng.choose(Sfx.Snore0, Sfx.Snore1).rate(1, 1.02));
+                    soundInstance.gain *= 0.4;
                     objFxSnooze().at(69, 60).show(self);
                     self.texture = txSleepyFace1;
-                    yield sleep(Rng.intc(350, 550));
+                    yield sleep(Rng.intc(650, 850) + 400);
                 }
             }),
         maskObj,
@@ -65,6 +68,7 @@ export function objAidar() {
             self.zIndex += 1;
             const whiskyObj = objItem("Whisky").at(self).add(90, 20).show();
             yield () => !state.isAsleep;
+            self.play(Sfx.Shock);
             self.mxnInteractive.enabled = false;
             self.removeAllChildren();
             const shockedObj = container(

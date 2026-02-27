@@ -7,7 +7,7 @@ import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { factor, interpc, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
-import { sleep } from "../../lib/game-engine/routines/sleep";
+import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Unit } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
@@ -222,7 +222,11 @@ export function mxnMishaControlled(mishaObj: ObjMisha, mode: "default" | "always
                     objItem(mishaObj.objMisha.heldItem.ref, [0.5, 0.5])
                         .at(scene.camera)
                         .add(Mouse)
-                        .show();
+                        .show()
+                        .coro(function* (self) {
+                            yield sleepf(1);
+                            self.play(Sfx.PutDown.rate(0.95, 1.05));
+                        });
                     mishaObj.objMisha.heldItem.ref = null;
                 }
                 else {

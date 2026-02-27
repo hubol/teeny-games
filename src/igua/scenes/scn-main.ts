@@ -1,6 +1,7 @@
 import { DisplayObject } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
+import { Sfx } from "../../assets/sounds";
 import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp } from "../../lib/game-engine/routines/interp";
@@ -37,6 +38,7 @@ export function scnMain() {
             .mixin(mxnInteractive, {
                 text: "Open Recipe Book",
                 interact: () => {
+                    Sfx.OpenBook.play();
                     lvl.RecipeBook.destroy();
                 },
             });

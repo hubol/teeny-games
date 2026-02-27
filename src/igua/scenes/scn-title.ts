@@ -1,4 +1,5 @@
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Sfx } from "../../assets/sounds";
 import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
@@ -31,6 +32,7 @@ export function scnTitle() {
     scene.stage
         .coro(function* () {
             yield () => going;
+            Sfx.Yo.play();
             const filter = new ForceTintFilter(scene.style.backgroundTint, 0);
             scene.stage.filtered(filter);
             yield interp(filter, "factor").steps(5).to(1).over(1000);

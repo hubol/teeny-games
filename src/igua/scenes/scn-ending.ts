@@ -1,5 +1,6 @@
 import { Sprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
@@ -8,6 +9,7 @@ import { scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 
 export function scnEnding() {
+    Sfx.Yo.play();
     const lvl = Lvl.Ending();
 
     lvl.EndingHubolFace.mixin(mxnBoilPivot);

@@ -42,9 +42,11 @@ export function objOverlay() {
 
     const api = {
         showError(message: string) {
+            Sfx.Error.rate(0.95, 1.05).play();
             showMessage("error", message);
         },
         showInfo(message: string) {
+            Sfx.Info.rate(0.95, 1.05).play();
             showMessage("info", message);
         },
     };

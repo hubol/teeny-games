@@ -1,3 +1,4 @@
+import { Sfx } from "../../assets/sounds";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { layers } from "../globals";
@@ -36,6 +37,7 @@ export function objItem(itemOrId: DataItem.Id | Item, pivotUnit: VectorSimple = 
                     if (!heldItem.ref) {
                         const result = item.ref.take();
                         if (result.success) {
+                            obj.play(Sfx.PickUp.rate(0.95, 1.05));
                             heldItem.ref = result.item;
                             obj.destroy();
                         }
