@@ -591,7 +591,12 @@
             "MixingBowl",
             "Scooper",
             "Flour",
-            "HalfCup"
+            "HalfCup",
+            "Onion",
+            "Carrot",
+            "Salt",
+            "Pepper",
+            "OliveOil"
           ],
           "defaults": 0
         },

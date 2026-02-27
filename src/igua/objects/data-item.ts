@@ -3,6 +3,7 @@ import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 
@@ -67,13 +68,13 @@ function objDummy(name: string) {
 class Potato extends Item {
     private static readonly txs = Tx.Item.Potato.split({ count: 3 });
 
-    constructor(readonly state = { peeled: false, shredded: false }) {
+    constructor(readonly state = { peeled: false, grated: false }) {
         super();
     }
 
     get name() {
-        if (this.state.shredded) {
-            return "Shredded Potato";
+        if (this.state.grated) {
+            return "Grated Potato";
         }
         if (this.state.peeled) {
             return "Peeled Potato";
@@ -96,10 +97,10 @@ class Potato extends Item {
             if (!this.state.peeled) {
                 return "Grate first.";
             }
-            if (!this.state.shredded) {
+            if (!this.state.grated) {
                 return {
                     description: "Grate potato",
-                    item0: new Potato({ ...this.state, shredded: true }),
+                    item0: new Potato({ ...this.state, grated: true }),
                     item1,
                 };
             }
@@ -108,7 +109,7 @@ class Potato extends Item {
     }
 
     get view() {
-        if (this.state.shredded) {
+        if (this.state.grated) {
             return Potato.txs[2];
         }
         if (this.state.peeled) {
@@ -125,7 +126,7 @@ class Garlic extends Item {
 
     get name() {
         if (this.state.grated) {
-            return "Fine Garlic";
+            return "Grated Garlic";
         }
         if (this.state.smashed) {
             return "Smashed Garlic";
@@ -160,6 +161,73 @@ class Garlic extends Item {
     }
 
     view = objDummy("garlic");
+}
+
+class Onion extends Item {
+    constructor(readonly state = { grated: false }) {
+        super();
+    }
+
+    get name() {
+        return this.state.grated ? "Grated Onion" : "Onion";
+    }
+
+    view = objDummy("onion");
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Grater) {
+            if (this.state.grated) {
+                return "Already grated.";
+            }
+
+            return {
+                description: "Grate onion",
+                item0: new Onion({ ...this.state, grated: true }),
+                item1,
+            };
+        }
+    }
+}
+
+class Carrot extends Item {
+    constructor(readonly state = { grated: false }) {
+        super();
+    }
+
+    get name() {
+        return this.state.grated ? "Grated Carrot" : "Carrot";
+    }
+
+    view = objDummy("carrot");
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Grater) {
+            if (this.state.grated) {
+                return "Already grated.";
+            }
+
+            return {
+                description: "Grate carrot",
+                item0: new Carrot({ ...this.state, grated: true }),
+                item1,
+            };
+        }
+    }
+}
+
+class Salt extends Item {
+    name = "Salt Shaker";
+    view = objDummy("salt");
+}
+
+class Pepper extends Item {
+    name = "Pepper Shaker";
+    view = objDummy("pepper");
+}
+
+class OliveOil extends Item {
+    name = "Olive Oil";
+    view = objDummy("olive oil");
 }
 
 class Hammer extends Item {
@@ -266,8 +334,93 @@ class Egg extends Item {
     }
 }
 
+class RecipeBuilder {
+    private readonly _ingredients: Array<Recipe.Ingredient<typeof Item>> = [];
+
+    addIngredient<TItem extends typeof Item>(
+        Item: TItem,
+        filter: (item: InstanceType<TItem>) => true | string,
+        count: Integer,
+        transform: (item: InstanceType<TItem>) => Item | null = () => null,
+    ) {
+        this._ingredients.push({ Item, filter: filter as any, count, transform: transform as any });
+        return this;
+    }
+
+    build() {
+        return new Recipe([...this._ingredients]);
+    }
+}
+
+class Recipe {
+    constructor(readonly ingredients: Recipe.Ingredients) {
+    }
+
+    createState(): Recipe.State {
+        return this.ingredients.map(() => 0);
+    }
+
+    receive(_state: Recipe.State, item: Item): Recipe.ReceiveResult {
+        const state = [..._state];
+
+        for (let i = 0; i < this.ingredients.length; i++) {
+            const { Item, filter, count, transform } = this.ingredients[i];
+
+            if (!(item instanceof Item)) {
+                continue;
+            }
+
+            if (state[i] >= count) {
+                return { success: false, reason: "At maximum." };
+            }
+
+            const result = filter(item);
+
+            if (typeof result === "string") {
+                return { success: false, reason: result };
+            }
+
+            state[i] += 1;
+            return { success: true, state, transformedItem: transform(item) };
+        }
+
+        return { success: false, reason: "...?" };
+    }
+
+    hasAllIngredients(state: Recipe.State) {
+        for (let i = 0; i < this.ingredients.length; i++) {
+            if (state[i] < this.ingredients[i].count) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+namespace Recipe {
+    export type State = ReadonlyArray<Integer>;
+
+    export type Ingredients = Array<Recipe.Ingredient<typeof Item>>;
+
+    export interface Ingredient<TItem extends typeof Item> {
+        Item: TItem;
+        filter: (item: InstanceType<TItem>) => true | string;
+        transform: (item: InstanceType<TItem>) => Item | null;
+        count: Integer;
+    }
+
+    export type ReceiveResult = { success: false; reason: string } | {
+        success: true;
+        state: State;
+        transformedItem: Item | null;
+    };
+}
+
 class MixingBowl extends Item {
-    constructor(readonly state = { gratedPotatoes: 0, dicedGarlics: 0, brokenEggs: 0 }) {
+    constructor(
+        readonly state = { recipe: latkesRecipe.createState() },
+    ) {
         super();
     }
 
@@ -275,71 +428,33 @@ class MixingBowl extends Item {
 
     view = Tx.Item.MixingBowl;
 
-    private createNextMixingBowl(partialState: Partial<MixingBowl["state"]>) {
-        const state = { ...this.state, ...partialState };
-        if (
-            state.gratedPotatoes >= 3
-            && state.dicedGarlics >= 1
-            && state.brokenEggs >= 1
-        ) {
-            return new MixingBowlAssembled();
-        }
-
-        return new MixingBowl(state);
-    }
-
     protected combine(item1: Item): Item.Protected.CombineResult {
         if (item1 instanceof Scooper) {
             return "Not assembled yet.";
         }
 
-        if (item1 instanceof Potato) {
-            if (this.state.gratedPotatoes >= 3) {
-                return "At maximum.";
-            }
+        const recipeReceiveResult = latkesRecipe.receive(this.state.recipe, item1);
 
-            if (!item1.state.shredded) {
-                return "Shred first.";
-            }
+        if (recipeReceiveResult.success) {
+            const { state: recipeState, transformedItem } = recipeReceiveResult;
 
-            return {
-                description: "Add potato",
-                item0: this.createNextMixingBowl({ gratedPotatoes: this.state.gratedPotatoes + 1 }),
-                item1: null,
-            };
-        }
+            const description = "Add " + item1.name;
 
-        if (item1 instanceof Garlic) {
-            if (this.state.dicedGarlics >= 1) {
-                return "At maximum.";
-            }
-
-            if (!item1.state.grated) {
-                return "Grate first.";
+            if (latkesRecipe.hasAllIngredients(recipeState)) {
+                return {
+                    description,
+                    item0: new MixingBowlAssembled(),
+                    item1: transformedItem,
+                };
             }
 
             return {
-                description: "Add garlic",
-                item0: this.createNextMixingBowl({ dicedGarlics: this.state.dicedGarlics + 1 }),
-                item1: null,
+                description,
+                item0: new MixingBowl({ ...this.state, recipe: recipeState }),
+                item1: transformedItem,
             };
         }
-
-        if (item1 instanceof Egg) {
-            if (this.state.brokenEggs >= 1) {
-                return "At maximum.";
-            }
-
-            if (!item1.state.broken) {
-                return "Break first.";
-            }
-
-            return {
-                description: "Add egg",
-                item0: this.createNextMixingBowl({ brokenEggs: this.state.brokenEggs + 1 }),
-                item1: null,
-            };
-        }
+        return recipeReceiveResult.reason;
     }
 }
 
@@ -424,6 +539,22 @@ class HalfCup extends Item {
     }
 }
 
+const latkesRecipe = new RecipeBuilder()
+    .addIngredient(Potato, item => item.state.grated ? true : "Grate first.", 3)
+    .addIngredient(Garlic, item => item.state.grated ? true : "Grate first.", 1)
+    .addIngredient(Onion, item => item.state.grated ? true : "Grate first.", 1)
+    .addIngredient(Carrot, item => item.state.grated ? true : "Grate first.", 1)
+    .addIngredient(Egg, item => item.state.broken ? true : "Break first.", 1)
+    .addIngredient(Salt, () => true, 1)
+    .addIngredient(Pepper, () => true, 1)
+    .addIngredient(
+        HalfCup,
+        (item) => item.state.hasFlour ? true : "Need flour.",
+        1,
+        item => new HalfCup({ ...item.state, hasFlour: false }),
+    )
+    .build();
+
 export namespace DataItem {
     export const Manifest = {
         Potato,
@@ -439,6 +570,11 @@ export namespace DataItem {
         Scooper,
         Flour,
         HalfCup,
+        Onion,
+        Carrot,
+        Salt,
+        Pepper,
+        OliveOil,
     };
 
     export type Id = keyof typeof Manifest;

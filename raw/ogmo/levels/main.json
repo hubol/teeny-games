@@ -190,6 +190,46 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "HalfCup", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 14,
+          "_eid": "09222736",
+          "x": 584,
+          "y": 488,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Onion", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 15,
+          "_eid": "09222736",
+          "x": 608,
+          "y": 568,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Carrot", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 16,
+          "_eid": "09222736",
+          "x": 592,
+          "y": 664,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Salt", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 17,
+          "_eid": "09222736",
+          "x": 688,
+          "y": 624,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Pepper", "name": ""}
         }
       ]
     },
@@ -213,7 +253,8 @@
           "texture": "world/recipe book opened.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": "RecipeBookOpened"}
+          "values": {"name": "RecipeBookOpened"},
+          "groupName": null
         },
         {
           "x": 408,
@@ -238,7 +279,8 @@
           "texture": "world/recipe book closed.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": "RecipeBook"}
+          "values": {"name": "RecipeBook"},
+          "groupName": null
         }
       ],
       "folder": "../textures"
