@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 69 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 70 }];
 
 interface TxData {
   id: string;
@@ -44,13 +44,14 @@ function txs<T>(tx: (data: TxData) => T) {
       EggBroken: tx({ id: "Item.EggBroken", atlas: 0, x: 2003, y: 219, width: 42, height: 54 }),
       Egg: tx({ id: "Item.Egg", atlas: 0, x: 1122, y: 215, width: 40, height: 46 }),
       Flour: tx({ id: "Item.Flour", atlas: 0, x: 176, y: 471, width: 54, height: 64 }),
-      GarlicGrated: tx({ id: "Item.GarlicGrated", atlas: 0, x: 312, y: 253, width: 24, height: 18 }),
+      GarlicGrated: tx({ id: "Item.GarlicGrated", atlas: 0, x: 238, y: 551, width: 24, height: 18 }),
       GarlicSmashed: tx({ id: "Item.GarlicSmashed", atlas: 0, x: 100, y: 566, width: 34, height: 36 }),
       Garlic: tx({ id: "Item.Garlic", atlas: 0, x: 272, y: 507, width: 38, height: 28 }),
       Grater: tx({ id: "Item.Grater", atlas: 0, x: 1122, y: 289, width: 36, height: 42 }),
       HalfCupFlour: tx({ id: "Item.HalfCupFlour", atlas: 0, x: 231, y: 514, width: 38, height: 36 }),
       HalfCup: tx({ id: "Item.HalfCup", atlas: 0, x: 176, y: 536, width: 38, height: 36 }),
       Hammer: tx({ id: "Item.Hammer", atlas: 0, x: 712, y: 453, width: 30, height: 52 }),
+      Latke: tx({ id: "Item.Latke", atlas: 0, x: 279, y: 253, width: 38, height: 16 }),
       Lighter: tx({ id: "Item.Lighter", atlas: 0, x: 362, y: 221, width: 18, height: 36 }),
       MixingBowl: tx({ id: "Item.MixingBowl", atlas: 0, x: 780, y: 390, width: 84, height: 46 }),
       OliveOil: tx({ id: "Item.OliveOil", atlas: 0, x: 65, y: 559, width: 34, height: 58 }),
@@ -79,7 +80,7 @@ function txs<T>(tx: (data: TxData) => T) {
       Target: tx({ id: "Ui.Target", atlas: 0, x: 311, y: 507, width: 22, height: 34 }),
     },
     World: {
-      Grass0: tx({ id: "World.Grass0", atlas: 0, x: 279, y: 253, width: 32, height: 22 }),
+      Grass0: tx({ id: "World.Grass0", atlas: 0, x: 318, y: 253, width: 32, height: 22 }),
       RecipeBookClosed: tx({ id: "World.RecipeBookClosed", atlas: 0, x: 279, y: 276, width: 178, height: 230 }),
       RecipeBookOpened: tx({ id: "World.RecipeBookOpened", atlas: 0, x: 1670, y: 49, width: 332, height: 226 }),
       RecipeStepComplete0: tx({ id: "World.RecipeStepComplete0", atlas: 0, x: 744, y: 444, width: 112, height: 6 }),

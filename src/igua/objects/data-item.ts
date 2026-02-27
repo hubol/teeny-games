@@ -724,7 +724,7 @@ class Skillet extends Item {
 
     cook(): Skillet["state"] {
         return {
-            oliveOilUnits: Math.max(0, this.state.oliveOilUnits - 1),
+            oliveOilUnits: this.state.oliveOilUnits,
             remainingLatkes: Math.max(0, this.state.remainingLatkes - 1),
             cookedLatkes: this.state.cookedLatkes + 1,
         };
@@ -757,7 +757,11 @@ class Skillet extends Item {
 
             return {
                 description: "Cook latke",
-                item0: new Skillet({ ...this.state, remainingLatkes: this.state.remainingLatkes + 1 }),
+                item0: new Skillet({
+                    ...this.state,
+                    oliveOilUnits: this.state.oliveOilUnits - 1,
+                    remainingLatkes: this.state.remainingLatkes + 1,
+                }),
                 item1: new Scooper({ ...item1.state, hasLatke: false }),
             };
         }
@@ -766,7 +770,7 @@ class Skillet extends Item {
 
 class Latke extends Item {
     name = "Latke";
-    view = objDummy("latke");
+    view = Tx.Item.Latke;
 }
 
 const latkesRecipe = new RecipeBuilder()
