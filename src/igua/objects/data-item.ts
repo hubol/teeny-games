@@ -764,6 +764,11 @@ class Skillet extends Item {
     }
 }
 
+class Latke extends Item {
+    name = "Latke";
+    view = objDummy("latke");
+}
+
 const latkesRecipe = new RecipeBuilder()
     .addIngredient(Potato, item => item.state.grated ? true : "Grate first.", 3)
     .addIngredient(Garlic, item => item.state.grated ? true : "Grate first.", 1)
@@ -804,6 +809,7 @@ export namespace DataItem {
         SmokeAlarm,
         Whisky,
         WhiskyGlass,
+        Latke,
     };
 
     export type Id = keyof typeof Manifest;

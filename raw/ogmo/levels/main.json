@@ -391,7 +391,7 @@
           "y": 840,
           "originX": 27,
           "originY": 28,
-          "values": {"itemId": "Skillet", "name": ""}
+          "values": {"itemId": "Skillet", "name": "SkilletItem"}
         },
         {
           "name": "Item",
@@ -1312,6 +1312,18 @@
           "originY": 0.5,
           "values": {"name": ""},
           "groupName": null
+        },
+        {
+          "x": 1886,
+          "y": 804,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/text/cooking.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
         }
       ],
       "folder": "../textures"
