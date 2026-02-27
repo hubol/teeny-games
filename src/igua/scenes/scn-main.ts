@@ -89,7 +89,7 @@ export function scnMain() {
                 {
                     Item: DataItem.Manifest.WhiskyGlass,
                     filter: (item) => item.state.filled ? true : "Needs whisky",
-                    text: "Whisky for Hubol",
+                    text: "Whisky for Misha",
                 },
             );
 
@@ -99,7 +99,7 @@ export function scnMain() {
                 {
                     Item: DataItem.Manifest.WhiskyGlass,
                     filter: (item) => item.state.filled ? true : "Needs whisky",
-                    text: "Whisky for Misha",
+                    text: "Whisky for Hubol",
                 },
             );
 
