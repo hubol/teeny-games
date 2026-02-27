@@ -177,6 +177,12 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
         })
         .show();
 
+    const mouseObj = new Graphics()
+        .beginFill(0xff0000)
+        .drawRect(-4, -4, 8, 8)
+        .invisible()
+        .show();
+
     return mishaObj
         .step(() => {
             const lookVector = mishaObj.objMisha.lookPriorityVector[0]
@@ -262,7 +268,8 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
             }
         }, -1)
         .step(() => {
-            const collidedObj = mishaObj.objMisha.pointerObj
+            mouseObj.at(scene.camera).add(Mouse);
+            const collidedObj = mouseObj
                 .collidesOne(Instances(mxnInteractive, obj => obj.mxnInteractive.enabled));
             LocalInteractive.value.focusedObj = collidedObj;
         });
