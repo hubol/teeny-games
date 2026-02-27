@@ -2,6 +2,7 @@ import { DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Tx } from "../../assets/textures";
 import { interpvr } from "../../lib/game-engine/routines/interp";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
@@ -577,6 +578,37 @@ class HalfCup extends Item {
     }
 }
 
+class SmokeAlarm extends Item {
+    private static objSmokeAlarm(item: ItemRef) {
+        return container(
+            Sprite.from(Tx.Item.SmokeAlarm),
+            new Graphics()
+                .tinted(0x000000)
+                .beginFill(0xffffff)
+                .drawRect(28, 25, 4, 4)
+                .coro(function* (self) {
+                    function isTriggered() {
+                        return item.ref instanceof SmokeAlarm ? item.ref.state.triggered : false;
+                    }
+
+                    while (true) {
+                        self.tint = isTriggered() ? 0x400000 : 0x004000;
+                        yield sleep(isTriggered() ? 200 : 500);
+                        self.tint = isTriggered() ? 0xf00000 : 0x00f000;
+                        yield sleep(isTriggered() ? 200 : 500);
+                    }
+                }),
+        );
+    }
+
+    constructor(readonly state = { triggered: false }) {
+        super();
+    }
+
+    name = "Smoke Alarm";
+    view = SmokeAlarm.objSmokeAlarm;
+}
+
 const latkesRecipe = new RecipeBuilder()
     .addIngredient(Potato, item => item.state.grated ? true : "Grate first.", 3)
     .addIngredient(Garlic, item => item.state.grated ? true : "Grate first.", 1)
@@ -613,6 +645,7 @@ export namespace DataItem {
         Salt,
         Pepper,
         OliveOil,
+        SmokeAlarm,
     };
 
     export type Id = keyof typeof Manifest;
