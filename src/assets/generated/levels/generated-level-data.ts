@@ -179,10 +179,21 @@ export const Lvl = {
       Marker_3: e(r["Marker"], { x: 272, y: 64, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
+  Title: () => {
+    applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
+    return {
+      WorldBricks: d(Tx.World.Bricks, { x: 43, y: 213, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      WorldBricks_1: d(Tx.World.Bricks, { x: 169, y: 252, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      TitleName: d(Tx.Title.Name, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, originX: 0, originY: 0, tint: 0xffffff }, "BackDecals"),
+      TitleLetsGo: d(Tx.Title.LetsGo, { x: 392, y: 232, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      PlayerStartMarker: e(r["Marker"], { x: 80, y: 200, values: { name: "PlayerStartMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+    };
+  },
 };
 
 export namespace LvlType {
   export type Ending = ReturnType<(typeof Lvl)["Ending"]>;
   export type Main = ReturnType<(typeof Lvl)["Main"]>;
   export type Placeholder = ReturnType<(typeof Lvl)["Placeholder"]>;
+  export type Title = ReturnType<(typeof Lvl)["Title"]>;
 }
