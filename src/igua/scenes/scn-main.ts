@@ -11,7 +11,7 @@ export function scnMain() {
 
     objMisha()
         .mixin(mxnMishaControlled)
-        .at(250, 140)
+        .at(lvl.PlayerStartMarker)
         .zIndexed(999)
         .show();
 
