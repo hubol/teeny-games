@@ -7,7 +7,7 @@ export namespace OgmoEntities {
   export type Slope = OgmoFactory.EntityBase<{ name: string; visible: boolean }>;
   export type Marker = OgmoFactory.EntityBase<{ name: string; depth: number }>;
   export type Region = OgmoFactory.EntityBase<{ name: string; depth: number }>;
-  export type Item = OgmoFactory.EntityBase<{ itemId: "Potato" | "Peeler" | "Grater" | "Garlic" | "Hammer" | "Skillet" | "Cigarette" | "Lighter" | "Egg" | "MixingBowl" | "MixingBowlAssembled" | "Scooper" | "Flour" | "HalfCup" | "Onion" | "Carrot" | "Salt" | "Pepper" | "OliveOil" | "SmokeAlarm" | "Whisky" | "WhiskyGlass"; name: string }>;
+  export type Item = OgmoFactory.EntityBase<{ itemId: "Potato" | "Peeler" | "Grater" | "Garlic" | "Hammer" | "Skillet" | "Cigarette" | "Lighter" | "Egg" | "MixingBowl" | "MixingBowlAssembled" | "Scooper" | "Flour" | "HalfCup" | "Onion" | "Carrot" | "Salt" | "Pepper" | "OliveOil" | "SmokeAlarm" | "Whisky" | "WhiskyGlass" | "Latke" | "ServingPlatter"; name: string }>;
 }
 
 export interface OgmoEntityResolverBase {

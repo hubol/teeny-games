@@ -442,6 +442,106 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "MixingBowlAssembled", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 29,
+          "_eid": "09222736",
+          "x": 1112,
+          "y": 88,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "ServingPlatter", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 30,
+          "_eid": "09222736",
+          "x": 1328,
+          "y": 88,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 31,
+          "_eid": "09222736",
+          "x": 1304,
+          "y": 168,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 32,
+          "_eid": "09222736",
+          "x": 1400,
+          "y": 184,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 33,
+          "_eid": "09222736",
+          "x": 1424,
+          "y": 104,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 34,
+          "_eid": "09222736",
+          "x": 1496,
+          "y": 208,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 35,
+          "_eid": "09222736",
+          "x": 1528,
+          "y": 112,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 36,
+          "_eid": "09222736",
+          "x": 1592,
+          "y": 240,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 37,
+          "_eid": "09222736",
+          "x": 1616,
+          "y": 112,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 38,
+          "_eid": "09222736",
+          "x": 1680,
+          "y": 192,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Latke", "name": ""}
         }
       ]
     },
@@ -1323,7 +1423,34 @@
           "texture": "world/text/cooking.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 784,
+          "y": 131,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/dinner table.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 778,
+          "y": 42,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/text/dinner time.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
         }
       ],
       "folder": "../textures"

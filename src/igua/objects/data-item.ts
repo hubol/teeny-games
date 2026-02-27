@@ -2,7 +2,8 @@ import { DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
+import { interp, interpvr } from "../../lib/game-engine/routines/interp";
+import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -773,6 +774,65 @@ class Latke extends Item {
     view = Tx.Item.Latke;
 }
 
+class ServingPlatter extends Item {
+    private static objServingPlatter(item: ItemRef) {
+        function getLatkes() {
+            return item.ref instanceof ServingPlatter ? item.ref.state.latkes : 0;
+        }
+
+        const positions = [
+            [27, 14],
+            [60, 5],
+            [108, 8],
+            [87, 26],
+            [50, 27],
+            [39, 7],
+            [69, 18],
+            [95, 5],
+            [121, 16],
+        ];
+
+        return container(
+            Sprite.from(Tx.Item.Platter),
+        )
+            .coro(function* (self) {
+                const latkesObj = container().show(self);
+                while (true) {
+                    latkesObj.removeAllChildren();
+                    const count = getLatkes();
+                    for (let i = 0; i < count; i++) {
+                        Sprite.from(Tx.Item.Latke)
+                            .anchored(0.5, 0.5)
+                            .at(positions[i])
+                            .show(latkesObj);
+                    }
+                    yield onPrimitiveMutate(getLatkes);
+                }
+            });
+    }
+
+    name = "Serving Platter";
+    view = ServingPlatter.objServingPlatter;
+
+    constructor(readonly state = { latkes: 0 }) {
+        super();
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof Latke) {
+            if (this.state.latkes > 9) {
+                return "Too many.";
+            }
+
+            return {
+                description: "Add latke",
+                item0: new ServingPlatter({ ...this.state, latkes: this.state.latkes + 1 }),
+                item1: null,
+            };
+        }
+    }
+}
+
 const latkesRecipe = new RecipeBuilder()
     .addIngredient(Potato, item => item.state.grated ? true : "Grate first.", 3)
     .addIngredient(Garlic, item => item.state.grated ? true : "Grate first.", 1)
@@ -814,6 +874,7 @@ export namespace DataItem {
         Whisky,
         WhiskyGlass,
         Latke,
+        ServingPlatter,
     };
 
     export type Id = keyof typeof Manifest;

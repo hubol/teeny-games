@@ -600,7 +600,9 @@
             "OliveOil",
             "SmokeAlarm",
             "Whisky",
-            "WhiskyGlass"
+            "WhiskyGlass",
+            "Latke",
+            "ServingPlatter"
           ],
           "defaults": 0
         },
