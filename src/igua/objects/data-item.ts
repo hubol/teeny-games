@@ -253,7 +253,7 @@ class Pepper extends Item {
 
 class OliveOil extends Item {
     name = "Olive Oil";
-    view = objDummy("olive oil");
+    view = Tx.Item.OliveOil;
 }
 
 class Hammer extends Item {
@@ -269,11 +269,6 @@ class Peeler extends Item {
 class Grater extends Item {
     name = "Grater";
     view = Tx.Item.Grater;
-}
-
-class Skillet extends Item {
-    name = "Skillet";
-    view = Tx.Item.Skillet;
 }
 
 class Cigarette extends Item {
@@ -451,7 +446,7 @@ class MixingBowl extends Item {
     private static objMixingBowl(item: ItemRef) {
         return container(
             Sprite.from(Tx.Item.MixingBowl),
-            objText.MediumBoldIrregular("", { tint: 0x808E72 })
+            objText.MediumBoldIrregular("", { tint: 0x808E72, align: "center" })
                 .anchored(0.5, 0.5)
                 .at(43, 25)
                 .step(self => {
@@ -459,9 +454,8 @@ class MixingBowl extends Item {
                         return;
                     }
 
-                    const remainingIngredientsCount = latkesRecipe.totalIngredientsCount
-                        - item.ref.state.recipe.reduce((sum, value) => sum + value, 0);
-                    self.text = remainingIngredientsCount + " left";
+                    const ingredientsCount = item.ref.state.recipe.reduce((sum, value) => sum + value, 0);
+                    self.text = ingredientsCount + " of " + latkesRecipe.totalIngredientsCount + "\ningredients";
                 }),
         );
     }
@@ -507,15 +501,29 @@ class MixingBowl extends Item {
 }
 
 class MixingBowlAssembled extends Item {
+    private static objMixingBowlAssembled(item: ItemRef) {
+        return container(
+            Sprite.from(Tx.Item.MixingBowl),
+            objText.MediumBoldIrregular("", { tint: 0x808E72, align: "center" })
+                .anchored(0.5, 0.5)
+                .at(43, 25)
+                .step(self => {
+                    if (!(item.ref instanceof MixingBowlAssembled)) {
+                        return;
+                    }
+
+                    self.text = item.ref.state.remainingLatkes + " latkes";
+                }),
+        );
+    }
+
     constructor(readonly state = { remainingLatkes: 9 }) {
         super();
     }
 
-    get name() {
-        return `Bowl w. ${this.state.remainingLatkes} Latkes`;
-    }
+    name = "Latke Mix";
 
-    view = Tx.Item.MixingBowl;
+    view = MixingBowlAssembled.objMixingBowlAssembled;
 
     protected combine(item1: Item): Item.Protected.CombineResult {
         if (this.state.remainingLatkes > 0) {
@@ -702,6 +710,60 @@ class WhiskyGlass extends Item {
     }
 }
 
+class Skillet extends Item {
+    constructor(readonly state = { oliveOilUnits: 0, remainingLatkes: 0, cookedLatkes: 0 }) {
+        super();
+    }
+
+    name = "Skillet";
+    view = Tx.Item.Skillet;
+
+    take(): Item.TakeResult {
+        return { success: false, reason: "Let's not move this" };
+    }
+
+    cook(): Skillet["state"] {
+        return {
+            oliveOilUnits: Math.max(0, this.state.oliveOilUnits - 1),
+            remainingLatkes: Math.max(0, this.state.remainingLatkes - 1),
+            cookedLatkes: this.state.cookedLatkes + 1,
+        };
+    }
+
+    protected combine(item1: Item): Item.Protected.CombineResult {
+        if (item1 instanceof OliveOil) {
+            if (this.state.oliveOilUnits >= 4) {
+                return "Already have enough";
+            }
+
+            return {
+                description: "Add olive oil",
+                item0: new Skillet({ ...this.state, oliveOilUnits: 4 }),
+                item1: new OliveOil(),
+            };
+        }
+        if (item1 instanceof Scooper) {
+            if (!item1.state.hasLatke) {
+                return "It's empty.";
+            }
+
+            if (this.state.oliveOilUnits <= 0) {
+                return this.state.cookedLatkes ? "Needs more oil" : "Needs oil";
+            }
+
+            if (this.state.remainingLatkes >= 4) {
+                return "Wait for others to cook.";
+            }
+
+            return {
+                description: "Cook latke",
+                item0: new Skillet({ ...this.state, remainingLatkes: this.state.remainingLatkes + 1 }),
+                item1: new Scooper({ ...item1.state, hasLatke: false }),
+            };
+        }
+    }
+}
+
 const latkesRecipe = new RecipeBuilder()
     .addIngredient(Potato, item => item.state.grated ? true : "Grate first.", 3)
     .addIngredient(Garlic, item => item.state.grated ? true : "Grate first.", 1)
@@ -730,6 +792,7 @@ export namespace DataItem {
         Lighter,
         Egg,
         MixingBowl,
+        MixingBowlAssembled,
         Scooper,
         Flour,
         HalfCup,

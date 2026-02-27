@@ -1,6 +1,6 @@
 {
   "ogmoVersion": "3.4.0-hubol",
-  "width": 1480,
+  "width": 2008,
   "height": 1024,
   "offsetX": 0,
   "offsetY": 0,
@@ -14,7 +14,7 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 185,
+      "gridCellsX": 251,
       "gridCellsY": 128,
       "entities": [
         {
@@ -38,6 +38,105 @@
           "originY": 8,
           "tint": "#00ff00",
           "values": {"name": "AidarMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 2,
+          "_eid": "73148747",
+          "x": 1775,
+          "y": 813,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 3,
+          "_eid": "73148747",
+          "x": 1807,
+          "y": 765,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 4,
+          "_eid": "73148747",
+          "x": 1751,
+          "y": 765,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 5,
+          "_eid": "73148747",
+          "x": 1719,
+          "y": 813,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 6,
+          "_eid": "73148747",
+          "x": 1839,
+          "y": 725,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 7,
+          "_eid": "73148747",
+          "x": 1775,
+          "y": 861,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 8,
+          "_eid": "73148747",
+          "x": 1711,
+          "y": 869,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 9,
+          "_eid": "73148747",
+          "x": 1775,
+          "y": 717,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 10,
+          "_eid": "73148747",
+          "x": 1703,
+          "y": 733,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#ff0000",
+          "values": {"name": "LatkeMarker", "depth": 0}
         }
       ]
     },
@@ -48,7 +147,7 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 185,
+      "gridCellsX": 251,
       "gridCellsY": 128,
       "entities": []
     },
@@ -59,7 +158,7 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 185,
+      "gridCellsX": 251,
       "gridCellsY": 128,
       "decals": [],
       "folder": "../textures"
@@ -71,7 +170,7 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 185,
+      "gridCellsX": 251,
       "gridCellsY": 128,
       "entities": [
         {
@@ -283,6 +382,66 @@
           "originX": 27,
           "originY": 28,
           "values": {"itemId": "WhiskyGlass", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 21,
+          "_eid": "09222736",
+          "x": 1824,
+          "y": 840,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "Skillet", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 22,
+          "_eid": "09222736",
+          "x": 1744,
+          "y": 624,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "OliveOil", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 23,
+          "_eid": "09222736",
+          "x": 1792,
+          "y": 616,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "OliveOil", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 24,
+          "_eid": "09222736",
+          "x": 1696,
+          "y": 632,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "OliveOil", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 25,
+          "_eid": "09222736",
+          "x": 1840,
+          "y": 608,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "OliveOil", "name": ""}
+        },
+        {
+          "name": "Item",
+          "id": 28,
+          "_eid": "09222736",
+          "x": 1608,
+          "y": 800,
+          "originX": 27,
+          "originY": 28,
+          "values": {"itemId": "MixingBowlAssembled", "name": ""}
         }
       ]
     },
@@ -293,7 +452,7 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 185,
+      "gridCellsX": 251,
       "gridCellsY": 128,
       "decals": [
         {
@@ -1032,6 +1191,123 @@
           "rotation": 0,
           "tint": "#90cb61",
           "texture": "world/grass 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1652,
+          "y": 763,
+          "scaleX": 1,
+          "scaleY": -1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/tile 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1792,
+          "y": 1035,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/tile 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1931,
+          "y": 762,
+          "scaleX": 1,
+          "scaleY": -1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/tile 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 2071,
+          "y": 1033,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/tile 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1790,
+          "y": 626,
+          "scaleX": 1,
+          "scaleY": -1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/tile 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1929,
+          "y": 961,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#20154f",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1851,
+          "y": 942,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4b3499",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1860,
+          "y": 960,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4b3499",
+          "texture": "world/splotch 0.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1916,
+          "y": 827,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "world/stove.png",
           "originX": 0.5,
           "originY": 0.5,
           "values": {"name": ""},

@@ -8,7 +8,7 @@ const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = Og
 
 export const Lvl = {
   Main: () => {
-    applyLevel({ width: 1480, height: 1024, backgroundTint: 0x20154f });
+    applyLevel({ width: 2008, height: 1024, backgroundTint: 0x20154f });
     return {
       WorldTile0: d(Tx.World.Tile0, { x: 667, y: 1033, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
       WorldTile0_1: d(Tx.World.Tile0, { x: 947, y: 1033, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
@@ -67,6 +67,15 @@ export const Lvl = {
       ShapesMess0_7: d(Tx.Shapes.Mess0, { x: 331, y: 806, scaleX: 1, scaleY: 1, rotation: 180, originX: 0.5, originY: 0.5, tint: 0x2b5214 }, "BackDecals"),
       ShapesMess0_8: d(Tx.Shapes.Mess0, { x: 366, y: 695, scaleX: 1, scaleY: -1, rotation: 180, originX: 0.5, originY: 0.5, tint: 0x2b5214 }, "BackDecals"),
       WorldGrass0_9: d(Tx.World.Grass0, { x: 379, y: 685, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x90cb61 }, "BackDecals"),
+      WorldTile0_9: d(Tx.World.Tile0, { x: 1652, y: 763, scaleX: 1, scaleY: -1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      WorldTile0_10: d(Tx.World.Tile0, { x: 1792, y: 1035, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      WorldTile0_11: d(Tx.World.Tile0, { x: 1931, y: 762, scaleX: 1, scaleY: -1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      WorldTile0_12: d(Tx.World.Tile0, { x: 2071, y: 1033, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      WorldTile0_13: d(Tx.World.Tile0, { x: 1790, y: 626, scaleX: 1, scaleY: -1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      WorldSplotch0_9: d(Tx.World.Splotch0, { x: 1929, y: 961, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x20154f }, "BackDecals"),
+      WorldSplotch0_10: d(Tx.World.Splotch0, { x: 1851, y: 942, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4b3499 }, "BackDecals"),
+      WorldSplotch0_11: d(Tx.World.Splotch0, { x: 1860, y: 960, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4b3499 }, "BackDecals"),
+      WorldStove: d(Tx.World.Stove, { x: 1916, y: 827, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
       Item: e(r["Item"], { x: 424, y: 336, values: { itemId: "Potato", name: "" } }, "Entities"),
       Item_1: e(r["Item"], { x: 520, y: 352, values: { itemId: "Potato", name: "" } }, "Entities"),
       Item_2: e(r["Item"], { x: 312, y: 360, values: { itemId: "Potato", name: "" } }, "Entities"),
@@ -88,8 +97,23 @@ export const Lvl = {
       Item_17: e(r["Item"], { x: 808, y: 448, values: { itemId: "SmokeAlarm", name: "" } }, "Entities"),
       Item_18: e(r["Item"], { x: 1056, y: 184, values: { itemId: "WhiskyGlass", name: "" } }, "Entities"),
       Item_19: e(r["Item"], { x: 1160, y: 184, values: { itemId: "WhiskyGlass", name: "" } }, "Entities"),
+      Item_20: e(r["Item"], { x: 1824, y: 840, values: { itemId: "Skillet", name: "" } }, "Entities"),
+      Item_21: e(r["Item"], { x: 1744, y: 624, values: { itemId: "OliveOil", name: "" } }, "Entities"),
+      Item_22: e(r["Item"], { x: 1792, y: 616, values: { itemId: "OliveOil", name: "" } }, "Entities"),
+      Item_23: e(r["Item"], { x: 1696, y: 632, values: { itemId: "OliveOil", name: "" } }, "Entities"),
+      Item_24: e(r["Item"], { x: 1840, y: 608, values: { itemId: "OliveOil", name: "" } }, "Entities"),
+      Item_25: e(r["Item"], { x: 1608, y: 800, values: { itemId: "MixingBowlAssembled", name: "" } }, "Entities"),
       PlayerStartMarker: e(r["Marker"], { x: 728, y: 536, values: { name: "PlayerStartMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       AidarMarker: e(r["Marker"], { x: 360, y: 120, values: { name: "AidarMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      LatkeMarker: e(r["Marker"], { x: 1775, y: 813, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_1: e(r["Marker"], { x: 1807, y: 765, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_2: e(r["Marker"], { x: 1751, y: 765, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_3: e(r["Marker"], { x: 1719, y: 813, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_4: e(r["Marker"], { x: 1839, y: 725, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_5: e(r["Marker"], { x: 1775, y: 861, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_6: e(r["Marker"], { x: 1711, y: 869, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_7: e(r["Marker"], { x: 1775, y: 717, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
+      LatkeMarker_8: e(r["Marker"], { x: 1703, y: 733, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
     };
   },
   Placeholder: () => {
