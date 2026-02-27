@@ -9,7 +9,6 @@ import { scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 
 export function scnEnding() {
-    Sfx.Yo.play();
     const lvl = Lvl.Ending();
 
     lvl.EndingHubolFace.mixin(mxnBoilPivot);
@@ -35,6 +34,8 @@ export function scnEnding() {
                             .zIndexed(999)
                             .show();
                     });
+
+                Sfx.Yo.play();
 
                 while (true) {
                     objFallingLatke().at(Rng.intc(0, 500), -40).show();

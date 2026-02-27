@@ -71,9 +71,10 @@ export function scnMain() {
                     return;
                 }
             })
-            .coro(function* () {
+            .coro(function* (self) {
                 while (true) {
                     yield () => getSkilletItem().ref.state.remainingLatkes > 0;
+                    self.play(Sfx.Cooking);
                     yield sleep(2000);
                     getSkilletItem().ref = new DataItem.Manifest.Skillet(getSkilletItem().ref.cook());
                     objItem("Latke").at(latkePositions[(nextLatkePositionIndex++) % latkePositions.length]).show();
@@ -120,7 +121,9 @@ export function scnMain() {
 
                 const glowObjs = [...storageObjs, mishaObj];
 
-                for (const obj of glowObjs) {
+                for (let i = 0; i < glowObjs.length; i++) {
+                    const obj = glowObjs[i];
+                    obj.play(Sfx.TableSet.rate(1 + i * 0.1));
                     const filter = new ForceTintFilter(0xffffff, 0);
                     obj.filtered(filter);
                     yield interp(filter, "factor").steps(4).to(1).over(500);

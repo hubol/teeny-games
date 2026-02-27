@@ -55,6 +55,10 @@ export function objItem(itemOrId: DataItem.Id | Item, pivotUnit: VectorSimple = 
                         layers.overlay.showError(result.reason);
                     }
                     else {
+                        if (result.sfx) {
+                            obj.play(result.sfx.rate(0.99, 1.01));
+                        }
+
                         if (result.item0 === null) {
                             obj.destroy();
                         }

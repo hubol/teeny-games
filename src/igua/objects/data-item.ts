@@ -2,6 +2,7 @@ import { DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { Sound } from "../../lib/game-engine/audio/sound";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { sleep } from "../../lib/game-engine/routines/sleep";
@@ -53,7 +54,7 @@ export abstract class Item {
 namespace Item {
     export namespace Protected {
         export type CombineResult =
-            | { description: string; item0: Item | null; item1: Item | null }
+            | { description: string; item0: Item | null; item1: Item | null; sfx?: Sound }
             | string
             | void;
     }
@@ -61,7 +62,7 @@ namespace Item {
     export type CombineResult =
         | { kind: "impossible" }
         | { kind: "failed"; reason: string }
-        | { kind: "combined"; description: string; item0: Item | null; item1: Item | null };
+        | { kind: "combined"; description: string; item0: Item | null; item1: Item | null; sfx?: Sound };
 
     export type TakeResult = { success: true; item: Item } | { success: false; reason: string };
 }
@@ -100,6 +101,7 @@ class Potato extends Item {
                     description: "Peel potato",
                     item0: new Potato({ ...this.state, peeled: true }),
                     item1,
+                    sfx: Sfx.Grate,
                 };
             }
             return "Already peeled.";
@@ -113,6 +115,7 @@ class Potato extends Item {
                     description: "Grate potato",
                     item0: new Potato({ ...this.state, grated: true }),
                     item1,
+                    sfx: Sfx.Grate,
                 };
             }
             return "Already grated.";
@@ -167,6 +170,7 @@ class Garlic extends Item {
                 description: "Grate garlic",
                 item0: new Garlic({ ...this.state, grated: true }),
                 item1,
+                sfx: Sfx.Grate,
             };
         }
     }
@@ -209,6 +213,7 @@ class Onion extends Item {
                 description: "Grate onion",
                 item0: new Onion({ ...this.state, grated: true }),
                 item1,
+                sfx: Sfx.Grate,
             };
         }
     }
@@ -237,6 +242,7 @@ class Carrot extends Item {
                 description: "Grate carrot",
                 item0: new Carrot({ ...this.state, grated: true }),
                 item1,
+                sfx: Sfx.Grate,
             };
         }
     }
@@ -318,6 +324,7 @@ class Cigarette extends Item {
                 description: "Light cigarette",
                 item0: new Cigarette({ ...this.state, lit: true }),
                 item1,
+                sfx: Sfx.Lighter,
             };
         }
     }
@@ -351,6 +358,7 @@ class Egg extends Item {
                 description: "Break egg",
                 item0: new Egg({ ...this.state, broken: true }),
                 item1,
+                sfx: Sfx.EggBreak,
             };
         }
     }
@@ -482,12 +490,14 @@ class MixingBowl extends Item {
             const { state: recipeState, transformedItem } = recipeReceiveResult;
 
             const description = "Add " + item1.name;
+            const sfx = Sfx.AddIngredient;
 
             if (latkesRecipe.hasAllIngredients(recipeState)) {
                 return {
                     description,
                     item0: new MixingBowlAssembled(),
                     item1: transformedItem,
+                    sfx,
                 };
             }
 
@@ -495,6 +505,7 @@ class MixingBowl extends Item {
                 description,
                 item0: new MixingBowl({ ...this.state, recipe: recipeState }),
                 item1: transformedItem,
+                sfx,
             };
         }
         return recipeReceiveResult.reason;
@@ -537,6 +548,7 @@ class MixingBowlAssembled extends Item {
                     description: "Scoop latke",
                     item0: new MixingBowlAssembled({ ...this.state, remainingLatkes: this.state.remainingLatkes - 1 }),
                     item1: new Scooper({ ...item1.state, hasLatke: true }),
+                    sfx: Sfx.ScoopLatke,
                 };
             }
 
@@ -577,6 +589,7 @@ class Flour extends Item {
                 description: "Scoop flour",
                 item0: new Flour(),
                 item1: new HalfCup({ ...item1.state, hasFlour: true }),
+                sfx: Sfx.ScoopFlour,
             };
         }
     }
@@ -694,6 +707,7 @@ class Whisky extends Item {
                 description: "Fill glass",
                 item0: this,
                 item1: new WhiskyGlass({ ...item1.state, filled: true }),
+                sfx: Sfx.Pour,
             };
         }
     }
@@ -741,6 +755,7 @@ class Skillet extends Item {
                 description: "Add olive oil",
                 item0: new Skillet({ ...this.state, oliveOilUnits: 4 }),
                 item1: new OliveOil(),
+                sfx: Sfx.Pour,
             };
         }
         if (item1 instanceof Scooper) {
@@ -828,6 +843,7 @@ class ServingPlatter extends Item {
                 description: "Add latke",
                 item0: new ServingPlatter({ ...this.state, latkes: this.state.latkes + 1 }),
                 item1: null,
+                sfx: Sfx.PutDown,
             };
         }
     }

@@ -1,4 +1,5 @@
 import { DisplayObject } from "pixi.js";
+import { Sfx } from "../../assets/sounds";
 import { container } from "../../lib/pixi/container";
 import { layers } from "../globals";
 import { Item } from "../objects/data-item";
@@ -44,6 +45,7 @@ export function mxnItemStorage<TItem extends typeof Item>(obj: DisplayObject, ar
                     return;
                 }
 
+                obj.play(Sfx.PutDown);
                 item.ref = heldItem.ref;
                 heldItem.ref = null;
             },
