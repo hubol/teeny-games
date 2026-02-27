@@ -66,7 +66,6 @@ export function objAidar() {
             const whiskyObj = objItem("Whisky").at(self).add(90, 20).show();
             yield () => !state.isAsleep;
             self.mxnInteractive.enabled = false;
-            whiskyObj.objItem.item.ref = new DataItem.Manifest.Whisky({ hasPermission: true });
             self.removeAllChildren();
             const shockedObj = container(
                 Sprite.from(txShockedBody).mixin(mxnBoilPivot),
@@ -94,6 +93,13 @@ export function objAidar() {
             self.mxnInteractive.enabled = true;
             self.collisionShape(CollisionShape.DisplayObjects, [bodyObj]);
             self.mxnInteractive.boundsObj = bodyObj;
+            self.mxnInteractive.interact = () => {
+                if (whiskyObj.destroyed) {
+                    return;
+                }
+                layers.overlay.showInfo("Sure, take whisky!");
+                whiskyObj.objItem.item.ref = new DataItem.Manifest.Whisky({ hasPermission: true });
+            };
         });
 }
 

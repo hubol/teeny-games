@@ -13,31 +13,45 @@ import { mxnBoilDisplacement } from "../../mixins/mxn-boil-displacement";
 import { mxnBoilSeed } from "../../mixins/mxn-boil-seed";
 import { LocalInteractive, MxnInteractive } from "../../mixins/mxn-interactive";
 
+function objMessage(type: "error" | "info", message: string) {
+    return container(
+        Sprite.from(type === "error" ? Tx.Ui.Error : Tx.Ui.Info),
+        objText.XLargeIrregular(message, {
+            align: "center",
+            maxWidth: 386,
+            tint: type === "error" ? 0xffffff : 0x4040BC,
+        })
+            .anchored(0.5, 0.5)
+            .at(248, 239),
+    )
+        .coro(function* (self) {
+            yield sleep(1000);
+            self.destroy();
+        });
+}
+
 export function objOverlay() {
-    const errorsObj = container();
+    const messagesObj = container();
+
+    function showMessage(type: "error" | "info", message: string) {
+        messagesObj.coro(function* () {
+            messagesObj.removeAllChildren();
+            objMessage(type, message).show(messagesObj);
+        });
+    }
 
     const api = {
         showError(message: string) {
-            errorsObj.coro(function* () {
-                errorsObj.removeAllChildren();
-                container(
-                    Sprite.from(Tx.Ui.Error),
-                    objText.XLargeIrregular(message, { align: "center", maxWidth: 386 })
-                        .anchored(0.5, 0.5)
-                        .at(248, 239),
-                )
-                    .coro(function* (self) {
-                        yield sleep(1000);
-                        self.destroy();
-                    })
-                    .show(errorsObj);
-            });
+            showMessage("error", message);
+        },
+        showInfo(message: string) {
+            showMessage("info", message);
         },
     };
 
     return container(
         objInteractiveOverlay(),
-        errorsObj,
+        messagesObj,
     )
         .coro(function* () {
             yield () => Environment.isDev && Key.isDown("ShiftLeft") && Key.justWentDown("KeyZ");

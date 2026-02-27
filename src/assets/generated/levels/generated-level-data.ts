@@ -117,7 +117,7 @@ export const Lvl = {
       Item_9: e(r["Item"], { x: 88, y: 568, values: { itemId: "Egg", name: "" } }, "Entities"),
       MixingBowlItem: e(r["Item"], { x: 1096, y: 760, values: { itemId: "MixingBowl", name: "MixingBowlItem" } }, "Entities"),
       Item_10: e(r["Item"], { x: 1200, y: 404, values: { itemId: "Scooper", name: "" } }, "Entities"),
-      Item_11: e(r["Item"], { x: 1384, y: 752, values: { itemId: "Flour", name: "" } }, "Entities"),
+      Item_11: e(r["Item"], { x: 1384, y: 768, values: { itemId: "Flour", name: "" } }, "Entities"),
       Item_12: e(r["Item"], { x: 1008, y: 928, values: { itemId: "HalfCup", name: "" } }, "Entities"),
       Item_13: e(r["Item"], { x: 128, y: 808, values: { itemId: "Onion", name: "" } }, "Entities"),
       Item_14: e(r["Item"], { x: 232, y: 904, values: { itemId: "Carrot", name: "" } }, "Entities"),
