@@ -5,10 +5,13 @@ import { Tx } from "../../assets/textures";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
+import { Jukebox } from "../core/igua-audio";
 import { scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 
 export function scnEnding() {
+    Jukebox.stop();
+    Sfx.Ending.gain(0.6).play();
     const lvl = Lvl.Ending();
 
     lvl.EndingHubolFace.mixin(mxnBoilPivot);
