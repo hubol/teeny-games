@@ -1,12 +1,15 @@
 import { DisplayObject, Graphics, Sprite, Texture } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { ItemRef } from "./item-ref";
+import { objIndexedSprite } from "./utils/obj-indexed-sprite";
 
 function prepareCombineResultForPublic(result: Item.Protected.CombineResult): Item.CombineResult {
     if (!result) {
@@ -580,6 +583,10 @@ class HalfCup extends Item {
 
 class SmokeAlarm extends Item {
     private static objSmokeAlarm(item: ItemRef) {
+        function isTriggered() {
+            return item.ref instanceof SmokeAlarm ? item.ref.state.triggered : false;
+        }
+
         return container(
             Sprite.from(Tx.Item.SmokeAlarm),
             new Graphics()
@@ -587,10 +594,6 @@ class SmokeAlarm extends Item {
                 .beginFill(0xffffff)
                 .drawRect(28, 25, 4, 4)
                 .coro(function* (self) {
-                    function isTriggered() {
-                        return item.ref instanceof SmokeAlarm ? item.ref.state.triggered : false;
-                    }
-
                     while (true) {
                         self.tint = isTriggered() ? 0x400000 : 0x004000;
                         yield sleep(isTriggered() ? 200 : 500);
@@ -598,10 +601,35 @@ class SmokeAlarm extends Item {
                         yield sleep(isTriggered() ? 200 : 500);
                     }
                 }),
-        );
+        )
+            .coro(function* (self) {
+                let gain = 1;
+                while (true) {
+                    if (!isTriggered()) {
+                        gain = 1;
+                    }
+                    yield () => isTriggered();
+                    SmokeAlarm.objFxNoise().at(self.getWorldPosition()).zIndexed(9999).show();
+                    const soundInstance = self.playInstance(Sfx.Alarm);
+                    soundInstance.gain *= gain;
+                    gain = approachLinear(gain, 0.5, 0.05);
+                    yield sleep(500);
+                }
+            });
     }
 
-    constructor(readonly state = { triggered: false }) {
+    private static readonly txsFxNoise = Tx.Fx.AlarmNoise.split({ count: 8 });
+
+    private static objFxNoise() {
+        return objIndexedSprite(this.txsFxNoise)
+            .pivoted(-20, 33)
+            .coro(function* (self) {
+                yield interp(self, "textureIndex").to(8).over(Rng.intc(600, 750));
+                self.destroy();
+            });
+    }
+
+    constructor(readonly state = { triggered: true }) {
         super();
     }
 

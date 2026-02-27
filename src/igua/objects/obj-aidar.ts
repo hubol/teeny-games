@@ -47,7 +47,7 @@ export function objAidar() {
             interact(heldItem) {
                 if (heldItem.ref instanceof DataItem.Manifest.SmokeAlarm && heldItem.ref.state.triggered) {
                     state.isAsleep = false;
-                    heldItem.ref.state.triggered = false;
+                    heldItem.ref = new DataItem.Manifest.SmokeAlarm({ ...heldItem.ref.state, triggered: false });
                 }
                 else {
                     layers.overlay.showError("Doesn't do anything.");
