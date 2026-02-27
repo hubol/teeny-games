@@ -26,7 +26,7 @@
           "originX": 8,
           "originY": 8,
           "tint": "#00ff00",
-          "values": {"name": "PlayerStartMarkerOld", "depth": 0}
+          "values": {"name": "PlayerStartMarker", "depth": 0}
         },
         {
           "name": "Marker",
@@ -137,17 +137,6 @@
           "originY": 8,
           "tint": "#ff0000",
           "values": {"name": "LatkeMarker", "depth": 0}
-        },
-        {
-          "name": "Marker",
-          "id": 11,
-          "_eid": "73148747",
-          "x": 968,
-          "y": 240,
-          "originX": 8,
-          "originY": 8,
-          "tint": "#00ff00",
-          "values": {"name": "PlayerStartMarker", "depth": 0}
         }
       ]
     },

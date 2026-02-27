@@ -7,6 +7,24 @@ import { Tx } from "../../../assets/textures";
 const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = OgmoFactory;
 
 export const Lvl = {
+  Ending: () => {
+    applyLevel({ width: 500, height: 280, backgroundTint: 0x20154f });
+    return {
+      WorldBricks: d(Tx.World.Bricks, { x: 67, y: 53, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      WorldBricks_1: d(Tx.World.Bricks, { x: 67, y: 165, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      WorldBricks_2: d(Tx.World.Bricks, { x: 195, y: 201, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      WorldBricks_3: d(Tx.World.Bricks, { x: 358, y: 13, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      WorldBricks_4: d(Tx.World.Bricks, { x: 358, y: 125, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      WorldBricks_5: d(Tx.World.Bricks, { x: 486, y: 161, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x4a3a8f }, "BackDecals"),
+      EndingTable: d(Tx.Ending.Table, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, originX: 0, originY: 0, tint: 0xffffff }, "FrontDecals"),
+      MishaGroup: dg(0, 0, "MishaGroup", "FrontDecals"),
+      EndingMisha: d(Tx.Ending.Misha, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, originX: 0, originY: 0, groupName: "MishaGroup", tint: 0xffffff }, "FrontDecals"),
+      EndingMishaFace: d(Tx.Ending.MishaFace, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, originX: 0, originY: 0, groupName: "MishaGroup", tint: 0xffffff }, "FrontDecals"),
+      HubolGroup: dg(0, 0, "HubolGroup", "FrontDecals"),
+      EndingHubol: d(Tx.Ending.Hubol, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, originX: 0, originY: 0, groupName: "HubolGroup", tint: 0xffffff }, "FrontDecals"),
+      EndingHubolFace: d(Tx.Ending.HubolFace, { x: 0, y: 0, scaleX: 1, scaleY: 1, rotation: 0, originX: 0, originY: 0, groupName: "HubolGroup", tint: 0xffffff }, "FrontDecals"),
+    };
+  },
   Main: () => {
     applyLevel({ width: 2008, height: 1024, backgroundTint: 0x20154f });
     return {
@@ -132,7 +150,7 @@ export const Lvl = {
       Item_22: e(r["Item"], { x: 1696, y: 632, values: { itemId: "OliveOil", name: "" } }, "Entities"),
       Item_23: e(r["Item"], { x: 1840, y: 608, values: { itemId: "OliveOil", name: "" } }, "Entities"),
       Item_24: e(r["Item"], { x: 1064, y: 128, values: { itemId: "ServingPlatter", name: "" } }, "Entities"),
-      PlayerStartMarkerOld: e(r["Marker"], { x: 728, y: 536, values: { name: "PlayerStartMarkerOld", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      PlayerStartMarker: e(r["Marker"], { x: 728, y: 536, values: { name: "PlayerStartMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       AidarMarker: e(r["Marker"], { x: 360, y: 120, values: { name: "AidarMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       LatkeMarker: e(r["Marker"], { x: 1775, y: 813, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
       LatkeMarker_1: e(r["Marker"], { x: 1807, y: 765, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
@@ -143,7 +161,6 @@ export const Lvl = {
       LatkeMarker_6: e(r["Marker"], { x: 1711, y: 869, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
       LatkeMarker_7: e(r["Marker"], { x: 1775, y: 717, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
       LatkeMarker_8: e(r["Marker"], { x: 1703, y: 733, values: { name: "LatkeMarker", depth: 0 }, tint: 0xff0000 }, "MarkerEntities"),
-      PlayerStartMarker: e(r["Marker"], { x: 968, y: 240, values: { name: "PlayerStartMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
   Placeholder: () => {
@@ -165,6 +182,7 @@ export const Lvl = {
 };
 
 export namespace LvlType {
+  export type Ending = ReturnType<(typeof Lvl)["Ending"]>;
   export type Main = ReturnType<(typeof Lvl)["Main"]>;
   export type Placeholder = ReturnType<(typeof Lvl)["Placeholder"]>;
 }

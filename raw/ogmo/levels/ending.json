@@ -1,0 +1,206 @@
+{
+  "ogmoVersion": "3.4.0-hubol",
+  "width": 500,
+  "height": 280,
+  "offsetX": 0,
+  "offsetY": 0,
+  "values": {"Terrain Color": "#000000"},
+  "backgroundColor": "#20154f",
+  "layers": [
+    {
+      "name": "MarkerEntities",
+      "_eid": "73166939",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 64,
+      "gridCellsY": 35,
+      "entities": []
+    },
+    {
+      "name": "RegionEntities",
+      "_eid": "01831167",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 64,
+      "gridCellsY": 35,
+      "entities": []
+    },
+    {
+      "name": "FrontDecals",
+      "_eid": "17577176",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 64,
+      "gridCellsY": 35,
+      "decals": [
+        {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "ending/table.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "ending/misha.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""},
+          "groupName": "MishaGroup"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "ending/misha face.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""},
+          "groupName": "MishaGroup"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "ending/hubol.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""},
+          "groupName": "HubolGroup"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "ending/hubol face.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""},
+          "groupName": "HubolGroup"
+        }
+      ],
+      "folder": "../textures"
+    },
+    {
+      "name": "Entities",
+      "_eid": "93086020",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 64,
+      "gridCellsY": 35,
+      "entities": []
+    },
+    {
+      "name": "BackDecals",
+      "_eid": "64691217",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 64,
+      "gridCellsY": 35,
+      "decals": [
+        {
+          "x": 67,
+          "y": 53,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 67,
+          "y": 165,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 195,
+          "y": 201,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 358,
+          "y": 13,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 358,
+          "y": 125,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        },
+        {
+          "x": 486,
+          "y": 161,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "world/bricks.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        }
+      ],
+      "folder": "../textures"
+    }
+  ]
+}
