@@ -8,6 +8,7 @@ interface MxnInteractiveApi {
     enabled: boolean;
     text: string | ((heldItem: Item | null) => string);
     interact: (heldItem: { ref: Item | null }) => void;
+    boundsObj: DisplayObject;
 }
 
 export const LocalInteractive = new SceneLocal(() => ({
@@ -22,8 +23,11 @@ export function mxnInteractive(obj: DisplayObject, partialApi: Partial<MxnIntera
     if (partialApi.text === undefined) {
         partialApi.text = "";
     }
-    if (partialApi.interact === undefined) {
+    if (!partialApi.interact) {
         partialApi.interact = () => {};
+    }
+    if (!partialApi.boundsObj) {
+        partialApi.boundsObj = obj;
     }
     const api = partialApi as MxnInteractiveApi;
 

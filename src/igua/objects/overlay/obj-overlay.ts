@@ -74,7 +74,7 @@ function objInteractiveOverlay() {
             scale = approachLinear(scale, 1, 0.05);
 
             highlightObj.clear().lineStyle(3, 0xffffff, 1, 1);
-            const bounds = focusedObj.getBounds(false, r);
+            const bounds = focusedObj.mxnInteractive.boundsObj.getBounds(false, r);
             const center = bounds.getCenter();
             const wh = Math.round(bounds.width * scale * 0.5);
             const hh = Math.round(bounds.height * scale * 0.5);

@@ -3,6 +3,7 @@ import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
 import { Jukebox } from "../core/igua-audio";
 import { mxnInteractive } from "../mixins/mxn-interactive";
+import { objAidar } from "../objects/obj-aidar";
 import { mxnMishaControlled, objMisha } from "../objects/obj-misha";
 
 export function scnMain() {
@@ -24,5 +25,11 @@ export function scnMain() {
                     lvl.RecipeBook.destroy();
                 },
             });
+    }
+
+    {
+        objAidar()
+            .at(lvl.AidarMarker)
+            .show();
     }
 }
