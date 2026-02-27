@@ -20,7 +20,7 @@ export function scnEnding() {
 
         scene.stage
             .coro(function* () {
-                yield sleep(250);
+                yield sleep(500);
                 yield interpvr(lvl.EndingTable.pivot).factor(factor.sine).to(0, 0).over(500);
                 yield interpvr(lvl.HubolGroup.pivot).factor(factor.sine).to(0, 0).over(1000);
                 yield interpvr(lvl.MishaGroup.pivot).factor(factor.sine).to(0, 0).over(1000);

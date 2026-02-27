@@ -1,6 +1,6 @@
-import { DisplacementFilter, DisplayObject, Sprite } from "pixi.js";
+import { Container, DisplacementFilter, DisplayObject, Sprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
-import { scene } from "../globals";
+import { layers, scene } from "../globals";
 
 let globalSeed = 0;
 
@@ -22,7 +22,7 @@ export function mxnBoilDisplacement(obj: DisplayObject, args: MxnBoilDisplacemen
                         filter.destroy();
                     }
                 })
-                .show();
+                .show(layers.overlay as any as Container);
             const filter = new DisplacementFilter(displacementObj, args.scale);
             filter.padding = 10;
 

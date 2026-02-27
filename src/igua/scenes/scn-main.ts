@@ -1,10 +1,14 @@
 import { DisplayObject } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Mzk } from "../../assets/music";
+import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { Instances } from "../../lib/game-engine/instances";
+import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
+import { ForceTintFilter } from "../../lib/pixi/filters/force-tint-filter";
 import { Jukebox } from "../core/igua-audio";
+import { Key, scene, sceneStack } from "../globals";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnInteractive } from "../mixins/mxn-interactive";
@@ -15,12 +19,13 @@ import { objAidar } from "../objects/obj-aidar";
 import { objItem } from "../objects/obj-item";
 import { mxnMishaControlled, objMisha } from "../objects/obj-misha";
 import { objMarker } from "../objects/utils/obj-marker";
+import { scnEnding } from "./scn-ending";
 
 export function scnMain() {
     Jukebox.play(Mzk.Mishang);
     const lvl = Lvl.Main();
 
-    objMisha()
+    const mishaObj = objMisha()
         .mixin(mxnMishaControlled)
         .at(lvl.PlayerStartMarker)
         .zIndexed(999)
@@ -75,7 +80,7 @@ export function scnMain() {
     }
 
     {
-        lvl.WhiskyRegion0
+        const whiskyObj0 = lvl.WhiskyRegion0
             .mixin(
                 mxnItemStorage<typeof DataItem.Manifest.WhiskyGlass>,
                 {
@@ -85,7 +90,7 @@ export function scnMain() {
                 },
             );
 
-        lvl.WhiskyRegion1
+        const whiskyObj1 = lvl.WhiskyRegion1
             .mixin(
                 mxnItemStorage<typeof DataItem.Manifest.WhiskyGlass>,
                 {
@@ -95,7 +100,7 @@ export function scnMain() {
                 },
             );
 
-        lvl.PlatterRegion
+        const platterObj = lvl.PlatterRegion
             .mixin(
                 mxnItemStorage<typeof DataItem.Manifest.ServingPlatter>,
                 {
@@ -104,5 +109,24 @@ export function scnMain() {
                     text: "Latkes go here",
                 },
             );
+
+        const storageObjs = [whiskyObj0, whiskyObj1, platterObj];
+
+        scene.stage
+            .coro(function* () {
+                yield () => storageObjs.every(obj => obj.mxnItemStorage.isStored);
+
+                const glowObjs = [...storageObjs, mishaObj];
+
+                for (const obj of glowObjs) {
+                    const filter = new ForceTintFilter(0xffffff, 0);
+                    obj.filtered(filter);
+                    yield interp(filter, "factor").steps(4).to(1).over(500);
+                }
+
+                yield sleep(1000);
+
+                throw new EscapeTickerAndExecute(() => sceneStack.replace(scnEnding, { useGameplay: false }));
+            });
     }
 }
