@@ -251,7 +251,7 @@ export function mxnMishaControlled(mishaObj: ObjMisha) {
                     })
                     .zIndexed(998)
                     .show();
-                yield interpvr(mishaObj).factor(factor.sine).to(position).by(2);
+                yield interpvr(mishaObj).to(position).by(3);
                 targetObj
                     .coro(function* () {
                         yield interpv(targetObj.scale).steps(3).to(0, 0).over(300);
