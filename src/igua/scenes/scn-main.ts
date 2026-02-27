@@ -8,6 +8,7 @@ import { Jukebox } from "../core/igua-audio";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnInteractive } from "../mixins/mxn-interactive";
+import { mxnItemStorage } from "../mixins/mxn-item-storage";
 import { DataItem } from "../objects/data-item";
 import { ItemRef } from "../objects/item-ref";
 import { objAidar } from "../objects/obj-aidar";
@@ -71,5 +72,37 @@ export function scnMain() {
                     objItem("Latke").at(latkePositions[(nextLatkePositionIndex++) % latkePositions.length]).show();
                 }
             });
+    }
+
+    {
+        lvl.WhiskyRegion0
+            .mixin(
+                mxnItemStorage<typeof DataItem.Manifest.WhiskyGlass>,
+                {
+                    Item: DataItem.Manifest.WhiskyGlass,
+                    filter: (item) => item.state.filled ? true : "Needs whisky",
+                    text: "Whisky for Hubol",
+                },
+            );
+
+        lvl.WhiskyRegion1
+            .mixin(
+                mxnItemStorage<typeof DataItem.Manifest.WhiskyGlass>,
+                {
+                    Item: DataItem.Manifest.WhiskyGlass,
+                    filter: (item) => item.state.filled ? true : "Needs whisky",
+                    text: "Whisky for Misha",
+                },
+            );
+
+        lvl.PlatterRegion
+            .mixin(
+                mxnItemStorage<typeof DataItem.Manifest.ServingPlatter>,
+                {
+                    Item: DataItem.Manifest.ServingPlatter,
+                    filter: (item) => item.state.latkes >= 9 ? true : "Needs more latkes",
+                    text: "Latkes go here",
+                },
+            );
     }
 }

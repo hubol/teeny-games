@@ -1440,17 +1440,40 @@
           "groupName": null
         },
         {
-          "x": 778,
-          "y": 42,
+          "x": 669,
+          "y": 91,
           "scaleX": 1,
           "scaleY": 1,
           "rotation": 0,
           "tint": "#4a3a8f",
-          "texture": "world/text/dinner time.png",
+          "texture": "ui/whisky outline.png",
           "originX": 0.5,
-          "originY": 0.5,
-          "values": {"name": ""},
-          "groupName": null
+          "originY": 1,
+          "values": {"name": "WhiskyRegion0"}
+        },
+        {
+          "x": 897,
+          "y": 100,
+          "scaleX": -1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "ui/whisky outline.png",
+          "originX": 0.5,
+          "originY": 1,
+          "values": {"name": "WhiskyRegion1"}
+        },
+        {
+          "x": 782,
+          "y": 113,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#4a3a8f",
+          "texture": "ui/platter outline.png",
+          "originX": 0.5,
+          "originY": 1,
+          "values": {"name": "PlatterRegion"}
         }
       ],
       "folder": "../textures"
