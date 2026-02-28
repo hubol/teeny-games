@@ -4,6 +4,11 @@ This is a repository of teeny games. On the `main` branch, a copy of my `asshat-
 
 ## Branch directory
 
+### [`mishas-birthday`](https://github.com/hubol/teeny-games/tree/mishas-birthday)
+*Cooking Misha*
+
+It's latke night at Misha's!
+
 ### [`cupid`](https://github.com/hubol/teeny-games/tree/cupid)
 *Let's Hear It For The Boys!*
 
