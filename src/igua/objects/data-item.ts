@@ -42,7 +42,13 @@ export abstract class Item {
         }
         const result1 = prepareCombineResultForPublic(item1.combine(item0));
         if (result1.kind === "combined") {
-            return { kind: "combined", description: result1.description, item0: result1.item1, item1: result1.item0 };
+            return {
+                kind: "combined",
+                description: result1.description,
+                item0: result1.item1,
+                item1: result1.item0,
+                sfx: result1.sfx,
+            };
         }
         if (result1.kind === "failed") {
             return result1;
