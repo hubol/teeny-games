@@ -8,6 +8,7 @@ export function createPixiRenderer(rendererOptions: Parameters<typeof autoDetect
     const renderer = Environment.isDev
         ? new Renderer(rendererOptions) as any as IRenderer<HTMLCanvasElement>
         : autoDetectRenderer<HTMLCanvasElement>(rendererOptions);
+    renderer.view.addEventListener("contextmenu", ev => ev.preventDefault());
     console.log(...Logging.componentArgs("PixiRenderer", renderer));
     return renderer;
 }

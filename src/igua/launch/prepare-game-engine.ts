@@ -1,4 +1,5 @@
 import { KeyListener } from "../../lib/browser/key-listener";
+import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Animator } from "../../lib/game-engine/animator";
 import { AsshatTicker } from "../../lib/game-engine/asshat-ticker";
 import { setEngineConfig } from "../../lib/game-engine/engine-config";
@@ -23,9 +24,11 @@ export function prepareGameEngine(renderer: PixiRenderer) {
     }
 
     const animator = new Animator(60);
+    const pointerListener = new PointerListener(renderer.view);
 
-    setIguaGlobals(rootStage, keyListener, forceGameLoop, animator.start.bind(animator));
+    setIguaGlobals(rootStage, keyListener, pointerListener, forceGameLoop, animator.start.bind(animator));
     keyListener.start();
+    pointerListener.start();
 
     function gameLoop() {
         do {
