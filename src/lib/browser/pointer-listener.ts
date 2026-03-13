@@ -7,13 +7,19 @@ export class PointerListener implements PointerListener.Public {
 
     private readonly _canvasSpaceTransformer: CanvasSpaceTransformer;
 
+    allowedType: PointerListener.PointerType = "touch";
+
     // TODO should be able to apply canvas after construction
     constructor(canvasEl: HTMLCanvasElement) {
         this._canvasSpaceTransformer = new CanvasSpaceTransformer(canvasEl);
     }
 
     start() {
-        const handlePointerEvent = (e: PointerEvent): PointerListener.State => {
+        const handlePointerEvent = (e: PointerEvent): PointerListener.State | null => {
+            if (e.pointerType !== this.allowedType) {
+                return null;
+            }
+
             const v = this._canvasSpaceTransformer.transformClientPoint(e.clientX, e.clientY);
             const id = e.pointerId;
 
@@ -35,8 +41,10 @@ export class PointerListener implements PointerListener.Public {
         document.addEventListener("pointerdown", handlePointerEvent);
         document.addEventListener("pointerup", e => {
             const state = handlePointerEvent(e);
-            state.down = false;
-            this._states.removeFirst(state);
+            if (state) {
+                state.down = false;
+                this._states.removeFirst(state);
+            }
         });
     }
 
@@ -65,6 +73,7 @@ export class PointerListener implements PointerListener.Public {
 
 export namespace PointerListener {
     export interface Public {
+        allowedType: PointerType;
         readonly positions: ReadonlyArray<Readonly<VectorSimple>>;
         fill(buffer: Buffer): Integer;
     }
@@ -73,6 +82,8 @@ export namespace PointerListener {
         id: Integer;
         down: boolean;
     }
+
+    export type PointerType = "mouse" | "touch";
 
     export type Buffer = Array<Readonly<State>>;
 }
