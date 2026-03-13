@@ -1,0 +1,2 @@
+- Can disable "trails" in Windows: "Mouse pointer" > "Change touch feedback"
+- looks like electron doesn't have the thing that allows you to escape fullscreen by swiping down
