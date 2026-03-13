@@ -53,5 +53,3 @@ export class MouseListener implements MouseListenerPublic {
         });
     }
 }
-
-
