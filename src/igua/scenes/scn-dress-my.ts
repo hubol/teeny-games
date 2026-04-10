@@ -1,10 +1,15 @@
 import { Sprite, Texture } from "pixi.js";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
+import { range } from "../../lib/range";
+import { Jukebox } from "../core/igua-audio";
+import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { scnHotDog } from "./scn-hot-dog";
@@ -22,6 +27,9 @@ const [
 ] = Tx.DressMy.Scene.split({ width: 436 });
 
 export function scnDressMy() {
+    scene.style.backgroundTint = 0xBFBFBF;
+    objHearts().show();
+    Jukebox.play(Mzk.Soda);
     const mouthObj = Sprite.from(txMouth);
 
     const sceneObj = container(
@@ -61,4 +69,31 @@ export function scnDressMy() {
             yield sleep(500);
             sceneStack.replace(scnHotDog, { useGameplay: false });
         });
+}
+
+function objHeart() {
+    let speed = Rng.intc(3, 5);
+    return Sprite.from(Tx.DressMy.Heart)
+        .scaled(Rng.intp(), 1)
+        .mixin(mxnBoilPivot)
+        .anchored(0.5, 0.5)
+        .step(self => {
+            self.y -= speed;
+            if (self.y <= -30) {
+                self.y = renderer.height + 30;
+            }
+        });
+}
+
+function objHearts() {
+    const count = 10;
+    return container(
+        ...range(count).map(i =>
+            objHeart()
+                .at(
+                    (renderer.width / (count - 1)) * i,
+                    Math.round(renderer.height / 2 + (renderer.height / 2) * Math.sin(i)),
+                )
+        ),
+    );
 }

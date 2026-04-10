@@ -28,6 +28,8 @@ export function scnOutro() {
         .coro(function* () {
             yield () => Jukebox.getEstimatedPlayheadPosition(Mzk.HappyBoy) >= .1;
             yield interpvr(sceneObj.pivot).to(0, 0).over(2000);
+            yield () => Jukebox.getEstimatedPlayheadPosition(Mzk.HappyBoy) >= 11;
+            Sprite.from(Tx.Outro.Costco).show();
             yield () => Jukebox.getEstimatedPlayheadPosition(Mzk.HappyBoy) >= 37.951;
             Sprite.from(Tx.Outro.TheEnd).mixin(mxnBoilPivot).show();
         });

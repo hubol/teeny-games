@@ -1,5 +1,6 @@
 import { BlurFilter, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
@@ -10,6 +11,7 @@ import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
@@ -20,6 +22,7 @@ import { objSpriteMouth } from "../objects/obj-sprite-mouth";
 import { scnSoda } from "./scn-soda";
 
 export function scnIntro() {
+    Jukebox.warm(Mzk.Soda);
     Sprite.from(Tx.Intro.Background)
         .mixin(mxnBoilDisplacement)
         .show();
@@ -59,6 +62,8 @@ export function scnIntro() {
             yield* speak(hubolObj, Sfx.Dialog.Intro.EvenThoughItsSuch);
             yield* speak(ladyObj, Sfx.Dialog.Intro.ItsFineItWould);
             yield* speak(ladyObj, Sfx.Dialog.Intro.MaybeJustMakeSomeone);
+
+            Jukebox.play(Mzk.Soda);
 
             const hotDogKeyObj = objKeyLocation({
                 code: "KeyH",

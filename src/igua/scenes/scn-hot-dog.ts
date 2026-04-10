@@ -18,6 +18,7 @@ import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
 import { GenerativeMusicUtils } from "../lib/generative-music-utils";
+import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnSpeaker } from "../mixins/mxn-speaker";
 import { ObjKeyLocation, objKeyLocation } from "../objects/obj-key-location";
@@ -27,7 +28,11 @@ import { scnOutro } from "./scn-outro";
 const [txHubolBody, txHubolFace, txHubolMouth, txHubolMouthAgape, txHotDog] = Tx.HotDog.Scene.split({ count: 5 });
 
 export function scnHotDog() {
+    Jukebox.play(Mzk.Soda);
     Jukebox.warm(Mzk.HappyBoy);
+
+    Sprite.from(Tx.HotDog.Background).mixin(mxnBoilDisplacement).show();
+
     const hotDogObj = Sprite.from(txHotDog).at(0, 66);
     const hubolObj = objHotDogHubol().at(0, 238);
 
@@ -42,7 +47,7 @@ export function scnHotDog() {
         const soundInstance = sfx.playInstance();
         const textObj = objText.XLargeIrregular(
             dialogSfxTexts.get(sfx) ?? "???",
-            { align: "right", maxWidth: renderer.width },
+            { align: "right", maxWidth: renderer.width, tint: 0xD15144 },
         )
             .anchored(1, 0)
             .at(renderer.width, 0)
@@ -98,6 +103,12 @@ function objHotDogCondimentsControlled() {
         onion: null,
         relish: null,
     };
+
+    const condimentDispensersObj = Sprite.from(Tx.HotDog.Condiments)
+        .at(-30, 0)
+        .coro(function* (self) {
+            yield interpvr(self).steps(4).to(0, 0).over(500);
+        });
 
     function mxnRecordPress(obj: ObjKeyLocation, condimentId: CondimentId) {
         return obj
@@ -168,6 +179,7 @@ function objHotDogCondimentsControlled() {
     };
 
     return container(
+        condimentDispensersObj,
         ketchupKeyObj,
         mustardKeyObj,
         relishKeyObj,

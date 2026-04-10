@@ -1,5 +1,6 @@
 import { Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound, SoundInstance } from "../../lib/game-engine/audio/sound";
@@ -11,6 +12,7 @@ import { Rng } from "../../lib/math/rng";
 import { vequals } from "../../lib/math/vector";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
+import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
 import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
@@ -26,6 +28,7 @@ const txsPour = Tx.Soda.Pour.split({ count: 3 });
 type FillId = "coke" | "diet_coke" | "coke_zero" | "sprite" | "ice";
 
 export function scnSoda() {
+    Jukebox.play(Mzk.Soda);
     Sprite.from(Tx.Soda.Background).mixin(mxnBoilDisplacement).show();
     Sprite.from(txDispenserBack).show();
     Sprite.from(txDispenserTriggers).show();
