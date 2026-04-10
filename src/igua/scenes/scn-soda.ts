@@ -183,8 +183,10 @@ export function scnSoda() {
 
             function* request(id: FillId) {
                 lastRequestFillId = id;
-                const requiredFillCount = getRequiredFillCount(id, requestsCount++);
-                const [sfx, text] = Rng.item(fillDialogs[id]);
+                const requiredFillCount = getRequiredFillCount(id, requestsCount);
+                const [sfx, text] = requestsCount === 0 ? fillDialogs[id][0] : Rng.item(fillDialogs[id]);
+
+                requestsCount += 1;
 
                 fillCounts[id] = 0;
 
@@ -231,8 +233,8 @@ function getRequiredFillCount(id: FillId, requestsCount: Integer) {
 
 const fillDialogs: Record<FillId, Array<[sfx: Sound, text: string]>> = {
     coke: [
-        [Sfx.Dialog.Soda.ActuallySomeRegularCoke, "Actually, some regular Coke sounds good..."],
         [Sfx.Dialog.Soda.ImDyingForA, "I'm dying for a Coke!"],
+        [Sfx.Dialog.Soda.ActuallySomeRegularCoke, "Actually, some regular Coke sounds good..."],
     ],
     coke_zero: [
         [Sfx.Dialog.Soda.CokeZeroIDesperatelyNeedIt, "Coke Zero... I desperately need it!"],
@@ -243,6 +245,7 @@ const fillDialogs: Record<FillId, Array<[sfx: Sound, text: string]>> = {
         [Sfx.Dialog.Soda.IveBeenMeaningTo, "I've been meaning to try Diet Coke!"],
     ],
     ice: [
+        [Sfx.Dialog.Soda.MansGottaHaveSome, "Man's gotta have some ice!"],
         [Sfx.Dialog.Soda.CantGoWrongWith, "Can't go wrong with ice!"],
         [Sfx.Dialog.Soda.IThinkItNeeds, "I think it needs a little more ice!"],
     ],
