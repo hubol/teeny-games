@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 21 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 23 }];
 
 interface TxData {
   id: string;
@@ -26,6 +26,7 @@ function txs<T>(tx: (data: TxData) => T) {
     },
     Fx: {
       Burst0: tx({ id: "Fx.Burst0", atlas: 0, x: 1457, y: 693, width: 540, height: 82 }),
+      Displacement: tx({ id: "Fx.Displacement", atlas: 0, x: 3684, y: 954, width: 256, height: 256 }),
     },
     HotDog: {
       Onions: tx({ id: "HotDog.Onions", atlas: 0, x: 1998, y: 693, width: 88, height: 16 }),
@@ -41,7 +42,8 @@ function txs<T>(tx: (data: TxData) => T) {
       Scene: tx({ id: "Outro.Scene", atlas: 0, x: 1457, y: 825, width: 1224, height: 246 }),
     },
     Soda: {
-      DispenserFront: tx({ id: "Soda.DispenserFront", atlas: 0, x: 3183, y: 825, width: 500, height: 81 }),
+      Background: tx({ id: "Soda.Background", atlas: 0, x: 3183, y: 825, width: 500, height: 86 }),
+      DispenserFront: tx({ id: "Soda.DispenserFront", atlas: 0, x: 3183, y: 912, width: 500, height: 81 }),
       Dispenser: tx({ id: "Soda.Dispenser", atlas: 0, x: 2271, y: 269, width: 1500, height: 280 }),
       HeldCup: tx({ id: "Soda.HeldCup", atlas: 0, x: 0, y: 550, width: 2088, height: 142 }),
       IceCube: tx({ id: "Soda.IceCube", atlas: 0, x: 3875, y: 478, width: 26, height: 24 }),

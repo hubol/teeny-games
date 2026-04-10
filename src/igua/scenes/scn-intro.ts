@@ -12,6 +12,7 @@ import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
+import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnSpeaker } from "../mixins/mxn-speaker";
 import { objKeyLocation } from "../objects/obj-key-location";
@@ -19,6 +20,10 @@ import { objSpriteMouth } from "../objects/obj-sprite-mouth";
 import { scnSoda } from "./scn-soda";
 
 export function scnIntro() {
+    Sprite.from(Tx.Intro.Background)
+        .mixin(mxnBoilDisplacement)
+        .show();
+
     type SpeakerObj = typeof hubolObj | typeof ladyObj;
 
     function* speak(speakerObj: SpeakerObj, sfx: Sound) {

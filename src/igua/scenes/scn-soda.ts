@@ -13,6 +13,7 @@ import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
+import { mxnBoilDisplacement } from "../mixins/mxn-boil-displacement";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { ObjKeyLocation, objKeyLocation } from "../objects/obj-key-location";
 import { objSodaCup } from "../objects/obj-soda-cup";
@@ -25,6 +26,7 @@ const txsPour = Tx.Soda.Pour.split({ count: 3 });
 type FillId = "coke" | "diet_coke" | "coke_zero" | "sprite" | "ice";
 
 export function scnSoda() {
+    Sprite.from(Tx.Soda.Background).mixin(mxnBoilDisplacement).show();
     Sprite.from(txDispenserBack).show();
     Sprite.from(txDispenserTriggers).show();
 

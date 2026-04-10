@@ -20,6 +20,9 @@ async function createNoAtlasTx(tx: typeof Tx) {
             Onions: await repeat(tx.HotDog.Onions),
             Relish: await repeat(tx.HotDog.Relish),
         },
+        Fx: {
+            Displacement: await repeat(tx.Fx.Displacement),
+        },
     };
 }
 
