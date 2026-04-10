@@ -1,5 +1,6 @@
 import { Graphics, ILineStyleOptions, LINE_CAP, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
@@ -13,6 +14,7 @@ import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
+import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
 import { GenerativeMusicUtils } from "../lib/generative-music-utils";
@@ -25,6 +27,7 @@ import { scnOutro } from "./scn-outro";
 const [txHubolBody, txHubolFace, txHubolMouth, txHubolMouthAgape, txHotDog] = Tx.HotDog.Scene.split({ count: 5 });
 
 export function scnHotDog() {
+    Jukebox.warm(Mzk.HappyBoy);
     const hotDogObj = Sprite.from(txHotDog).at(0, 66);
     const hubolObj = objHotDogHubol().at(0, 238);
 

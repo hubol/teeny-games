@@ -1,3 +1,4 @@
+import { Mzk } from "../../../assets/music";
 import { intervalWait } from "../../browser/interval-wait";
 import { timeoutSleep } from "../../browser/timeout-sleep";
 import { Milliseconds } from "../../math/number-alias-types";
@@ -107,6 +108,10 @@ class MusicTrackLoader {
             const audioBuffer = await this._destination.context.decodeAudioData(arrayBuffer);
             this._loading.delete(track);
             const sound = new Sound(audioBuffer, this._destination);
+            if (musicTrackConfigs[track]) {
+                sound.loopStart = musicTrackConfigs[track].loopStart;
+                sound.loopEnd = musicTrackConfigs[track].loopEnd;
+            }
             return this._loaded[track] = sound;
         }
 
@@ -114,3 +119,15 @@ class MusicTrackLoader {
         return this._loaded[track];
     }
 }
+
+interface MusicTrackConfig {
+    loopEnd: number;
+    loopStart: number;
+}
+
+const musicTrackConfigs: Record<MusicTrack, MusicTrackConfig> = {
+    [Mzk.HappyBoy]: {
+        loopEnd: 109.737,
+        loopStart: 73.829,
+    },
+};

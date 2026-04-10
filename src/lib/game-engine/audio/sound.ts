@@ -41,8 +41,17 @@ export class Sound {
         return this;
     }
 
+    loopEnd: null | number = null;
+    loopStart: null | number = null;
+
     play(offset?: Seconds) {
         const source = this._createSourceNode();
+        if (this.loopEnd) {
+            source.loopEnd = this.loopEnd;
+        }
+        if (this.loopStart) {
+            source.loopStart = this.loopStart;
+        }
         this._createStereoGainNode(source);
         source.start(undefined, offset);
         this._resetParams();
@@ -51,6 +60,12 @@ export class Sound {
     playInstance(offset?: Seconds) {
         const source = this._createSourceNode();
         const stereoGainNode = this._createStereoGainNode(source);
+        if (this.loopEnd) {
+            source.loopEnd = this.loopEnd;
+        }
+        if (this.loopStart) {
+            source.loopStart = this.loopStart;
+        }
         source.start(undefined, offset);
         this._resetParams();
         return new SoundInstance(source, stereoGainNode, offset ?? 0);
