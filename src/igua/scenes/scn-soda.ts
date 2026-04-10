@@ -176,7 +176,7 @@ export function scnSoda() {
             let requestSoundInstance = Null<SoundInstance>();
             let lastRequestFillId = Null<FillId>();
 
-            const textObj = objText.XLargeIrregular("", { maxWidth: renderer.width })
+            const textObj = objText.XLargeIrregular("", { maxWidth: renderer.width, tint: 0xD15144 })
                 .anchored(0, 1)
                 .at(0, 280)
                 .show();

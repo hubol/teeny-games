@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { BlurFilter, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
@@ -28,7 +28,7 @@ export function scnIntro() {
 
     function* speak(speakerObj: SpeakerObj, sfx: Sound) {
         const text = dialogSfxTexts.get(sfx) ?? "? No dialog ?";
-        const textObj = objText.XLargeIrregular(text, { maxWidth: renderer.width })
+        const textObj = objText.XLargeIrregular(text, { maxWidth: renderer.width, tint: 0xD15144 })
             .at(0, 0)
             .show();
         speakerObj.mxnSpeaker.isSpeaking = true;
