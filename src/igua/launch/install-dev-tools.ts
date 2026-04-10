@@ -10,12 +10,12 @@ import { layers, sceneStack } from "../globals";
 export function installDevTools() {
     // @ts-expect-error
     const el = document.body.appendChild(createDebugPanel(layers._root));
-    createDebugKey("KeyM", "globalMute", (x, keydown) => {
-        IguaAudio.globalGain = x ? 0 : 1;
-        if (keydown) {
-            Toast.info(x ? "Muted" : "Unmuted", "^_^");
-        }
-    });
+    // createDebugKey("KeyM", "globalMute", (x, keydown) => {
+    //     IguaAudio.globalGain = x ? 0 : 1;
+    //     if (keydown) {
+    //         Toast.info(x ? "Muted" : "Unmuted", "^_^");
+    //     }
+    // });
 
     const sceneSwitcherEl = createSceneSwitcherEl();
     el.prepend(sceneSwitcherEl);

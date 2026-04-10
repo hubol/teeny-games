@@ -32,6 +32,11 @@ export class MapRgbFilter extends Filter {
         };
         super(undefined, fragment, uniforms);
     }
+
+    set red(int: RgbInt) {
+        this.uniformGroup.uniforms.red = PixiFilterUtils.getRgbIntAsGlslVec3(int);
+        this.uniformGroup.update();
+    }
 }
 
 export namespace MapRgbFilter {

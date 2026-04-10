@@ -92,6 +92,13 @@ export class SoundInstance {
     ) {
         this._lastRateSetElapsedTime = offsetSeconds;
         this._lastRateSetContextTime = this._sourceNode.context.currentTime;
+        this._sourceNode.addEventListener("ended", () => this._isEnded = true);
+    }
+
+    private _isEnded = false;
+
+    get isEnded() {
+        return this._isEnded;
     }
 
     private _getAudioParam(param: RampableParam) {
