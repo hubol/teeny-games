@@ -9,6 +9,7 @@ import { holdf } from "../../lib/game-engine/routines/hold";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
@@ -17,7 +18,7 @@ import { scene, sceneStack } from "../globals";
 import { GenerativeMusicUtils } from "../lib/generative-music-utils";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { mxnSpeaker } from "../mixins/mxn-speaker";
-import { objKeyLocation } from "../objects/obj-key-location";
+import { ObjKeyLocation, objKeyLocation } from "../objects/obj-key-location";
 import { objSpriteMouth } from "../objects/obj-sprite-mouth";
 import { scnOutro } from "./scn-outro";
 
@@ -88,39 +89,71 @@ export function scnHotDog() {
 }
 
 function objHotDogCondimentsControlled() {
+    const condimentPressesStartedAt: Record<CondimentId, null | Integer> = {
+        ketchup: null,
+        mustard: null,
+        onion: null,
+        relish: null,
+    };
+
+    function mxnRecordPress(obj: ObjKeyLocation, condimentId: CondimentId) {
+        return obj
+            .step(() => {
+                if (obj.objKeyLocation.isDown) {
+                    if (condimentPressesStartedAt[condimentId] === null) {
+                        condimentPressesStartedAt[condimentId] = scene.ticker.ticks;
+                    }
+                }
+                else {
+                    condimentPressesStartedAt[condimentId] = null;
+                }
+            });
+    }
+
     const ketchupKeyObj = objKeyLocation({
         code: "KeyK",
     })
+        .mixin(mxnRecordPress, "ketchup")
         .at(20, 20);
 
     const mustardKeyObj = objKeyLocation({
         code: "KeyM",
     })
+        .mixin(mxnRecordPress, "mustard")
         .at(20, 70);
 
     const relishKeyObj = objKeyLocation({
         code: "KeyR",
     })
+        .mixin(mxnRecordPress, "relish")
         .at(20, 120);
 
     const onionKeyObj = objKeyLocation({
         code: "KeyO",
     })
+        .mixin(mxnRecordPress, "onion")
         .at(20, 170);
+
+    function getPressedCondimentId(): CondimentId | null {
+        let condimentId = Null<CondimentId>();
+        let maximumStartedAt = -1;
+
+        for (const key in condimentPressesStartedAt) {
+            const value = (condimentPressesStartedAt as any)[key] as number | null;
+            if (value !== null && value > maximumStartedAt) {
+                condimentId = key as CondimentId;
+                maximumStartedAt = value;
+            }
+        }
+
+        return condimentId;
+    }
 
     const condimentsObj = objHotDogCondiments()
         .step(self => {
-            if (ketchupKeyObj.objKeyLocation.isDown) {
-                self.objHotDogCondiments.addCondiment("ketchup");
-            }
-            else if (mustardKeyObj.objKeyLocation.isDown) {
-                self.objHotDogCondiments.addCondiment("mustard");
-            }
-            else if (relishKeyObj.objKeyLocation.isDown) {
-                self.objHotDogCondiments.addCondiment("relish");
-            }
-            else if (onionKeyObj.objKeyLocation.isDown) {
-                self.objHotDogCondiments.addCondiment("onion");
+            const condimentId = getPressedCondimentId();
+            if (condimentId) {
+                self.objHotDogCondiments.addCondiment(condimentId);
             }
         })
         .at(66, 216);
