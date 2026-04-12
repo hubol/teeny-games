@@ -1,5 +1,7 @@
 // This file is generated
 
+import { Container, Sprite } from "pixi.js";
+
 import { OgmoEntityResolvers as r } from "../../../igua/ogmo/entity-resolvers";
 import { OgmoFactory } from "../../../igua/ogmo/factory";
 import { Tx } from "../../../assets/textures";
@@ -7,7 +9,7 @@ import { Tx } from "../../../assets/textures";
 const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = OgmoFactory;
 
 export const Lvl = {
-  Placeholder: () => {
+  Placeholder: (): LvlType.Placeholder => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x408000 });
     return {
       FontFlaccid: d(Tx.Font.Flaccid, { x: 160, y: 216, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
@@ -26,5 +28,17 @@ export const Lvl = {
 };
 
 export namespace LvlType {
-  export type Placeholder = ReturnType<(typeof Lvl)["Placeholder"]>;
+  export type Placeholder = {
+    FontFlaccid: Sprite;
+    Group1: Container<Sprite>;
+    FontErotixLight: Sprite;
+    FontErotix: Sprite;
+    Block: ReturnType<(typeof r)["Block"]>;
+    FontDiggit: Sprite;
+    Region: ReturnType<(typeof r)["Region"]>;
+    Marker: ReturnType<(typeof r)["Marker"]>;
+    Marker_1: ReturnType<(typeof r)["Marker"]>;
+    Marker_2: ReturnType<(typeof r)["Marker"]>;
+    Marker_3: ReturnType<(typeof r)["Marker"]>;
+  };
 }
