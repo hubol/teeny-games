@@ -4,6 +4,11 @@ This is a repository of teeny games. On the `main` branch, a copy of my `asshat-
 
 ## Branch directory
 
+### [`costco`](https://github.com/hubol/teeny-games/tree/costco)
+*Lady at the Costco Gave Me Her Extra Hot Dog Soda Combo*
+
+She told me to make someone smile today!
+
 ### [`mishas-birthday`](https://github.com/hubol/teeny-games/tree/mishas-birthday)
 *Cooking Misha*
 
