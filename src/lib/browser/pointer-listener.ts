@@ -26,8 +26,8 @@ export class PointerListener implements PointerListener.Public {
             for (let i = 0; i < this._states.length; i++) {
                 const state = this._states[i];
                 if (state.id === id) {
-                    state.x = v.x;
-                    state.y = v.y;
+                    state.x = v.x + Math.round(e.width / 2);
+                    state.y = v.y + Math.round(e.height / 2);
                     return state;
                 }
             }
