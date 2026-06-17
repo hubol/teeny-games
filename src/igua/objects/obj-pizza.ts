@@ -8,7 +8,7 @@ import { DataToppings } from "../data/data-toppings";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 
 const consts = {
-    tracksCount: 9,
+    tracksCount: 8,
     radius: {
         min: 60,
         delta: 40,
@@ -17,6 +17,19 @@ const consts = {
         },
     },
 };
+
+const c4Hz = 261.63;
+const cScaleRates = [
+    c4Hz,
+    293.66,
+    329.63,
+    349.23,
+    392.00,
+    440.00,
+    493.88,
+    c4Hz * 2,
+]
+    .map(hz => hz / c4Hz);
 
 const p = new Point();
 
@@ -32,7 +45,8 @@ export function objPizza() {
             for (const toppingObj of toppingsObj.children) {
                 if (toppingObj.objAttachedTopping.angle === angle) {
                     const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
-                    sfx.rate(0.5 + 0.1 * toppingObj.objAttachedTopping.trackIndex).play();
+                    const rate = cScaleRates[toppingObj.objAttachedTopping.trackIndex];
+                    sfx.rate(rate).play();
                 }
             }
         });
