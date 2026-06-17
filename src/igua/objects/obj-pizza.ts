@@ -1,4 +1,7 @@
-import { Graphics, Point } from "pixi.js";
+import { Graphics, Point, RAD_TO_DEG } from "pixi.js";
+import { cyclic } from "../../lib/math/number";
+import { Integer } from "../../lib/math/number-alias-types";
+import { vdir } from "../../lib/math/vector";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { DataToppings } from "../data/data-toppings";
@@ -22,8 +25,17 @@ export function objPizza() {
         submit,
     };
 
-    const toppingsObj = container()
-        .step(self => self.angle += 1);
+    const toppingsObj = container<objAttachedTopping.Type>()
+        .step(self => {
+            self.angle = (self.angle + 1) % 360;
+            const angle = Math.round(self.angle);
+            for (const toppingObj of toppingsObj.children) {
+                if (toppingObj.objAttachedTopping.angle === angle) {
+                    const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
+                    sfx.rate(0.5 + 0.1 * toppingObj.objAttachedTopping.trackIndex).play();
+                }
+            }
+        });
 
     function submit(x: number, y: number, id: DataToppings.Id) {
         p.set(x, y);
@@ -33,6 +45,8 @@ export function objPizza() {
             return;
         }
 
+        const angle = Math.round(cyclic((Math.PI / 2 - vdir(p)) * -RAD_TO_DEG, 0, 360));
+
         const trackIndex = Math.min(
             consts.tracksCount - 1,
             Math.round(Math.max(0, p.vlength - consts.radius.min) / consts.radius.delta),
@@ -40,7 +54,7 @@ export function objPizza() {
 
         p.vlength = consts.radius.min + consts.radius.delta * trackIndex;
 
-        objFigureTopping(id).at(p).show(toppingsObj);
+        objAttachedTopping(id, angle, trackIndex).at(p).show(toppingsObj);
     }
 
     return container(
@@ -49,6 +63,15 @@ export function objPizza() {
     )
         .merge({ objPizza: api })
         .track(objPizza);
+}
+
+function objAttachedTopping(id: DataToppings.Id, angle: Integer, trackIndex: Integer) {
+    return objFigureTopping(id)
+        .merge({ objAttachedTopping: { angle, trackIndex } });
+}
+
+namespace objAttachedTopping {
+    export type Type = ReturnType<typeof objAttachedTopping>;
 }
 
 function objPizzaCrust() {
