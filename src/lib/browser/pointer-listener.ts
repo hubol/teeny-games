@@ -1,6 +1,10 @@
 import { Integer } from "../math/number-alias-types";
-import { VectorSimple } from "../math/vector-type";
+import { IRectangle } from "../math/rectangle";
 import { CanvasSpaceTransformer } from "./canvas-space-transformer";
+
+const consts = {
+    radius: 4,
+};
 
 export class PointerListener implements PointerListener.Public {
     private readonly _states = new Array<PointerListener.State>();
@@ -23,8 +27,8 @@ export class PointerListener implements PointerListener.Public {
             const v = this._canvasSpaceTransformer.transformClientPoint(e.clientX, e.clientY);
             const id = e.pointerId;
 
-            const x = v.x + Math.round(e.width / 2);
-            const y = v.y + Math.round(e.height / 2);
+            const x = v.x + Math.round(e.width / 2) - consts.radius;
+            const y = v.y + Math.round(e.height / 2) - consts.radius;
 
             for (let i = 0; i < this._states.length; i++) {
                 const state = this._states[i];
@@ -35,7 +39,7 @@ export class PointerListener implements PointerListener.Public {
                 }
             }
 
-            const state = { down: true, id, x, y };
+            const state = { down: true, id, x, y, width: consts.radius * 2, height: consts.radius * 2 };
             this._states.push(state);
             return state;
         };
@@ -81,7 +85,7 @@ export namespace PointerListener {
         fill(buffer: Buffer): Integer;
     }
 
-    export interface State extends VectorSimple {
+    export interface State extends IRectangle {
         id: Integer;
         down: boolean;
     }
