@@ -1,12 +1,18 @@
 import { Graphics } from "pixi.js";
+import { renderer } from "../current-pixi-renderer";
 import { Pointer, scene } from "../globals";
 import { objPepperoniContainer } from "../objects/obj-pepperoni-container";
+import { objPizza } from "../objects/obj-pizza";
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
 
     objPepperoniContainer()
         .at(40, 40)
+        .show();
+
+    objPizza()
+        .at(renderer.width / 2, renderer.height / 2)
         .show();
 
     // new Graphics()
