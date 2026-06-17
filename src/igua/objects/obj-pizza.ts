@@ -11,7 +11,7 @@ const consts = {
     tracksCount: 8,
     radius: {
         min: 60,
-        delta: 40,
+        delta: 54,
         get max() {
             return consts.radius.min + consts.radius.delta * consts.tracksCount;
         },
