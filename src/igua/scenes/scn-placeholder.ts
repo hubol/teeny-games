@@ -3,6 +3,7 @@ import { renderer } from "../current-pixi-renderer";
 import { Pointer, scene } from "../globals";
 import { objPepperoniContainer } from "../objects/obj-pepperoni-container";
 import { objPizza } from "../objects/obj-pizza";
+import { objSpeedControl } from "../objects/obj-speed-control";
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
@@ -13,6 +14,10 @@ export function scnPlaceholder() {
 
     objPizza()
         .at(renderer.width / 2, renderer.height / 2)
+        .show();
+
+    objSpeedControl()
+        .at(1700, 100)
         .show();
 
     // new Graphics()
