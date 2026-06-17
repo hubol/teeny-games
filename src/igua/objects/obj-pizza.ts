@@ -33,6 +33,13 @@ export function objPizza() {
             return;
         }
 
+        const trackIndex = Math.min(
+            consts.tracksCount - 1,
+            Math.round(Math.max(0, p.vlength - consts.radius.min) / consts.radius.delta),
+        );
+
+        p.vlength = consts.radius.min + consts.radius.delta * trackIndex;
+
         objFigureTopping(id).at(p).show(toppingsObj);
     }
 
