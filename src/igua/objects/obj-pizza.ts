@@ -6,6 +6,7 @@ import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { DataToppings } from "../data/data-toppings";
 import { objFigureTopping } from "./figures/obj-figure-topping";
+import { objSpeedControl } from "./obj-speed-control";
 
 const consts = {
     tracksCount: 8,
@@ -33,20 +34,39 @@ const cScaleRates = [
 
 const p = new Point();
 
-export function objPizza() {
+export function objPizza(speedControlObj: objSpeedControl.Type) {
     const api = {
         submit,
     };
 
+    let position = 0;
+
     const toppingsObj = container<objAttachedTopping.Type>()
         .step(self => {
-            self.angle = (self.angle + 1) % 360;
-            const angle = Math.round(self.angle);
-            for (const toppingObj of toppingsObj.children) {
-                if (toppingObj.objAttachedTopping.angle === angle) {
-                    const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
-                    const rate = cScaleRates[toppingObj.objAttachedTopping.trackIndex];
-                    sfx.rate(rate).play();
+            position += speedControlObj.objSpeedControl.speed;
+
+            let iterations = 0;
+            const delta = Math.sign(position);
+
+            while (position <= -1) {
+                iterations++;
+                position++;
+            }
+
+            while (position >= 1) {
+                iterations++;
+                position--;
+            }
+
+            for (let i = 0; i < iterations; i++) {
+                self.angle = cyclic(self.angle + delta, 0, 360);
+                const angle = Math.round(self.angle);
+                for (const toppingObj of toppingsObj.children) {
+                    if (toppingObj.objAttachedTopping.angle === angle) {
+                        const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
+                        const rate = cScaleRates[toppingObj.objAttachedTopping.trackIndex];
+                        sfx.rate(rate).play();
+                    }
                 }
             }
         });

@@ -12,12 +12,12 @@ export function scnPlaceholder() {
         .at(40, 40)
         .show();
 
-    objPizza()
-        .at(renderer.width / 2, renderer.height / 2)
+    const speedControlObj = objSpeedControl()
+        .at(1700, 100)
         .show();
 
-    objSpeedControl()
-        .at(1700, 100)
+    objPizza(speedControlObj)
+        .at(renderer.width / 2, renderer.height / 2)
         .show();
 
     // new Graphics()

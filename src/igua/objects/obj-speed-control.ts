@@ -21,7 +21,7 @@ export function objSpeedControl() {
 
     const api = {
         get speed() {
-            return Math.max(-2, Math.min(handleObj.x / consts.trackRadius, 2));
+            return Math.max(-2, Math.min((handleObj.x / consts.trackRadius) * 2, 2));
         },
     };
 
@@ -54,4 +54,8 @@ export function objSpeedControl() {
             .at(0, 50),
     )
         .merge({ objSpeedControl: api });
+}
+
+export namespace objSpeedControl {
+    export type Type = ReturnType<typeof objSpeedControl>;
 }
