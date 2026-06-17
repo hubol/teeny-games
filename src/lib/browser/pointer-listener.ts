@@ -76,6 +76,17 @@ export class PointerListener implements PointerListener.Public {
 
         return addedCount;
     }
+
+    private static readonly _claims = new WeakSet<PointerListener.State>();
+
+    claim(pointer: PointerListener.State): boolean {
+        if (PointerListener._claims.has(pointer)) {
+            return false;
+        }
+
+        PointerListener._claims.add(pointer);
+        return true;
+    }
 }
 
 export namespace PointerListener {
@@ -83,6 +94,7 @@ export namespace PointerListener {
         allowedType: PointerType;
         readonly states: ReadonlyArray<Readonly<State>>;
         fill(buffer: Buffer): Integer;
+        claim(pointer: State): boolean;
     }
 
     export interface State extends IRectangle {
