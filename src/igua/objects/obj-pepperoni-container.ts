@@ -4,7 +4,7 @@ import { PointerListener } from "../../lib/browser/pointer-listener";
 import { areRectanglesOverlapping } from "../../lib/math/rectangle";
 import { Pointer } from "../globals";
 import { mxnFxFlipH } from "../mixins/fx/mxn-fx-flip-h";
-import { objPepperoni } from "./obj-pepperoni";
+import { objTopping } from "./obj-topping";
 
 const r = new Rectangle();
 
@@ -23,7 +23,7 @@ export function objPepperoniContainer() {
                     continue;
                 }
 
-                objPepperoni(pointer).show();
+                objTopping("Pepperoni", pointer).show();
                 usedPointers.add(pointer);
             }
         });
