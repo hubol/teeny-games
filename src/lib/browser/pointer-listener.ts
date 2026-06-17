@@ -23,16 +23,19 @@ export class PointerListener implements PointerListener.Public {
             const v = this._canvasSpaceTransformer.transformClientPoint(e.clientX, e.clientY);
             const id = e.pointerId;
 
+            const x = v.x + Math.round(e.width / 2);
+            const y = v.y + Math.round(e.height / 2);
+
             for (let i = 0; i < this._states.length; i++) {
                 const state = this._states[i];
                 if (state.id === id) {
-                    state.x = v.x + Math.round(e.width / 2);
-                    state.y = v.y + Math.round(e.height / 2);
+                    state.x = x;
+                    state.y = y;
                     return state;
                 }
             }
 
-            const state = { down: true, id, x: v.x, y: v.y };
+            const state = { down: true, id, x, y };
             this._states.push(state);
             return state;
         };
@@ -48,7 +51,7 @@ export class PointerListener implements PointerListener.Public {
         });
     }
 
-    get positions() {
+    get states() {
         return this._states;
     }
 
@@ -74,7 +77,7 @@ export class PointerListener implements PointerListener.Public {
 export namespace PointerListener {
     export interface Public {
         allowedType: PointerType;
-        readonly positions: ReadonlyArray<Readonly<VectorSimple>>;
+        readonly states: ReadonlyArray<Readonly<State>>;
         fill(buffer: Buffer): Integer;
     }
 
