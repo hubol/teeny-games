@@ -9,6 +9,7 @@ import { DataLib } from "./data-lib";
 
 const txsPepperoniFace = Tx.Faces.Pepperoni.split({ count: 2 });
 const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
+const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
 
 export namespace DataToppings {
     export type Sample = Sample.Pitched | Sample.Multi;
@@ -57,10 +58,13 @@ export namespace DataToppings {
                 },
             },
             Beef: {
-                objFigure: function objFallbackTopping () {
-                    return Sprite.from(Tx.Toppings.Beef)
-                        .mixin(mxnFace, txsPepperoniFace)
-                        .anchored(0.5, 0.5);
+                objFigure: function objFallbackTopping (seed) {
+                    return container(
+                        Sprite.from(txsPineapple[seed % 2])
+                            .scaled(80 / 256, 80 / 256)
+                            .anchored(0.5, 0.5),
+                    )
+                        .mixin(mxnFace, txsPepperoniFace);
                 },
                 sample: {
                     kind: "pitched",
