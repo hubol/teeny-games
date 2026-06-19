@@ -89,6 +89,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 self.angle = cyclic(self.angle + delta, 0, 360);
                 const angle = Math.round(self.angle);
                 for (const toppingObj of toppingsObj.children) {
+                    toppingObj.angle = -self.angle;
                     if (toppingObj.objAttachedTopping.angle === angle) {
                         playSample(toppingObj.objFigureTopping.id, toppingObj.objAttachedTopping.trackIndex);
                         if (toppingObj.is(mxnFace)) {
