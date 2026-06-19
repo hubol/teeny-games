@@ -50,6 +50,17 @@ export namespace DataToppings {
                     sfxs: Sfx.Samples.Glock,
                 },
             },
+            Beef: {
+                objFigure: function objFallbackTopping () {
+                    return Sprite.from(Tx.Toppings.Beef)
+                        .mixin(mxnFace, txsPepperoniFace)
+                        .anchored(0.5, 0.5);
+                },
+                sample: {
+                    kind: "pitched",
+                    sfx: Sfx.Samples.BoomWhacker1,
+                },
+            },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
                     return Sprite.from(Tx.Toppings.Pepperoni)

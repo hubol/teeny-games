@@ -5,6 +5,7 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
     [
       "ooh.ogg",
       "placeholder.ogg",
+      "samples/boom whacker1.ogg",
       "samples/glock/a0.ogg",
       "samples/glock/b0.ogg",
       "samples/glock/c0.ogg",
@@ -19,15 +20,16 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
     Ooh: sounds[0],
     Placeholder: sounds[1],
     Samples: {
+      BoomWhacker1: sounds[2],
       Glock: {
-        A0: sounds[2],
-        B0: sounds[3],
-        C0: sounds[4],
-        C1: sounds[5],
-        D0: sounds[6],
-        E0: sounds[7],
-        F0: sounds[8],
-        G0: sounds[9],
+        A0: sounds[3],
+        B0: sounds[4],
+        C0: sounds[5],
+        C1: sounds[6],
+        D0: sounds[7],
+        E0: sounds[8],
+        F0: sounds[9],
+        G0: sounds[10],
       },
     },
   };

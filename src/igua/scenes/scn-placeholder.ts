@@ -8,8 +8,13 @@ import { objSpeedControl } from "../objects/obj-speed-control";
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
 
-    objPepperoniContainer()
+    objPepperoniContainer("Pepperoni")
         .at(40, 40)
+        .show();
+
+    objPepperoniContainer("Beef")
+        .tinted(0x202020)
+        .at(40, 220)
         .show();
 
     const speedControlObj = objSpeedControl()
