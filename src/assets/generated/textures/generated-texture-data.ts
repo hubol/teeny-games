@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 8 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 10 }];
 
 interface TxData {
   id: string;
@@ -14,18 +14,24 @@ interface TxData {
 function txs<T>(tx: (data: TxData) => T) {
   return {
     Containers: {
-      Pepperoni: tx({ id: "Containers.Pepperoni", atlas: 0, x: 0, y: 0, width: 336, height: 149 }),
+      Pepperoni: tx({ id: "Containers.Pepperoni", atlas: 0, x: 895, y: 0, width: 336, height: 149 }),
+    },
+    Faces: {
+      Pepperoni: tx({ id: "Faces.Pepperoni", atlas: 0, x: 1863, y: 0, width: 128, height: 30 }),
     },
     Font: {
-      Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 0, y: 488, width: 128, height: 8 }),
-      ErotixLight: tx({ id: "Font.ErotixLight", atlas: 0, x: 337, y: 0, width: 160, height: 34 }),
-      Erotix: tx({ id: "Font.Erotix", atlas: 0, x: 337, y: 35, width: 160, height: 34 }),
-      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 129, y: 488, width: 102, height: 24 }),
-      GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 0, y: 359, width: 256, height: 128 }),
-      OldMaiden: tx({ id: "Font.OldMaiden", atlas: 0, x: 0, y: 150, width: 308, height: 208 }),
+      Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 1863, y: 31, width: 128, height: 8 }),
+      ErotixLight: tx({ id: "Font.ErotixLight", atlas: 0, x: 1541, y: 0, width: 160, height: 34 }),
+      Erotix: tx({ id: "Font.Erotix", atlas: 0, x: 1702, y: 0, width: 160, height: 34 }),
+      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 1541, y: 35, width: 102, height: 24 }),
+      GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 895, y: 150, width: 256, height: 128 }),
+      OldMaiden: tx({ id: "Font.OldMaiden", atlas: 0, x: 1232, y: 0, width: 308, height: 208 }),
+    },
+    Pizza: {
+      CutLines: tx({ id: "Pizza.CutLines", atlas: 0, x: 0, y: 0, width: 894, height: 884 }),
     },
     Toppings: {
-      Pepperoni: tx({ id: "Toppings.Pepperoni", atlas: 0, x: 257, y: 359, width: 86, height: 84 }),
+      Pepperoni: tx({ id: "Toppings.Pepperoni", atlas: 0, x: 1644, y: 35, width: 86, height: 84 }),
     },
   };
 }

@@ -1,18 +1,20 @@
-import { Graphics, Point, RAD_TO_DEG } from "pixi.js";
+import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
+import { Tx } from "../../assets/textures";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { DataToppings } from "../data/data-toppings";
+import { mxnFace } from "../mixins/mxn-face";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objSpeedControl } from "./obj-speed-control";
 
 const consts = {
     tracksCount: 8,
     radius: {
-        min: 60,
-        delta: 54,
+        min: 120,
+        delta: 50,
         get max() {
             return consts.radius.min + consts.radius.delta * consts.tracksCount;
         },
@@ -41,35 +43,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
     let position = 0;
 
-    const toppingsObj = container<objAttachedTopping.Type>()
-        .step(self => {
-            position += speedControlObj.objSpeedControl.speed;
-
-            let iterations = 0;
-            const delta = Math.sign(position);
-
-            while (position <= -1) {
-                iterations++;
-                position++;
-            }
-
-            while (position >= 1) {
-                iterations++;
-                position--;
-            }
-
-            for (let i = 0; i < iterations; i++) {
-                self.angle = cyclic(self.angle + delta, 0, 360);
-                const angle = Math.round(self.angle);
-                for (const toppingObj of toppingsObj.children) {
-                    if (toppingObj.objAttachedTopping.angle === angle) {
-                        const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
-                        const rate = cScaleRates[toppingObj.objAttachedTopping.trackIndex];
-                        sfx.rate(rate).play();
-                    }
-                }
-            }
-        });
+    const toppingsObj = container<objAttachedTopping.Type>();
 
     function submit(x: number, y: number, id: DataToppings.Id) {
         p.set(x, y);
@@ -95,6 +69,37 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         objPizzaCrust(),
         toppingsObj,
     )
+        .step(self => {
+            position += speedControlObj.objSpeedControl.speed;
+
+            let iterations = 0;
+            const delta = Math.sign(position);
+
+            while (position <= -1) {
+                iterations++;
+                position++;
+            }
+
+            while (position >= 1) {
+                iterations++;
+                position--;
+            }
+
+            for (let i = 0; i < iterations; i++) {
+                self.angle = cyclic(self.angle + delta, 0, 360);
+                const angle = Math.round(self.angle);
+                for (const toppingObj of toppingsObj.children) {
+                    if (toppingObj.objAttachedTopping.angle === angle) {
+                        const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
+                        const rate = cScaleRates[toppingObj.objAttachedTopping.trackIndex];
+                        sfx.rate(rate).play();
+                        if (toppingObj.is(mxnFace)) {
+                            toppingObj.mxnFace.sing();
+                        }
+                    }
+                }
+            }
+        })
         .merge({ objPizza: api })
         .track(objPizza);
 }
@@ -109,9 +114,14 @@ namespace objAttachedTopping {
 }
 
 function objPizzaCrust() {
+    const linesScale = consts.radius.max / 440;
     return container(
         new Graphics().beginFill(0xad7121)
             .drawCircle(0, 0, consts.radius.max),
+        Sprite.from(Tx.Pizza.CutLines)
+            .anchored(0.5, 0.5)
+            .tinted(0x725029)
+            .scaled(linesScale, linesScale),
         ...range(consts.tracksCount).map(i =>
             new Graphics()
                 .lineStyle(4, 0x412c0c)
