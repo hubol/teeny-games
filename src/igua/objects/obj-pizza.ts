@@ -90,9 +90,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 const angle = Math.round(self.angle);
                 for (const toppingObj of toppingsObj.children) {
                     if (toppingObj.objAttachedTopping.angle === angle) {
-                        const sfx = DataToppings.getById(toppingObj.objFigureTopping.id).sfx;
-                        const rate = cScaleRates[toppingObj.objAttachedTopping.trackIndex];
-                        sfx.rate(rate).play();
+                        playSample(toppingObj.objFigureTopping.id, toppingObj.objAttachedTopping.trackIndex);
                         if (toppingObj.is(mxnFace)) {
                             toppingObj.mxnFace.sing();
                         }
@@ -102,6 +100,22 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         })
         .merge({ objPizza: api })
         .track(objPizza);
+}
+
+const trackIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "C1"] as const satisfies ReadonlyArray<
+    keyof DataToppings.Sample.Multi["sfxs"]
+>;
+
+function playSample(toppingId: DataToppings.Id, trackIndex: Integer) {
+    const topping = DataToppings.getByIdLoose(toppingId);
+    if (topping.sample.kind === "multi") {
+        const key = trackIndexToMultiSampleKey[trackIndex] ?? "C0";
+        topping.sample.sfxs[key].play();
+    }
+    else {
+        const rate = cScaleRates[trackIndex];
+        topping.sample.sfx.rate(rate).play();
+    }
 }
 
 function objAttachedTopping(id: DataToppings.Id, angle: Integer, trackIndex: Integer) {
