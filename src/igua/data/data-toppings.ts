@@ -2,10 +2,13 @@ import { Container, Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
+import { Integer } from "../../lib/math/number-alias-types";
+import { container } from "../../lib/pixi/container";
 import { mxnFace } from "../mixins/mxn-face";
 import { DataLib } from "./data-lib";
 
 const txsPepperoniFace = Tx.Faces.Pepperoni.split({ count: 2 });
+const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
 
 export namespace DataToppings {
     export type Sample = Sample.Pitched | Sample.Multi;
@@ -32,7 +35,7 @@ export namespace DataToppings {
     }
 
     export interface Model {
-        objFigure: () => Container;
+        objFigure: (seed: Integer) => Container;
         sample: Sample;
     }
 
@@ -40,10 +43,13 @@ export namespace DataToppings {
         "DataToppings",
         {
             Pepperoni: {
-                objFigure: function objFallbackTopping () {
-                    return Sprite.from(Tx.Toppings.Pepperoni)
-                        .mixin(mxnFace, txsPepperoniFace)
-                        .anchored(0.5, 0.5);
+                objFigure: function objFallbackTopping (seed) {
+                    return container(
+                        Sprite.from(txsPepperoni[seed % 3])
+                            .scaled(80 / 256, 80 / 256)
+                            .anchored(0.5, 0.5),
+                    )
+                        .mixin(mxnFace, txsPepperoniFace);
                 },
                 sample: {
                     kind: "multi",

@@ -1,6 +1,6 @@
-import { DataToppings } from "../../data/data-toppings";
+import { PizzaTopping } from "../../data/pizza-topping";
 
-export function objFigureTopping(id: DataToppings.Id) {
-    return DataToppings.getById(id).objFigure()
-        .merge({ objFigureTopping: { id } });
+export function objFigureTopping(topping: PizzaTopping) {
+    return topping.attributes.objFigure(topping.seed)
+        .merge({ objFigureTopping: topping });
 }
