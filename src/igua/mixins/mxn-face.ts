@@ -1,10 +1,11 @@
 import { Container, Texture } from "pixi.js";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
 
-export function mxnFace(obj: Container, textures: Texture[]) {
+export function mxnFace(obj: Container, textures: Texture[], scale = 1) {
     let singStepsCount = 0;
     const faceObj = objIndexedSprite(textures)
         .anchored(0.5, 0.5)
+        .scaled(scale, scale)
         .step(self => self.textureIndex = singStepsCount-- > 0 ? 1 : 0);
 
     const api = {

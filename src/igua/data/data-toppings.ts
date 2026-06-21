@@ -4,7 +4,7 @@ import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { Integer } from "../../lib/math/number-alias-types";
 import { container } from "../../lib/pixi/container";
-import { mxnFace } from "../mixins/mxn-face";
+import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
 
 const txsPepperoniFace = Tx.Faces.Pepperoni.split({ count: 2 });
@@ -50,7 +50,7 @@ export namespace DataToppings {
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )
-                        .mixin(mxnFace, txsPepperoniFace);
+                        .mixin(mxnFaceSeed, seed, 0.36);
                 },
                 sample: {
                     kind: "multi",
@@ -64,7 +64,7 @@ export namespace DataToppings {
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )
-                        .mixin(mxnFace, txsPepperoniFace);
+                        .mixin(mxnFaceSeed, seed, 0.36);
                 },
                 sample: {
                     kind: "pitched",
