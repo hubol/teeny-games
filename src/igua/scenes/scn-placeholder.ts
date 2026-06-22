@@ -1,6 +1,8 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { holdf } from "../../lib/game-engine/routines/hold";
+import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
@@ -54,11 +56,14 @@ export function scnPlaceholder() {
     scene.stage
         .coro(function* () {
             while (true) {
-                yield sleep(3000);
-                // yield sleep(Rng.int(30_000, 60_000));
+                yield* Coro.race([
+                    holdf(() => speedControlObj.objSpeedControl.speed !== 0, Rng.int(30 * 60, 60 * 60)),
+                    () => Key.justWentDown("KeyT"),
+                ]);
                 objCharacterTuna()
-                    .at(1900, 500)
+                    .at(2000, 500)
                     .show();
+                yield sleepf(1);
             }
         });
 }
