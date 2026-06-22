@@ -35,11 +35,21 @@ export class PointerListener implements PointerListener.Public {
                 if (state.id === id) {
                     state.x = x;
                     state.y = y;
+                    if (e.pointerType === "mouse" && e.type === "pointerdown") {
+                        state.down = true;
+                    }
                     return state;
                 }
             }
 
-            const state = { down: true, id, x, y, width: consts.radius * 2, height: consts.radius * 2 };
+            const state = {
+                down: (e.pointerType === "mouse" && e.type !== "pointerdown") ? false : true,
+                id,
+                x,
+                y,
+                width: consts.radius * 2,
+                height: consts.radius * 2,
+            };
             this._states.push(state);
             return state;
         };
