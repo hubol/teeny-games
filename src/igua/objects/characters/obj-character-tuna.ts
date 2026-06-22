@@ -1,4 +1,5 @@
 import { Graphics, Sprite } from "pixi.js";
+import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { Instances } from "../../../lib/game-engine/instances";
 import { interp } from "../../../lib/game-engine/routines/interp";
@@ -48,6 +49,7 @@ export function objCharacterTuna() {
         .coro(function* (self) {
             while (true) {
                 const count = Rng.int(3, 6);
+                self.play(Sfx.Effects.Bubble.rate(0.9, 1.1));
                 for (let i = 0; i < count; i++) {
                     objFxBubble()
                         .scaled(0.4, 0.4)
@@ -60,7 +62,7 @@ export function objCharacterTuna() {
             }
         })
         .step(self => {
-            if (self.x <= -300) {
+            if (self.x <= -400) {
                 self.destroy();
                 return;
             }
