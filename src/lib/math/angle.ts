@@ -7,10 +7,10 @@ export function degDifference(a: DegreesFloat, b: DegreesFloat) {
 
 export const ToRad = Math.PI / 180;
 
-export function vdeg(degrees: DegreesFloat) {
-    return vnew().at(Math.cos(degrees * ToRad), Math.sin(degrees * ToRad));
+export function vdeg(degrees: DegreesFloat, target = vnew()) {
+    return target.at(Math.cos(degrees * ToRad), Math.sin(degrees * ToRad));
 }
 
-export function vrad(radians: number) {
-    return vnew().at(Math.cos(radians), Math.sin(radians));
+export function vrad(radians: number, target = vnew()) {
+    return target.at(Math.cos(radians), Math.sin(radians));
 }

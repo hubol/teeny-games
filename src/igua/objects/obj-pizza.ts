@@ -1,5 +1,6 @@
 import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { vdeg } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
@@ -88,7 +89,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             Math.round(Math.max(0, p.vlength - consts.radius.min) / consts.radius.delta),
         );
 
-        p.vlength = consts.radius.min + consts.radius.delta * sequenceDataBuffer.trackIndex;
+        const scale = consts.radius.min + consts.radius.delta * sequenceDataBuffer.trackIndex;
+        vdeg(270 - sequenceDataBuffer.sequenceIndex, p).scale(scale);
 
         return sequenceDataBuffer;
     }
