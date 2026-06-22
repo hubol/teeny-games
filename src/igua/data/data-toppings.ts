@@ -2,7 +2,7 @@ import { Container, Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
-import { Integer } from "../../lib/math/number-alias-types";
+import { DegreesFloat, Integer } from "../../lib/math/number-alias-types";
 import { container } from "../../lib/pixi/container";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
@@ -38,6 +38,7 @@ export namespace DataToppings {
     export interface Model {
         objFigure: (seed: Integer) => Container;
         sample: Sample;
+        transformSequenceDegrees: (sequenceFloat: DegreesFloat, trackIndex: Integer) => DegreesFloat;
     }
 
     export const { manifest, getById } = DataLib.create(
@@ -56,6 +57,7 @@ export namespace DataToppings {
                     kind: "multi",
                     sfxs: Sfx.Samples.Glock,
                 },
+                transformSequenceDegrees: (degrees) => degrees,
             },
             Pineapple: {
                 objFigure: function objFallbackTopping (seed) {
@@ -70,6 +72,7 @@ export namespace DataToppings {
                     kind: "pitched",
                     sfx: Sfx.Samples.BoomWhacker1,
                 },
+                transformSequenceDegrees: (degrees) => degrees,
             },
             Tomato: {
                 objFigure: function objFallbackTopping (seed) {
@@ -84,6 +87,7 @@ export namespace DataToppings {
                     kind: "multi",
                     sfxs: Sfx.Samples.Drum,
                 },
+                transformSequenceDegrees: (degrees) => Math.round(degrees / 11.25) * 11.25,
             },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
@@ -95,6 +99,7 @@ export namespace DataToppings {
                     kind: "pitched",
                     sfx: Sfx.Ooh,
                 },
+                transformSequenceDegrees: (degrees) => degrees,
             },
         } satisfies Record<string, Model>,
     );

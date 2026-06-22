@@ -28,7 +28,11 @@ export function objTopping(topping: PizzaTopping, pointer: PointerListener.State
                 self.destroy();
             }
             else {
-                const position = pizzaObj.objPizza.getSequencedPosition(self.x, self.y);
+                const position = pizzaObj.objPizza.getSequencedPosition(
+                    self.x,
+                    self.y,
+                    figureToppingObj.objFigureTopping,
+                );
                 if (!position) {
                     return;
                 }

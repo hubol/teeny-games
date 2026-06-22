@@ -63,8 +63,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
     const toppingsObj = container<objAttachedTopping.Type>();
 
-    function getSequencedPosition(x: number, y: number): VectorSimple | null {
-        const data = toSequenceData(x, y);
+    function getSequencedPosition(x: number, y: number, topping: PizzaTopping): VectorSimple | null {
+        const data = toSequenceData(x, y, topping);
 
         if (!data) {
             return null;
@@ -74,7 +74,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         return v.at(data.point);
     }
 
-    function toSequenceData(x: number, y: number): SequenceData | null {
+    function toSequenceData(x: number, y: number, topping: PizzaTopping): SequenceData | null {
         const p = sequenceDataBuffer.point;
         p.set(x, y);
         toppingsObj.worldTransform.applyInverse(p, p);
@@ -82,12 +82,14 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             return null;
         }
 
-        sequenceDataBuffer.sequenceIndex = Math.floor(cyclic((Math.PI / 2 - vdir(p)) * -RAD_TO_DEG, 0, 360));
-
         sequenceDataBuffer.trackIndex = Math.min(
             consts.tracksCount - 1,
             Math.round(Math.max(0, p.vlength - consts.radius.min) / consts.radius.delta),
         );
+
+        const rawDegrees = (Math.PI / 2 - vdir(p)) * -RAD_TO_DEG;
+        const degrees = topping.attributes.transformSequenceDegrees(rawDegrees, sequenceDataBuffer.trackIndex);
+        sequenceDataBuffer.sequenceIndex = Math.floor(cyclic(degrees, 0, 360));
 
         const scale = consts.radius.min + consts.radius.delta * sequenceDataBuffer.trackIndex;
         vdeg(270 - sequenceDataBuffer.sequenceIndex, p).scale(scale);
@@ -96,7 +98,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     }
 
     function submit(x: number, y: number, topping: PizzaTopping) {
-        const data = toSequenceData(x, y);
+        const data = toSequenceData(x, y, topping);
 
         if (!data) {
             return;
