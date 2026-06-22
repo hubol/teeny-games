@@ -12,10 +12,6 @@ html {
 }
 
 #game_canvas {
-    /* see: http://jsfiddle.net/namuol/VAXrL/1459/ */
-    image-rendering: -moz-crisp-edges;
-    image-rendering: pixelated;
-
     cursor: none;
 }
 

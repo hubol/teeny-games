@@ -7,9 +7,9 @@ import { container } from "../../lib/pixi/container";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
 
-const txsPepperoniFace = Tx.Faces.Pepperoni.split({ count: 2 });
 const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
 const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
+const txsTomato = Tx.Toppings.Tomato.split({ count: 2 });
 
 export namespace DataToppings {
     export type Sample = Sample.Pitched | Sample.Multi;
@@ -57,7 +57,7 @@ export namespace DataToppings {
                     sfxs: Sfx.Samples.Glock,
                 },
             },
-            Beef: {
+            Pineapple: {
                 objFigure: function objFallbackTopping (seed) {
                     return container(
                         Sprite.from(txsPineapple[seed % 2])
@@ -69,6 +69,20 @@ export namespace DataToppings {
                 sample: {
                     kind: "pitched",
                     sfx: Sfx.Samples.BoomWhacker1,
+                },
+            },
+            Tomato: {
+                objFigure: function objFallbackTopping (seed) {
+                    return container(
+                        Sprite.from(txsTomato[seed % 2])
+                            .scaled(80 / 256, 80 / 256)
+                            .anchored(0.5, 0.5),
+                    )
+                        .mixin(mxnFaceSeed, seed, 0.36);
+                },
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.Drum,
                 },
             },
             __Fallback__: {

@@ -12,9 +12,14 @@ export function scnPlaceholder() {
         .at(40, 40)
         .show();
 
-    objPepperoniContainer("Beef")
+    objPepperoniContainer("Pineapple")
         .tinted(0x202020)
         .at(40, 220)
+        .show();
+
+    objPepperoniContainer("Tomato")
+        .tinted(0xff0000)
+        .at(40, 220 + 180)
         .show();
 
     const speedControlObj = objSpeedControl()
