@@ -21,7 +21,8 @@ export function objSpeedControl() {
 
     const api = {
         get speed() {
-            return Math.max(-2, Math.min((handleObj.x / consts.trackRadius) * 2, 2));
+            const rawSpeed = (handleObj.x / consts.trackRadius) * 2;
+            return Math.max(-2, Math.min(Math.abs(rawSpeed) < 0.2 ? 0 : rawSpeed, 2));
         },
     };
 
