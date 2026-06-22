@@ -9,8 +9,10 @@ import { range } from "../../lib/range";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaTopping } from "../data/pizza-topping";
 import { mxnFace } from "../mixins/mxn-face";
+import { PizzaPointer } from "../utils/pizza-pointer";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objSpeedControl } from "./obj-speed-control";
+import { objTopping } from "./obj-topping";
 
 const consts = {
     tracksCount: 8,
@@ -167,7 +169,16 @@ function playSample(obj: objAttachedTopping.Type) {
 
 function objAttachedTopping(topping: PizzaTopping, angle: Integer, trackIndex: Integer) {
     return objFigureTopping(topping)
-        .merge({ objAttachedTopping: { angle, trackIndex } });
+        .merge({ objAttachedTopping: { angle, trackIndex } })
+        .step(self => {
+            const pointer = PizzaPointer.claim(self);
+            if (pointer) {
+                objTopping(topping, pointer)
+                    .at(self.getWorldPosition())
+                    .show();
+                self.destroy();
+            }
+        });
 }
 
 namespace objAttachedTopping {
