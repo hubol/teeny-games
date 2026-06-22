@@ -1,8 +1,8 @@
-import { Graphics, Sprite } from "pixi.js";
+import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { Instances } from "../../../lib/game-engine/instances";
-import { interp } from "../../../lib/game-engine/routines/interp";
+import { factor, interp, interpv } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../../lib/math/number";
 import { Rng } from "../../../lib/math/rng";
@@ -32,6 +32,8 @@ export function objCharacterTuna() {
 
     const speed = vnew(-2, 0);
     const diveSpeed = vnew(-1.3, 3).scale(3);
+
+    const destroyedObjs = new WeakSet<DisplayObject>();
 
     return container(
         spriteObj
@@ -71,7 +73,16 @@ export function objCharacterTuna() {
             }
             else {
                 for (const collidedObj of self.collidesAll(Instances(objAttachedTopping))) {
-                    collidedObj.destroy();
+                    if (destroyedObjs.has(collidedObj)) {
+                        continue;
+                    }
+                    self.play(Sfx.Effects.Eat.rate(0.9, 1.1));
+                    collidedObj
+                        .coro(function* (self) {
+                            yield interpv(self.scale).factor(factor.sine).to(0, 0).over(400);
+                            self.destroy();
+                        });
+                    destroyedObjs.add(collidedObj);
                 }
             }
             self.add(speed, self.angle > 2 ? 1 : 0.8);
