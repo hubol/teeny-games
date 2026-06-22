@@ -69,8 +69,8 @@ export namespace DataToppings {
                         .mixin(mxnFaceSeed, seed, 0.36);
                 },
                 sample: {
-                    kind: "pitched",
-                    sfx: Sfx.Samples.BoomWhacker1,
+                    kind: "multi",
+                    sfxs: Sfx.Samples.Ukelele,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },

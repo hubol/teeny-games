@@ -158,9 +158,6 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     toppingObj.angle = -self.angle;
                     if (toppingObj.objAttachedTopping.angle === angle) {
                         playSample(toppingObj);
-                        if (toppingObj.is(mxnFace)) {
-                            toppingObj.mxnFace.sing();
-                        }
                     }
                 }
             }
@@ -184,6 +181,10 @@ function playSample(obj: objAttachedTopping.Type) {
     else {
         const rate = cScaleRates[trackIndex];
         topping.attributes.sample.sfx.rate(rate).play();
+    }
+
+    if (obj.is(mxnFace)) {
+        obj.mxnFace.sing();
     }
 }
 

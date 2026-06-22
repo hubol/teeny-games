@@ -33,6 +33,14 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "samples/glock/e0.ogg",
       "samples/glock/f0.ogg",
       "samples/glock/g0.ogg",
+      "samples/ukelele/a0.ogg",
+      "samples/ukelele/b0.ogg",
+      "samples/ukelele/c0.ogg",
+      "samples/ukelele/c1.ogg",
+      "samples/ukelele/d0.ogg",
+      "samples/ukelele/e0.ogg",
+      "samples/ukelele/f0.ogg",
+      "samples/ukelele/g0.ogg",
     ].map(sfx),
   );
   return {
@@ -74,6 +82,16 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
         E0: sounds[27],
         F0: sounds[28],
         G0: sounds[29],
+      },
+      Ukelele: {
+        A0: sounds[30],
+        B0: sounds[31],
+        C0: sounds[32],
+        C1: sounds[33],
+        D0: sounds[34],
+        E0: sounds[35],
+        F0: sounds[36],
+        G0: sounds[37],
       },
     },
   };
