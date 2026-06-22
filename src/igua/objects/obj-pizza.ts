@@ -111,11 +111,27 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         }
     }
 
+    const toppingObjs = new Array<objAttachedTopping.Type>();
+
     return container(
         objPizzaCrust(),
         toppingsObj,
     )
         .step(self => {
+            toppingObjs.length = 0;
+            toppingObjs.push(...toppingsObj.children);
+
+            for (let i = toppingObjs.length - 1; i >= 0; i--) {
+                const toppingObj = toppingObjs[i];
+                const pointer = PizzaPointer.claim(toppingObj);
+                if (pointer) {
+                    objTopping(toppingObj.objFigureTopping, pointer)
+                        .at(self.getWorldPosition())
+                        .show();
+                    toppingObj.destroy();
+                }
+            }
+
             position += speedControlObj.objSpeedControl.speed;
 
             let iterations = 0;
@@ -169,16 +185,7 @@ function playSample(obj: objAttachedTopping.Type) {
 
 function objAttachedTopping(topping: PizzaTopping, angle: Integer, trackIndex: Integer) {
     return objFigureTopping(topping)
-        .merge({ objAttachedTopping: { angle, trackIndex } })
-        .step(self => {
-            const pointer = PizzaPointer.claim(self);
-            if (pointer) {
-                objTopping(topping, pointer)
-                    .at(self.getWorldPosition())
-                    .show();
-                self.destroy();
-            }
-        });
+        .merge({ objAttachedTopping: { angle, trackIndex } });
 }
 
 namespace objAttachedTopping {
