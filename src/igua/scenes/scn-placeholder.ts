@@ -1,4 +1,5 @@
-import { Graphics } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
+import { Tx } from "../../assets/textures";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
 import { objPizza } from "../objects/obj-pizza";
@@ -7,6 +8,8 @@ import { objToppingContainer } from "../objects/obj-topping-container";
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
+
+    Sprite.from(Tx.Background).show();
 
     objToppingContainer("Pepperoni")
         .at(40, 40)

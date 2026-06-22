@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 19 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 20 }];
 
 interface TxData {
   id: string;
@@ -13,34 +13,35 @@ interface TxData {
 
 function txs<T>(tx: (data: TxData) => T) {
   return {
+    Background: tx({ id: "Background", atlas: 0, x: 0, y: 0, width: 1920, height: 1440 }),
     Containers: {
-      Pepperoni: tx({ id: "Containers.Pepperoni", atlas: 0, x: 513, y: 302, width: 336, height: 149 }),
+      Pepperoni: tx({ id: "Containers.Pepperoni", atlas: 0, x: 3669, y: 0, width: 336, height: 149 }),
     },
     Faces: {
-      Idle: tx({ id: "Faces.Idle", atlas: 0, x: 0, y: 0, width: 1136, height: 150 }),
-      Pepperoni: tx({ id: "Faces.Pepperoni", atlas: 0, x: 257, y: 573, width: 128, height: 30 }),
-      Sing: tx({ id: "Faces.Sing", atlas: 0, x: 0, y: 151, width: 852, height: 150 }),
+      Idle: tx({ id: "Faces.Idle", atlas: 0, x: 0, y: 1441, width: 1136, height: 150 }),
+      Pepperoni: tx({ id: "Faces.Pepperoni", atlas: 0, x: 3843, y: 359, width: 128, height: 30 }),
+      Sing: tx({ id: "Faces.Sing", atlas: 0, x: 2816, y: 0, width: 852, height: 150 }),
     },
     Font: {
-      Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 257, y: 604, width: 128, height: 8 }),
-      ErotixLight: tx({ id: "Font.ErotixLight", atlas: 0, x: 257, y: 503, width: 160, height: 34 }),
-      Erotix: tx({ id: "Font.Erotix", atlas: 0, x: 257, y: 538, width: 160, height: 34 }),
-      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 257, y: 613, width: 102, height: 24 }),
-      GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 257, y: 661, width: 256, height: 128 }),
-      OldMaiden: tx({ id: "Font.OldMaiden", atlas: 0, x: 513, y: 452, width: 308, height: 208 }),
+      Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 3073, y: 422, width: 128, height: 8 }),
+      ErotixLight: tx({ id: "Font.ErotixLight", atlas: 0, x: 3073, y: 352, width: 160, height: 34 }),
+      Erotix: tx({ id: "Font.Erotix", atlas: 0, x: 3073, y: 387, width: 160, height: 34 }),
+      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 3978, y: 150, width: 102, height: 24 }),
+      GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 3073, y: 432, width: 256, height: 128 }),
+      OldMaiden: tx({ id: "Font.OldMaiden", atlas: 0, x: 3669, y: 150, width: 308, height: 208 }),
     },
     Pizza: {
-      CutLines: tx({ id: "Pizza.CutLines", atlas: 0, x: 1137, y: 0, width: 894, height: 884 }),
+      CutLines: tx({ id: "Pizza.CutLines", atlas: 0, x: 1921, y: 0, width: 894, height: 884 }),
     },
     Toppings: {
-      Beef: tx({ id: "Toppings.Beef", atlas: 0, x: 418, y: 503, width: 60, height: 60 }),
-      Pepperoni0: tx({ id: "Toppings.Pepperoni0", atlas: 0, x: 853, y: 151, width: 256, height: 280 }),
-      Pepperoni1: tx({ id: "Toppings.Pepperoni1", atlas: 0, x: 850, y: 432, width: 256, height: 280 }),
-      Pepperoni2: tx({ id: "Toppings.Pepperoni2", atlas: 0, x: 0, y: 503, width: 256, height: 280 }),
-      Pepperoni: tx({ id: "Toppings.Pepperoni", atlas: 0, x: 386, y: 573, width: 86, height: 84 }),
-      Pineapple0: tx({ id: "Toppings.Pineapple0", atlas: 0, x: 0, y: 784, width: 256, height: 200 }),
-      Pineapple1: tx({ id: "Toppings.Pineapple1", atlas: 0, x: 514, y: 661, width: 256, height: 180 }),
-      Tomato: tx({ id: "Toppings.Tomato", atlas: 0, x: 0, y: 302, width: 512, height: 200 }),
+      Beef: tx({ id: "Toppings.Beef", atlas: 0, x: 4006, y: 85, width: 60, height: 60 }),
+      Pepperoni0: tx({ id: "Toppings.Pepperoni0", atlas: 0, x: 3329, y: 151, width: 256, height: 280 }),
+      Pepperoni1: tx({ id: "Toppings.Pepperoni1", atlas: 0, x: 3586, y: 359, width: 256, height: 280 }),
+      Pepperoni2: tx({ id: "Toppings.Pepperoni2", atlas: 0, x: 2816, y: 352, width: 256, height: 280 }),
+      Pepperoni: tx({ id: "Toppings.Pepperoni", atlas: 0, x: 4006, y: 0, width: 86, height: 84 }),
+      Pineapple0: tx({ id: "Toppings.Pineapple0", atlas: 0, x: 3073, y: 561, width: 256, height: 200 }),
+      Pineapple1: tx({ id: "Toppings.Pineapple1", atlas: 0, x: 2816, y: 633, width: 256, height: 180 }),
+      Tomato: tx({ id: "Toppings.Tomato", atlas: 0, x: 2816, y: 151, width: 512, height: 200 }),
     },
   };
 }
