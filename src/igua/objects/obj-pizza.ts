@@ -3,6 +3,7 @@ import { Tx } from "../../assets/textures";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { vdir } from "../../lib/math/vector";
+import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { DataToppings } from "../data/data-toppings";
@@ -35,10 +36,23 @@ const cScaleRates = [
 ]
     .map(hz => hz / c4Hz);
 
-const p = new Point();
+interface SequenceData {
+    sequenceIndex: Integer;
+    trackIndex: Integer;
+    point: Point;
+}
+
+const sequenceDataBuffer: SequenceData = {
+    sequenceIndex: 0,
+    trackIndex: 0,
+    point: new Point(),
+};
+
+const v = vnew();
 
 export function objPizza(speedControlObj: objSpeedControl.Type) {
     const api = {
+        getSequencedPosition,
         submit,
     };
 
@@ -46,25 +60,46 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
     const toppingsObj = container<objAttachedTopping.Type>();
 
-    function submit(x: number, y: number, topping: PizzaTopping) {
-        p.set(x, y);
-        toppingsObj.worldTransform.applyInverse(p, p);
+    function getSequencedPosition(x: number, y: number): VectorSimple | null {
+        const data = toSequenceData(x, y);
 
-        if (p.vlength > consts.radius.max) {
-            return;
+        if (!data) {
+            return null;
         }
 
-        const angle = Math.round(cyclic((Math.PI / 2 - vdir(p)) * -RAD_TO_DEG, 0, 360));
+        toppingsObj.parent.worldTransform.apply(data.point, data.point);
+        return v.at(data.point);
+    }
 
-        const trackIndex = Math.min(
+    function toSequenceData(x: number, y: number): SequenceData | null {
+        const p = sequenceDataBuffer.point;
+        p.set(x, y);
+        toppingsObj.worldTransform.applyInverse(p, p);
+        if (p.vlength > consts.radius.max || p.vlength < consts.radius.min - consts.radius.delta) {
+            return null;
+        }
+
+        sequenceDataBuffer.sequenceIndex = Math.floor(cyclic((Math.PI / 2 - vdir(p)) * -RAD_TO_DEG, 0, 360));
+
+        sequenceDataBuffer.trackIndex = Math.min(
             consts.tracksCount - 1,
             Math.round(Math.max(0, p.vlength - consts.radius.min) / consts.radius.delta),
         );
 
-        p.vlength = consts.radius.min + consts.radius.delta * trackIndex;
+        p.vlength = consts.radius.min + consts.radius.delta * sequenceDataBuffer.trackIndex;
 
-        const toppingObj = objAttachedTopping(topping, angle, trackIndex)
-            .at(p)
+        return sequenceDataBuffer;
+    }
+
+    function submit(x: number, y: number, topping: PizzaTopping) {
+        const data = toSequenceData(x, y);
+
+        if (!data) {
+            return;
+        }
+
+        const toppingObj = objAttachedTopping(topping, data.sequenceIndex, data.trackIndex)
+            .at(data.point)
             .show(toppingsObj);
 
         toppingObj.angle = -toppingsObj.parent.angle;
