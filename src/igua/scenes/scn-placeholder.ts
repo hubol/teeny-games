@@ -1,23 +1,23 @@
 import { Graphics } from "pixi.js";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
-import { objPepperoniContainer } from "../objects/obj-pepperoni-container";
 import { objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
+import { objToppingContainer } from "../objects/obj-topping-container";
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
 
-    objPepperoniContainer("Pepperoni")
+    objToppingContainer("Pepperoni")
         .at(40, 40)
         .show();
 
-    objPepperoniContainer("Pineapple")
+    objToppingContainer("Pineapple")
         .tinted(0x202020)
         .at(40, 220)
         .show();
 
-    objPepperoniContainer("Tomato")
+    objToppingContainer("Tomato")
         .tinted(0xff0000)
         .at(40, 220 + 180)
         .show();
