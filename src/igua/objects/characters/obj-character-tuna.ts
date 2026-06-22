@@ -1,13 +1,16 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
+import { Instances } from "../../../lib/game-engine/instances";
 import { interp } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../../lib/math/number";
 import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
+import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
 import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 import { objFxBubble } from "../fx/obj-fx-bubble";
+import { objAttachedTopping } from "../obj-pizza";
 
 export function objCharacterTuna() {
     let isDiving = false;
@@ -35,6 +38,7 @@ export function objCharacterTuna() {
             .scaled(0.4, 0.4),
         hitboxObj.invisible(),
     )
+        .collisionShape(CollisionShape.DisplayObjects, [hitboxObj])
         .coro(function* (self) {
             while (true) {
                 yield interp(self, "angle").steps(4).to(4).over(1000);
@@ -62,6 +66,11 @@ export function objCharacterTuna() {
             }
             if (isDiving) {
                 speed.moveTowards(diveSpeed, 1);
+            }
+            else {
+                for (const collidedObj of self.collidesAll(Instances(objAttachedTopping))) {
+                    collidedObj.destroy();
+                }
             }
             self.add(speed, self.angle > 2 ? 1 : 0.8);
         });
