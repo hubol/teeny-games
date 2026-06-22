@@ -63,7 +63,15 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
         p.vlength = consts.radius.min + consts.radius.delta * trackIndex;
 
-        objAttachedTopping(topping, angle, trackIndex).at(p).show(toppingsObj);
+        const toppingObj = objAttachedTopping(topping, angle, trackIndex)
+            .at(p)
+            .show(toppingsObj);
+
+        toppingObj.angle = -toppingsObj.parent.angle;
+
+        if (speedControlObj.objSpeedControl.speed === 0) {
+            playSample(toppingObj);
+        }
     }
 
     return container(
@@ -92,7 +100,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 for (const toppingObj of toppingsObj.children) {
                     toppingObj.angle = -self.angle;
                     if (toppingObj.objAttachedTopping.angle === angle) {
-                        playSample(toppingObj.objFigureTopping, toppingObj.objAttachedTopping.trackIndex);
+                        playSample(toppingObj);
                         if (toppingObj.is(mxnFace)) {
                             toppingObj.mxnFace.sing();
                         }
@@ -108,7 +116,10 @@ const trackIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "C
     keyof DataToppings.Sample.Multi["sfxs"]
 >;
 
-function playSample(topping: PizzaTopping, trackIndex: Integer) {
+function playSample(obj: objAttachedTopping.Type) {
+    const topping = obj.objFigureTopping;
+    const trackIndex = obj.objAttachedTopping.trackIndex;
+
     if (topping.attributes.sample.kind === "multi") {
         const key = trackIndexToMultiSampleKey[trackIndex] ?? "C0";
         topping.attributes.sample.sfxs[key].play();
