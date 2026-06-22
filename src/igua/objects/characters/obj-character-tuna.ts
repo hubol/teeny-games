@@ -1,14 +1,40 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
-import { factor, interp } from "../../../lib/game-engine/routines/interp";
+import { interp } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../../lib/math/number";
 import { Rng } from "../../../lib/math/rng";
+import { vnew } from "../../../lib/math/vector-type";
+import { container } from "../../../lib/pixi/container";
+import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 import { objFxBubble } from "../fx/obj-fx-bubble";
 
 export function objCharacterTuna() {
-    return Sprite.from(Tx.Characters.Tuna)
-        .pivoted(89, 276)
-        .scaled(0.4, 0.4)
+    let isDiving = false;
+    const spriteObj = Sprite.from(Tx.Characters.Tuna)
+        .mixin(mxnPointerPress)
+        .handles("mxnPointerPress:pressed", (self) => {
+            // TODO sfx and stuff
+            isDiving = true;
+            self.mxnPointerPress.canPress = false;
+        })
+        .step(self => {
+            self.angle = approachLinear(self.angle, isDiving ? -40 : 0, 3);
+        });
+
+    const hitboxObj = new Graphics()
+        .beginFill(0xff0000)
+        .drawCircle(0, 0, 30);
+
+    const speed = vnew(-2, 0);
+    const diveSpeed = vnew(-1.3, 3).scale(3);
+
+    return container(
+        spriteObj
+            .pivoted(89, 276)
+            .scaled(0.4, 0.4),
+        hitboxObj.invisible(),
+    )
         .coro(function* (self) {
             while (true) {
                 yield interp(self, "angle").steps(4).to(4).over(1000);
@@ -28,5 +54,15 @@ export function objCharacterTuna() {
                 }
                 yield sleep(Rng.int(600, 1500));
             }
+        })
+        .step(self => {
+            if (self.x <= -300) {
+                self.destroy();
+                return;
+            }
+            if (isDiving) {
+                speed.moveTowards(diveSpeed, 1);
+            }
+            self.add(speed, self.angle > 2 ? 1 : 0.8);
         });
 }

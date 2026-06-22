@@ -188,9 +188,10 @@ function playSample(obj: objAttachedTopping.Type) {
     }
 }
 
-function objAttachedTopping(topping: PizzaTopping, angle: Integer, trackIndex: Integer) {
+export function objAttachedTopping(topping: PizzaTopping, angle: Integer, trackIndex: Integer) {
     return objFigureTopping(topping)
-        .merge({ objAttachedTopping: { angle, trackIndex } });
+        .merge({ objAttachedTopping: { angle, trackIndex } })
+        .track(objAttachedTopping);
 }
 
 namespace objAttachedTopping {

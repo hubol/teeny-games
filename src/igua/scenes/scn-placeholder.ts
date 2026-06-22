@@ -1,7 +1,10 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Rng } from "../../lib/math/rng";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
+import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objToppingContainer } from "../objects/obj-topping-container";
@@ -47,4 +50,15 @@ export function scnPlaceholder() {
             }
         })
         .show();
+
+    scene.stage
+        .coro(function* () {
+            while (true) {
+                yield sleep(3000);
+                // yield sleep(Rng.int(30_000, 60_000));
+                objCharacterTuna()
+                    .at(1900, 500)
+                    .show();
+            }
+        });
 }
