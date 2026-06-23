@@ -7,6 +7,14 @@ import { container } from "../../lib/pixi/container";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
 
+// 2-snap
+// Increase tuner fish interval
+// Experiment with smaller staff
+// 4 slice pizza
+// sustained notes (e.g. bass)
+// synth sounds
+// intentionally feed tuner fish??
+
 const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
 const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
 const txsTomato = Tx.Toppings.Tomato.split({ count: 2 });
@@ -88,7 +96,7 @@ export namespace DataToppings {
                     kind: "multi",
                     sfxs: Sfx.Samples.Drum,
                 },
-                transformSequenceDegrees: (degrees) => Math.round(degrees / 11.25) * 11.25,
+                transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
             },
             Onion: {
                 objFigure: function objOnionTopping (seed) {

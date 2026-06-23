@@ -225,7 +225,7 @@ function objCutLines() {
     const gfx = new Graphics()
         .lineStyle(0.01, 0xffffff);
 
-    const count = 4;
+    const count = 2;
     for (let i = 0; i < count; i++) {
         const radians = Math.PI * (i / count);
         const start = vrad(radians);
