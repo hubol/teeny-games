@@ -1,4 +1,5 @@
-import { Graphics, Point, RAD_TO_DEG } from "pixi.js";
+import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
+import { Tx } from "../../assets/textures";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -118,50 +119,57 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     const toppingObjs = new Array<objAttachedTopping.Type>();
 
     return container(
-        objPizzaCrust(),
-        toppingsObj,
-    )
-        .step(self => {
-            toppingObjs.length = 0;
-            toppingObjs.push(...toppingsObj.children);
+        Sprite.from(Tx.Effects.Shadow256)
+            .at(0, 30)
+            .anchored(0.5, 0.5)
+            .tinted(0x383257)
+            .scaled(4.6, 4.6),
+        container(
+            objPizzaCrust(),
+            toppingsObj,
+        )
+            .step(self => {
+                toppingObjs.length = 0;
+                toppingObjs.push(...toppingsObj.children);
 
-            for (let i = toppingObjs.length - 1; i >= 0; i--) {
-                const toppingObj = toppingObjs[i];
-                const pointer = PizzaPointer.claim(toppingObj);
-                if (pointer) {
-                    objTopping(toppingObj.objFigureTopping, pointer)
-                        .at(self.getWorldPosition())
-                        .show();
-                    toppingObj.destroy();
-                }
-            }
-
-            position += speedControlObj.objSpeedControl.speed;
-
-            let iterations = 0;
-            const delta = Math.sign(position);
-
-            while (position <= -1) {
-                iterations++;
-                position++;
-            }
-
-            while (position >= 1) {
-                iterations++;
-                position--;
-            }
-
-            for (let i = 0; i < iterations; i++) {
-                self.angle = cyclic(self.angle + delta, 0, 360);
-                const angle = Math.round(self.angle);
-                for (const toppingObj of toppingsObj.children) {
-                    toppingObj.angle = -self.angle;
-                    if (toppingObj.objAttachedTopping.angle === angle) {
-                        playSample(toppingObj);
+                for (let i = toppingObjs.length - 1; i >= 0; i--) {
+                    const toppingObj = toppingObjs[i];
+                    const pointer = PizzaPointer.claim(toppingObj);
+                    if (pointer) {
+                        objTopping(toppingObj.objFigureTopping, pointer)
+                            .at(self.getWorldPosition())
+                            .show();
+                        toppingObj.destroy();
                     }
                 }
-            }
-        })
+
+                position += speedControlObj.objSpeedControl.speed;
+
+                let iterations = 0;
+                const delta = Math.sign(position);
+
+                while (position <= -1) {
+                    iterations++;
+                    position++;
+                }
+
+                while (position >= 1) {
+                    iterations++;
+                    position--;
+                }
+
+                for (let i = 0; i < iterations; i++) {
+                    self.angle = cyclic(self.angle + delta, 0, 360);
+                    const angle = Math.round(self.angle);
+                    for (const toppingObj of toppingsObj.children) {
+                        toppingObj.angle = -self.angle;
+                        if (toppingObj.objAttachedTopping.angle === angle) {
+                            playSample(toppingObj);
+                        }
+                    }
+                }
+            }),
+    )
         .merge({ objPizza: api })
         .track(objPizza);
 }
