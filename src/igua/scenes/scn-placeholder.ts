@@ -60,10 +60,10 @@ export function scnPlaceholder() {
                     holdf(() => speedControlObj.objSpeedControl.speed !== 0, Rng.int(30 * 60, 60 * 60)),
                     () => Key.justWentDown("KeyT"),
                 ]);
-                objCharacterTuna()
+                const tunaObj = objCharacterTuna()
                     .at(2000, 500)
                     .show();
-                yield sleepf(1);
+                yield () => tunaObj.destroyed;
             }
         });
 }
