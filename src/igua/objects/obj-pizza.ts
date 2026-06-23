@@ -1,9 +1,9 @@
-import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
-import { Tx } from "../../assets/textures";
-import { vdeg } from "../../lib/math/angle";
+import { Graphics, Point, RAD_TO_DEG } from "pixi.js";
+import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
-import { vdir } from "../../lib/math/vector";
+import { Rng } from "../../lib/math/rng";
+import { vdir, vlerp } from "../../lib/math/vector";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
@@ -199,18 +199,39 @@ namespace objAttachedTopping {
 }
 
 function objPizzaCrust() {
-    const linesScale = consts.radius.max / 440;
     return container(
         new Graphics().beginFill(0xad7121)
             .drawCircle(0, 0, consts.radius.max),
-        Sprite.from(Tx.Pizza.CutLines)
-            .anchored(0.5, 0.5)
-            .tinted(0x725029)
-            .scaled(linesScale, linesScale),
         ...range(consts.tracksCount).map(i =>
             new Graphics()
                 .lineStyle(4, 0x412c0c)
                 .drawCircle(0, 0, consts.radius.min + consts.radius.delta * i)
         ),
+        objCutLines()
+            .tinted(0x725029)
+            .scaled(consts.radius.max, consts.radius.max),
     );
+}
+
+function objCutLines() {
+    const gfx = new Graphics()
+        .lineStyle(0.01, 0xffffff);
+
+    const count = 4;
+    for (let i = 0; i < count; i++) {
+        const radians = Math.PI * (i / count);
+        const start = vrad(radians);
+        const end = start.vcpy().scale(-1);
+
+        gfx
+            .moveTo(start.x, start.y);
+
+        for (let f = 0; f <= 1.01; f += 0.02) {
+            const position = vlerp(start.vcpy(), end, f);
+            position.add(Rng.vunit(), 0.003);
+            gfx.lineTo(position.x, position.y);
+        }
+    }
+
+    return gfx;
 }
