@@ -10,6 +10,7 @@ import { DataLib } from "./data-lib";
 const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
 const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
 const txsTomato = Tx.Toppings.Tomato.split({ count: 2 });
+const txsOnion = Tx.Toppings.Onion.split({ count: 2 });
 
 export namespace DataToppings {
     export type Sample = Sample.Pitched | Sample.Multi;
@@ -89,10 +90,10 @@ export namespace DataToppings {
                 },
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 11.25) * 11.25,
             },
-            CanadianBacon: {
-                objFigure: function objCanadianBaconTopping (seed) {
+            Onion: {
+                objFigure: function objOnionTopping (seed) {
                     return container(
-                        Sprite.from(txsTomato[seed % 2])
+                        Sprite.from(txsOnion[seed % 2])
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )

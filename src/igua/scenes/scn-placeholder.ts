@@ -30,7 +30,7 @@ export function scnPlaceholder() {
         .at(40, 220 + 180)
         .show();
 
-    objToppingContainer("CanadianBacon")
+    objToppingContainer("Onion")
         .tinted(0xff4080)
         .at(40, 220 + 180 + 180)
         .show();
