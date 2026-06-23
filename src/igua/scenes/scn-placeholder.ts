@@ -30,6 +30,11 @@ export function scnPlaceholder() {
         .at(40, 220 + 180)
         .show();
 
+    objToppingContainer("CanadianBacon")
+        .tinted(0xff4080)
+        .at(40, 220 + 180 + 180)
+        .show();
+
     const speedControlObj = objSpeedControl()
         .at(1700, 100)
         .show();

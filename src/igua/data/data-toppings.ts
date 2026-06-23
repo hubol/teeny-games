@@ -45,7 +45,7 @@ export namespace DataToppings {
         "DataToppings",
         {
             Pepperoni: {
-                objFigure: function objFallbackTopping (seed) {
+                objFigure: function objPepperoniTopping (seed) {
                     return container(
                         Sprite.from(txsPepperoni[seed % 3])
                             .scaled(80 / 256, 80 / 256)
@@ -60,7 +60,7 @@ export namespace DataToppings {
                 transformSequenceDegrees: (degrees) => degrees,
             },
             Pineapple: {
-                objFigure: function objFallbackTopping (seed) {
+                objFigure: function objPineappleTopping (seed) {
                     return container(
                         Sprite.from(txsPineapple[seed % 2])
                             .scaled(80 / 256, 80 / 256)
@@ -75,7 +75,7 @@ export namespace DataToppings {
                 transformSequenceDegrees: (degrees) => degrees,
             },
             Tomato: {
-                objFigure: function objFallbackTopping (seed) {
+                objFigure: function objTomatoTopping (seed) {
                     return container(
                         Sprite.from(txsTomato[seed % 2])
                             .scaled(80 / 256, 80 / 256)
@@ -88,6 +88,21 @@ export namespace DataToppings {
                     sfxs: Sfx.Samples.Drum,
                 },
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 11.25) * 11.25,
+            },
+            CanadianBacon: {
+                objFigure: function objCanadianBaconTopping (seed) {
+                    return container(
+                        Sprite.from(txsTomato[seed % 2])
+                            .scaled(80 / 256, 80 / 256)
+                            .anchored(0.5, 0.5),
+                    )
+                        .mixin(mxnFaceSeed, seed, 0.36);
+                },
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.Melodica,
+                },
+                transformSequenceDegrees: (degrees) => degrees,
             },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
