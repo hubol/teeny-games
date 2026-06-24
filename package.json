@@ -1,7 +1,7 @@
 {
-  "name": "asshat-project",
+  "name": "icm-demo",
   "version": "0.1.0",
-  "description": "Template for asshat game projects",
+  "description": "Demonstration",
   "scripts": {
     "postinstall": "npm run patch",
     "build": "node esbuild.mjs",
