@@ -1,5 +1,6 @@
 import { Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Mzk } from "../../assets/music";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { interp } from "../../lib/game-engine/routines/interp";
@@ -7,10 +8,12 @@ import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-m
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { AdjustColor } from "../../lib/pixi/adjust-color";
+import { Jukebox } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
 
 export function scnPlaceholder() {
+    Jukebox.play(Mzk.Canyon);
     scene.style.backgroundTint = 0x3716b1;
 
     for (let i = 0; i < 2; i++) {
