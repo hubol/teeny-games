@@ -1,12 +1,13 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
+import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
-import { vequals } from "../../lib/math/vector";
 import { AdjustColor } from "../../lib/pixi/adjust-color";
+import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
 
 export function scnPlaceholder() {
@@ -42,6 +43,16 @@ export function scnPlaceholder() {
     objPumpkinGuy()
         .at(60, 90)
         .show();
+
+    new Graphics()
+        .beginFill(scene.style.backgroundTint)
+        .drawRoundedRect(60, renderer.height - 20, 380, 20, 8)
+        .show();
+
+    objText.MediumIrregular("Move: Arrow Keys, Hold N: Do the macarena, Hold Space: Backflip, B: Bark")
+        .anchored(0.5, 1)
+        .at(renderer.width / 2, renderer.height - 2)
+        .show();
 }
 
 function objPumpkinGuy() {
@@ -64,7 +75,7 @@ function objPumpkinGuy() {
 
             const willMacerana = Key.isDown("KeyN");
             if (!isMacarenaing && willMacerana) {
-                self.play(Sfx.SixSeven.rate(0.5));
+                self.play(Sfx.SixSeven.rate(0.9));
             }
             isMacarenaing = willMacerana;
         })
