@@ -52,7 +52,7 @@ export function scnPlaceholder() {
         .drawRoundedRect(60, renderer.height - 20, 380, 20, 8)
         .show();
 
-    objText.MediumIrregular("Move: Arrow Keys, Hold N: Do the macarena, Hold Space: Backflip, B: Bark")
+    objText.MediumIrregular("Arrow Keys: Walk, Hold N: Do the Macarena, Hold Space: Backflip, B: Bark")
         .anchored(0.5, 1)
         .at(renderer.width / 2, renderer.height - 2)
         .show();
