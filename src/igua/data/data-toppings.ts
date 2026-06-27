@@ -3,6 +3,7 @@ import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { DegreesFloat, Integer } from "../../lib/math/number-alias-types";
+import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
@@ -19,6 +20,8 @@ const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Topping
 const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
 const txsTomato = Tx.Toppings.Tomato.split({ count: 2 });
 const txsOnion = Tx.Toppings.Onion.split({ count: 2 });
+
+const toppingScale = vnew(1.3, 1.3);
 
 export namespace DataToppings {
     export type Sample = Sample.Pitched | Sample.Multi;
@@ -60,7 +63,8 @@ export namespace DataToppings {
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )
-                        .mixin(mxnFaceSeed, seed, 0.36);
+                        .mixin(mxnFaceSeed, seed, 0.36)
+                        .scaled(toppingScale);
                 },
                 sample: {
                     kind: "multi",
@@ -75,7 +79,8 @@ export namespace DataToppings {
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )
-                        .mixin(mxnFaceSeed, seed, 0.36);
+                        .mixin(mxnFaceSeed, seed, 0.36)
+                        .scaled(toppingScale);
                 },
                 sample: {
                     kind: "multi",
@@ -90,7 +95,8 @@ export namespace DataToppings {
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )
-                        .mixin(mxnFaceSeed, seed, 0.36);
+                        .mixin(mxnFaceSeed, seed, 0.36)
+                        .scaled(toppingScale);
                 },
                 sample: {
                     kind: "multi",
@@ -105,7 +111,8 @@ export namespace DataToppings {
                             .scaled(80 / 256, 80 / 256)
                             .anchored(0.5, 0.5),
                     )
-                        .mixin(mxnFaceSeed, seed, 0.36);
+                        .mixin(mxnFaceSeed, seed, 0.36)
+                        .scaled(toppingScale);
                 },
                 sample: {
                     kind: "multi",
