@@ -8,10 +8,7 @@ import { container } from "../../lib/pixi/container";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
 
-// 2-snap
 // Increase tuner fish interval
-// Experiment with smaller staff
-// 4 slice pizza
 // sustained notes (e.g. bass)
 // synth sounds
 // intentionally feed tuner fish??

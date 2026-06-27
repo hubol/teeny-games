@@ -170,7 +170,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     const angle = Math.round(self.angle);
                     for (const toppingObj of toppingsObj.children) {
                         toppingObj.angle = -self.angle;
-                        if (toppingObj.objAttachedTopping.angle === angle) {
+                        if (toppingObj.objAttachedTopping.sequenceIndex === angle) {
                             playSample(toppingObj);
                         }
                     }
@@ -204,9 +204,9 @@ function playSample(obj: objAttachedTopping.Type) {
     }
 }
 
-export function objAttachedTopping(topping: PizzaTopping, angle: Integer, trackIndex: Integer) {
+export function objAttachedTopping(topping: PizzaTopping, sequenceIndex: Integer, trackIndex: Integer) {
     return objFigureTopping(topping)
-        .merge({ objAttachedTopping: { angle, trackIndex } })
+        .merge({ objAttachedTopping: { sequenceIndex, trackIndex } })
         .track(objAttachedTopping);
 }
 
