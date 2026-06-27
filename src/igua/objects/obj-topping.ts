@@ -19,15 +19,14 @@ export function objTopping(topping: PizzaTopping, pointer: PointerListener.State
 
             const pizzaObj = figureToppingObj.collidesOne(Instances(objPizza));
             graphics.clear();
-            if (!pizzaObj) {
-                return;
-            }
 
             if (!pointer.down) {
-                pizzaObj.objPizza.submit(self.x, self.y, figureToppingObj.objFigureTopping);
+                if (pizzaObj) {
+                    pizzaObj.objPizza.submit(self.x, self.y, figureToppingObj.objFigureTopping);
+                }
                 self.destroy();
             }
-            else {
+            else if (pizzaObj) {
                 const position = pizzaObj.objPizza.getSequencedPosition(
                     self.x,
                     self.y,
