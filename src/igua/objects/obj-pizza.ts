@@ -16,11 +16,18 @@ import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objSpeedControl } from "./obj-speed-control";
 import { objTopping } from "./obj-topping";
 
+const trackScaleIndices = [
+    0,
+    2,
+    4,
+    7,
+];
+
 const consts = {
-    tracksCount: 8,
+    tracksCount: trackScaleIndices.length,
     radius: {
-        min: 120,
-        delta: 50,
+        min: 170,
+        delta: 90,
         get max() {
             return consts.radius.min + consts.radius.delta * consts.tracksCount;
         },
@@ -174,20 +181,21 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         .track(objPizza);
 }
 
-const trackIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "C1"] as const satisfies ReadonlyArray<
+const cScaleIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "C1"] as const satisfies ReadonlyArray<
     keyof DataToppings.Sample.Multi["sfxs"]
 >;
 
 function playSample(obj: objAttachedTopping.Type) {
     const topping = obj.objFigureTopping;
     const trackIndex = obj.objAttachedTopping.trackIndex;
+    const cScaleIndex = trackScaleIndices[trackIndex] ?? trackScaleIndices[0];
 
     if (topping.attributes.sample.kind === "multi") {
-        const key = trackIndexToMultiSampleKey[trackIndex] ?? "C0";
+        const key = cScaleIndexToMultiSampleKey[cScaleIndex] ?? "C0";
         topping.attributes.sample.sfxs[key].play();
     }
     else {
-        const rate = cScaleRates[trackIndex];
+        const rate = cScaleRates[cScaleIndex];
         topping.attributes.sample.sfx.rate(rate).play();
     }
 
