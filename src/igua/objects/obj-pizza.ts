@@ -112,6 +112,16 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             return;
         }
 
+        if (
+            toppingsObj.children.some(obj =>
+                obj.objFigureTopping.attributes === topping.attributes
+                && obj.objAttachedTopping.sequenceIndex === data.sequenceIndex
+                && obj.objAttachedTopping.trackIndex === data.trackIndex
+            )
+        ) {
+            return;
+        }
+
         const toppingObj = objAttachedTopping(topping, data.sequenceIndex, data.trackIndex)
             .at(data.point)
             .show(toppingsObj);
