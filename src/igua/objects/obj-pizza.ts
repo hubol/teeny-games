@@ -1,5 +1,6 @@
 import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { Sound } from "../../lib/game-engine/audio/sound";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -8,6 +9,7 @@ import { vdir, vlerp } from "../../lib/math/vector";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
+import { Null } from "../../lib/types/null";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaTopping } from "../data/pizza-topping";
 import { mxnFace } from "../mixins/mxn-face";
@@ -200,14 +202,18 @@ function playSample(obj: objAttachedTopping.Type) {
     const trackIndex = obj.objAttachedTopping.trackIndex;
     const cScaleIndex = trackScaleIndices[trackIndex] ?? trackScaleIndices[0];
 
+    let sound = Null<Sound>();
+
     if (topping.attributes.sample.kind === "multi") {
         const key = cScaleIndexToMultiSampleKey[cScaleIndex] ?? "C0";
-        topping.attributes.sample.sfxs[key].play();
+        sound = topping.attributes.sample.sfxs[key];
     }
     else {
         const rate = cScaleRates[cScaleIndex];
-        topping.attributes.sample.sfx.rate(rate).play();
+        sound = topping.attributes.sample.sfx.rate(rate);
     }
+
+    sound?.gain(topping.attributes.sample.gain)?.play();
 
     if (obj.is(mxnFace)) {
         obj.mxnFace.sing();

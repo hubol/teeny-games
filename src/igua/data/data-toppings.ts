@@ -2,7 +2,7 @@ import { Container, Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
-import { DegreesFloat, Integer } from "../../lib/math/number-alias-types";
+import { DegreesFloat, Integer, Unit } from "../../lib/math/number-alias-types";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
@@ -21,7 +21,7 @@ const txsOnion = Tx.Toppings.Onion.split({ count: 2 });
 const toppingScale = vnew(1.3, 1.3);
 
 export namespace DataToppings {
-    export type Sample = Sample.Pitched | Sample.Multi;
+    export type Sample = (Sample.Pitched | Sample.Multi) & Sample.Common;
 
     export namespace Sample {
         export interface Pitched {
@@ -41,6 +41,10 @@ export namespace DataToppings {
                 G0: Sound;
                 C1: Sound;
             };
+        }
+
+        export interface Common {
+            gain: Unit;
         }
     }
 
@@ -65,7 +69,8 @@ export namespace DataToppings {
                 },
                 sample: {
                     kind: "multi",
-                    sfxs: Sfx.Samples.Glock,
+                    sfxs: Sfx.Samples.SynthTunedPercussion0,
+                    gain: 0.6,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
@@ -82,6 +87,7 @@ export namespace DataToppings {
                 sample: {
                     kind: "multi",
                     sfxs: Sfx.Samples.Ukelele,
+                    gain: 1,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
@@ -98,6 +104,7 @@ export namespace DataToppings {
                 sample: {
                     kind: "multi",
                     sfxs: Sfx.Samples.Drum,
+                    gain: 1,
                 },
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
             },
@@ -114,6 +121,7 @@ export namespace DataToppings {
                 sample: {
                     kind: "multi",
                     sfxs: Sfx.Samples.Melodica,
+                    gain: 1,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
@@ -126,6 +134,7 @@ export namespace DataToppings {
                 sample: {
                     kind: "pitched",
                     sfx: Sfx.Ooh,
+                    gain: 1,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
