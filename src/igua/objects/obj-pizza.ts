@@ -221,12 +221,12 @@ function playSample(obj: objAttachedTopping.Type) {
             if (!previousSoundInstances.has(topping.attributes)) {
                 previousSoundInstances.set(topping.attributes, []);
             }
-            const instances = previousSoundInstances.get(topping.attributes)!;
-            for (const instance of instances) {
-                instance.linearRamp("gain", 0, 0.1);
+            const previousInstances = previousSoundInstances.get(topping.attributes)!;
+            for (const previousInstance of previousInstances) {
+                previousInstance.linearRamp("gain", 0, 0.1);
             }
-            instances.length = 0;
-            instances.push(instance);
+            previousInstances.length = 0;
+            previousInstances.push(instance);
         }
     }
 
