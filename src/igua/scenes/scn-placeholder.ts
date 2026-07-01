@@ -17,22 +17,19 @@ export function scnPlaceholder() {
     Sprite.from(Tx.Background).show();
 
     objToppingContainer("Mushroom")
-        .at(40, 40)
+        .at(130, 40)
         .show();
 
     objToppingContainer("GreenPepper")
-        .tinted(0x202020)
-        .at(40, 220)
+        .at(90, 270 + 30)
         .show();
 
     objToppingContainer("Tomato")
-        .tinted(0xff0000)
-        .at(40, 220 + 180)
+        .at(80, 270 + 270 + 60)
         .show();
 
     objToppingContainer("Onion")
-        .tinted(0xff4080)
-        .at(40, 220 + 180 + 180)
+        .at(160, 770 + 70)
         .show();
 
     const speedControlObj = objSpeedControl()
