@@ -19,11 +19,12 @@ const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
 const txsTomato = Tx.Toppings.Pixel.Tomato.split({ count: 1 });
 const txsMushroom = Tx.Toppings.Pixel.Mushroom.split({ count: 1 });
 const txsGreenPepper = Tx.Toppings.Pixel.GreenPepper.split({ count: 1 });
-const txsOnion = Tx.Toppings.Onion.split({ count: 2 });
+const txsOnion = Tx.Toppings.Pixel.Onion.split({ count: 1 });
 
 const txsTomatoFace = Tx.Faces.Pixel.Tomato.split({ count: 3 });
 const txsMushroomFace = Tx.Faces.Pixel.Mushroom.split({ count: 2 });
 const txsGreenPepperFace = Tx.Faces.Pixel.GreenPepper.split({ count: 2 });
+const txsOnionFace = Tx.Faces.Pixel.Onion.split({ count: 2 });
 
 const toppingScale = vnew(1.3, 1.3);
 
@@ -118,13 +119,12 @@ export namespace DataToppings {
             },
             Onion: {
                 objFigure: function objOnionTopping (seed) {
-                    return container(
-                        Sprite.from(txsOnion[seed % 2])
-                            .scaled(80 / 256, 80 / 256)
-                            .anchored(0.5, 0.5),
-                    )
-                        .mixin(mxnFaceSeed, seed, 0.36)
-                        .scaled(toppingScale);
+                    return objToppingSprite(
+                        seed,
+                        txsOnion,
+                        80,
+                        objFace(txsOnionFace),
+                    );
                 },
                 sample: {
                     kind: "pitched",

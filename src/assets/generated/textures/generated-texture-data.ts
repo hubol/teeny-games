@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 33 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 35 }];
 
 interface TxData {
   id: string;
@@ -30,6 +30,7 @@ function txs<T>(tx: (data: TxData) => T) {
       Pixel: {
         GreenPepper: tx({ id: "Faces.Pixel.GreenPepper", atlas: 0, x: 3897, y: 579, width: 108, height: 52 }),
         Mushroom: tx({ id: "Faces.Pixel.Mushroom", atlas: 0, x: 3897, y: 657, width: 100, height: 42 }),
+        Onion: tx({ id: "Faces.Pixel.Onion", atlas: 0, x: 3897, y: 700, width: 100, height: 50 }),
         Tomato: tx({ id: "Faces.Pixel.Tomato", atlas: 0, x: 3897, y: 544, width: 144, height: 34 }),
       },
       Sing: tx({ id: "Faces.Sing", atlas: 0, x: 1921, y: 1081, width: 852, height: 150 }),
@@ -62,6 +63,7 @@ function txs<T>(tx: (data: TxData) => T) {
       Pixel: {
         GreenPepper: tx({ id: "Toppings.Pixel.GreenPepper", atlas: 0, x: 1843, y: 1441, width: 54, height: 52 }),
         Mushroom: tx({ id: "Toppings.Pixel.Mushroom", atlas: 0, x: 4027, y: 108, width: 50, height: 42 }),
+        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 4027, y: 151, width: 50, height: 50 }),
         Tomato: tx({ id: "Toppings.Pixel.Tomato", atlas: 0, x: 4042, y: 544, width: 48, height: 34 }),
       },
       Tomato: tx({ id: "Toppings.Tomato", atlas: 0, x: 1137, y: 1498, width: 512, height: 200 }),
