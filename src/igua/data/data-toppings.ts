@@ -17,9 +17,13 @@ import { DataLib } from "./data-lib";
 const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
 const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
 const txsTomato = Tx.Toppings.Pixel.Tomato.split({ count: 1 });
+const txsMushroom = Tx.Toppings.Pixel.Mushroom.split({ count: 1 });
+const txsGreenPepper = Tx.Toppings.Pixel.GreenPepper.split({ count: 1 });
 const txsOnion = Tx.Toppings.Onion.split({ count: 2 });
 
 const txsTomatoFace = Tx.Faces.Pixel.Tomato.split({ count: 3 });
+const txsMushroomFace = Tx.Faces.Pixel.Mushroom.split({ count: 2 });
+const txsGreenPepperFace = Tx.Faces.Pixel.GreenPepper.split({ count: 2 });
 
 const toppingScale = vnew(1.3, 1.3);
 
@@ -61,15 +65,14 @@ export namespace DataToppings {
     export const { manifest, getById } = DataLib.create(
         "DataToppings",
         {
-            Pepperoni: {
-                objFigure: function objPepperoniTopping (seed) {
-                    return container(
-                        Sprite.from(txsPepperoni[seed % 3])
-                            .scaled(80 / 256, 80 / 256)
-                            .anchored(0.5, 0.5),
-                    )
-                        .mixin(mxnFaceSeed, seed, 0.36)
-                        .scaled(toppingScale);
+            Mushroom: {
+                objFigure: function objMushroomTopping (seed) {
+                    return objToppingSprite(
+                        seed,
+                        txsMushroom,
+                        80,
+                        objFace(txsMushroomFace),
+                    );
                 },
                 sample: {
                     kind: "multi",
@@ -79,15 +82,14 @@ export namespace DataToppings {
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
-            Pineapple: {
-                objFigure: function objPineappleTopping (seed) {
-                    return container(
-                        Sprite.from(txsPineapple[seed % 2])
-                            .scaled(80 / 256, 80 / 256)
-                            .anchored(0.5, 0.5),
-                    )
-                        .mixin(mxnFaceSeed, seed, 0.36)
-                        .scaled(toppingScale);
+            GreenPepper: {
+                objFigure: function objGreenPepperTopping (seed) {
+                    return objToppingSprite(
+                        seed,
+                        txsGreenPepper,
+                        80,
+                        objFace(txsGreenPepperFace),
+                    );
                 },
                 sample: {
                     kind: "multi",
@@ -169,7 +171,7 @@ function objToppingSprite(seed: Integer, textures: Texture[], targetWidth: Integ
     const shadowTexture = shadowTextureMap.get(texture);
 
     return container(
-        ...(shadowTexture ? [Sprite.from(shadowTexture)] : []),
+        // ...(shadowTexture ? [Sprite.from(shadowTexture)] : []),
         Sprite.from(texture),
         ...children,
     )

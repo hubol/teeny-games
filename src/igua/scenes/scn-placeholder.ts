@@ -16,11 +16,11 @@ export function scnPlaceholder() {
 
     Sprite.from(Tx.Background).show();
 
-    objToppingContainer("Pepperoni")
+    objToppingContainer("Mushroom")
         .at(40, 40)
         .show();
 
-    objToppingContainer("Pineapple")
+    objToppingContainer("GreenPepper")
         .tinted(0x202020)
         .at(40, 220)
         .show();
