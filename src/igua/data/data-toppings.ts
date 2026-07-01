@@ -45,6 +45,7 @@ export namespace DataToppings {
 
         export interface Common {
             gain: Unit;
+            polyphony: boolean;
         }
     }
 
@@ -71,6 +72,7 @@ export namespace DataToppings {
                     kind: "multi",
                     sfxs: Sfx.Samples.SynthTunedPercussion0,
                     gain: 0.6,
+                    polyphony: true,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
@@ -88,6 +90,7 @@ export namespace DataToppings {
                     kind: "multi",
                     sfxs: Sfx.Samples.Ukelele,
                     gain: 1,
+                    polyphony: true,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
@@ -105,6 +108,7 @@ export namespace DataToppings {
                     kind: "multi",
                     sfxs: Sfx.Samples.Drum,
                     gain: 1,
+                    polyphony: true,
                 },
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
             },
@@ -119,9 +123,10 @@ export namespace DataToppings {
                         .scaled(toppingScale);
                 },
                 sample: {
-                    kind: "multi",
-                    sfxs: Sfx.Samples.Melodica,
+                    kind: "pitched",
+                    sfx: Sfx.Samples.Bass,
                     gain: 1,
+                    polyphony: false,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },
@@ -135,6 +140,7 @@ export namespace DataToppings {
                     kind: "pitched",
                     sfx: Sfx.Ooh,
                     gain: 1,
+                    polyphony: true,
                 },
                 transformSequenceDegrees: (degrees) => degrees,
             },

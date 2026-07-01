@@ -1,6 +1,6 @@
 import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { Sound } from "../../lib/game-engine/audio/sound";
+import { Sound, SoundInstance } from "../../lib/game-engine/audio/sound";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -197,6 +197,8 @@ const cScaleIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "
     keyof DataToppings.Sample.Multi["sfxs"]
 >;
 
+const previousSoundInstances = new Map<DataToppings.Model, Array<SoundInstance>>();
+
 function playSample(obj: objAttachedTopping.Type) {
     const topping = obj.objFigureTopping;
     const trackIndex = obj.objAttachedTopping.trackIndex;
@@ -213,7 +215,20 @@ function playSample(obj: objAttachedTopping.Type) {
         sound = topping.attributes.sample.sfx.rate(rate);
     }
 
-    sound?.gain(topping.attributes.sample.gain)?.play();
+    if (sound) {
+        const instance = sound.gain(topping.attributes.sample.gain).playInstance();
+        if (!topping.attributes.sample.polyphony) {
+            if (!previousSoundInstances.has(topping.attributes)) {
+                previousSoundInstances.set(topping.attributes, []);
+            }
+            const instances = previousSoundInstances.get(topping.attributes)!;
+            for (const instance of instances) {
+                instance.linearRamp("gain", 0, 0.1);
+            }
+            instances.length = 0;
+            instances.push(instance);
+        }
+    }
 
     if (obj.is(mxnFace)) {
         obj.mxnFace.sing();
