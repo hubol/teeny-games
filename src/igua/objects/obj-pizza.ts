@@ -253,12 +253,18 @@ const trackTints = [
 function objPizzaCrust() {
     const pizzaObjScale = consts.radius.max / Tx.Pizza.Dough.width * 2;
 
+    function objDough() {
+        return Sprite.from(Tx.Pizza.Dough)
+            .anchored(0.5, 0.5)
+            .scaled(pizzaObjScale, pizzaObjScale);
+    }
+
+    const doughMaskObj = objDough();
+
     return container(
         new Graphics().beginFill(0xF7D0BE)
             .drawCircle(0, 0, consts.radius.max),
-        Sprite.from(Tx.Pizza.Dough)
-            .anchored(0.5, 0.5)
-            .scaled(pizzaObjScale, pizzaObjScale),
+        objDough(),
         ...range(consts.tracksCount).map(i =>
             new Graphics()
                 .lineStyle(40, trackTints[i])
@@ -268,6 +274,11 @@ function objPizzaCrust() {
         objCutLines()
             .tinted(0xEAB29A)
             .scaled(consts.radius.max, consts.radius.max),
+        doughMaskObj,
+        Sprite.from(Tx.Pizza.Shading)
+            .anchored(0.5, 0.5)
+            .step(self => self.angle = -self.parent.parent.angle)
+            .masked(doughMaskObj),
     );
 }
 
