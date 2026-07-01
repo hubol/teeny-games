@@ -37,7 +37,7 @@ export async function loadTextureAssets(progress: JobProgress) {
 
 const textureOptions: IBaseTextureOptions = {
     mipmap: MIPMAP_MODES.OFF,
-    scaleMode: SCALE_MODES.LINEAR,
+    scaleMode: SCALE_MODES.NEAREST,
     multisample: MSAA_QUALITY.NONE,
     anisotropicLevel: 0,
 };

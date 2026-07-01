@@ -12,7 +12,7 @@ import { range } from "../../lib/range";
 import { Null } from "../../lib/types/null";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaTopping } from "../data/pizza-topping";
-import { mxnFace } from "../mixins/mxn-face";
+import { mxnFace, objFace } from "../mixins/mxn-face";
 import { PizzaPointer } from "../utils/pizza-pointer";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objSpeedControl } from "./obj-speed-control";
@@ -230,9 +230,7 @@ function playSample(obj: objAttachedTopping.Type) {
         }
     }
 
-    if (obj.is(mxnFace)) {
-        obj.mxnFace.sing();
-    }
+    obj.findIs(objFace)[0]?.objFace?.sing();
 }
 
 export function objAttachedTopping(topping: PizzaTopping, sequenceIndex: Integer, trackIndex: Integer) {
@@ -245,17 +243,30 @@ namespace objAttachedTopping {
     export type Type = ReturnType<typeof objAttachedTopping>;
 }
 
+const trackTints = [
+    0x2552e6,
+    0x25e675,
+    0xe6d325,
+    0xe23678,
+];
+
 function objPizzaCrust() {
+    const pizzaObjScale = consts.radius.max / Tx.Pizza.Dough.width * 2;
+
     return container(
-        new Graphics().beginFill(0xad7121)
+        new Graphics().beginFill(0xF7D0BE)
             .drawCircle(0, 0, consts.radius.max),
+        Sprite.from(Tx.Pizza.Dough)
+            .anchored(0.5, 0.5)
+            .scaled(pizzaObjScale, pizzaObjScale),
         ...range(consts.tracksCount).map(i =>
             new Graphics()
-                .lineStyle(4, 0x412c0c)
+                .lineStyle(40, trackTints[i])
                 .drawCircle(0, 0, consts.radius.min + consts.radius.delta * i)
+                .step(self => self.alpha = 0.6)
         ),
         objCutLines()
-            .tinted(0x725029)
+            .tinted(0xEAB29A)
             .scaled(consts.radius.max, consts.radius.max),
     );
 }

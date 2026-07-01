@@ -1,10 +1,11 @@
-import { Container, Sprite } from "pixi.js";
+import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
 import { DegreesFloat, Integer, Unit } from "../../lib/math/number-alias-types";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { objFace } from "../mixins/mxn-face";
 import { mxnFaceSeed } from "../mixins/mxn-face-seed";
 import { DataLib } from "./data-lib";
 
@@ -15,8 +16,10 @@ import { DataLib } from "./data-lib";
 
 const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
 const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
-const txsTomato = Tx.Toppings.Tomato.split({ count: 2 });
+const txsTomato = Tx.Toppings.Pixel.Tomato.split({ count: 1 });
 const txsOnion = Tx.Toppings.Onion.split({ count: 2 });
+
+const txsTomatoFace = Tx.Faces.Pixel.Tomato.split({ count: 3 });
 
 const toppingScale = vnew(1.3, 1.3);
 
@@ -96,13 +99,12 @@ export namespace DataToppings {
             },
             Tomato: {
                 objFigure: function objTomatoTopping (seed) {
-                    return container(
-                        Sprite.from(txsTomato[seed % 2])
-                            .scaled(80 / 256, 80 / 256)
-                            .anchored(0.5, 0.5),
-                    )
-                        .mixin(mxnFaceSeed, seed, 0.36)
-                        .scaled(toppingScale);
+                    return objToppingSprite(
+                        seed,
+                        txsTomato,
+                        80,
+                        objFace(txsTomatoFace),
+                    );
                 },
                 sample: {
                     kind: "multi",
@@ -152,4 +154,25 @@ export namespace DataToppings {
     }
 
     export type Id = DataLib.Id<typeof manifest>;
+}
+
+const shadowTextureMap = (() => {
+    const map = new Map<Texture, Texture>();
+    map.set(txsTomato[0], Tx.Shadows.Tomato);
+    return map;
+})();
+
+function objToppingSprite(seed: Integer, textures: Texture[], targetWidth: Integer, ...children: DisplayObject[]) {
+    const texture = textures[seed % textures.length];
+    const scale = (targetWidth / texture.width) * toppingScale.x;
+
+    const shadowTexture = shadowTextureMap.get(texture);
+
+    return container(
+        ...(shadowTexture ? [Sprite.from(shadowTexture)] : []),
+        Sprite.from(texture),
+        ...children,
+    )
+        .pivoted(texture.width / 2, texture.height / 2)
+        .scaled(scale, scale);
 }

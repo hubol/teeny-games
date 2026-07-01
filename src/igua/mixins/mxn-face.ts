@@ -1,12 +1,19 @@
 import { Container, Texture } from "pixi.js";
+import { Rng } from "../../lib/math/rng";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
 
 export function mxnFace(obj: Container, textures: Texture[], scale = 1) {
-    let singStepsCount = 0;
-    const faceObj = objIndexedSprite(textures)
+    objFace(textures)
         .anchored(0.5, 0.5)
         .scaled(scale, scale)
-        .step(self => self.textureIndex = singStepsCount-- > 0 ? 1 : 0);
+        .show(obj);
+
+    return obj;
+}
+
+export function objFace(textures: Texture[]) {
+    let singStepsCount = 0;
+    let defaultTextureIndex = Rng.int(textures.length - 1);
 
     const api = {
         sing() {
@@ -14,8 +21,17 @@ export function mxnFace(obj: Container, textures: Texture[], scale = 1) {
         },
     };
 
-    faceObj.show(obj);
-
-    return obj
-        .merge({ mxnFace: api });
+    return objIndexedSprite(textures)
+        .step(self => {
+            self.textureIndex = singStepsCount-- > 0 ? textures.length - 1 : defaultTextureIndex;
+            if (Rng.float() < 0.15) {
+                defaultTextureIndex = Rng.int(textures.length - 1);
+            }
+            if (Rng.float() < 0.05) {
+                self.x = Rng.int(2);
+                self.y = Rng.int(2);
+            }
+        })
+        .merge({ objFace: api })
+        .identify(objFace);
 }
