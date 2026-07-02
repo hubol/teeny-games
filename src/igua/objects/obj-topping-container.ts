@@ -19,7 +19,7 @@ export function objToppingContainer(toppingId: DataToppings.Id) {
         .step(self => {
             const pointer = PizzaPointer.claim(self);
             if (pointer) {
-                if (speed.y >= 0) {
+                if (self.pivot.y <= 20) {
                     speed.y = -4;
                 }
                 figureObj.objFigureToppingContainer.happyStepsCount = 10;
