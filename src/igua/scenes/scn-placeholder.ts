@@ -2,11 +2,11 @@ import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
-import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
+import { objCylinder } from "../objects/obj-cylinder";
 import { objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objToppingContainer } from "../objects/obj-topping-container";
@@ -15,6 +15,42 @@ export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
 
     Sprite.from(Tx.Background).show();
+
+    objCylinder({
+        radius: 40,
+        width: 400,
+        topTint: 0xcf1406,
+        wallTint: 0xe73f21,
+    })
+        .at(130 + 130, 40 + 210)
+        .show();
+
+    objCylinder({
+        radius: 40,
+        width: 400,
+        topTint: 0xffc400,
+        wallTint: 0xe7e421,
+    })
+        .at(130 + 70, 40 + 500)
+        .show();
+
+    objCylinder({
+        radius: 40,
+        width: 400,
+        topTint: 0x04850f,
+        wallTint: 0x28e431,
+    })
+        .at(130 + 90, 40 + 730)
+        .show();
+
+    objCylinder({
+        radius: 40,
+        width: 400,
+        topTint: 0x046185,
+        wallTint: 0x078cc0,
+    })
+        .at(130 + 155, 40 + 995)
+        .show();
 
     objToppingContainer("Mushroom")
         .at(130, 40)
