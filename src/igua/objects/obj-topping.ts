@@ -40,5 +40,6 @@ export function objTopping(topping: PizzaTopping, pointer: PointerListener.State
                     .drawCircle(position.x - self.x, position.y - self.y, 8);
             }
         })
+        .track(objTopping)
         .at(pointer);
 }

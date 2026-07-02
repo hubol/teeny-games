@@ -1,6 +1,8 @@
 import { BLEND_MODES, Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Sound, SoundInstance } from "../../lib/game-engine/audio/sound";
+import { Instances } from "../../lib/game-engine/instances";
+import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -144,7 +146,10 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             .tinted(0xC7A0FF)
             .scaled(1.8, 1.8),
         container(
-            objPizzaCrust(),
+            objPizzaCrust()
+                .step(self =>
+                    self.objPizzaCrust.showTracks = toppingsObj.children.length > 0 || Instances(objTopping).length > 0
+                ),
             toppingsObj,
         )
             .step(self => {
@@ -259,6 +264,10 @@ function objPizzaCrust() {
             .scaled(pizzaObjScale, pizzaObjScale);
     }
 
+    const api = {
+        showTracks: false,
+    };
+
     const doughMaskObj = objDough();
 
     return container(
@@ -270,6 +279,15 @@ function objPizzaCrust() {
                 .lineStyle(40, trackTints[i])
                 .drawCircle(0, 0, consts.radius.min + consts.radius.delta * i)
                 .step(self => self.alpha = 0.6)
+                .scaled(0, 0)
+                .coro(function* (self) {
+                    while (true) {
+                        yield () => api.showTracks;
+                        yield interpv(self.scale).factor(factor.sine).to(1, 1).over(300);
+                        yield () => !api.showTracks;
+                        yield interpv(self.scale).factor(factor.sine).to(0, 0).over(300);
+                    }
+                })
         ),
         objCutLines()
             .tinted(0xEAB29A)
@@ -279,7 +297,8 @@ function objPizzaCrust() {
             .anchored(0.5, 0.5)
             .step(self => self.angle = -self.parent.parent.angle)
             .masked(doughMaskObj),
-    );
+    )
+        .merge({ objPizzaCrust: api });
 }
 
 function objCutLines() {
