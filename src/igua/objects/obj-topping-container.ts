@@ -1,6 +1,7 @@
 import { DisplayObject, Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { SceneLocal } from "../../lib/game-engine/scene-local";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
@@ -25,7 +26,11 @@ export function objToppingContainer(toppingId: DataToppings.Id) {
                 figureObj.objFigureToppingContainer.happyStepsCount = 10;
                 if (CtxLastToppingContainer.value.obj !== self) {
                     const sound = Sfx.Dialog.Toppings[toppingId];
-                    sound?.rate(0.9, 1.1)?.play();
+                    if (sound) {
+                        CtxLastToppingContainer.value.soundInstance?.linearRamp("gain", 0, 0.1);
+                        CtxLastToppingContainer.value.soundInstance = sound.rate(0.9, 1.1).playInstance();
+                    }
+
                     CtxLastToppingContainer.value.obj = self;
                 }
                 objTopping(PizzaTopping.create(toppingId), pointer).show();
@@ -75,6 +80,6 @@ function objFigureToppingContainer(toppingId: DataToppings.Id) {
 }
 
 const CtxLastToppingContainer = new SceneLocal(
-    () => ({ obj: Null<DisplayObject>() }),
+    () => ({ obj: Null<DisplayObject>(), soundInstance: Null<SoundInstance>() }),
     "CtxLastToppingContainer",
 );
