@@ -40,7 +40,7 @@ export function scnPlaceholder() {
     objCylinder({
         radius: 40,
         width: 400,
-        topTint: 0x04850f,
+        topTint: 0x0bb343,
         wallTint: 0x28e431,
     })
         .at(130 + 90, 40 + 730)
@@ -49,8 +49,8 @@ export function scnPlaceholder() {
     objCylinder({
         radius: 40,
         width: 400,
-        topTint: 0x046185,
-        wallTint: 0x078cc0,
+        topTint: 0x0694cc,
+        wallTint: 0x5dbbe0,
     })
         .at(130 + 155, 40 + 995)
         .show(toppingContainersObj);
