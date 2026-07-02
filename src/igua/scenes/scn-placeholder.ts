@@ -3,6 +3,7 @@ import { Tx } from "../../assets/textures";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { Rng } from "../../lib/math/rng";
+import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
@@ -16,6 +17,8 @@ export function scnPlaceholder() {
 
     Sprite.from(Tx.Background).show();
 
+    const toppingContainersObj = container().show();
+
     objCylinder({
         radius: 40,
         width: 400,
@@ -23,7 +26,7 @@ export function scnPlaceholder() {
         wallTint: 0xe73f21,
     })
         .at(130 + 130, 40 + 210)
-        .show();
+        .show(toppingContainersObj);
 
     objCylinder({
         radius: 40,
@@ -32,7 +35,7 @@ export function scnPlaceholder() {
         wallTint: 0xe7e421,
     })
         .at(130 + 70, 40 + 500)
-        .show();
+        .show(toppingContainersObj);
 
     objCylinder({
         radius: 40,
@@ -41,7 +44,7 @@ export function scnPlaceholder() {
         wallTint: 0x28e431,
     })
         .at(130 + 90, 40 + 730)
-        .show();
+        .show(toppingContainersObj);
 
     objCylinder({
         radius: 40,
@@ -50,23 +53,23 @@ export function scnPlaceholder() {
         wallTint: 0x078cc0,
     })
         .at(130 + 155, 40 + 995)
-        .show();
+        .show(toppingContainersObj);
 
     objToppingContainer("Mushroom")
         .at(130, 40)
-        .show();
+        .show(toppingContainersObj);
 
     objToppingContainer("GreenPepper")
         .at(90, 270 + 30)
-        .show();
+        .show(toppingContainersObj);
 
     objToppingContainer("Tomato")
         .at(80, 270 + 270 + 60)
-        .show();
+        .show(toppingContainersObj);
 
     objToppingContainer("Onion")
         .at(160, 770 + 70)
-        .show();
+        .show(toppingContainersObj);
 
     const speedControlObj = objSpeedControl()
         .at(1700, 100)
