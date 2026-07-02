@@ -295,7 +295,7 @@ function objPizzaCrust() {
         doughMaskObj,
         Sprite.from(Tx.Pizza.Shading)
             .anchored(0.5, 0.5)
-            .step(self => self.angle = -self.parent.parent.angle)
+            .step(self => self.angle = -self.parent.parent.angle, 1)
             .masked(doughMaskObj),
     )
         .merge({ objPizzaCrust: api });
