@@ -1,4 +1,4 @@
-import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
+import { BLEND_MODES, Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Sound, SoundInstance } from "../../lib/game-engine/audio/sound";
 import { vdeg, vrad } from "../../lib/math/angle";
@@ -138,11 +138,11 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     const toppingObjs = new Array<objAttachedTopping.Type>();
 
     return container(
-        Sprite.from(Tx.Effects.Shadow256)
-            .at(0, 30)
+        Sprite.from(Tx.Pizza.Mask)
+            .at(0, 90)
             .anchored(0.5, 0.5)
-            .tinted(0x383257)
-            .scaled(4.6, 4.6),
+            .tinted(0xC7A0FF)
+            .scaled(1.8, 1.8),
         container(
             objPizzaCrust(),
             toppingsObj,
