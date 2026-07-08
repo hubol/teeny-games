@@ -6,6 +6,8 @@ import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
+import { mxnTool } from "../mixins/mxn-tool";
+import { objCharacterMagnet } from "../objects/characters/obj-character-magnet";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCylinder } from "../objects/obj-cylinder";
 import { objPizza } from "../objects/obj-pizza";
@@ -92,6 +94,12 @@ export function scnPlaceholder() {
                 self.drawCircle(position.x, position.y, 4);
             }
         })
+        .zIndexed(999999)
+        .show();
+
+    objCharacterMagnet()
+        .at(1850, 950)
+        .mixin(mxnTool)
         .show();
 
     scene.stage

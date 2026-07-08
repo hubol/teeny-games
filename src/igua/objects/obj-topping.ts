@@ -6,7 +6,7 @@ import { PizzaTopping } from "../data/pizza-topping";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objPizza } from "./obj-pizza";
 
-export function objTopping(topping: PizzaTopping, pointer: PointerListener.State) {
+export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
     const figureToppingObj = objFigureTopping(topping);
     const graphics = new Graphics();
 
@@ -42,4 +42,8 @@ export function objTopping(topping: PizzaTopping, pointer: PointerListener.State
         })
         .track(objTopping)
         .at(pointer);
+}
+
+export namespace objTopping {
+    export type Pointer = Pick<PointerListener.State, "x" | "y" | "down">;
 }
