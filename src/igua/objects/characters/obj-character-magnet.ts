@@ -1,4 +1,5 @@
 import { Sprite } from "pixi.js";
+import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { factor, interpv } from "../../../lib/game-engine/routines/interp";
 import { vdeg } from "../../../lib/math/angle";
@@ -7,6 +8,13 @@ import { container } from "../../../lib/pixi/container";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 
 const txsMagnet = Tx.Characters.Magnet.split({ count: 2 });
+const sfxs = [
+    Sfx.Effects.Spark0,
+    Sfx.Effects.Spark1,
+    Sfx.Effects.Spark2,
+    Sfx.Effects.Spark3,
+    Sfx.Effects.Spark4,
+];
 
 export function objCharacterMagnet() {
     const api = {
@@ -31,6 +39,8 @@ export function objCharacterMagnet() {
                     .show();
 
                 const dir = vdeg(Rng.int(-90, -180));
+
+                self.play(Rng.item(sfxs).rate(0.6, 1));
 
                 sparkObj
                     .at(self)
