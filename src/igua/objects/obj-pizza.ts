@@ -113,7 +113,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         const data = toSequenceData(x, y, topping);
 
         if (!data) {
-            return;
+            return false;
         }
 
         if (
@@ -123,7 +123,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 && obj.objAttachedTopping.trackIndex === data.trackIndex
             )
         ) {
-            return;
+            return false;
         }
 
         const toppingObj = objAttachedTopping(topping, data.sequenceIndex, data.trackIndex)
@@ -135,6 +135,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         if (speedControlObj.objSpeedControl.speed === 0) {
             playSample(toppingObj, 0);
         }
+
+        return true;
     }
 
     const toppingObjs = new Array<objAttachedTopping.Type>();

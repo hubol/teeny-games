@@ -1,6 +1,6 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { DegreesFloat, Integer } from "../../lib/math/number-alias-types";
+import { DegreesFloat, Integer, RgbInt } from "../../lib/math/number-alias-types";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { objFace } from "../mixins/mxn-face";
@@ -31,6 +31,7 @@ export namespace DataToppings {
         objFigure: (seed: Integer) => Container;
         instrumentId: DataInstruments.Id;
         transformSequenceDegrees: (sequenceFloat: DegreesFloat, trackIndex: Integer) => DegreesFloat;
+        tint: RgbInt;
     }
 
     export const { manifest, getById } = DataLib.create(
@@ -47,6 +48,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "SynthPad0",
                 transformSequenceDegrees: (degrees) => degrees,
+                tint: 0xD1BFBF,
             },
             GreenPepper: {
                 objFigure: function objGreenPepperTopping (seed) {
@@ -59,6 +61,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "Ukelele",
                 transformSequenceDegrees: (degrees) => degrees,
+                tint: 0x17A533,
             },
             Tomato: {
                 objFigure: function objTomatoTopping (seed) {
@@ -71,6 +74,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "DrumKit0",
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
+                tint: 0xF43D1D,
             },
             Onion: {
                 objFigure: function objOnionTopping (seed) {
@@ -83,6 +87,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "Bass",
                 transformSequenceDegrees: (degrees) => degrees,
+                tint: 0xD193FF,
             },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
@@ -92,6 +97,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "Melodica",
                 transformSequenceDegrees: (degrees) => degrees,
+                tint: 0x808080,
             },
         } satisfies Record<string, Model>,
     );

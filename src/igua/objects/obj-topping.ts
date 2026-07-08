@@ -4,6 +4,7 @@ import { Instances } from "../../lib/game-engine/instances";
 import { container } from "../../lib/pixi/container";
 import { PizzaTopping } from "../data/pizza-topping";
 import { objFigureTopping } from "./figures/obj-figure-topping";
+import { objFxHeartBurst } from "./fx/obj-fx-heart-burst";
 import { objPizza } from "./obj-pizza";
 
 export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
@@ -21,8 +22,13 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
             graphics.clear();
 
             if (!pointer.down) {
-                if (pizzaObj) {
-                    pizzaObj.objPizza.submit(self.x, self.y, figureToppingObj.objFigureTopping);
+                const burst = !pizzaObj?.objPizza?.submit(self.x, self.y, figureToppingObj.objFigureTopping) ?? true;
+
+                if (burst) {
+                    objFxHeartBurst()
+                        .tinted(topping.attributes.tint)
+                        .at(self)
+                        .show();
                 }
                 self.destroy();
             }
