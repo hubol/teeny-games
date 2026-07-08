@@ -7,7 +7,7 @@ import { Rng } from "../../../lib/math/rng";
 import { container } from "../../../lib/pixi/container";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 
-const txsMagnet = Tx.Characters.Magnet.split({ count: 2 });
+const [txBody, txFaceDefault, txFaceSparking] = Tx.Characters.Magnet.split({ count: 3 });
 const sfxs = [
     Sfx.Effects.Spark0,
     Sfx.Effects.Spark1,
@@ -21,13 +21,18 @@ export function objCharacterMagnet() {
         isSparking: false,
     };
 
+    const sprites = [txBody, txFaceDefault].map(tx =>
+        Sprite.from(tx)
+            .anchored(0.5, 0.5)
+            .scaled(2, 2)
+            .mixin(mxnFxBoil, "position")
+    );
+
+    sprites[1]
+        .step(self => self.texture = api.isSparking ? txFaceSparking : txFaceDefault);
+
     return container(
-        ...txsMagnet.map(tx =>
-            Sprite.from(tx)
-                .anchored(0.5, 0.5)
-                .scaled(2, 2)
-                .mixin(mxnFxBoil, "position")
-        ),
+        ...sprites,
     )
         .merge({ objCharacterMagnet: api })
         .coro(function* (self) {
@@ -45,7 +50,7 @@ export function objCharacterMagnet() {
                 sparkObj
                     .at(self)
                     .add(dir, Rng.int(90, 130));
-                yield interpv(sparkObj).factor(factor.sine).to(self.vcpy().add(dir, 60)).over(Rng.int(100, 300));
+                yield interpv(sparkObj).factor(factor.sine).to(self.vcpy().add(dir, 60)).over(Rng.int(66, 150));
                 sparkObj.destroy();
             }
         });
