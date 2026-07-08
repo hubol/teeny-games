@@ -6,13 +6,12 @@ import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
-import { mxnTool } from "../mixins/mxn-tool";
-import { objCharacterMagnet } from "../objects/characters/obj-character-magnet";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCylinder } from "../objects/obj-cylinder";
 import { objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objToppingContainer } from "../objects/obj-topping-container";
+import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
@@ -97,9 +96,8 @@ export function scnPlaceholder() {
         .zIndexed(999999)
         .show();
 
-    objCharacterMagnet()
+    objToolMagnet()
         .at(1850, 950)
-        .mixin(mxnTool)
         .show();
 
     scene.stage
