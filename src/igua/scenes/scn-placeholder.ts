@@ -1,5 +1,6 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { Rng } from "../../lib/math/rng";
@@ -8,8 +9,9 @@ import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCylinder } from "../objects/obj-cylinder";
-import { objPizza } from "../objects/obj-pizza";
+import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
+import { objTopping } from "../objects/obj-topping";
 import { objToppingContainer } from "../objects/obj-topping-container";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
@@ -98,13 +100,24 @@ export function scnPlaceholder() {
 
     objToolMagnet()
         .at(1850, 950)
+        .coro(function* (self) {
+            while (true) {
+                yield () => Instances(objAttachedTopping).length >= 5;
+                self.mxnTool.isEnabled = true;
+                yield () => Instances(objAttachedTopping).length <= 0 && Instances(objTopping).length <= 0;
+                self.mxnTool.isEnabled = false;
+            }
+        })
         .show();
 
     scene.stage
         .coro(function* () {
             while (true) {
                 yield* Coro.race([
-                    holdf(() => speedControlObj.objSpeedControl.speed !== 0, Rng.int(30 * 60, 60 * 60)),
+                    holdf(
+                        () => speedControlObj.objSpeedControl.speed !== 0 && Instances(objAttachedTopping).length > 0,
+                        Rng.int(30 * 60, 60 * 60),
+                    ),
                     () => Key.justWentDown("KeyT"),
                 ]);
                 const tunaObj = objCharacterTuna()

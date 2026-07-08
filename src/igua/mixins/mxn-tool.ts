@@ -1,12 +1,15 @@
-import { DisplayObject } from "pixi.js";
+import { Container } from "pixi.js";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { vnew } from "../../lib/math/vector-type";
+import { renderer } from "../current-pixi-renderer";
 import { PizzaPointer } from "../utils/pizza-pointer";
 
 const v = vnew();
 
-export function mxnTool(obj: DisplayObject) {
-    const startPosition = vnew();
+export function mxnTool(obj: Container) {
+    const enabledPosition = vnew();
+    const disabledPosition = vnew();
+
     let pointers = new Array<PointerListener.State>();
     let isDown = false;
 
@@ -14,6 +17,7 @@ export function mxnTool(obj: DisplayObject) {
         get isDown() {
             return isDown;
         },
+        isEnabled: false,
     };
 
     return obj
@@ -44,11 +48,15 @@ export function mxnTool(obj: DisplayObject) {
         })
         .step(() => {
             if (!isDown) {
-                const speed = Math.max(3, v.at(obj).add(startPosition, -1).vlength / 16);
-                obj.moveTowards(startPosition, speed);
+                const targetPosition = api.isEnabled ? enabledPosition : disabledPosition;
+                const speed = Math.max(3, v.at(obj).add(targetPosition, -1).vlength / 16);
+                obj.moveTowards(targetPosition, speed);
             }
         })
         .coro(function* (self) {
-            startPosition.at(self);
+            enabledPosition.at(self);
+            disabledPosition.at(self);
+            disabledPosition.y = renderer.height + self.height;
+            self.at(disabledPosition);
         });
 }
