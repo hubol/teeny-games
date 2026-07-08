@@ -228,7 +228,9 @@ function playSample(obj: objAttachedTopping.Type, when: Seconds) {
             }
             const previousInstances = previousSoundInstances.get(topping.attributes)!;
             for (const previousInstance of previousInstances) {
-                previousInstance.linearRamp("gain", 0, 0.1);
+                if (!previousInstance.ended) {
+                    previousInstance.linearRamp("gain", 0, 0.1);
+                }
             }
             previousInstances.length = 0;
             previousInstances.push(instance);
