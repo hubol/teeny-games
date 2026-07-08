@@ -25,9 +25,14 @@ export function objToppingContainer(toppingId: DataToppings.Id) {
                 }
                 figureObj.objFigureToppingContainer.happyStepsCount = 10;
                 if (CtxLastToppingContainer.value.obj !== self) {
+                    console.log("set", toppingId);
                     const sound = Sfx.Dialog.Toppings[toppingId];
                     if (sound) {
-                        CtxLastToppingContainer.value.soundInstance?.linearRamp("gain", 0, 0.1);
+                        const previousInstance = CtxLastToppingContainer.value.soundInstance;
+                        if (previousInstance?.ended === false) {
+                            previousInstance.linearRamp("gain", 0, 0.1);
+                        }
+
                         CtxLastToppingContainer.value.soundInstance = sound.rate(0.9, 1.1).playInstance();
                     }
 
