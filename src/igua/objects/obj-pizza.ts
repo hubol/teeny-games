@@ -1,21 +1,22 @@
-import { BLEND_MODES, Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
+import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Sound, SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
 import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
-import { Integer } from "../../lib/math/number-alias-types";
+import { Integer, Seconds } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vdir, vlerp } from "../../lib/math/vector";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { Null } from "../../lib/types/null";
+import { Undefined } from "../../lib/types/undefined";
 import { DataInstruments } from "../data/data-instruments";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaTopping } from "../data/pizza-topping";
-import { mxnFace, objFace } from "../mixins/mxn-face";
+import { objFace } from "../mixins/mxn-face";
 import { PizzaPointer } from "../utils/pizza-pointer";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objSpeedControl } from "./obj-speed-control";
@@ -53,7 +54,7 @@ const cScaleRates = [
     .map(hz => hz / c4Hz);
 
 interface SequenceData {
-    sequenceIndex: Integer;
+    sequenceIndex: number;
     trackIndex: Integer;
     point: Point;
 }
@@ -71,8 +72,6 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         getSequencedPosition,
         submit,
     };
-
-    let position = 0;
 
     const toppingsObj = container<objAttachedTopping.Type>();
 
@@ -102,7 +101,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
         const rawDegrees = (Math.PI / 2 - vdir(p)) * -RAD_TO_DEG;
         const degrees = topping.attributes.transformSequenceDegrees(rawDegrees, sequenceDataBuffer.trackIndex);
-        sequenceDataBuffer.sequenceIndex = Math.floor(cyclic(degrees, 0, 360));
+        sequenceDataBuffer.sequenceIndex = cyclic(degrees, 0, 360);
 
         const scale = consts.radius.min + consts.radius.delta * sequenceDataBuffer.trackIndex;
         vdeg(270 - sequenceDataBuffer.sequenceIndex, p).scale(scale);
@@ -134,7 +133,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         toppingObj.angle = -toppingsObj.parent.angle;
 
         if (speedControlObj.objSpeedControl.speed === 0) {
-            playSample(toppingObj);
+            playSample(toppingObj, 0);
         }
     }
 
@@ -168,29 +167,20 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     }
                 }
 
-                position += speedControlObj.objSpeedControl.speed;
-
-                let iterations = 0;
-                const delta = Math.sign(position);
-
-                while (position <= -1) {
-                    iterations++;
-                    position++;
+                if (speedControlObj.objSpeedControl.speed === 0) {
+                    return;
                 }
 
-                while (position >= 1) {
-                    iterations++;
-                    position--;
-                }
+                const delta = speedControlObj.objSpeedControl.speed;
+                const absDelta = Math.abs(delta);
+                self.angle += delta;
+                const angle = self.angle;
 
-                for (let i = 0; i < iterations; i++) {
-                    self.angle = cyclic(self.angle + delta, 0, 360);
-                    const angle = Math.round(self.angle);
-                    for (const toppingObj of toppingsObj.children) {
-                        toppingObj.angle = -self.angle;
-                        if (toppingObj.objAttachedTopping.sequenceIndex === angle) {
-                            playSample(toppingObj);
-                        }
+                for (const toppingObj of toppingsObj.children) {
+                    toppingObj.angle = -self.angle;
+                    const sequenceDelta = cyclic(toppingObj.objAttachedTopping.sequenceIndex - angle, 0, 360);
+                    if (sequenceDelta <= absDelta) {
+                        playSample(toppingObj, (sequenceDelta / absDelta) * (1 / 60));
                     }
                 }
             }),
@@ -205,7 +195,13 @@ const cScaleIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "
 
 const previousSoundInstances = new Map<DataToppings.Model, Array<SoundInstance>>();
 
-function playSample(obj: objAttachedTopping.Type) {
+function playSample(obj: objAttachedTopping.Type, when: Seconds) {
+    const faceObj = Undefined(obj.findIs(objFace)[0]);
+
+    if (faceObj?.objFace?.isSinging) {
+        return;
+    }
+
     const topping = obj.objFigureTopping;
     const sample = DataInstruments.getByIdLoose(topping.attributes.instrumentId).sample;
     const trackIndex = obj.objAttachedTopping.trackIndex;
@@ -223,7 +219,7 @@ function playSample(obj: objAttachedTopping.Type) {
     }
 
     if (sound) {
-        const instance = sound.gain(sample.gain).playInstance();
+        const instance = sound.gain(sample.gain).playInstance(when);
         if (!sample.polyphony) {
             if (!previousSoundInstances.has(topping.attributes)) {
                 previousSoundInstances.set(topping.attributes, []);
@@ -237,7 +233,7 @@ function playSample(obj: objAttachedTopping.Type) {
         }
     }
 
-    obj.findIs(objFace)[0]?.objFace?.sing();
+    faceObj?.objFace?.sing();
 }
 
 export function objAttachedTopping(topping: PizzaTopping, sequenceIndex: Integer, trackIndex: Integer) {

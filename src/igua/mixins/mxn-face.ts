@@ -19,6 +19,9 @@ export function objFace(textures: Texture[]) {
         sing() {
             singStepsCount = 10;
         },
+        get isSinging() {
+            return singStepsCount > 0;
+        },
     };
 
     return objIndexedSprite(textures)
