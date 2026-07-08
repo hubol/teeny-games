@@ -1,4 +1,5 @@
 import { Graphics } from "pixi.js";
+import { Sfx } from "../../assets/sounds";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
 import { container } from "../../lib/pixi/container";
@@ -25,6 +26,7 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
                 const burst = !pizzaObj?.objPizza?.submit(self.x, self.y, figureToppingObj.objFigureTopping) ?? true;
 
                 if (burst) {
+                    self.play(Sfx.Effects.Destroy.rate(0.8, 1.7));
                     objFxHeartBurst()
                         .tinted(topping.attributes.tint)
                         .at(self)
