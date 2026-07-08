@@ -119,7 +119,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         if (
             toppingsObj.children.some(obj =>
                 obj.objFigureTopping.attributes === topping.attributes
-                && obj.objAttachedTopping.sequenceIndex === data.sequenceIndex
+                && Math.abs(obj.objAttachedTopping.sequenceIndex - data.sequenceIndex) < 2
                 && obj.objAttachedTopping.trackIndex === data.trackIndex
             )
         ) {
