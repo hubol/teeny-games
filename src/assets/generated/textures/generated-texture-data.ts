@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 45 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 46 }];
 
 interface TxData {
   id: string;
@@ -15,7 +15,7 @@ function txs<T>(tx: (data: TxData) => T) {
   return {
     Background: tx({ id: "Background", atlas: 0, x: 0, y: 0, width: 2112, height: 1200 }),
     Characters: {
-      Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 810, y: 1710, width: 156, height: 80 }),
+      Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 810, y: 1710, width: 208, height: 106 }),
       Tuna: tx({ id: "Characters.Tuna", atlas: 0, x: 0, y: 1201, width: 1024, height: 508 }),
     },
     Containers: {
@@ -34,6 +34,7 @@ function txs<T>(tx: (data: TxData) => T) {
     Effects: {
       Bubble68: tx({ id: "Effects.Bubble68", atlas: 0, x: 3250, y: 0, width: 544, height: 56 }),
       Shadow256: tx({ id: "Effects.Shadow256", atlas: 0, x: 1025, y: 1201, width: 1024, height: 1024 }),
+      Spark: tx({ id: "Effects.Spark", atlas: 0, x: 4006, y: 109, width: 26, height: 38 }),
     },
     Faces: {
       Idle: tx({ id: "Faces.Idle", atlas: 0, x: 2113, y: 0, width: 1136, height: 150 }),

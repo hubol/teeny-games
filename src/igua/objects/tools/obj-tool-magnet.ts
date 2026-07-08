@@ -11,6 +11,8 @@ export function objToolMagnet() {
     return objCharacterMagnet()
         .mixin(mxnTool)
         .step(self => {
+            self.objCharacterMagnet.isSparking = self.mxnTool.isDown;
+
             if (self.mxnTool.isDown) {
                 for (const obj of Instances(objAttachedTopping)) {
                     const { x, y } = obj.getWorldPosition();
