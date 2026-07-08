@@ -12,6 +12,7 @@ import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { Null } from "../../lib/types/null";
+import { DataInstruments } from "../data/data-instruments";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaTopping } from "../data/pizza-topping";
 import { mxnFace, objFace } from "../mixins/mxn-face";
@@ -199,30 +200,31 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 }
 
 const cScaleIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "C1"] as const satisfies ReadonlyArray<
-    keyof DataToppings.Sample.Multi["sfxs"]
+    keyof DataInstruments.Sample.Multi["sfxs"]
 >;
 
 const previousSoundInstances = new Map<DataToppings.Model, Array<SoundInstance>>();
 
 function playSample(obj: objAttachedTopping.Type) {
     const topping = obj.objFigureTopping;
+    const sample = DataInstruments.getByIdLoose(topping.attributes.instrumentId).sample;
     const trackIndex = obj.objAttachedTopping.trackIndex;
     const cScaleIndex = trackScaleIndices[trackIndex] ?? trackScaleIndices[0];
 
     let sound = Null<Sound>();
 
-    if (topping.attributes.sample.kind === "multi") {
+    if (sample.kind === "multi") {
         const key = cScaleIndexToMultiSampleKey[cScaleIndex] ?? "C0";
-        sound = topping.attributes.sample.sfxs[key];
+        sound = sample.sfxs[key];
     }
     else {
         const rate = cScaleRates[cScaleIndex];
-        sound = topping.attributes.sample.sfx.rate(rate);
+        sound = sample.sfx.rate(rate);
     }
 
     if (sound) {
-        const instance = sound.gain(topping.attributes.sample.gain).playInstance();
-        if (!topping.attributes.sample.polyphony) {
+        const instance = sound.gain(sample.gain).playInstance();
+        if (!sample.polyphony) {
             if (!previousSoundInstances.has(topping.attributes)) {
                 previousSoundInstances.set(topping.attributes, []);
             }

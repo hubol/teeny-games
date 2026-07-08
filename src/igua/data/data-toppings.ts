@@ -1,12 +1,10 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
-import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { Sound } from "../../lib/game-engine/audio/sound";
-import { DegreesFloat, Integer, Unit } from "../../lib/math/number-alias-types";
+import { DegreesFloat, Integer } from "../../lib/math/number-alias-types";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { objFace } from "../mixins/mxn-face";
-import { mxnFaceSeed } from "../mixins/mxn-face-seed";
+import { DataInstruments } from "./data-instruments";
 import { DataLib } from "./data-lib";
 
 // Increase tuner fish interval
@@ -29,37 +27,9 @@ const txsOnionFace = Tx.Faces.Pixel.Onion.split({ count: 2 });
 const toppingScale = vnew(1.3, 1.3);
 
 export namespace DataToppings {
-    export type Sample = (Sample.Pitched | Sample.Multi) & Sample.Common;
-
-    export namespace Sample {
-        export interface Pitched {
-            kind: "pitched";
-            sfx: Sound;
-        }
-
-        export interface Multi {
-            kind: "multi";
-            sfxs: {
-                A0: Sound;
-                B0: Sound;
-                C0: Sound;
-                D0: Sound;
-                E0: Sound;
-                F0: Sound;
-                G0: Sound;
-                C1: Sound;
-            };
-        }
-
-        export interface Common {
-            gain: Unit;
-            polyphony: boolean;
-        }
-    }
-
     export interface Model {
         objFigure: (seed: Integer) => Container;
-        sample: Sample;
+        instrumentId: DataInstruments.Id;
         transformSequenceDegrees: (sequenceFloat: DegreesFloat, trackIndex: Integer) => DegreesFloat;
     }
 
@@ -75,12 +45,7 @@ export namespace DataToppings {
                         objFace(txsMushroomFace),
                     );
                 },
-                sample: {
-                    kind: "multi",
-                    sfxs: Sfx.Samples.SynthTunedPercussion0,
-                    gain: 0.6,
-                    polyphony: true,
-                },
+                instrumentId: "SynthPad0",
                 transformSequenceDegrees: (degrees) => degrees,
             },
             GreenPepper: {
@@ -92,12 +57,7 @@ export namespace DataToppings {
                         objFace(txsGreenPepperFace),
                     );
                 },
-                sample: {
-                    kind: "multi",
-                    sfxs: Sfx.Samples.Ukelele,
-                    gain: 1,
-                    polyphony: true,
-                },
+                instrumentId: "Ukelele",
                 transformSequenceDegrees: (degrees) => degrees,
             },
             Tomato: {
@@ -109,12 +69,7 @@ export namespace DataToppings {
                         objFace(txsTomatoFace),
                     );
                 },
-                sample: {
-                    kind: "multi",
-                    sfxs: Sfx.Samples.Drum,
-                    gain: 1,
-                    polyphony: true,
-                },
+                instrumentId: "DrumKit0",
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
             },
             Onion: {
@@ -126,12 +81,7 @@ export namespace DataToppings {
                         objFace(txsOnionFace),
                     );
                 },
-                sample: {
-                    kind: "pitched",
-                    sfx: Sfx.Samples.Bass,
-                    gain: 1,
-                    polyphony: false,
-                },
+                instrumentId: "Bass",
                 transformSequenceDegrees: (degrees) => degrees,
             },
             __Fallback__: {
@@ -140,12 +90,7 @@ export namespace DataToppings {
                         .anchored(0.5, 0.5)
                         .tinted(0);
                 },
-                sample: {
-                    kind: "pitched",
-                    sfx: Sfx.Ooh,
-                    gain: 1,
-                    polyphony: true,
-                },
+                instrumentId: "Melodica",
                 transformSequenceDegrees: (degrees) => degrees,
             },
         } satisfies Record<string, Model>,
