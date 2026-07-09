@@ -16,6 +16,9 @@ type NoAtlasTextures = Awaited<ReturnType<typeof createNoAtlasTx>>;
 
 async function createNoAtlasTx(tx: typeof Tx) {
     return {
+        Effects: {
+            Clouds: await repeat(tx.Effects.Clouds, WRAP_MODES.MIRRORED_REPEAT),
+        },
         // Terrain: {
         //     Pipe: {
         //         Gray: await repeat(tx.Terrain.Pipe.Gray),
@@ -24,8 +27,8 @@ async function createNoAtlasTx(tx: typeof Tx) {
     };
 }
 
-function repeat(tx: Texture) {
-    return TextureProcessing.extractFromAtlas(tx, { wrapMode: WRAP_MODES.REPEAT });
+function repeat(tx: Texture, wrapMode = WRAP_MODES.REPEAT) {
+    return TextureProcessing.extractFromAtlas(tx, { wrapMode });
 }
 
 export async function loadNoAtlasTextures(tx: typeof Tx) {

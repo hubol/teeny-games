@@ -1,5 +1,5 @@
-import { Graphics, Point } from "pixi.js";
-import { objText } from "../../assets/fonts";
+import { Graphics, Point, TilingSprite } from "pixi.js";
+import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
@@ -30,8 +30,33 @@ export function objSpeedControl() {
         },
     };
 
+    const skyMaskObj = new Graphics()
+        .beginFill(0xffffff)
+        .drawRect(-90, -200, 180, 200);
+
+    const skyObj = new TilingSprite(NoAtlasTx.Effects.Clouds, 300, 64)
+        .scaled(2, 2)
+        .at(-90, -200)
+        .masked(skyMaskObj)
+        .step(self => {
+            self.tilePosition.x -= api.speed;
+            self.tilePosition.y = Math.sin(self.tilePosition.x / 180) * 3;
+        });
+
     return container(
-        peteObj,
+        new Graphics()
+            .beginFill(0xffffff)
+            .drawRoundedRect(-130, -240, 260, 330, 10),
+        new Graphics()
+            .beginFill(0xbfdbff)
+            .drawRoundedRect(-110, -220, 220, 230, 5),
+        new Graphics()
+            .beginFill(0x7cd167)
+            .drawRect(-100, -30, 200, 30),
+        skyMaskObj,
+        skyObj,
+        peteObj
+            .at(0, -16),
         container(
             new Graphics()
                 .beginFill(0x780AFF)

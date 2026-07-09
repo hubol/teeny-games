@@ -75,7 +75,7 @@ export function scnPlaceholder() {
         .show(toppingContainersObj);
 
     const speedControlObj = objSpeedControl()
-        .at(1700, 200)
+        .at(1750, 280)
         .show();
 
     objPizza(speedControlObj)
