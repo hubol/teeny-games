@@ -116,7 +116,7 @@ export function scnPlaceholder() {
                 yield* Coro.race([
                     holdf(
                         () => speedControlObj.objSpeedControl.speed !== 0 && Instances(objAttachedTopping).length > 0,
-                        Rng.int(30 * 60, 60 * 60),
+                        Rng.int(60 * 60, 90 * 60),
                     ),
                     () => Key.justWentDown("KeyT"),
                 ]);
