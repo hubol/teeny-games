@@ -36,7 +36,8 @@ export function objToolMagnet() {
                 for (const pointer of toppingPointers) {
                     const length = v.at(self).add(pointer, -1).vlength + 1;
                     const attractBonus = Math.min(12, attractLengthNumerator / length);
-                    moveTowards(pointer, self, attractBonus);
+                    const targetPosition = v.at(self).add(-60, -60);
+                    moveTowards(pointer, targetPosition, attractBonus);
                 }
             }
             else {

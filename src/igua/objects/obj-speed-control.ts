@@ -21,7 +21,7 @@ export function objSpeedControl() {
         .at(consts.trackRadius / 2, 0);
 
     const peteObj = objCharacterPeteWalk()
-        .step(self => self.objCharacterPeteWalk.walkSpeed = api.speed);
+        .step(self => self.objCharacterPeteWalk.walkSpeed = api.speed * 1.33);
 
     const api = {
         get speed() {

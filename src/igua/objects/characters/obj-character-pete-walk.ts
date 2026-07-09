@@ -15,7 +15,7 @@ export function objCharacterPeteWalk() {
     return objIndexedSprite(txsPeteWalk)
         .merge({ objCharacterPeteWalk: api })
         .anchored(0.5, 1)
-        .scaled(3, 3)
+        .scaled(1.4, 1.4)
         .mixin(mxnFxBoil, "pivot")
         .step(self => {
             const walkSign = Math.sign(api.walkSpeed);
