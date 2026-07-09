@@ -173,7 +173,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     return;
                 }
 
-                const delta = speedControlObj.objSpeedControl.speed;
+                const delta = -speedControlObj.objSpeedControl.speed;
                 const absDelta = Math.abs(delta);
                 self.angle += delta;
                 const angle = self.angle;
