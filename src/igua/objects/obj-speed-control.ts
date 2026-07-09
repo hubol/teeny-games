@@ -4,6 +4,7 @@ import { PointerListener } from "../../lib/browser/pointer-listener";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { PizzaPointer } from "../utils/pizza-pointer";
+import { objCharacterPeteWalk } from "./characters/obj-character-pete-walk";
 
 const consts = {
     trackRadius: 90,
@@ -15,9 +16,12 @@ export function objSpeedControl() {
     let thisPointer = Null<PointerListener.State>();
 
     const handleObj = new Graphics()
-        .beginFill(0xa0a0a0)
-        .drawRect(-20, -40, 40, 80)
+        .beginFill(0x23B686)
+        .drawCircle(0, 0, 25)
         .at(consts.trackRadius / 2, 0);
+
+    const peteObj = objCharacterPeteWalk()
+        .step(self => self.objCharacterPeteWalk.walkSpeed = api.speed);
 
     const api = {
         get speed() {
@@ -27,11 +31,11 @@ export function objSpeedControl() {
     };
 
     return container(
-        objText.XLargeIrregular("Speed!").anchored(0.5, 1),
+        peteObj,
         container(
             new Graphics()
-                .beginFill(0x202020)
-                .drawRect(-consts.trackRadius, -10, consts.trackRadius * 2, 20),
+                .beginFill(0x780AFF)
+                .drawRoundedRect(-consts.trackRadius, -10, consts.trackRadius * 2, 20, 10),
             handleObj,
         )
             .step(self => {

@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 47 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 48 }];
 
 interface TxData {
   id: string;
@@ -16,6 +16,9 @@ function txs<T>(tx: (data: TxData) => T) {
     Background: tx({ id: "Background", atlas: 0, x: 0, y: 0, width: 2112, height: 1200 }),
     Characters: {
       Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 3747, y: 1337, width: 312, height: 106 }),
+      Pete: {
+        Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 842, y: 1710, width: 120, height: 54 }),
+      },
       Tuna: tx({ id: "Characters.Tuna", atlas: 0, x: 0, y: 1201, width: 1024, height: 508 }),
     },
     Containers: {
@@ -66,7 +69,7 @@ function txs<T>(tx: (data: TxData) => T) {
       Tomato: tx({ id: "Shadows.Tomato", atlas: 0, x: 2757, y: 1562, width: 62, height: 46 }),
     },
     Toppings: {
-      Beef: tx({ id: "Toppings.Beef", atlas: 0, x: 2757, y: 1609, width: 60, height: 60 }),
+      Beef: tx({ id: "Toppings.Beef", atlas: 0, x: 963, y: 1710, width: 60, height: 60 }),
       Onion: tx({ id: "Toppings.Onion", atlas: 0, x: 2050, y: 1232, width: 512, height: 278 }),
       Pepperoni0: tx({ id: "Toppings.Pepperoni0", atlas: 0, x: 553, y: 1892, width: 256, height: 280 }),
       Pepperoni1: tx({ id: "Toppings.Pepperoni1", atlas: 0, x: 553, y: 2173, width: 256, height: 280 }),
