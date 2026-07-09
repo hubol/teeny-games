@@ -1,0 +1,59 @@
+name: Build and deploy on push
+on: push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            public
+            src
+            tools
+            esbuild.mjs
+            package-lock.json
+            package.json
+            tsconfig.json
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+      
+      - run: npm ci
+
+      - run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: dist
+  
+  deploy-itch:
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      BUTLER_API_KEY: ${{ secrets.CLAYPERSON_BUTLER_CREDENTIALS }}
+    steps:
+      - run: wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive.zip
+      - run: unzip archive.zip
+      - run: chmod +x butler
+      - uses: actions/download-artifact@v4
+      - run: ./butler push "build" clayperson/beatzza:html5
+  
+  cleanup:
+    needs: [ deploy-itch ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            build

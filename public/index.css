@@ -8,7 +8,7 @@ html {
     height: 100%;
     overflow: hidden;
     --bg-color: #000000;
-    --loading-color: #f8b0b4;
+    --loading-color: #91DDBF;
 }
 
 #game_canvas {
