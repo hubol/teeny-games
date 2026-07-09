@@ -18,7 +18,7 @@ import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x00ff00;
 
-    Sprite.from(Tx.Background).show();
+    Sprite.from(Tx.Background).at(-38, -16).show();
 
     const toppingContainersObj = container().show();
 
