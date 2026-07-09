@@ -25,7 +25,6 @@ export function objToppingContainer(toppingId: DataToppings.Id) {
                 }
                 figureObj.objFigureToppingContainer.happyStepsCount = 10;
                 if (CtxLastToppingContainer.value.obj !== self) {
-                    console.log("set", toppingId);
                     const sound = Sfx.Dialog.Toppings[toppingId];
                     if (sound) {
                         const previousInstance = CtxLastToppingContainer.value.soundInstance;
