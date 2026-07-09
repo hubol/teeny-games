@@ -1,6 +1,8 @@
 import { Graphics, Point, TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
+import { Sfx } from "../../assets/sounds";
 import { PointerListener } from "../../lib/browser/pointer-listener";
+import { nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { PizzaPointer } from "../utils/pizza-pointer";
@@ -8,6 +10,7 @@ import { objCharacterPeteWalk } from "./characters/obj-character-pete-walk";
 
 const consts = {
     trackRadius: 90,
+    maximumSpeed: 2,
 };
 
 const p = new Point();
@@ -26,7 +29,10 @@ export function objSpeedControl() {
     const api = {
         get speed() {
             const rawSpeed = (handleObj.x / consts.trackRadius) * 2;
-            return Math.max(-2, Math.min(Math.abs(rawSpeed) < 0.2 ? 0 : rawSpeed, 2));
+            return Math.max(
+                -consts.maximumSpeed,
+                Math.min(Math.abs(rawSpeed) < 0.2 ? 0 : rawSpeed, consts.maximumSpeed),
+            );
         },
     };
 
@@ -77,9 +83,17 @@ export function objSpeedControl() {
                     return;
                 }
 
+                const previousSpeed = api.speed;
+
                 const point = self.worldTransform.applyInverse(thisPointer, p);
                 const x = point.x;
                 handleObj.x = Math.max(-consts.trackRadius, Math.min(x, consts.trackRadius));
+
+                if (api.speed !== previousSpeed) {
+                    handleObj.play(
+                        Sfx.Tools.AdjustSpeed.rate(nlerp(0.5, 2, Math.abs(api.speed / consts.maximumSpeed))),
+                    );
+                }
             })
             .at(0, 50),
     )

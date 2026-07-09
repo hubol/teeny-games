@@ -17,14 +17,14 @@ function txs<T>(tx: (data: TxData) => T) {
     Characters: {
       Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 3747, y: 1337, width: 312, height: 106 }),
       Pete: {
-        Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 2050, y: 1511, width: 240, height: 108 }),
+        Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 2050, y: 1511, width: 240, height: 112 }),
       },
       Tuna: tx({ id: "Characters.Tuna", atlas: 0, x: 0, y: 1201, width: 1024, height: 508 }),
     },
     Containers: {
       GreenPepper: tx({ id: "Containers.GreenPepper", atlas: 0, x: 2291, y: 1511, width: 224, height: 126 }),
       Happy: {
-        GreenPepper: tx({ id: "Containers.Happy.GreenPepper", atlas: 0, x: 2050, y: 1620, width: 224, height: 126 }),
+        GreenPepper: tx({ id: "Containers.Happy.GreenPepper", atlas: 0, x: 2050, y: 1624, width: 224, height: 126 }),
         Mushroom: tx({ id: "Containers.Happy.Mushroom", atlas: 0, x: 3795, y: 0, width: 292, height: 108 }),
         Onion: tx({ id: "Containers.Happy.Onion", atlas: 0, x: 257, y: 2252, width: 272, height: 104 }),
         Tomato: tx({ id: "Containers.Happy.Tomato", atlas: 0, x: 553, y: 1710, width: 288, height: 90 }),

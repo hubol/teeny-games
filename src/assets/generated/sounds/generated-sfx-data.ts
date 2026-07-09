@@ -66,6 +66,7 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "samples/ukelele/e0.ogg",
       "samples/ukelele/f0.ogg",
       "samples/ukelele/g0.ogg",
+      "tools/adjust speed.ogg",
     ].map(sfx),
   );
   return {
@@ -149,6 +150,9 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
         F0: sounds[61],
         G0: sounds[62],
       },
+    },
+    Tools: {
+      AdjustSpeed: sounds[63],
     },
   };
 }
