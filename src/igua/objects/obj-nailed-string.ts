@@ -1,13 +1,30 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
-import { nlerp } from "../../lib/math/number";
+import { approachLinear, nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
+import { scene } from "../globals";
 import { mxnFxBoil } from "../mixins/fx/mxn-fx-boil";
 
+interface Strum {
+    position: number;
+    strength: number;
+}
+
+const consts = {
+    strumWidth: 32,
+    strumAffectRadius: 40,
+};
+
 export function objNailedString(length: number) {
+    const strums = new Array<Strum>();
+
     const api = {
         visibleUnit: 0,
+        strum(position: number) {
+            strums.push({ position, strength: 1 });
+            strums.sort((a, b) => a.position - b.position);
+        },
     };
 
     const gfx = new Graphics();
@@ -25,10 +42,34 @@ export function objNailedString(length: number) {
         centerNailObj,
     )
         .merge({ objNailedString: api })
+        .step(() => {
+            for (let i = 0; i < strums.length;) {
+                const strum = strums[i];
+                strum.strength = approachLinear(strum.strength, 0, 1 / 60);
+                if (strum.strength <= 0) {
+                    strums.splice(i, 1);
+                }
+                else {
+                    i++;
+                }
+            }
+        })
         .step(self => {
             self.pivot.y = (1 - api.visibleUnit) * (length * 1.2);
             centerNailObj.y = nlerp(-100, 0, api.visibleUnit);
             farNailObj.y = nlerp(-100, -length, api.visibleUnit);
-            gfx.clear().lineStyle(5, 0xffffff).moveTo(0, -8).lineTo(0, -length - 6);
+            gfx.clear().lineStyle(5, 0xffffff).moveTo(0, -8);
+
+            for (const strum of strums) {
+                const t = Math.sin(strum.position + scene.ticker.ticks);
+
+                for (let f = -1; f < 1; f += 0.1) {
+                    const y = -strum.position - f * consts.strumAffectRadius;
+                    const x = Math.sin((t + y) / 3) * strum.strength * (1 - Math.abs(f)) * consts.strumWidth;
+                    gfx.lineTo(x, y);
+                }
+            }
+
+            gfx.lineTo(0, -length - 6);
         });
 }

@@ -38,6 +38,9 @@ const consts = {
         get max() {
             return consts.radius.min + consts.radius.delta * consts.tracksCount;
         },
+        forTrack(index: Integer) {
+            return consts.radius.min + consts.radius.delta * index;
+        },
     },
 };
 
@@ -184,6 +187,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     const sequenceDelta = cyclic(toppingObj.objAttachedTopping.sequenceIndex - angle, 0, 360);
                     if (sequenceDelta <= absDelta) {
                         playSample(toppingObj, (sequenceDelta / absDelta) * (1 / 60));
+                        const strumPosition = consts.radius.forTrack(toppingObj.objAttachedTopping.trackIndex);
+                        nailedStringObj.objNailedString.strum(strumPosition);
                     }
                 }
             }),
@@ -306,7 +311,7 @@ function objPizzaCrust() {
         ...range(consts.tracksCount).map(i =>
             new Graphics()
                 .lineStyle(40, trackTints[i])
-                .drawCircle(0, 0, consts.radius.min + consts.radius.delta * i)
+                .drawCircle(0, 0, consts.radius.forTrack(i))
                 .step(self => self.alpha = 0.6)
                 .scaled(0, 0)
                 .coro(function* (self) {
