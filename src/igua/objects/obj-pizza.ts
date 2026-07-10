@@ -2,7 +2,7 @@ import { Graphics, Point, RAD_TO_DEG, Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { Sound, SoundInstance } from "../../lib/game-engine/audio/sound";
 import { Instances } from "../../lib/game-engine/instances";
-import { factor, interpv } from "../../lib/game-engine/routines/interp";
+import { factor, interp, interpv } from "../../lib/game-engine/routines/interp";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer, Seconds } from "../../lib/math/number-alias-types";
@@ -19,6 +19,7 @@ import { PizzaTopping } from "../data/pizza-topping";
 import { objFace } from "../mixins/mxn-face";
 import { PizzaPointer } from "../utils/pizza-pointer";
 import { objFigureTopping } from "./figures/obj-figure-topping";
+import { objNailedString } from "./obj-nailed-string";
 import { objSpeedControl } from "./obj-speed-control";
 import { objTopping } from "./obj-topping";
 
@@ -141,6 +142,9 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
     const toppingObjs = new Array<objAttachedTopping.Type>();
 
+    const crustObj = objPizzaCrust();
+    const nailedStringObj = objNailedString(consts.radius.max + 8);
+
     return container(
         Sprite.from(Tx.Pizza.Mask)
             .at(0, 90)
@@ -148,10 +152,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             .tinted(0xC7A0FF)
             .scaled(1.8, 1.8),
         container(
-            objPizzaCrust()
-                .step(self =>
-                    self.objPizzaCrust.showTracks = toppingsObj.children.length > 0 || Instances(objTopping).length > 0
-                ),
+            crustObj,
             toppingsObj,
         )
             .step(self => {
@@ -186,9 +187,35 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     }
                 }
             }),
+        nailedStringObj,
     )
+        .step(() => {
+            crustObj.objPizzaCrust.showTracks = areAnyToppingsAttached() || areAnyToppingsBeingDragged();
+        })
+        .coro(function* () {
+            while (true) {
+                yield areAnyToppingsAttached;
+                yield interp(nailedStringObj.objNailedString, "visibleUnit")
+                    .factor(factor.sine)
+                    .to(1)
+                    .over(400);
+                yield () => !areAnyToppingsAttached() && !areAnyToppingsBeingDragged();
+                yield interp(nailedStringObj.objNailedString, "visibleUnit")
+                    .factor(factor.sine)
+                    .to(0)
+                    .over(250);
+            }
+        })
         .merge({ objPizza: api })
         .track(objPizza);
+
+    function areAnyToppingsBeingDragged(): boolean {
+        return Instances(objTopping).length > 0;
+    }
+
+    function areAnyToppingsAttached() {
+        return toppingsObj.children.length > 0;
+    }
 }
 
 const cScaleIndexToMultiSampleKey = ["C0", "D0", "E0", "F0", "G0", "A0", "B0", "C1"] as const satisfies ReadonlyArray<
