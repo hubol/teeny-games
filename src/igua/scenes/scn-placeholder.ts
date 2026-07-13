@@ -91,7 +91,7 @@ export function scnPlaceholder() {
         .show();
 
     objToolMagnet()
-        .at(1850, 950)
+        .at(1880, 980)
         .coro(function* (self) {
             while (true) {
                 yield () => Instances(objAttachedTopping).length >= 5;
@@ -113,7 +113,7 @@ export function scnPlaceholder() {
                     () => Key.justWentDown("KeyT"),
                 ]);
                 const tunaObj = objCharacterTuna()
-                    .at(2000, 500)
+                    .at(2000, 700)
                     .show();
                 yield () => tunaObj.destroyed;
             }

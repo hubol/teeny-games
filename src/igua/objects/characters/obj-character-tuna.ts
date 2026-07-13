@@ -4,26 +4,38 @@ import { Tx } from "../../../assets/textures";
 import { Instances } from "../../../lib/game-engine/instances";
 import { factor, interp, interpv } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
-import { approachLinear } from "../../../lib/math/number";
 import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
+import { renderer } from "../../current-pixi-renderer";
+import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 import { objFxBubble } from "../fx/obj-fx-bubble";
 import { objAttachedTopping } from "../obj-pizza";
+import { objIndexedSprite } from "../utils/obj-indexed-sprite";
 
 export function objCharacterTuna() {
     let isDiving = false;
-    const spriteObj = Sprite.from(Tx.Characters.Tuna)
+    let pedometer = 0;
+
+    const puppetObj = objCharacterTunaPuppet()
+        .mixin(mxnFxBoil, "position")
         .mixin(mxnPointerPress)
         .handles("mxnPointerPress:pressed", (self) => {
-            // TODO sfx and stuff
             isDiving = true;
             self.mxnPointerPress.canPress = false;
         })
         .step(self => {
-            self.angle = approachLinear(self.angle, isDiving ? -40 : 0, 3);
+            pedometer += 1 + speed.vlength / 2;
+            const t = pedometer / 30;
+            self.objCharacterTunaPuppet.finExtendedUnit = (Math.sin(t + Math.PI / 4) + 1) / 2;
+            self.objCharacterTunaPuppet.forwardUnit = (Math.sin(t) + 1) / 2;
+        })
+        .coro(function* (self) {
+            yield () => isDiving;
+            self.play(Sfx.Effects.FishDismiss.rate(0.95, 1.05));
+            yield interp(self, "angle").factor(factor.sine).to(-40).over(500);
         });
 
     const hitboxObj = new Graphics()
@@ -36,35 +48,32 @@ export function objCharacterTuna() {
     const destroyedObjs = new WeakSet<DisplayObject>();
 
     return container(
-        spriteObj
-            .pivoted(89, 276)
-            .scaled(0.4, 0.4),
+        puppetObj
+            .pivoted(27, 86)
+            .scaled(1.67, 1.67),
         hitboxObj.invisible(),
     )
         .collisionShape(CollisionShape.DisplayObjects, [hitboxObj])
-        .coro(function* (self) {
-            while (true) {
-                yield interp(self, "angle").steps(4).to(4).over(1000);
-                yield interp(self, "angle").steps(4).to(0).over(1000);
-            }
-        })
         .coro(function* (self) {
             while (true) {
                 const count = Rng.int(3, 6);
                 self.play(Sfx.Effects.Bubble.rate(0.9, 1.1));
                 for (let i = 0; i < count; i++) {
                     objFxBubble()
-                        .scaled(0.4, 0.4)
+                        .scaled(1, 1)
                         .at(self)
                         .add(-30 * self.scale.x, -6 * self.scale.x)
                         .show();
-                    yield sleepf(20 + Rng.int(2, 10));
+                    yield sleepf(40 + Rng.int(2, 10));
                 }
-                yield sleep(Rng.int(600, 1500));
+                yield sleep(Rng.int(1100, 1800));
             }
         })
         .step(self => {
-            if (self.x <= -400) {
+            puppetObj.objCharacterTunaPuppet.isAgape = isDiving
+                ? false
+                : (self.x < (renderer.width * .8) && Instances(objAttachedTopping).length > 0);
+            if (self.x <= -self.width || self.y >= renderer.height + self.height) {
                 self.destroy();
                 return;
             }
@@ -87,4 +96,58 @@ export function objCharacterTuna() {
             }
             self.add(speed, self.angle > 2 ? 1 : 0.8);
         });
+}
+
+const [
+    txEyeBack,
+    txBody,
+    txBodyForward,
+    txFinIdle,
+    txFinActive,
+    txFinExtended,
+    txMouthClosed,
+    txMouthOpen,
+    txEyeFront,
+] = Tx.Characters.Tuna.split({ width: 330 });
+
+function objCharacterTunaPuppet() {
+    let forwardUnit = 0;
+    let finExtendedUnit = 0;
+    let isAgape = false;
+
+    const api = {
+        get forwardUnit() {
+            return forwardUnit;
+        },
+        set forwardUnit(value) {
+            bodyObj.textureIndex = bodyObj.textures.length * value;
+            forwardUnit = value;
+        },
+        get finExtendedUnit() {
+            return finExtendedUnit;
+        },
+        set finExtendedUnit(value) {
+            finObj.textureIndex = finObj.textures.length * value;
+            finExtendedUnit = value;
+        },
+        get isAgape() {
+            return isAgape;
+        },
+        set isAgape(value) {
+            mouthObj.textureIndex = value ? 1 : 0;
+            isAgape = value;
+        },
+    };
+
+    const bodyObj = objIndexedSprite([txBody, txBodyForward]);
+    const finObj = objIndexedSprite([txFinIdle, txFinActive, txFinExtended]);
+    const mouthObj = objIndexedSprite([txMouthClosed, txMouthOpen]);
+    return container(
+        Sprite.from(txEyeBack),
+        bodyObj,
+        finObj,
+        mouthObj,
+        Sprite.from(txEyeFront),
+    )
+        .merge({ objCharacterTunaPuppet: api });
 }
