@@ -1,7 +1,6 @@
 import { DisplayObject, Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { SoundInstance } from "../../lib/game-engine/audio/sound";
 import { SceneLocal } from "../../lib/game-engine/scene-local";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
@@ -11,6 +10,7 @@ import { PizzaTopping } from "../data/pizza-topping";
 import { mxnFxBoil } from "../mixins/fx/mxn-fx-boil";
 import { mxnFxFlipH } from "../mixins/fx/mxn-fx-flip-h";
 import { PizzaPointer } from "../utils/pizza-pointer";
+import { objAnnouncer } from "./obj-announcer";
 import { objTopping } from "./obj-topping";
 
 export function objToppingContainer(toppingId: DataToppings.Id) {
@@ -27,12 +27,7 @@ export function objToppingContainer(toppingId: DataToppings.Id) {
                 if (CtxLastToppingContainer.value.obj !== self) {
                     const sound = Sfx.Dialog.Toppings[toppingId];
                     if (sound) {
-                        const previousInstance = CtxLastToppingContainer.value.soundInstance;
-                        if (previousInstance?.ended === false) {
-                            previousInstance.linearRamp("gain", 0, 0.1);
-                        }
-
-                        CtxLastToppingContainer.value.soundInstance = sound.rate(0.9, 1.1).playInstance();
+                        objAnnouncer.singleton.announce(sound);
                     }
 
                     CtxLastToppingContainer.value.obj = self;
@@ -84,6 +79,6 @@ function objFigureToppingContainer(toppingId: DataToppings.Id) {
 }
 
 const CtxLastToppingContainer = new SceneLocal(
-    () => ({ obj: Null<DisplayObject>(), soundInstance: Null<SoundInstance>() }),
+    () => ({ obj: Null<DisplayObject>() }),
     "CtxLastToppingContainer",
 );
