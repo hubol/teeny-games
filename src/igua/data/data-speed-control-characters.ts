@@ -21,6 +21,10 @@ export namespace DataSpeedControlCharacters {
                 pickSfx: Sfx.Dialog.Characters.George,
                 walkTxs: Tx.Characters.George.Walk.split({ count: 3 }),
             },
+            Chicken: {
+                pickSfx: Sfx.Dialog.Characters.Chicken,
+                walkTxs: Tx.Characters.Chicken.Gray.split({ count: 3 }),
+            },
             __Fallback__: {
                 pickSfx: Sfx.Dialog.Characters.George,
                 walkTxs: Tx.Characters.Pete.Walk.split({ count: 3 }),

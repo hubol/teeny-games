@@ -34,7 +34,7 @@ export function objSpeedControl() {
             let pointerPressesCount = 0;
             self.handles("mxnPointerPress:pressed", () => pointerPressesCount++);
 
-            const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = ["Pete", "George"];
+            const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = ["Pete", "George", "Chicken"];
             let index = 0;
 
             function getCurrentCharacterId() {
