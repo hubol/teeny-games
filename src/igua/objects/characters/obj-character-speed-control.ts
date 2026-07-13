@@ -1,19 +1,17 @@
-import { Sprite } from "pixi.js";
-import { Tx } from "../../../assets/textures";
+import { DataSpeedControlCharacters } from "../../data/data-speed-control-characters";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { objIndexedSprite } from "../utils/obj-indexed-sprite";
 
-const txsPeteWalk = Tx.Characters.Pete.Walk.split({ count: 3 });
-
-export function objCharacterPeteWalk() {
+export function objCharacterSpeedControl(id: DataSpeedControlCharacters.Id) {
+    const data = DataSpeedControlCharacters.getById(id);
     let pedometer = 0;
 
     const api = {
         walkSpeed: 0,
     };
 
-    return objIndexedSprite(txsPeteWalk)
-        .merge({ objCharacterPeteWalk: api })
+    return objIndexedSprite(data.walkTxs)
+        .merge({ objCharacterSpeedControl: api })
         .anchored(0.5, 1)
         .scaled(1.4, 1.4)
         .mixin(mxnFxBoil, "pivot")

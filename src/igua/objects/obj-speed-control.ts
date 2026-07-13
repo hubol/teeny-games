@@ -2,11 +2,16 @@ import { Graphics, Point, TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Sfx } from "../../assets/sounds";
 import { PointerListener } from "../../lib/browser/pointer-listener";
+import { factor, interpv } from "../../lib/game-engine/routines/interp";
+import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
+import { DataSpeedControlCharacters } from "../data/data-speed-control-characters";
+import { mxnPointerPress } from "../mixins/mxn-pointer-press";
 import { PizzaPointer } from "../utils/pizza-pointer";
-import { objCharacterPeteWalk } from "./characters/obj-character-pete-walk";
+import { objCharacterSpeedControl } from "./characters/obj-character-speed-control";
+import { objAnnouncer } from "./obj-announcer";
 
 const consts = {
     trackRadius: 90,
@@ -23,8 +28,32 @@ export function objSpeedControl() {
         .drawCircle(0, 0, 25)
         .at(consts.trackRadius / 2, 0);
 
-    const peteObj = objCharacterPeteWalk()
-        .step(self => self.objCharacterPeteWalk.walkSpeed = api.speed * 1.33);
+    const characterObj = container()
+        .mixin(mxnPointerPress)
+        .coro(function* (self) {
+            let pointerPressesCount = 0;
+            self.handles("mxnPointerPress:pressed", () => pointerPressesCount++);
+
+            const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = ["Pete", "George"];
+            let index = 0;
+
+            function getCurrentCharacterId() {
+                return orderedCharacterIds[index % orderedCharacterIds.length];
+            }
+
+            while (true) {
+                const obj = objCharacterSpeedControl(getCurrentCharacterId())
+                    .step(self => self.objCharacterSpeedControl.walkSpeed = api.speed * 1.33)
+                    .show(self);
+                yield interpv(self.scale).steps(4).to(1, 1).over(250);
+                yield onPrimitiveMutate(() => pointerPressesCount);
+                index++;
+                obj.destroy();
+                self.scale.set(0, 0);
+                const sfx = DataSpeedControlCharacters.getById(getCurrentCharacterId()).pickSfx;
+                objAnnouncer.singleton.announce(sfx);
+            }
+        });
 
     const api = {
         get speed() {
@@ -61,7 +90,7 @@ export function objSpeedControl() {
             .drawRect(-100, -30, 200, 30),
         skyMaskObj,
         skyObj,
-        peteObj
+        characterObj
             .at(0, -16),
         container(
             new Graphics()
