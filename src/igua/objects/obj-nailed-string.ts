@@ -13,7 +13,7 @@ interface Strum {
 
 const consts = {
     strumWidth: 32,
-    strumAffectRadius: 40,
+    strumAffectRadius: 45,
 };
 
 export function objNailedString(length: number) {
@@ -22,6 +22,16 @@ export function objNailedString(length: number) {
     const api = {
         visibleUnit: 0,
         strum(position: number) {
+            if (api.visibleUnit < 0.8) {
+                return;
+            }
+
+            const existingStrum = strums.find(strum => strum.position === position);
+
+            if (existingStrum) {
+                existingStrum.strength = Math.min(1, Math.max(1.5, existingStrum.strength * 1.1));
+                return;
+            }
             strums.push({ position, strength: 1 });
             strums.sort((a, b) => a.position - b.position);
         },
@@ -61,11 +71,12 @@ export function objNailedString(length: number) {
             gfx.clear().lineStyle(5, 0xffffff).moveTo(0, -8);
 
             for (const strum of strums) {
-                const t = Math.sin(strum.position + scene.ticker.ticks);
+                const t = Math.sin(scene.ticker.ticks / 120);
 
-                for (let f = -1; f < 1; f += 0.1) {
+                for (let f = -1; f < 1; f += 0.05) {
                     const y = -strum.position - f * consts.strumAffectRadius;
-                    const x = Math.sin((t + y) / 3) * strum.strength * (1 - Math.abs(f)) * consts.strumWidth;
+                    const x = Math.sin((y + t) / nlerp(5, 3.5, strum.strength)) * strum.strength * (1 - Math.abs(f))
+                        * consts.strumWidth;
                     gfx.lineTo(x, y);
                 }
             }
