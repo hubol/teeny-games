@@ -11,7 +11,7 @@ export class PointerListener implements PointerListener.Public {
 
     private readonly _canvasSpaceTransformer: CanvasSpaceTransformer;
 
-    allowedType: PointerListener.PointerType = "touch";
+    allowedType: PointerListener.PointerType.Allowed = "touch";
 
     // TODO should be able to apply canvas after construction
     constructor(canvasEl: HTMLCanvasElement) {
@@ -20,7 +20,9 @@ export class PointerListener implements PointerListener.Public {
 
     start() {
         const handlePointerEvent = (e: PointerEvent): PointerListener.State | null => {
-            if (e.pointerType !== this.allowedType) {
+            const pointerType = PointerListener._getPointerType(e);
+
+            if (this.allowedType !== "any" && pointerType !== this.allowedType) {
                 return null;
             }
 
@@ -42,13 +44,14 @@ export class PointerListener implements PointerListener.Public {
                 }
             }
 
-            const state = {
+            const state: PointerListener.State = {
                 down: (e.pointerType === "mouse" && e.type !== "pointerdown") ? false : true,
                 id,
                 x,
                 y,
                 width: consts.radius * 2,
                 height: consts.radius * 2,
+                type: pointerType,
             };
             this._states.push(state);
             return state;
@@ -97,22 +100,31 @@ export class PointerListener implements PointerListener.Public {
         PointerListener._claims.add(pointer);
         return true;
     }
+
+    private static _getPointerType(e: PointerEvent) {
+        return e.pointerType === "mouse" ? "mouse" : "touch";
+    }
 }
 
 export namespace PointerListener {
     export interface Public {
-        allowedType: PointerType;
+        allowedType: PointerType.Allowed;
         readonly states: ReadonlyArray<Readonly<State>>;
         fill(buffer: Buffer): Integer;
         claim(pointer: State): boolean;
     }
 
     export interface State extends IRectangle {
+        type: PointerType;
         id: Integer;
         down: boolean;
     }
 
     export type PointerType = "mouse" | "touch";
+
+    export namespace PointerType {
+        export type Allowed = PointerType | "any";
+    }
 
     export type Buffer = Array<Readonly<State>>;
 }

@@ -1,5 +1,6 @@
-import { Graphics, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { Environment } from "../../lib/environment";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
@@ -13,6 +14,7 @@ import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objTopping } from "../objects/obj-topping";
 import { objToppingContainer } from "../objects/obj-topping-container";
+import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
 export function scnPlaceholder() {
@@ -82,19 +84,9 @@ export function scnPlaceholder() {
         .at(renderer.width / 2, renderer.height / 2)
         .show();
 
-    new Graphics()
-        .step(self => {
-            if (Key.justWentDown("KeyQ")) {
-                Pointer.allowedType = Pointer.allowedType === "mouse" ? "touch" : "mouse";
-            }
+    Pointer.allowedType = (Environment.isDev || !Environment.isElectron) ? "any" : "touch";
 
-            self.visible = Pointer.allowedType === "mouse";
-
-            self.clear().beginFill(0xff0000);
-            for (const position of Pointer.states) {
-                self.drawCircle(position.x, position.y, 4);
-            }
-        })
+    objOverlayCursor()
         .zIndexed(999999)
         .show();
 

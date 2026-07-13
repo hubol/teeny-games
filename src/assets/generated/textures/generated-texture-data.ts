@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 50 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 52 }];
 
 interface TxData {
   id: string;
@@ -60,6 +60,10 @@ function txs<T>(tx: (data: TxData) => T) {
       GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 2820, y: 1433, width: 256, height: 128 }),
       OldMaiden: tx({ id: "Font.OldMaiden", atlas: 0, x: 3747, y: 1444, width: 308, height: 208 }),
     },
+    Overlay: {
+      CursorDown: tx({ id: "Overlay.CursorDown", atlas: 0, x: 3077, y: 1395, width: 64, height: 80 }),
+      Cursor: tx({ id: "Overlay.Cursor", atlas: 0, x: 3077, y: 1476, width: 64, height: 80 }),
+    },
     Pizza: {
       CutLines: tx({ id: "Pizza.CutLines", atlas: 0, x: 3194, y: 151, width: 894, height: 884 }),
       Dough: tx({ id: "Pizza.Dough", atlas: 0, x: 3194, y: 1187, width: 552, height: 541 }),
@@ -68,10 +72,10 @@ function txs<T>(tx: (data: TxData) => T) {
       Shading: tx({ id: "Pizza.Shading", atlas: 0, x: 2113, y: 151, width: 1080, height: 1080 }),
     },
     Shadows: {
-      Tomato: tx({ id: "Shadows.Tomato", atlas: 0, x: 3077, y: 1395, width: 62, height: 46 }),
+      Tomato: tx({ id: "Shadows.Tomato", atlas: 0, x: 3077, y: 1557, width: 62, height: 46 }),
     },
     Toppings: {
-      Beef: tx({ id: "Toppings.Beef", atlas: 0, x: 3077, y: 1442, width: 60, height: 60 }),
+      Beef: tx({ id: "Toppings.Beef", atlas: 0, x: 3077, y: 1604, width: 60, height: 60 }),
       Onion: tx({ id: "Toppings.Onion", atlas: 0, x: 2050, y: 1232, width: 512, height: 278 }),
       Pepperoni0: tx({ id: "Toppings.Pepperoni0", atlas: 0, x: 553, y: 1892, width: 256, height: 280 }),
       Pepperoni1: tx({ id: "Toppings.Pepperoni1", atlas: 0, x: 553, y: 2173, width: 256, height: 280 }),
@@ -80,9 +84,9 @@ function txs<T>(tx: (data: TxData) => T) {
       Pineapple0: tx({ id: "Toppings.Pineapple0", atlas: 0, x: 2563, y: 1498, width: 256, height: 200 }),
       Pineapple1: tx({ id: "Toppings.Pineapple1", atlas: 0, x: 2820, y: 1562, width: 256, height: 180 }),
       Pixel: {
-        GreenPepper: tx({ id: "Toppings.Pixel.GreenPepper", atlas: 0, x: 3138, y: 1442, width: 54, height: 52 }),
-        Mushroom: tx({ id: "Toppings.Pixel.Mushroom", atlas: 0, x: 3140, y: 1395, width: 50, height: 42 }),
-        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 3138, y: 1495, width: 50, height: 50 }),
+        GreenPepper: tx({ id: "Toppings.Pixel.GreenPepper", atlas: 0, x: 3138, y: 1604, width: 54, height: 52 }),
+        Mushroom: tx({ id: "Toppings.Pixel.Mushroom", atlas: 0, x: 3142, y: 1395, width: 50, height: 42 }),
+        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 3142, y: 1438, width: 50, height: 50 }),
         Tomato: tx({ id: "Toppings.Pixel.Tomato", atlas: 0, x: 4047, y: 1036, width: 48, height: 34 }),
       },
       Tomato: tx({ id: "Toppings.Tomato", atlas: 0, x: 2563, y: 1232, width: 512, height: 200 }),
