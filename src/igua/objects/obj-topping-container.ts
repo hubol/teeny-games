@@ -32,7 +32,7 @@ export function objToppingContainer(toppingId: DataToppings.Id) {
 
                     CtxLastToppingContainer.value.obj = self;
                 }
-                objTopping(PizzaTopping.create(toppingId), pointer).show();
+                objTopping(PizzaTopping.create(toppingId), pointer, "player").show();
             }
 
             self.pivot.add(speed, -1);

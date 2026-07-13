@@ -8,7 +8,7 @@ import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objFxHeartBurst } from "./fx/obj-fx-heart-burst";
 import { objPizza } from "./obj-pizza";
 
-export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
+export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer, createdBy: objTopping.CreatedBy) {
     const figureToppingObj = objFigureTopping(topping);
     const graphics = new Graphics();
 
@@ -32,6 +32,9 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
                         .at(self)
                         .show();
                 }
+                else {
+                    self.play(topping.attributes.sfx.place);
+                }
                 self.destroy();
             }
             else if (pizzaObj) {
@@ -48,10 +51,16 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer) {
                     .drawCircle(position.x - self.x, position.y - self.y, 8);
             }
         })
+        .coro(function* (self) {
+            if (createdBy === "player") {
+                self.play(topping.attributes.sfx.pick);
+            }
+        })
         .track(objTopping)
         .at(pointer);
 }
 
 export namespace objTopping {
     export type Pointer = Pick<PointerListener.State, "x" | "y" | "down">;
+    export type CreatedBy = "player" | "tool";
 }

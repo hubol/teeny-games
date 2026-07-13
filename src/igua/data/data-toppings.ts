@@ -6,6 +6,7 @@ import { container } from "../../lib/pixi/container";
 import { objFace } from "../mixins/mxn-face";
 import { DataInstruments } from "./data-instruments";
 import { DataLib } from "./data-lib";
+import { DataToppingsSfx } from "./data-toppings-sfx";
 
 // Increase tuner fish interval
 // sustained notes (e.g. bass)
@@ -30,6 +31,7 @@ export namespace DataToppings {
     export interface Model {
         objFigure: (seed: Integer) => Container;
         instrumentId: DataInstruments.Id;
+        sfx: DataToppingsSfx.Model;
         transformSequenceDegrees: (sequenceFloat: DegreesFloat, trackIndex: Integer) => DegreesFloat;
         tint: RgbInt;
     }
@@ -47,6 +49,7 @@ export namespace DataToppings {
                     );
                 },
                 instrumentId: "SynthPad0",
+                sfx: DataToppingsSfx.create(99),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0xD1BFBF,
             },
@@ -60,6 +63,7 @@ export namespace DataToppings {
                     );
                 },
                 instrumentId: "Ukelele",
+                sfx: DataToppingsSfx.create(625),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0x17A533,
             },
@@ -73,6 +77,7 @@ export namespace DataToppings {
                     );
                 },
                 instrumentId: "DrumKit0",
+                sfx: DataToppingsSfx.create(1451),
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
                 tint: 0xF43D1D,
             },
@@ -86,6 +91,7 @@ export namespace DataToppings {
                     );
                 },
                 instrumentId: "Bass",
+                sfx: DataToppingsSfx.create(1490),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0xD193FF,
             },
@@ -96,6 +102,7 @@ export namespace DataToppings {
                         .tinted(0);
                 },
                 instrumentId: "Melodica",
+                sfx: DataToppingsSfx.create(917),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0x808080,
             },

@@ -166,7 +166,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     const toppingObj = toppingObjs[i];
                     const pointer = PizzaPointer.claim(toppingObj);
                     if (pointer) {
-                        objTopping(toppingObj.objFigureTopping, pointer)
+                        objTopping(toppingObj.objFigureTopping, pointer, "player")
                             .at(self.getWorldPosition())
                             .show();
                         toppingObj.destroy();

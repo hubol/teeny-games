@@ -22,7 +22,7 @@ export function objToolMagnet() {
                 for (const obj of Instances(objAttachedTopping)) {
                     const { x, y } = obj.getWorldPosition();
                     const pointer = { x, y, down: true };
-                    objTopping(obj.objFigureTopping, pointer)
+                    objTopping(obj.objFigureTopping, pointer, "tool")
                         .at(pointer)
                         .show();
                     toppingPointers.push(pointer);
