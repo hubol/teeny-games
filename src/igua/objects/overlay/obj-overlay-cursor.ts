@@ -27,7 +27,7 @@ export function objOverlayCursor() {
                     isPointerDown ||= pointer.down;
                     previous.at(self);
                     self.at(pointer.x + pointer.width / 2, pointer.y + pointer.height / 2).vround();
-                    if (!vequals(previous, self)) {
+                    if (!vequals(previous, self) || isPointerDown) {
                         sinceLastCursorStepsCount = 0;
                         return;
                     }
