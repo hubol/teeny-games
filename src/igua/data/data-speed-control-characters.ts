@@ -10,6 +10,10 @@ export namespace DataSpeedControlCharacters {
         walkTxs: Texture[];
     }
 
+    let chickenWalkTxsRequestsCount = 0;
+    const chickenWalkTxs = Object.values(Tx.Characters.Chicken)
+        .map(tx => tx.split({ count: 3 }));
+
     export const { manifest, getById } = DataLib.create(
         "DataSpeedControlCharacters",
         {
@@ -23,7 +27,9 @@ export namespace DataSpeedControlCharacters {
             },
             Chicken: {
                 pickSfx: Sfx.Dialog.Characters.Chicken,
-                walkTxs: Tx.Characters.Chicken.Gray.split({ count: 3 }),
+                get walkTxs() {
+                    return chickenWalkTxs[chickenWalkTxsRequestsCount++ % chickenWalkTxs.length];
+                },
             },
             __Fallback__: {
                 pickSfx: Sfx.Dialog.Characters.George,
