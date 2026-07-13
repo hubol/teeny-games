@@ -1,7 +1,7 @@
 import { DisplayObject } from "pixi.js";
 import { PizzaPointer } from "../utils/pizza-pointer";
 
-export function mxnPointerPress(obj: DisplayObject) {
+export function mxnPointerPress(obj: DisplayObject, priority = 0) {
     const api = {
         canPress: true,
     };
@@ -20,5 +20,5 @@ export function mxnPointerPress(obj: DisplayObject) {
             }
 
             self.dispatch("mxnPointerPress:pressed");
-        });
+        }, -priority);
 }

@@ -21,7 +21,7 @@ export function objCharacterTuna() {
 
     const puppetObj = objCharacterTunaPuppet()
         .mixin(mxnFxBoil, "position")
-        .mixin(mxnPointerPress)
+        .mixin(mxnPointerPress, 999)
         .handles("mxnPointerPress:pressed", (self) => {
             isDiving = true;
             self.mxnPointerPress.canPress = false;
