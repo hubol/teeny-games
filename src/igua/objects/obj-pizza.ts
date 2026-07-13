@@ -19,6 +19,7 @@ import { PizzaTopping } from "../data/pizza-topping";
 import { objFace } from "../mixins/mxn-face";
 import { PizzaPointer } from "../utils/pizza-pointer";
 import { objFigureTopping } from "./figures/obj-figure-topping";
+import { objFeatureFlags } from "./obj-feature-flags";
 import { objNailedString } from "./obj-nailed-string";
 import { objSpeedControl } from "./obj-speed-control";
 import { objTopping } from "./obj-topping";
@@ -146,7 +147,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     const toppingObjs = new Array<objAttachedTopping.Type>();
 
     const crustObj = objPizzaCrust();
-    const nailedStringObj = objNailedString(consts.radius.max + 8);
+    const nailedStringObj = objNailedString(consts.radius.max + 32);
 
     return container(
         Sprite.from(Tx.Pizza.Mask)
@@ -179,8 +180,16 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
                 const delta = -speedControlObj.objSpeedControl.speed;
                 const absDelta = Math.abs(delta);
-                self.angle += delta;
-                const angle = self.angle;
+
+                const rotatingObj: { angle: number } = objFeatureFlags.singleton.isEnabled("PizzaSpin")
+                    ? self
+                    : nailedStringObj.objNailedString;
+
+                const nonRotatingObj = rotatingObj === self ? nailedStringObj.objNailedString : self;
+
+                nonRotatingObj.angle = 0;
+                rotatingObj.angle += delta;
+                const angle = rotatingObj.angle;
 
                 for (const toppingObj of toppingsObj.children) {
                     toppingObj.angle = -self.angle;

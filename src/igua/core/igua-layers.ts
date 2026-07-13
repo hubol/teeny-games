@@ -8,7 +8,7 @@ export class IguaLayers {
 
     readonly scene: Container;
 
-    get overlay(): Omit<ObjOverlay, keyof Container> {
+    get overlay(): ObjOverlay {
         return this._overlayObj!;
     }
 

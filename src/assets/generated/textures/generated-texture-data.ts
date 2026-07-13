@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 56 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 59 }];
 
 interface TxData {
   id: string;
@@ -27,6 +27,11 @@ function txs<T>(tx: (data: TxData) => T) {
       Pete: {
         Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 1835, y: 1549, width: 240, height: 112 }),
       },
+      Runner: {
+        HoldingStringNorth: tx({ id: "Characters.Runner.HoldingStringNorth", atlas: 0, x: 2605, y: 1488, width: 68, height: 38 }),
+        HoldingStringSouth: tx({ id: "Characters.Runner.HoldingStringSouth", atlas: 0, x: 3441, y: 57, width: 68, height: 38 }),
+        Shadow: tx({ id: "Characters.Runner.Shadow", atlas: 0, x: 4060, y: 1597, width: 34, height: 38 }),
+      },
       Tuna: tx({ id: "Characters.Tuna", atlas: 0, x: 0, y: 0, width: 2970, height: 146 }),
     },
     Containers: {
@@ -47,7 +52,7 @@ function txs<T>(tx: (data: TxData) => T) {
       Clouds: tx({ id: "Effects.Clouds", atlas: 0, x: 3250, y: 223, width: 256, height: 64 }),
       HeartBurst: tx({ id: "Effects.HeartBurst", atlas: 0, x: 2971, y: 57, width: 308, height: 52 }),
       Shadow256: tx({ id: "Effects.Shadow256", atlas: 0, x: 0, y: 1348, width: 1024, height: 1024 }),
-      Spark: tx({ id: "Effects.Spark", atlas: 0, x: 4066, y: 1484, width: 26, height: 38 }),
+      Spark: tx({ id: "Effects.Spark", atlas: 0, x: 3166, y: 1506, width: 26, height: 38 }),
     },
     Faces: {
       Idle: tx({ id: "Faces.Idle", atlas: 0, x: 2113, y: 147, width: 1136, height: 150 }),
@@ -92,9 +97,9 @@ function txs<T>(tx: (data: TxData) => T) {
       Pineapple0: tx({ id: "Toppings.Pineapple0", atlas: 0, x: 1578, y: 1830, width: 256, height: 200 }),
       Pineapple1: tx({ id: "Toppings.Pineapple1", atlas: 0, x: 2092, y: 1769, width: 256, height: 180 }),
       Pixel: {
-        GreenPepper: tx({ id: "Toppings.Pixel.GreenPepper", atlas: 0, x: 3441, y: 57, width: 54, height: 52 }),
+        GreenPepper: tx({ id: "Toppings.Pixel.GreenPepper", atlas: 0, x: 3111, y: 1506, width: 54, height: 52 }),
         Mushroom: tx({ id: "Toppings.Pixel.Mushroom", atlas: 0, x: 2037, y: 1715, width: 50, height: 42 }),
-        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 3111, y: 1506, width: 50, height: 50 }),
+        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 3135, y: 1666, width: 50, height: 50 }),
         Tomato: tx({ id: "Toppings.Pixel.Tomato", atlas: 0, x: 4047, y: 1183, width: 48, height: 34 }),
       },
       Tomato: tx({ id: "Toppings.Tomato", atlas: 0, x: 1578, y: 1348, width: 512, height: 200 }),
