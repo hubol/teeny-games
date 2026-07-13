@@ -69,7 +69,7 @@ export function objSpeedControl() {
         .beginFill(0xffffff)
         .drawRect(-90, -200, 180, 200);
 
-    const skyObj = new TilingSprite(NoAtlasTx.Effects.Clouds, 300, 64)
+    const skyObj = new TilingSprite(NoAtlasTx.Effects.Clouds, 300, 128)
         .scaled(2, 2)
         .at(-90, -200)
         .masked(skyMaskObj)
