@@ -4,6 +4,7 @@ import { Tx } from "../../../assets/textures";
 import { Instances } from "../../../lib/game-engine/instances";
 import { factor, interp, interpv } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../../lib/math/number";
 import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
@@ -12,6 +13,7 @@ import { renderer } from "../../current-pixi-renderer";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 import { objFxBubble } from "../fx/obj-fx-bubble";
+import { objFeatureFlags } from "../obj-feature-flags";
 import { objAttachedTopping } from "../obj-pizza";
 import { objIndexedSprite } from "../utils/obj-indexed-sprite";
 
@@ -44,6 +46,7 @@ export function objCharacterTuna() {
 
     const speed = vnew(-2, 0);
     const diveSpeed = vnew(-1.3, 3).scale(3);
+    const targetY = Instances(objAttachedTopping)[0]?.getWorldCenter()?.y ?? Rng.int(100, renderer.height - 100);
 
     const destroyedObjs = new WeakSet<DisplayObject>();
 
@@ -81,6 +84,18 @@ export function objCharacterTuna() {
                 speed.moveTowards(diveSpeed, 1);
             }
             else {
+                const targetDiffY = targetY - self.y;
+                if (!objFeatureFlags.singleton.isEnabled("PizzaSpin")) {
+                    const isCloseToTarget = Math.abs(targetDiffY) < 20;
+                    speed.y = approachLinear(
+                        speed.y,
+                        isCloseToTarget
+                            ? 0
+                            : (Math.sign(targetDiffY) * Math.max(0.7, Math.min(3, Math.abs(targetDiffY / 150)))),
+                        isCloseToTarget ? 0.05 : 0.03,
+                    );
+                }
+
                 for (const collidedObj of self.collidesAll(Instances(objAttachedTopping))) {
                     if (destroyedObjs.has(collidedObj)) {
                         continue;
@@ -94,7 +109,7 @@ export function objCharacterTuna() {
                     destroyedObjs.add(collidedObj);
                 }
             }
-            self.add(speed, self.angle > 2 ? 1 : 0.8);
+            self.add(speed, puppetObj.objCharacterTunaPuppet.finExtendedUnit < 0.5 ? 1 : 0.8);
         });
 }
 
