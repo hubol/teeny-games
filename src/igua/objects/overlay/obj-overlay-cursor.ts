@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { approachLinear } from "../../../lib/math/number";
 import { vequals } from "../../../lib/math/vector";
@@ -17,7 +17,7 @@ export function objOverlayCursor() {
     return container(
         cursorObj
             .scaled(1.67, 1.67)
-            .pivoted(41, 9),
+            .pivoted(27, 9),
     )
         .mixin(mxnFxBoil, "pivot")
         .step((self) => {
