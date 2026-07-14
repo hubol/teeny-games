@@ -149,6 +149,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     const crustObj = objPizzaCrust();
     const nailedStringObj = objNailedString(consts.radius.max + 32);
 
+    let lastStepTime = Null<number>();
+
     return container(
         Sprite.from(Tx.Pizza.Mask)
             .at(0, 90)
@@ -178,7 +180,11 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     return;
                 }
 
-                const delta = -speedControlObj.objSpeedControl.speed;
+                const timeFactor = lastStepTime === null
+                    ? 1
+                    : (performance.now() - lastStepTime) / (1000 / 60);
+
+                const delta = -speedControlObj.objSpeedControl.speed * timeFactor;
                 const absDelta = Math.abs(delta);
 
                 const rotatingObj: { angle: number } = objFeatureFlags.singleton.isEnabled("PizzaSpin")
@@ -204,6 +210,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         nailedStringObj,
     )
         .step(() => {
+            lastStepTime = performance.now();
             crustObj.objPizzaCrust.showTracks = areAnyToppingsAttached() || areAnyToppingsBeingDragged();
         })
         .coro(function* () {
