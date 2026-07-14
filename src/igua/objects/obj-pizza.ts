@@ -182,7 +182,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
                 const timeFactor = lastStepTime === null
                     ? 1
-                    : (performance.now() - lastStepTime) / (1000 / 60);
+                    : Math.min(15, (performance.now() - lastStepTime) / (1000 / 60));
 
                 const delta = -speedControlObj.objSpeedControl.speed * timeFactor;
                 const absDelta = Math.abs(delta);
