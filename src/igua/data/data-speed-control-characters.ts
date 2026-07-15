@@ -34,7 +34,11 @@ export namespace DataSpeedControlCharacters {
     }
 
     let chickenWalkTxsRequestsCount = 0;
-    const chickenWalkTxs = Object.values(Tx.Characters.Chicken)
+    const chickenWalkTxs = [
+        Tx.Characters.Chicken.Black,
+        Tx.Characters.Chicken.Brown,
+        Tx.Characters.Chicken.Gray,
+    ]
         .map(tx => tx.split({ count: 3 }));
 
     export const { manifest, getById } = DataLib.create(
@@ -55,7 +59,7 @@ export namespace DataSpeedControlCharacters {
                 get walkTxs() {
                     return chickenWalkTxs[chickenWalkTxsRequestsCount++ % chickenWalkTxs.length];
                 },
-                runnerTxs: RunnerTxs.create(Tx.Characters.George.Runner),
+                runnerTxs: RunnerTxs.create(Tx.Characters.Chicken.Runners.Brown),
             },
             __Fallback__: {
                 pickSfx: Sfx.Dialog.Characters.George,
