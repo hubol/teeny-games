@@ -76,8 +76,9 @@ export function objNailedString(length: number, runnerCharacterObj: objCharacter
             }
         })
         .step(self => {
-            self.pivot.y = (1 - api.visibleUnit) * (length * 1.2);
-            centerNailObj.y = nlerp(-100, 0, api.visibleUnit);
+            const f0 = Math.min(1, api.visibleUnit * 2);
+            self.pivot.y = (1 - f0) * (length * 1.2);
+            centerNailObj.y = nlerp(-100, 0, f0);
             const extendedUnit = Math.max(0, (api.visibleUnit - 0.5) * 2);
             farNailObj.y = nlerp(0, -length, extendedUnit);
             gfx.clear().lineStyle(5, 0xffffff).moveTo(0, 0);
@@ -95,7 +96,7 @@ export function objNailedString(length: number, runnerCharacterObj: objCharacter
 
             gfx.lineTo(0, -length - 6);
             gfx.scale.y = extendedUnit;
-        })
+        }, StepOrder.BeforeCamera - 1)
         .step((self) => {
             const angle = cyclic(-api.angle, 0, 360);
             gfx.angle = angle * api.visibleUnit;

@@ -12,7 +12,7 @@ export namespace DataFeatureFlags {
         {
             PizzaSpin: {
                 keyCode: "KeyP",
-                defaultValue: true,
+                defaultValue: false,
             },
             __Fallback__: {
                 defaultValue: false,

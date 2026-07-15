@@ -180,7 +180,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     }
                 }
 
-                if (speedControlObj.objSpeedControl.speed === 0) {
+                if (speedControlObj.objSpeedControl.speed === 0 || nailedStringObj.objNailedString.visibleUnit < 1) {
                     return;
                 }
 
@@ -225,12 +225,12 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 yield interp(nailedStringObj.objNailedString, "visibleUnit")
                     .factor(factor.sine)
                     .to(1)
-                    .over(400);
+                    .over(900);
                 yield () => !areAnyToppingsAttached() && !areAnyToppingsBeingDragged();
                 yield interp(nailedStringObj.objNailedString, "visibleUnit")
                     .factor(factor.sine)
                     .to(0)
-                    .over(250);
+                    .over(700);
             }
         })
         .merge({ objPizza: api })
