@@ -18,6 +18,7 @@ import { DataToppings } from "../data/data-toppings";
 import { PizzaTopping } from "../data/pizza-topping";
 import { objFace } from "../mixins/mxn-face";
 import { PizzaPointer } from "../utils/pizza-pointer";
+import { objCharacterRunner } from "./characters/obj-character-runner";
 import { objFigureTopping } from "./figures/obj-figure-topping";
 import { objFeatureFlags } from "./obj-feature-flags";
 import { objNailedString } from "./obj-nailed-string";
@@ -146,8 +147,10 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
     const toppingObjs = new Array<objAttachedTopping.Type>();
 
+    const characterRunnerObj = objCharacterRunner().scaled(2, 2);
+
     const crustObj = objPizzaCrust();
-    const nailedStringObj = objNailedString(consts.radius.max + 45);
+    const nailedStringObj = objNailedString(consts.radius.max + 45, characterRunnerObj);
 
     let lastStepTime = Null<number>();
 
@@ -156,7 +159,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             .at(0, 90)
             .anchored(0.5, 0.5)
             .tinted(0xC7A0FF)
-            .scaled(1.8, 1.8),
+            .scaled(1.8, 1.8)
+            .zIndexed(-99999),
         container(
             crustObj,
             toppingsObj,
@@ -208,7 +212,9 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 }
             }),
         nailedStringObj,
+        characterRunnerObj,
     )
+        .autoSorted()
         .step(() => {
             lastStepTime = performance.now();
             crustObj.objPizzaCrust.showTracks = areAnyToppingsAttached() || areAnyToppingsBeingDragged();

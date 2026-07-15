@@ -21,7 +21,7 @@ const consts = {
     strumAffectRadius: 45,
 };
 
-export function objNailedString(length: number) {
+export function objNailedString(length: number, runnerCharacterObj: objCharacterRunner.Type) {
     const strums = new Array<Strum>();
 
     const api = {
@@ -51,9 +51,6 @@ export function objNailedString(length: number) {
             .pivoted(10, 15)
             .scaled(2, 2)
     );
-
-    const runnerCharacterObj = objCharacterRunner()
-        .scaled(2, 2);
 
     const matrix = new Matrix();
     const point = new Point();
@@ -99,7 +96,7 @@ export function objNailedString(length: number) {
             gfx.lineTo(0, -length - 6);
             gfx.scale.y = extendedUnit;
         })
-        .step(() => {
+        .step((self) => {
             const angle = cyclic(-api.angle, 0, 360);
             gfx.angle = angle * api.visibleUnit;
             farNailObj.x = 0;
@@ -107,9 +104,10 @@ export function objNailedString(length: number) {
             farNailObj.at(point);
             farNailObj.zIndex = Math.sign(farNailObj.y);
 
-            runnerCharacterObj.objCharacterRunner.pedometer = angle / 8;
-            runnerCharacterObj.at(farNailObj);
-            runnerCharacterObj.zIndex = farNailObj.zIndex;
+            runnerCharacterObj.objCharacterRunner.pedometer = angle / 10;
+            self.localTransform.apply(point.at(farNailObj), point);
+            runnerCharacterObj.at(point);
+            runnerCharacterObj.zIndex = Math.sign(farNailObj.y + 350);
 
             farNailObj.visible = objFeatureFlags.singleton.isEnabled("PizzaSpin");
             runnerCharacterObj.visible = !farNailObj.visible;

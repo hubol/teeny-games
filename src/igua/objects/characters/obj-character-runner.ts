@@ -64,6 +64,10 @@ export function objCharacterRunner() {
         .merge({ objCharacterRunner: api });
 }
 
+export namespace objCharacterRunner {
+    export type Type = ReturnType<typeof objCharacterRunner>;
+}
+
 function getCompassDirection(v: VectorSimple) {
     if (Math.abs(v.x) > Math.abs(v.y)) {
         if (v.x > 0.1) {
