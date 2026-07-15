@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 62 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 65 }];
 
 interface TxData {
   id: string;
@@ -21,14 +21,19 @@ function txs<T>(tx: (data: TxData) => T) {
         Gray: tx({ id: "Characters.Chicken.Gray", atlas: 0, x: 2870, y: 1666, width: 264, height: 112 }),
       },
       George: {
+        Runner: {
+          East: tx({ id: "Characters.George.Runner.East", atlas: 0, x: 1835, y: 1713, width: 84, height: 42 }),
+          North: tx({ id: "Characters.George.Runner.North", atlas: 0, x: 1025, y: 1890, width: 84, height: 40 }),
+          South: tx({ id: "Characters.George.Runner.South", atlas: 0, x: 1110, y: 1890, width: 84, height: 40 }),
+        },
         Walk: tx({ id: "Characters.George.Walk", atlas: 0, x: 3747, y: 1484, width: 318, height: 112 }),
       },
       Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 3747, y: 1597, width: 312, height: 106 }),
       Pete: {
         Runner: {
           East: tx({ id: "Characters.Pete.Runner.East", atlas: 0, x: 3111, y: 1506, width: 76, height: 46 }),
-          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 1835, y: 1713, width: 76, height: 46 }),
-          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 1025, y: 1890, width: 76, height: 46 }),
+          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 1195, y: 1890, width: 76, height: 46 }),
+          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 1025, y: 1931, width: 76, height: 46 }),
         },
         Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 1835, y: 1549, width: 240, height: 112 }),
       },

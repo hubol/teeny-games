@@ -7,9 +7,9 @@ import { mxnFxFlipH } from "../../mixins/fx/mxn-fx-flip-h";
 import { StepOrder } from "../step-order";
 import { objIndexedSprite } from "../utils/obj-indexed-sprite";
 
-const txsEast = Tx.Characters.Pete.Runner.East.split({ width: 38 });
-const txsNorth = Tx.Characters.Pete.Runner.North.split({ width: 38 });
-const txsSouth = Tx.Characters.Pete.Runner.South.split({ width: 38 });
+const txsEast = Tx.Characters.George.Runner.East.split({ count: 2 });
+const txsNorth = Tx.Characters.George.Runner.North.split({ count: 2 });
+const txsSouth = Tx.Characters.George.Runner.South.split({ count: 2 });
 
 const v = vnew();
 
@@ -25,7 +25,10 @@ export function objCharacterRunner() {
     return container(
         Sprite.from(Tx.Characters.Runner.Shadow)
             .mixin(mxnFxBoil, "pivot")
-            .at(0, 11),
+            .at(0, 11)
+            .step(self => {
+                self.y = spriteObj.texture.height - 33;
+            }),
         spriteObj,
     )
         .pivoted(4, 18)
