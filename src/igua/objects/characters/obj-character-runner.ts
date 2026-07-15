@@ -2,6 +2,7 @@ import { Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { VectorSimple, vnew } from "../../../lib/math/vector-type";
 import { container } from "../../../lib/pixi/container";
+import { Null } from "../../../lib/types/null";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { objSpeedControl } from "../obj-speed-control";
 import { StepOrder } from "../step-order";
@@ -13,6 +14,8 @@ export function objCharacterRunner() {
     const api = {
         pedometer: 0,
     };
+
+    let appliedCharacterTxs = Null<object>();
 
     function getCharacterTxs() {
         return objSpeedControl.getCharacterData().runnerTxs;
@@ -36,6 +39,13 @@ export function objCharacterRunner() {
             previous.at(self);
             self
                 .step(() => {
+                    const characterTxs = getCharacterTxs();
+                    if (appliedCharacterTxs !== characterTxs) {
+                        spriteObj.textures = characterTxs.South;
+                        spriteObj.textureIndex = 0;
+                        appliedCharacterTxs = characterTxs;
+                    }
+
                     v.at(self).add(previous, -1);
                     previous.at(self);
                     if (v.vlength < 0.1) {
@@ -49,13 +59,13 @@ export function objCharacterRunner() {
                     }
 
                     if (direction === "east" || direction === "west") {
-                        spriteObj.textures = getCharacterTxs().East;
+                        spriteObj.textures = characterTxs.East;
                     }
                     else if (direction === "north") {
-                        spriteObj.textures = getCharacterTxs().North;
+                        spriteObj.textures = characterTxs.North;
                     }
                     else if (direction === "south") {
-                        spriteObj.textures = getCharacterTxs().South;
+                        spriteObj.textures = characterTxs.South;
                     }
 
                     self.scale.x = ((direction === "west" || direction === "north") ? -1 : 1) * Math.abs(self.scale.x);
