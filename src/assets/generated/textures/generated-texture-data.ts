@@ -26,9 +26,9 @@ function txs<T>(tx: (data: TxData) => T) {
       Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 3747, y: 1597, width: 312, height: 106 }),
       Pete: {
         Runner: {
-          East: tx({ id: "Characters.Pete.Runner.East", atlas: 0, x: 3111, y: 1506, width: 76, height: 38 }),
-          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 1835, y: 1713, width: 76, height: 38 }),
-          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 1025, y: 1890, width: 76, height: 38 }),
+          East: tx({ id: "Characters.Pete.Runner.East", atlas: 0, x: 3111, y: 1506, width: 76, height: 46 }),
+          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 1835, y: 1713, width: 76, height: 46 }),
+          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 1025, y: 1890, width: 76, height: 46 }),
         },
         Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 1835, y: 1549, width: 240, height: 112 }),
       },
@@ -86,7 +86,7 @@ function txs<T>(tx: (data: TxData) => T) {
       CutLines: tx({ id: "Pizza.CutLines", atlas: 0, x: 3194, y: 298, width: 894, height: 884 }),
       Dough: tx({ id: "Pizza.Dough", atlas: 0, x: 3194, y: 1334, width: 552, height: 541 }),
       Mask: tx({ id: "Pizza.Mask", atlas: 0, x: 1025, y: 1348, width: 552, height: 541 }),
-      Nail: tx({ id: "Pizza.Nail", atlas: 0, x: 1835, y: 1752, width: 16, height: 16 }),
+      Nail: tx({ id: "Pizza.Nail", atlas: 0, x: 3280, y: 92, width: 16, height: 16 }),
       Shading: tx({ id: "Pizza.Shading", atlas: 0, x: 2113, y: 298, width: 1080, height: 1080 }),
     },
     Shadows: {

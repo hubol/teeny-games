@@ -25,10 +25,10 @@ export function objCharacterRunner() {
     return container(
         Sprite.from(Tx.Characters.Runner.Shadow)
             .mixin(mxnFxBoil, "pivot")
-            .at(0, 3),
+            .at(0, 11),
         spriteObj,
     )
-        .pivoted(4, 10)
+        .pivoted(4, 18)
         .coro(function* (self) {
             previous.at(self);
             self
