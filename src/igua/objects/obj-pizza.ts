@@ -147,7 +147,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     const toppingObjs = new Array<objAttachedTopping.Type>();
 
     const crustObj = objPizzaCrust();
-    const nailedStringObj = objNailedString(consts.radius.max + 32);
+    const nailedStringObj = objNailedString(consts.radius.max + 45);
 
     let lastStepTime = Null<number>();
 

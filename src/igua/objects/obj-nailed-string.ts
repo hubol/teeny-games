@@ -7,9 +7,9 @@ import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
 import { scene } from "../globals";
 import { mxnFxBoil } from "../mixins/fx/mxn-fx-boil";
+import { objCharacterRunner } from "./characters/obj-character-runner";
 import { objFeatureFlags } from "./obj-feature-flags";
 import { StepOrder } from "./step-order";
-import { objIndexedSprite } from "./utils/obj-indexed-sprite";
 
 interface Strum {
     position: number;
@@ -20,9 +20,6 @@ const consts = {
     strumWidth: 32,
     strumAffectRadius: 45,
 };
-
-const txsRunnerSouth = Tx.Characters.Runner.HoldingStringSouth.split({ count: 2 });
-const txsRunnerNorth = Tx.Characters.Runner.HoldingStringNorth.split({ count: 2 });
 
 export function objNailedString(length: number) {
     const strums = new Array<Strum>();
@@ -55,14 +52,7 @@ export function objNailedString(length: number) {
             .scaled(2, 2)
     );
 
-    const runnerObj = objIndexedSprite(txsRunnerSouth);
-
-    const runnerContainerObj = container(
-        Sprite.from(Tx.Characters.Runner.Shadow)
-            .pivoted(0, -3)
-            .mixin(mxnFxBoil, "position"),
-        runnerObj,
-    )
+    const runnerCharacterObj = objCharacterRunner()
         .scaled(2, 2);
 
     const matrix = new Matrix();
@@ -72,7 +62,7 @@ export function objNailedString(length: number) {
         farNailObj,
         gfx,
         centerNailObj,
-        runnerContainerObj,
+        runnerCharacterObj,
     )
         .autoSorted()
         .merge({ objNailedString: api })
@@ -110,8 +100,6 @@ export function objNailedString(length: number) {
             gfx.scale.y = extendedUnit;
         })
         .step(() => {
-            const previousRunnerObjX = runnerObj.x;
-
             const angle = cyclic(-api.angle, 0, 360);
             gfx.angle = angle * api.visibleUnit;
             farNailObj.x = 0;
@@ -119,28 +107,12 @@ export function objNailedString(length: number) {
             farNailObj.at(point);
             farNailObj.zIndex = Math.sign(farNailObj.y);
 
-            runnerObj.textureIndex = (angle / 8) % 2;
-            runnerContainerObj.at(farNailObj);
-            runnerContainerObj.zIndex = farNailObj.zIndex;
-
-            const delta = previousRunnerObjX - runnerContainerObj.x;
-            if (delta !== 0) {
-                runnerContainerObj.scale.x = Math.sign(delta) * Math.abs(runnerContainerObj.scale.x);
-            }
-
-            if (runnerContainerObj.scale.x > 0) {
-                v.at(8, 13);
-            }
-            else {
-                v.at(28, 25);
-            }
-
-            runnerObj.textures = runnerContainerObj.y > 0 ? txsRunnerNorth : txsRunnerSouth;
-
-            runnerContainerObj.pivot.moveTowards(v, 1);
+            runnerCharacterObj.objCharacterRunner.pedometer = angle / 8;
+            runnerCharacterObj.at(farNailObj);
+            runnerCharacterObj.zIndex = farNailObj.zIndex;
 
             farNailObj.visible = objFeatureFlags.singleton.isEnabled("PizzaSpin");
-            runnerContainerObj.visible = !farNailObj.visible;
+            runnerCharacterObj.visible = !farNailObj.visible;
         }, StepOrder.BeforeCamera);
 }
 
