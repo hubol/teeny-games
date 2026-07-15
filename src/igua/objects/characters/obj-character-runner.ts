@@ -3,13 +3,9 @@ import { Tx } from "../../../assets/textures";
 import { VectorSimple, vnew } from "../../../lib/math/vector-type";
 import { container } from "../../../lib/pixi/container";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
-import { mxnFxFlipH } from "../../mixins/fx/mxn-fx-flip-h";
+import { objSpeedControl } from "../obj-speed-control";
 import { StepOrder } from "../step-order";
 import { objIndexedSprite } from "../utils/obj-indexed-sprite";
-
-const txsEast = Tx.Characters.George.Runner.East.split({ count: 2 });
-const txsNorth = Tx.Characters.George.Runner.North.split({ count: 2 });
-const txsSouth = Tx.Characters.George.Runner.South.split({ count: 2 });
 
 const v = vnew();
 
@@ -18,9 +14,13 @@ export function objCharacterRunner() {
         pedometer: 0,
     };
 
+    function getCharacterTxs() {
+        return objSpeedControl.getCharacterData().runnerTxs;
+    }
+
     const previous = vnew();
 
-    const spriteObj = objIndexedSprite(txsSouth);
+    const spriteObj = objIndexedSprite(getCharacterTxs().South);
 
     return container(
         Sprite.from(Tx.Characters.Runner.Shadow)
@@ -49,13 +49,13 @@ export function objCharacterRunner() {
                     }
 
                     if (direction === "east" || direction === "west") {
-                        spriteObj.textures = txsEast;
+                        spriteObj.textures = getCharacterTxs().East;
                     }
                     else if (direction === "north") {
-                        spriteObj.textures = txsNorth;
+                        spriteObj.textures = getCharacterTxs().North;
                     }
                     else if (direction === "south") {
-                        spriteObj.textures = txsSouth;
+                        spriteObj.textures = getCharacterTxs().South;
                     }
 
                     self.scale.x = ((direction === "west" || direction === "north") ? -1 : 1) * Math.abs(self.scale.x);

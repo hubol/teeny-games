@@ -2,7 +2,8 @@ import { Graphics, Point, TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Sfx } from "../../assets/sounds";
 import { PointerListener } from "../../lib/browser/pointer-listener";
-import { factor, interpv } from "../../lib/game-engine/routines/interp";
+import { Instances } from "../../lib/game-engine/instances";
+import { interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
@@ -23,6 +24,9 @@ const p = new Point();
 export function objSpeedControl() {
     let thisPointer = Null<PointerListener.State>();
 
+    const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = ["Pete", "George", "Chicken"];
+    let index = 0;
+
     const handleObj = new Graphics()
         .beginFill(0x23B686)
         .drawCircle(0, 0, 25)
@@ -34,15 +38,8 @@ export function objSpeedControl() {
             let pointerPressesCount = 0;
             self.handles("mxnPointerPress:pressed", () => pointerPressesCount++);
 
-            const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = ["Pete", "George", "Chicken"];
-            let index = 0;
-
-            function getCurrentCharacterId() {
-                return orderedCharacterIds[index % orderedCharacterIds.length];
-            }
-
             while (true) {
-                const obj = objCharacterSpeedControl(getCurrentCharacterId())
+                const obj = objCharacterSpeedControl(api.characterId)
                     .step(self => self.objCharacterSpeedControl.walkSpeed = api.speed * 1.33)
                     .show(self);
                 yield interpv(self.scale).steps(4).to(1, 1).over(250);
@@ -50,7 +47,7 @@ export function objSpeedControl() {
                 index++;
                 obj.destroy();
                 self.scale.set(0, 0);
-                const sfx = DataSpeedControlCharacters.getById(getCurrentCharacterId()).pickSfx;
+                const sfx = api.characterData.pickSfx;
                 objAnnouncer.singleton.announce(sfx);
             }
         });
@@ -62,6 +59,12 @@ export function objSpeedControl() {
                 -consts.maximumSpeed,
                 Math.min(Math.abs(rawSpeed) < 0.2 ? 0 : rawSpeed, consts.maximumSpeed),
             );
+        },
+        get characterId() {
+            return orderedCharacterIds[index % orderedCharacterIds.length];
+        },
+        get characterData() {
+            return DataSpeedControlCharacters.getById(api.characterId);
         },
     };
 
@@ -126,9 +129,14 @@ export function objSpeedControl() {
             })
             .at(0, 50),
     )
-        .merge({ objSpeedControl: api });
+        .merge({ objSpeedControl: api })
+        .track(objSpeedControl);
 }
 
 export namespace objSpeedControl {
     export type Type = ReturnType<typeof objSpeedControl>;
 }
+
+objSpeedControl.getCharacterData = function getCharacterData () {
+    return Instances(objSpeedControl)[0]?.objSpeedControl?.characterData ?? DataSpeedControlCharacters.manifest.Pete;
+};
