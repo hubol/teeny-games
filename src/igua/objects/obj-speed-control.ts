@@ -24,7 +24,17 @@ const p = new Point();
 export function objSpeedControl() {
     let thisPointer = Null<PointerListener.State>();
 
-    const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = ["Pete", "George", "Chicken"];
+    const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = [
+        "Pete",
+        "George",
+        "ChickenBlack",
+        "Pete",
+        "George",
+        "ChickenBrown",
+        "Pete",
+        "George",
+        "ChickenGray",
+    ];
     let index = 0;
 
     const handleObj = new Graphics()

@@ -54,12 +54,20 @@ export namespace DataSpeedControlCharacters {
                 walkTxs: Tx.Characters.George.Walk.split({ count: 3 }),
                 runnerTxs: RunnerTxs.create(Tx.Characters.George.Runner),
             },
-            Chicken: {
+            ChickenBlack: {
                 pickSfx: Sfx.Dialog.Characters.Chicken,
-                get walkTxs() {
-                    return chickenWalkTxs[chickenWalkTxsRequestsCount++ % chickenWalkTxs.length];
-                },
+                walkTxs: Tx.Characters.Chicken.Black.split({ count: 3 }),
+                runnerTxs: RunnerTxs.create(Tx.Characters.Chicken.Runners.Black),
+            },
+            ChickenBrown: {
+                pickSfx: Sfx.Dialog.Characters.Chicken,
+                walkTxs: Tx.Characters.Chicken.Brown.split({ count: 3 }),
                 runnerTxs: RunnerTxs.create(Tx.Characters.Chicken.Runners.Brown),
+            },
+            ChickenGray: {
+                pickSfx: Sfx.Dialog.Characters.Chicken,
+                walkTxs: Tx.Characters.Chicken.Gray.split({ count: 3 }),
+                runnerTxs: RunnerTxs.create(Tx.Characters.Chicken.Runners.Gray),
             },
             __Fallback__: {
                 pickSfx: Sfx.Dialog.Characters.George,
