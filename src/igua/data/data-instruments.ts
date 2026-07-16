@@ -87,6 +87,14 @@ export namespace DataInstruments {
                     polyphony: true,
                 },
             },
+            WaterBottle: {
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.WaterBottle,
+                    gain: 0.8,
+                    polyphony: true,
+                },
+            },
             __Fallback__: {
                 sample: {
                     kind: "pitched",
