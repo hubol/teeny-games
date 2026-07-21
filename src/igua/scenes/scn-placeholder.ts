@@ -4,6 +4,7 @@ import { Environment } from "../../lib/environment";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
+import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
@@ -81,7 +82,7 @@ export function scnPlaceholder() {
         .at(1750, 280)
         .show();
 
-    objPizza(speedControlObj)
+    const pizzaObj = objPizza(speedControlObj)
         .at(renderer.width / 2, renderer.height / 2)
         .show();
 
@@ -95,9 +96,12 @@ export function scnPlaceholder() {
         .at(1880, 800)
         .coro(function* (self) {
             while (true) {
-                yield () => Instances(objAttachedTopping).length >= 5;
+                yield () => pizzaObj.objPizza.attachedToppingsCount >= 5;
+                if (speedControlObj.objSpeedControl.speed !== 0) {
+                    yield onPrimitiveMutate(() => pizzaObj.objPizza.playedSequencedSamplesCount);
+                }
                 self.mxnTool.isEnabled = true;
-                yield () => Instances(objAttachedTopping).length <= 0 && Instances(objTopping).length <= 0;
+                yield () => !pizzaObj.objPizza.areAnyToppingsAttached && !pizzaObj.objPizza.areAnyToppingsBeingDragged;
                 self.mxnTool.isEnabled = false;
             }
         })

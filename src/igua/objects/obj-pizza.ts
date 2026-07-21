@@ -75,6 +75,16 @@ const v = vnew();
 
 export function objPizza(speedControlObj: objSpeedControl.Type) {
     const api = {
+        get areAnyToppingsBeingDragged() {
+            return areAnyToppingsBeingDragged();
+        },
+        get areAnyToppingsAttached() {
+            return areAnyToppingsAttached();
+        },
+        get attachedToppingsCount() {
+            return toppingsObj.children.length;
+        },
+        playedSequencedSamplesCount: 0,
         getSequencedPosition,
         submit,
     };
@@ -208,6 +218,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                         playSample(toppingObj, (sequenceDelta / absDelta) * (1 / 60));
                         const strumPosition = consts.radius.forTrack(toppingObj.objAttachedTopping.trackIndex);
                         nailedStringObj.objNailedString.strum(strumPosition);
+                        api.playedSequencedSamplesCount++;
                     }
                 }
             }),
