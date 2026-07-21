@@ -42,6 +42,8 @@ export function objSpeedControl() {
         .drawCircle(0, 0, 25)
         .at(consts.trackRadius / 2, 0);
 
+    const handleObjStartX = handleObj.x;
+
     const characterObj = container()
         .mixin(mxnPointerPress)
         .coro(function* (self) {
@@ -63,6 +65,10 @@ export function objSpeedControl() {
         });
 
     const api = {
+        // TODO method is unused
+        setToDefaultSpeed() {
+            handleObj.x = handleObjStartX;
+        },
         get speed() {
             const rawSpeed = (handleObj.x / consts.trackRadius) * 2;
             return Math.max(
