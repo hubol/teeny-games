@@ -4,6 +4,7 @@ import { Environment } from "../../lib/environment";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
+import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
@@ -92,8 +93,36 @@ export function scnPlaceholder() {
         .zIndexed(999999)
         .show();
 
+    const condimentsDrawerObj = container(
+        Sprite.from(Tx.Condiments.Drawer).scaled(2, 2),
+    )
+        .at(1400, 800)
+        .coro(function* (self) {
+            const enabledPosition = self.vcpy();
+            const disabledPosition = enabledPosition.vcpy();
+            disabledPosition.x = renderer.width + self.width;
+
+            self.at(disabledPosition);
+
+            while (true) {
+                yield onPrimitiveMutate(() => pizzaObj.objPizza.playedSequencedSamplesCount);
+                yield holdf(
+                    () => pizzaObj.objPizza.attachedToppingsCount >= 5 && speedControlObj.objSpeedControl.speed > 0,
+                    120,
+                );
+                yield interpv(self).factor(factor.sine).to(enabledPosition).over(500);
+                yield () => !pizzaObj.objPizza.areAnyToppingsAttached && !pizzaObj.objPizza.areAnyToppingsBeingDragged;
+                yield interpv(self).factor(factor.sine).to(disabledPosition).over(500);
+            }
+        })
+        .show();
+
+    objCondiment("Parmesan")
+        .at(150, 200)
+        .show(condimentsDrawerObj);
+
     objToolMagnet()
-        .at(1880, 800)
+        .at(1880, 700)
         .coro(function* (self) {
             while (true) {
                 yield () => pizzaObj.objPizza.attachedToppingsCount >= 5;
@@ -105,10 +134,6 @@ export function scnPlaceholder() {
                 self.mxnTool.isEnabled = false;
             }
         })
-        .show();
-
-    objCondiment("Parmesan")
-        .at(1500, 1050)
         .show();
 
     scene.stage
