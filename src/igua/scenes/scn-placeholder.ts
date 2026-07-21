@@ -9,6 +9,7 @@ import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
+import { objCondiment } from "../objects/obj-condiment";
 import { objCylinder } from "../objects/obj-cylinder";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
@@ -91,7 +92,7 @@ export function scnPlaceholder() {
         .show();
 
     objToolMagnet()
-        .at(1880, 980)
+        .at(1880, 800)
         .coro(function* (self) {
             while (true) {
                 yield () => Instances(objAttachedTopping).length >= 5;
@@ -100,6 +101,10 @@ export function scnPlaceholder() {
                 self.mxnTool.isEnabled = false;
             }
         })
+        .show();
+
+    objCondiment("Parmesan")
+        .at(1500, 1050)
         .show();
 
     scene.stage
