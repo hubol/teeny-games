@@ -1,7 +1,7 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
 import { DegreesFloat, Integer, RgbInt } from "../../lib/math/number-alias-types";
-import { vnew } from "../../lib/math/vector-type";
+import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { objFace } from "../mixins/mxn-face";
 import { DataInstruments } from "./data-instruments";
@@ -34,6 +34,7 @@ export namespace DataToppings {
         sfx: DataToppingsSfx.Model;
         transformSequenceDegrees: (sequenceFloat: DegreesFloat, trackIndex: Integer) => DegreesFloat;
         tint: RgbInt;
+        containerPivot: VectorSimple;
     }
 
     export const { manifest, getById } = DataLib.create(
@@ -52,6 +53,7 @@ export namespace DataToppings {
                 sfx: DataToppingsSfx.create(99),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0xD1BFBF,
+                containerPivot: [65, 105],
             },
             GreenPepper: {
                 objFigure: function objGreenPepperTopping (seed) {
@@ -66,6 +68,7 @@ export namespace DataToppings {
                 sfx: DataToppingsSfx.create(625),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0x17A533,
+                containerPivot: [55, 120],
             },
             Tomato: {
                 objFigure: function objTomatoTopping (seed) {
@@ -80,6 +83,7 @@ export namespace DataToppings {
                 sfx: DataToppingsSfx.create(1451),
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
                 tint: 0xF43D1D,
+                containerPivot: [70, 85],
             },
             Onion: {
                 objFigure: function objOnionTopping (seed) {
@@ -94,6 +98,7 @@ export namespace DataToppings {
                 sfx: DataToppingsSfx.create(1490),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0xD193FF,
+                containerPivot: [62, 97],
             },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
@@ -105,6 +110,7 @@ export namespace DataToppings {
                 sfx: DataToppingsSfx.create(917),
                 transformSequenceDegrees: (degrees) => degrees,
                 tint: 0x808080,
+                containerPivot: [62, 97],
             },
         } satisfies Record<string, Model>,
     );

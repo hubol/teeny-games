@@ -66,6 +66,7 @@ function objFigureToppingContainer(toppingId: DataToppings.Id) {
                 .mixin(mxnFxBoil, "position")
                 .step(self => self.texture = api.happyStepsCount <= 0 ? txs[1] : happyTxs[1]),
         )
+            .pivoted(DataToppings.getById(toppingId).containerPivot)
             .scaled(2, 2)
             .show(obj);
     }

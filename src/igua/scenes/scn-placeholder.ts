@@ -15,68 +15,61 @@ import { objCondiment } from "../objects/obj-condiment";
 import { objCylinder } from "../objects/obj-cylinder";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
-import { objTopping } from "../objects/obj-topping";
 import { objToppingContainer } from "../objects/obj-topping-container";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
 export function scnPlaceholder() {
-    scene.style.backgroundTint = 0x00ff00;
-
     Sprite.from(Tx.Background).at(-38, -16).show();
 
     const toppingContainersObj = container().show();
 
-    objCylinder({
-        radius: 40,
-        width: 400,
-        topTint: 0xcf1406,
-        wallTint: 0xe73f21,
-    })
+    container(
+        objCylinder({
+            radius: 40,
+            width: 400,
+            topTint: 0xcf1406,
+            wallTint: 0xe73f21,
+        }),
+        objToppingContainer("Mushroom"),
+    )
         .at(130 + 130, 40 + 210)
         .show(toppingContainersObj);
 
-    objCylinder({
-        radius: 40,
-        width: 400,
-        topTint: 0xffc400,
-        wallTint: 0xe7e421,
-    })
+    container(
+        objCylinder({
+            radius: 40,
+            width: 400,
+            topTint: 0xffc400,
+            wallTint: 0xe7e421,
+        }),
+        objToppingContainer("GreenPepper"),
+    )
         .at(130 + 70, 40 + 500)
         .show(toppingContainersObj);
 
-    objCylinder({
-        radius: 40,
-        width: 400,
-        topTint: 0x0bb343,
-        wallTint: 0x28e431,
-    })
+    container(
+        objCylinder({
+            radius: 40,
+            width: 400,
+            topTint: 0x0bb343,
+            wallTint: 0x28e431,
+        }),
+        objToppingContainer("Tomato"),
+    )
         .at(130 + 90, 40 + 730)
         .show(toppingContainersObj);
 
-    objCylinder({
-        radius: 40,
-        width: 400,
-        topTint: 0x0694cc,
-        wallTint: 0x5dbbe0,
-    })
+    container(
+        objCylinder({
+            radius: 40,
+            width: 400,
+            topTint: 0x0694cc,
+            wallTint: 0x5dbbe0,
+        }),
+        objToppingContainer("Onion"),
+    )
         .at(130 + 155, 40 + 995)
-        .show(toppingContainersObj);
-
-    objToppingContainer("Mushroom")
-        .at(130, 40)
-        .show(toppingContainersObj);
-
-    objToppingContainer("GreenPepper")
-        .at(90, 270 + 30)
-        .show(toppingContainersObj);
-
-    objToppingContainer("Tomato")
-        .at(80, 270 + 270 + 60)
-        .show(toppingContainersObj);
-
-    objToppingContainer("Onion")
-        .at(160, 770 + 70)
         .show(toppingContainersObj);
 
     const speedControlObj = objSpeedControl()
