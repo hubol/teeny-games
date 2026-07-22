@@ -144,10 +144,10 @@ export function scnMain() {
 
             while (true) {
                 yield () => objFeatureFlags.singleton.isEnabled("Sweetzza");
-                toppingIds[0] = "Mushroom";
-                toppingIds[1] = "Mushroom";
-                toppingIds[2] = "Mushroom";
-                toppingIds[3] = "Mushroom";
+                toppingIds[0] = "Pineapple";
+                toppingIds[1] = "MandarinOrange";
+                toppingIds[2] = "Kiwi";
+                toppingIds[3] = "Strawberry";
                 yield () => !objFeatureFlags.singleton.isEnabled("Sweetzza");
                 toppingIds.length = 0;
                 toppingIds.push(...defaultToppingIds);

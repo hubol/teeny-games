@@ -37,6 +37,8 @@ export namespace DataToppings {
         containerPivot: VectorSimple;
     }
 
+    const transformSequenceDegrees: Model["transformSequenceDegrees"] = (degrees) => degrees;
+
     export const { manifest, getById } = DataLib.create(
         "DataToppings",
         {
@@ -51,7 +53,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "SynthPad0",
                 sfx: DataToppingsSfx.create(99),
-                transformSequenceDegrees: (degrees) => degrees,
+                transformSequenceDegrees,
                 tint: 0xD1BFBF,
                 containerPivot: [65, 105],
             },
@@ -66,7 +68,7 @@ export namespace DataToppings {
                 },
                 instrumentId: "Ukelele",
                 sfx: DataToppingsSfx.create(625),
-                transformSequenceDegrees: (degrees) => degrees,
+                transformSequenceDegrees,
                 tint: 0x17A533,
                 containerPivot: [55, 120],
             },
@@ -96,9 +98,70 @@ export namespace DataToppings {
                 },
                 instrumentId: "Bass",
                 sfx: DataToppingsSfx.create(1490),
-                transformSequenceDegrees: (degrees) => degrees,
+                transformSequenceDegrees,
                 tint: 0xD193FF,
                 containerPivot: [62, 97],
+            },
+            Kiwi: {
+                objFigure: function objOnionTopping (seed) {
+                    return objToppingSprite(
+                        seed,
+                        txsOnion,
+                        80,
+                        objFace(txsOnionFace),
+                    );
+                },
+                instrumentId: "WaterBottle",
+                sfx: DataToppingsSfx.create(1690),
+                transformSequenceDegrees,
+                // TODO should be green!
+                tint: 0xB5674D,
+                containerPivot: [48, 98],
+            },
+            MandarinOrange: {
+                objFigure: function objOnionTopping (seed) {
+                    return objToppingSprite(
+                        seed,
+                        txsOnion,
+                        80,
+                        objFace(txsOnionFace),
+                    );
+                },
+                instrumentId: "Glockenspiel",
+                sfx: DataToppingsSfx.create(1600),
+                transformSequenceDegrees,
+                tint: 0xFF5D0F,
+                containerPivot: [66, 91],
+            },
+            Pineapple: {
+                objFigure: function objOnionTopping (seed) {
+                    return objToppingSprite(
+                        seed,
+                        txsOnion,
+                        80,
+                        objFace(txsOnionFace),
+                    );
+                },
+                instrumentId: "Melodica",
+                sfx: DataToppingsSfx.create(1700),
+                transformSequenceDegrees,
+                tint: 0xE89700,
+                containerPivot: [58, 227],
+            },
+            Strawberry: {
+                objFigure: function objOnionTopping (seed) {
+                    return objToppingSprite(
+                        seed,
+                        txsOnion,
+                        80,
+                        objFace(txsOnionFace),
+                    );
+                },
+                instrumentId: "DrumKit0",
+                sfx: DataToppingsSfx.create(1700),
+                transformSequenceDegrees,
+                tint: 0xFF474A,
+                containerPivot: [53, 103],
             },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
