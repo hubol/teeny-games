@@ -12,10 +12,9 @@ import { renderer } from "../current-pixi-renderer";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCondiment } from "../objects/obj-condiment";
-import { objCylinder } from "../objects/obj-cylinder";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
-import { objToppingContainer } from "../objects/obj-topping-container";
+import { objToppingContainerPillar } from "../objects/obj-topping-container-pillar";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
@@ -24,51 +23,35 @@ export function scnPlaceholder() {
 
     const toppingContainersObj = container().show();
 
-    container(
-        objCylinder({
-            radius: 40,
-            width: 400,
-            topTint: 0xcf1406,
-            wallTint: 0xe73f21,
-        }),
-        objToppingContainer("Mushroom"),
-    )
+    objToppingContainerPillar({
+        topTint: 0xcf1406,
+        wallTint: 0xe73f21,
+        defaultToppingId: "Mushroom",
+    })
         .at(130 + 130, 40 + 210)
         .show(toppingContainersObj);
 
-    container(
-        objCylinder({
-            radius: 40,
-            width: 400,
-            topTint: 0xffc400,
-            wallTint: 0xe7e421,
-        }),
-        objToppingContainer("GreenPepper"),
-    )
+    objToppingContainerPillar({
+        topTint: 0xffc400,
+        wallTint: 0xe7e421,
+        defaultToppingId: "GreenPepper",
+    })
         .at(130 + 70, 40 + 500)
         .show(toppingContainersObj);
 
-    container(
-        objCylinder({
-            radius: 40,
-            width: 400,
-            topTint: 0x0bb343,
-            wallTint: 0x28e431,
-        }),
-        objToppingContainer("Tomato"),
-    )
+    objToppingContainerPillar({
+        topTint: 0x0bb343,
+        wallTint: 0x28e431,
+        defaultToppingId: "Tomato",
+    })
         .at(130 + 90, 40 + 730)
         .show(toppingContainersObj);
 
-    container(
-        objCylinder({
-            radius: 40,
-            width: 400,
-            topTint: 0x0694cc,
-            wallTint: 0x5dbbe0,
-        }),
-        objToppingContainer("Onion"),
-    )
+    objToppingContainerPillar({
+        topTint: 0x0694cc,
+        wallTint: 0x5dbbe0,
+        defaultToppingId: "Onion",
+    })
         .at(130 + 155, 40 + 995)
         .show(toppingContainersObj);
 
