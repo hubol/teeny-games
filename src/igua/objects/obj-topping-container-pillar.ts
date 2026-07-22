@@ -8,10 +8,6 @@ import { objCylinder } from "./obj-cylinder";
 import { objToppingContainer } from "./obj-topping-container";
 
 export function objToppingContainerPillar(args: objToppingContainerPillar.Args) {
-    const api = {
-        toppingId: args.defaultToppingId,
-    };
-
     return container(
         objCylinder({
             radius: 40,
@@ -20,15 +16,14 @@ export function objToppingContainerPillar(args: objToppingContainerPillar.Args) 
             wallTint: args.wallTint,
         }),
     )
-        .merge({ objToppingContainerPillar: api })
         .coro(function* (self) {
             while (true) {
-                const containerObj = objToppingContainer(api.toppingId)
+                const containerObj = objToppingContainer(args.toppingProvider())
                     .scaled(0, 0)
                     .show(self);
 
                 yield* Coro.all([
-                    onPrimitiveMutate(() => api.toppingId),
+                    onPrimitiveMutate(() => args.toppingProvider()),
                     interpv(containerObj.scale).steps(4).to(1, 1).over(250),
                 ]);
 
@@ -41,6 +36,6 @@ namespace objToppingContainerPillar {
     export interface Args {
         wallTint: RgbInt;
         topTint: RgbInt;
-        defaultToppingId: DataToppings.Id;
+        toppingProvider: () => DataToppings.Id;
     }
 }
