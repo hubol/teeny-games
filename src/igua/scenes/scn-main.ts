@@ -13,6 +13,7 @@ import { DataToppings } from "../data/data-toppings";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCondiment } from "../objects/obj-condiment";
+import { objFeatureFlags } from "../objects/obj-feature-flags";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objToppingContainerPillar } from "../objects/obj-topping-container-pillar";
@@ -134,6 +135,22 @@ export function scnMain() {
                     .at(2000, 700)
                     .show();
                 yield () => tunaObj.destroyed;
+            }
+        });
+
+    scene.stage
+        .coro(function* () {
+            const defaultToppingIds = [...toppingIds];
+
+            while (true) {
+                yield () => objFeatureFlags.singleton.isEnabled("Sweetzza");
+                toppingIds[0] = "Mushroom";
+                toppingIds[1] = "Mushroom";
+                toppingIds[2] = "Mushroom";
+                toppingIds[3] = "Mushroom";
+                yield () => !objFeatureFlags.singleton.isEnabled("Sweetzza");
+                toppingIds.length = 0;
+                toppingIds.push(...defaultToppingIds);
             }
         });
 }

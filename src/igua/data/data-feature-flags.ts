@@ -14,6 +14,10 @@ export namespace DataFeatureFlags {
                 keyCode: "KeyP",
                 defaultValue: false,
             },
+            Sweetzza: {
+                keyCode: "KeyS",
+                defaultValue: false,
+            },
             __Fallback__: {
                 defaultValue: false,
                 keyCode: "Comma",
