@@ -19,7 +19,7 @@ import { objToppingContainerPillar } from "../objects/obj-topping-container-pill
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
-export function scnPlaceholder() {
+export function scnMain() {
     Sprite.from(Tx.Background).at(-38, -16).show();
 
     const toppingIds: Array<DataToppings.Id> = [
