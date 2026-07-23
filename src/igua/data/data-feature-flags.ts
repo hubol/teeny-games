@@ -10,6 +10,10 @@ export namespace DataFeatureFlags {
     export const { ids, getById, manifest } = DataLib.create(
         "DataFeatureFlags",
         {
+            ForceCondiments: {
+                keyCode: "KeyC",
+                defaultValue: false,
+            },
             PizzaSpin: {
                 keyCode: "KeyP",
                 defaultValue: false,

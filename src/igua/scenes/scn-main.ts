@@ -90,13 +90,23 @@ export function scnMain() {
             self.at(disabledPosition);
 
             while (true) {
-                yield onPrimitiveMutate(() => pizzaObj.objPizza.playedSequencedSamplesCount);
-                yield holdf(
-                    () => pizzaObj.objPizza.attachedToppingsCount >= 5 && speedControlObj.objSpeedControl.speed > 0,
-                    120,
-                );
+                yield* Coro.race([
+                    Coro.chain([
+                        onPrimitiveMutate(() => pizzaObj.objPizza.playedSequencedSamplesCount),
+                        holdf(
+                            () =>
+                                pizzaObj.objPizza.attachedToppingsCount >= 5
+                                && speedControlObj.objSpeedControl.speed > 0,
+                            120,
+                        ),
+                    ]),
+                    () => objFeatureFlags.singleton.isEnabled("ForceCondiments"),
+                ]);
                 yield interpv(self).factor(factor.sine).to(enabledPosition).over(500);
-                yield () => !pizzaObj.objPizza.areAnyToppingsAttached && !pizzaObj.objPizza.areAnyToppingsBeingDragged;
+                yield () =>
+                    !pizzaObj.objPizza.areAnyToppingsAttached
+                    && !pizzaObj.objPizza.areAnyToppingsBeingDragged
+                    && !objFeatureFlags.singleton.isEnabled("ForceCondiments");
                 yield interpv(self).factor(factor.sine).to(disabledPosition).over(500);
             }
         })
