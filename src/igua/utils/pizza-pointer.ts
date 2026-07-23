@@ -1,8 +1,7 @@
-import { DisplayObject, Rectangle } from "pixi.js";
-import { areRectanglesOverlapping } from "../../lib/math/rectangle";
+import { DisplayObject, Graphics } from "pixi.js";
 import { Pointer } from "../globals";
 
-const r = new Rectangle();
+const pointerObj = new Graphics().beginFill(0xffffff).drawRect(0, 0, 1, 1);
 
 export namespace PizzaPointer {
     export function claim(self: DisplayObject) {
@@ -11,7 +10,11 @@ export namespace PizzaPointer {
                 continue;
             }
 
-            if (!areRectanglesOverlapping(self.getBounds(false, r), pointer)) {
+            pointerObj.at(pointer);
+            pointerObj.width = pointer.width;
+            pointerObj.height = pointer.height;
+
+            if (!self.collides(pointerObj)) {
                 continue;
             }
 

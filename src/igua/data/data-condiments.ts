@@ -13,18 +13,29 @@ export namespace DataCondiments {
         faceTxs: Texture[];
         pivot: VectorSimple;
         tints: Tints;
+        collisionDimensions: VectorSimple;
     }
 
     type Tints = [startTint: RgbInt, endTint: RgbInt];
 
-    function create(sfx: Sound, texture: Texture, pivot: VectorSimple, tints: Tints): Model {
+    function create(
+        sfx: Sound,
+        texture: Texture,
+        pivot: VectorSimple,
+        tints: Tints,
+        collisionDimensions?: VectorSimple,
+    ): Model {
         const txs = texture.split({ count: 4 });
+
+        collisionDimensions ??= [txs[0].width, txs[1].height];
+
         return {
             sfx,
             bodyTxs: [txs[0], txs[2]],
             faceTxs: [txs[1], txs[3]],
             pivot,
             tints,
+            collisionDimensions,
         };
     }
 
@@ -32,7 +43,7 @@ export namespace DataCondiments {
         "DataCondiments",
         {
             Parmesan: create(Sfx.Samples.Shake, Tx.Condiments.Parmesan, [30, 78], [0xFFEDB2, 0xFFF6D8]),
-            HotSauce: create(Sfx.Samples.Cowbell, Tx.Condiments.HotSauce, [27, 130], [0xA50F04, 0xCF1406]),
+            HotSauce: create(Sfx.Samples.Cowbell, Tx.Condiments.HotSauce, [27, 130], [0xA50F04, 0xCF1406], [30, 78]),
             __Fallback__: create(Sfx.Ooh, Tx.Condiments.Parmesan, [30, 78], [0xff00ff, 0x00ff00]),
         } satisfies Record<string, Model>,
     );
