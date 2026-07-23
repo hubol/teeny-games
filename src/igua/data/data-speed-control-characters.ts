@@ -33,14 +33,6 @@ export namespace DataSpeedControlCharacters {
         runnerTxs: RunnerTxs.Type;
     }
 
-    let chickenWalkTxsRequestsCount = 0;
-    const chickenWalkTxs = [
-        Tx.Characters.Chicken.Black,
-        Tx.Characters.Chicken.Brown,
-        Tx.Characters.Chicken.Gray,
-    ]
-        .map(tx => tx.split({ count: 3 }));
-
     export const { manifest, getById } = DataLib.create(
         "DataSpeedControlCharacters",
         {
