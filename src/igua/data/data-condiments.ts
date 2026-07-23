@@ -32,7 +32,7 @@ export namespace DataCondiments {
         "DataCondiments",
         {
             Parmesan: create(Sfx.Samples.Shake, Tx.Condiments.Parmesan, [30, 78], [0xFFEDB2, 0xFFF6D8]),
-            HotSauce: create(Sfx.Samples.BoomWhacker1, Tx.Condiments.HotSauce, [27, 130], [0xA50F04, 0xCF1406]),
+            HotSauce: create(Sfx.Samples.Cowbell, Tx.Condiments.HotSauce, [27, 130], [0xA50F04, 0xCF1406]),
             __Fallback__: create(Sfx.Ooh, Tx.Condiments.Parmesan, [30, 78], [0xff00ff, 0x00ff00]),
         } satisfies Record<string, Model>,
     );
