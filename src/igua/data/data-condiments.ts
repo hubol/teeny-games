@@ -8,17 +8,17 @@ import { DataLib } from "./data-lib";
 export namespace DataCondiments {
     interface Model {
         sfx: Sound;
-        bodyTx: Texture;
+        bodyTxs: Texture[];
         faceTxs: Texture[];
         pivot: VectorSimple;
     }
 
     function create(sfx: Sound, texture: Texture, pivot: VectorSimple): Model {
-        const [bodyTx, ...faceTxs] = texture.split({ count: 3 });
+        const txs = texture.split({ count: 4 });
         return {
             sfx,
-            bodyTx,
-            faceTxs,
+            bodyTxs: [txs[0], txs[2]],
+            faceTxs: [txs[1], txs[3]],
             pivot,
         };
     }
@@ -27,6 +27,7 @@ export namespace DataCondiments {
         "DataCondiments",
         {
             Parmesan: create(Sfx.Samples.Shake, Tx.Condiments.Parmesan, [30, 78]),
+            HotSauce: create(Sfx.Samples.BoomWhacker1, Tx.Condiments.HotSauce, [27, 130]),
             __Fallback__: create(Sfx.Ooh, Tx.Condiments.Parmesan, [30, 78]),
         } satisfies Record<string, Model>,
     );

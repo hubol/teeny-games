@@ -7,9 +7,11 @@ import { objFace } from "../../mixins/mxn-face";
 export function objFigureCondiment(id: DataCondiments.Id) {
     const data = DataCondiments.getById(id);
 
+    const faceObj = objFace(data.faceTxs);
     return container(
-        Sprite.from(data.bodyTx),
-        objFace(data.faceTxs)
+        Sprite.from(data.bodyTxs[0])
+            .step(self => self.texture = data.bodyTxs[faceObj.objFace.isSinging ? 1 : 0]),
+        faceObj
             .mixin(mxnFxBoil, "position"),
     )
         .merge({ objFigureCondiment: { data } })

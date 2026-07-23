@@ -113,7 +113,11 @@ export function scnMain() {
         .show();
 
     objCondiment("Parmesan")
-        .at(150, 200)
+        .at(130, 200)
+        .show(condimentsDrawerObj);
+
+    objCondiment("HotSauce")
+        .at(250, 200)
         .show(condimentsDrawerObj);
 
     objToolMagnet()
