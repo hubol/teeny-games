@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 97 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 98 }];
 
 interface TxData {
   id: string;
@@ -50,22 +50,23 @@ function txs<T>(tx: (data: TxData) => T) {
       Pete: {
         Runner: {
           East: tx({ id: "Characters.Pete.Runner.East", atlas: 0, x: 3997, y: 2014, width: 76, height: 46 }),
-          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 2106, y: 2096, width: 76, height: 46 }),
-          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 2183, y: 2096, width: 76, height: 46 }),
+          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 3348, y: 1935, width: 76, height: 46 }),
+          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 3263, y: 1953, width: 76, height: 46 }),
         },
         Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 3846, y: 0, width: 240, height: 112 }),
       },
       Runner: {
-        HoldingStringNorth: tx({ id: "Characters.Runner.HoldingStringNorth", atlas: 0, x: 2260, y: 2096, width: 68, height: 38 }),
-        HoldingStringSouth: tx({ id: "Characters.Runner.HoldingStringSouth", atlas: 0, x: 2260, y: 2135, width: 68, height: 38 }),
+        HoldingStringNorth: tx({ id: "Characters.Runner.HoldingStringNorth", atlas: 0, x: 3425, y: 1935, width: 68, height: 38 }),
+        HoldingStringSouth: tx({ id: "Characters.Runner.HoldingStringSouth", atlas: 0, x: 3494, y: 1935, width: 68, height: 38 }),
         Shadow: tx({ id: "Characters.Runner.Shadow", atlas: 0, x: 4062, y: 1839, width: 34, height: 38 }),
       },
       Tuna: tx({ id: "Characters.Tuna", atlas: 0, x: 0, y: 0, width: 2970, height: 146 }),
     },
     Condiments: {
       Drawer: tx({ id: "Condiments.Drawer", atlas: 0, x: 2908, y: 1379, width: 286, height: 128 }),
-      HotSauce: tx({ id: "Condiments.HotSauce", atlas: 0, x: 2331, y: 2059, width: 192, height: 132 }),
+      HotSauce: tx({ id: "Condiments.HotSauce", atlas: 0, x: 2106, y: 2096, width: 192, height: 132 }),
       Parmesan: tx({ id: "Condiments.Parmesan", atlas: 0, x: 545, y: 4007, width: 232, height: 82 }),
+      Ranch: tx({ id: "Condiments.Ranch", atlas: 0, x: 2331, y: 2059, width: 200, height: 124 }),
     },
     Containers: {
       GreenPepper: tx({ id: "Containers.GreenPepper", atlas: 0, x: 2363, y: 1580, width: 224, height: 126 }),
