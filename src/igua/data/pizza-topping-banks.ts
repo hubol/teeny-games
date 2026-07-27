@@ -9,8 +9,10 @@ export namespace PizzaToppingBanks {
     export type Id = keyof typeof manifest;
 
     export interface Model {
+        isUnlocked(id: Id): boolean;
         unlock(id: Id): void;
         swap(): void;
+        swapTo(id: Id): void;
         readonly current: DataToppings.Id[];
         readonly next: DataToppings.Id[];
     }
@@ -20,6 +22,9 @@ export namespace PizzaToppingBanks {
         let currentIndex = 0;
 
         return {
+            isUnlocked(id: Id) {
+                return unlockedBankIds.includes(id);
+            },
             unlock(id: Id) {
                 if (unlockedBankIds.includes(id)) {
                     return;
@@ -35,6 +40,10 @@ export namespace PizzaToppingBanks {
             },
             swap() {
                 currentIndex = (currentIndex + 1) % unlockedBankIds.length;
+            },
+            swapTo(id: Id) {
+                const index = unlockedBankIds.indexOf(id);
+                currentIndex = index > -1 ? index : 0;
             },
         };
     }

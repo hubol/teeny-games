@@ -13,6 +13,7 @@ import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, Pointer, scene } from "../globals";
+import { mxnPointerPress } from "../mixins/mxn-pointer-press";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objFigureToppingBanks } from "../objects/figures/obj-figure-topping-banks";
@@ -156,9 +157,9 @@ export function scnMain() {
             while (true) {
                 yield () => objFeatureFlags.singleton.isEnabled("Sweetzza");
                 banks.unlock("Sweetzza");
-                banks.swap();
+                banks.swapTo("Sweetzza");
                 yield () => !objFeatureFlags.singleton.isEnabled("Sweetzza");
-                banks.swap();
+                banks.swapTo("Default");
             }
         });
 
@@ -189,12 +190,24 @@ export function scnMain() {
     objCharacterMystery()
         .at(1412, 102)
         .step(self => {
-            self.objCharacterMystery.isRevealed = mysteryRevealConditions
+            self.objCharacterMystery.isRevealed = !banks.isUnlocked("Sweetzza") && mysteryRevealConditions
                 .every(({ count, toppingId }) => pizzaObj.objPizza.getToppingCount(toppingId) === count);
+        })
+        .handles("objCharacterMystery:pressed", () => {
+            banks.unlock("Sweetzza");
+            banks.swapTo("Sweetzza");
         })
         .show();
 
     objFigureToppingBanks(banks)
         .at(500, 100)
+        .mixin(mxnPointerPress)
+        .handles("mxnPointerPress:pressed", (self) => {
+            if (self.children.length === 0) {
+                return;
+            }
+
+            banks.swap();
+        })
         .show();
 }
