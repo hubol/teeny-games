@@ -28,12 +28,12 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer, c
                 if (burst) {
                     self.play(Sfx.Effects.Destroy.rate(0.8, 1.7));
                     objFxHeartBurst()
-                        .tinted(topping.attributes.tint)
+                        .tinted(topping.data.tint)
                         .at(self)
                         .show();
                 }
                 else {
-                    self.play(topping.attributes.sfx.place);
+                    self.play(topping.data.sfx.place);
                 }
                 self.destroy();
             }
@@ -53,7 +53,7 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer, c
         })
         .coro(function* (self) {
             if (createdBy === "player") {
-                self.play(topping.attributes.sfx.pick);
+                self.play(topping.data.sfx.pick);
             }
         })
         .track(objTopping)

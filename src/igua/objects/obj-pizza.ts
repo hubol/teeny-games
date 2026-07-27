@@ -116,7 +116,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         );
 
         const rawDegrees = (Math.PI / 2 - vdir(p)) * -RAD_TO_DEG;
-        const degrees = topping.attributes.transformSequenceDegrees(rawDegrees, sequenceDataBuffer.trackIndex);
+        const degrees = topping.data.transformSequenceDegrees(rawDegrees, sequenceDataBuffer.trackIndex);
         sequenceDataBuffer.sequenceIndex = cyclic(degrees, 0, 360);
 
         const scale = consts.radius.min + consts.radius.delta * sequenceDataBuffer.trackIndex;
@@ -134,7 +134,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
         if (
             toppingsObj.children.some(obj =>
-                obj.objFigureTopping.attributes === topping.attributes
+                obj.objFigureTopping.data === topping.data
                 && Math.abs(obj.objAttachedTopping.sequenceIndex - data.sequenceIndex) < 2
                 && obj.objAttachedTopping.trackIndex === data.trackIndex
             )
@@ -270,7 +270,7 @@ function playSample(obj: objAttachedTopping.Type, when: Seconds) {
     }
 
     const topping = obj.objFigureTopping;
-    const sample = DataInstruments.getByIdLoose(topping.attributes.instrumentId).sample;
+    const sample = DataInstruments.getByIdLoose(topping.data.instrumentId).sample;
     const trackIndex = obj.objAttachedTopping.trackIndex;
     const cScaleIndex = trackScaleIndices[trackIndex] ?? trackScaleIndices[0];
 
@@ -288,10 +288,10 @@ function playSample(obj: objAttachedTopping.Type, when: Seconds) {
     if (sound) {
         const instance = sound.gain(sample.gain).playInstance(when);
         if (!sample.polyphony) {
-            if (!previousSoundInstances.has(topping.attributes)) {
-                previousSoundInstances.set(topping.attributes, []);
+            if (!previousSoundInstances.has(topping.data)) {
+                previousSoundInstances.set(topping.data, []);
             }
-            const previousInstances = previousSoundInstances.get(topping.attributes)!;
+            const previousInstances = previousSoundInstances.get(topping.data)!;
             for (const previousInstance of previousInstances) {
                 if (!previousInstance.ended) {
                     previousInstance.linearRamp("gain", 0, 0.1);
