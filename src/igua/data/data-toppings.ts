@@ -106,7 +106,11 @@ export namespace DataToppings {
         } satisfies Record<string, Model>,
     );
 
-    export function getByIdLoose(id: Id): Model & { id: Id } {
+    export namespace Model {
+        export type Loose = Model & { id: Id };
+    }
+
+    export function getByIdLoose(id: Id): Model.Loose {
         return getById(id);
     }
 

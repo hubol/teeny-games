@@ -2,7 +2,7 @@ import { Integer } from "../../lib/math/number-alias-types";
 import { DataToppings } from "./data-toppings";
 
 export interface PizzaTopping {
-    data: DataToppings.Model;
+    data: DataToppings.Model.Loose;
     seed: Integer;
 }
 

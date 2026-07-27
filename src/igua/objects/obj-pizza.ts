@@ -87,6 +87,16 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         playedSequencedSamplesCount: 0,
         getSequencedPosition,
         submit,
+        getToppingCount(id: DataToppings.Id) {
+            let count = 0;
+            for (let i = 0; i < toppingsObj.children.length; i++) {
+                if (toppingsObj.children[i].objFigureTopping.data.id === id) {
+                    count++;
+                }
+            }
+
+            return count;
+        },
     };
 
     const toppingsObj = container<objAttachedTopping.Type>();
