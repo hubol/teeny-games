@@ -11,8 +11,8 @@ import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
+import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, Pointer, scene } from "../globals";
-import { mxnFxBoil } from "../mixins/fx/mxn-fx-boil";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCondiment } from "../objects/obj-condiment";
@@ -26,19 +26,14 @@ import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 export function scnMain() {
     Sprite.from(Tx.Background).at(-38, -16).show();
 
-    const toppingIds: Array<DataToppings.Id> = [
-        "Mushroom",
-        "GreenPepper",
-        "Tomato",
-        "Onion",
-    ];
+    const banks = PizzaToppingBanks.create();
 
     const toppingContainersObj = container().show();
 
     objToppingContainerPillar({
         topTint: 0xcf1406,
         wallTint: 0xe73f21,
-        toppingProvider: () => toppingIds[0],
+        toppingProvider: () => banks.current[0],
     })
         .at(130 + 130, 40 + 210)
         .show(toppingContainersObj);
@@ -46,7 +41,7 @@ export function scnMain() {
     objToppingContainerPillar({
         topTint: 0xffc400,
         wallTint: 0xe7e421,
-        toppingProvider: () => toppingIds[1],
+        toppingProvider: () => banks.current[1],
     })
         .at(130 + 70, 40 + 500)
         .show(toppingContainersObj);
@@ -54,7 +49,7 @@ export function scnMain() {
     objToppingContainerPillar({
         topTint: 0x0bb343,
         wallTint: 0x28e431,
-        toppingProvider: () => toppingIds[2],
+        toppingProvider: () => banks.current[2],
     })
         .at(130 + 90, 40 + 730)
         .show(toppingContainersObj);
@@ -62,7 +57,7 @@ export function scnMain() {
     objToppingContainerPillar({
         topTint: 0x0694cc,
         wallTint: 0x5dbbe0,
-        toppingProvider: () => toppingIds[3],
+        toppingProvider: () => banks.current[3],
     })
         .at(130 + 155, 40 + 995)
         .show(toppingContainersObj);
@@ -157,17 +152,12 @@ export function scnMain() {
 
     scene.stage
         .coro(function* () {
-            const defaultToppingIds = [...toppingIds];
-
             while (true) {
                 yield () => objFeatureFlags.singleton.isEnabled("Sweetzza");
-                toppingIds[0] = "Pineapple";
-                toppingIds[1] = "MandarinOrange";
-                toppingIds[2] = "Kiwi";
-                toppingIds[3] = "Strawberry";
+                banks.unlock("Sweetzza");
+                banks.swap();
                 yield () => !objFeatureFlags.singleton.isEnabled("Sweetzza");
-                toppingIds.length = 0;
-                toppingIds.push(...defaultToppingIds);
+                banks.swap();
             }
         });
 
