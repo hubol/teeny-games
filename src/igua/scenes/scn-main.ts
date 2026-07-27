@@ -200,7 +200,7 @@ export function scnMain() {
         .show();
 
     objFigureToppingBanks(banks)
-        .at(500, 100)
+        .at(515, 100)
         .mixin(mxnPointerPress)
         .handles("mxnPointerPress:pressed", (self) => {
             if (self.children.length === 0) {
