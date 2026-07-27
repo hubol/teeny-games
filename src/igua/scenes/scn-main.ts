@@ -15,6 +15,7 @@ import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
+import { objFigureToppingBanks } from "../objects/figures/obj-figure-topping-banks";
 import { objCondiment } from "../objects/obj-condiment";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
@@ -191,5 +192,9 @@ export function scnMain() {
             self.objCharacterMystery.isRevealed = mysteryRevealConditions
                 .every(({ count, toppingId }) => pizzaObj.objPizza.getToppingCount(toppingId) === count);
         })
+        .show();
+
+    objFigureToppingBanks(banks)
+        .at(500, 100)
         .show();
 }
