@@ -6,11 +6,14 @@ import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { Key, Pointer, scene } from "../globals";
+import { mxnFxBoil } from "../mixins/fx/mxn-fx-boil";
+import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCondiment } from "../objects/obj-condiment";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
@@ -167,4 +170,36 @@ export function scnMain() {
                 toppingIds.push(...defaultToppingIds);
             }
         });
+
+    // Number of lid colors in the grocery store: 7 (Black, White, Green, Yellow, Orange, Red, Blue)
+    // Number of smoothie types in the farmers market: 2
+    // Not counting sauce and cheese, the number of topping buckets in pizzeria: 11 (Feta, Pepperoni, Sausage, Ham, Onion, Tomato, Green Pepper, Pineapple, Mandarin Orange, Mushroom, Anchovy)
+    // Number of race track lanes in Notion of Motion: 6
+
+    const mysteryRevealConditions = new Array<{ toppingId: DataToppings.Id; count: Integer }>(
+        {
+            toppingId: "Tomato",
+            count: 11,
+        },
+        {
+            toppingId: "Onion",
+            count: 6,
+        },
+        {
+            toppingId: "Mushroom",
+            count: 2,
+        },
+        {
+            toppingId: "GreenPepper",
+            count: 7,
+        },
+    );
+
+    objCharacterMystery()
+        .at(1412, 102)
+        .step(self => {
+            self.objCharacterMystery.isRevealed = mysteryRevealConditions
+                .every(({ count, toppingId }) => pizzaObj.objPizza.getToppingCount(toppingId) === count);
+        })
+        .show();
 }
