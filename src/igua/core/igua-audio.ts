@@ -18,8 +18,11 @@ class IguaAudioImpl {
     constructor(private readonly _context: AudioContext) {
         console.log(...Logging.componentArgs(this));
 
+        const compressorNode = new DynamicsCompressorNode(_context, { knee: 35, ratio: 6 });
+        compressorNode.connect(this._context.destination);
+
         this._globalGainNode = new GainNode(_context);
-        this._globalGainNode.connect(this._context.destination);
+        this._globalGainNode.connect(compressorNode);
 
         this._sfxGainNode = new GainNode(_context);
         this._sfxGainNode.connect(this._globalGainNode);
