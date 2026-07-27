@@ -124,6 +124,10 @@ export function scnMain() {
         .at(250, 200)
         .show(condimentsDrawerObj);
 
+    objCondiment("Oregano")
+        .at(458, 200)
+        .show(condimentsDrawerObj);
+
     objToolMagnet()
         .at(1880, 700)
         .coro(function* (self) {
