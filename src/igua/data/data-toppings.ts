@@ -3,27 +3,11 @@ import { Tx } from "../../assets/textures";
 import { DegreesFloat, Integer, RgbInt } from "../../lib/math/number-alias-types";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { PropertiesLike } from "../../lib/types/properties-like";
 import { objFace } from "../mixins/mxn-face";
 import { DataInstruments } from "./data-instruments";
 import { DataLib } from "./data-lib";
 import { DataToppingsSfx } from "./data-toppings-sfx";
-
-// Increase tuner fish interval
-// sustained notes (e.g. bass)
-// synth sounds
-// intentionally feed tuner fish??
-
-const txsPepperoni = [Tx.Toppings.Pepperoni0, Tx.Toppings.Pepperoni1, Tx.Toppings.Pepperoni2];
-const txsPineapple = [Tx.Toppings.Pineapple0, Tx.Toppings.Pineapple1];
-const txsTomato = Tx.Toppings.Pixel.Tomato.split({ count: 1 });
-const txsMushroom = Tx.Toppings.Pixel.Mushroom.split({ count: 1 });
-const txsGreenPepper = Tx.Toppings.Pixel.GreenPepper.split({ count: 1 });
-const txsOnion = Tx.Toppings.Pixel.Onion.split({ count: 1 });
-
-const txsTomatoFace = Tx.Faces.Pixel.Tomato.split({ count: 3 });
-const txsMushroomFace = Tx.Faces.Pixel.Mushroom.split({ count: 2 });
-const txsGreenPepperFace = Tx.Faces.Pixel.GreenPepper.split({ count: 2 });
-const txsOnionFace = Tx.Faces.Pixel.Onion.split({ count: 2 });
 
 const toppingScale = vnew(1.3, 1.3);
 
@@ -43,14 +27,7 @@ export namespace DataToppings {
         "DataToppings",
         {
             Mushroom: {
-                objFigure: function objMushroomTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsMushroom,
-                        80,
-                        objFace(txsMushroomFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("Mushroom"),
                 instrumentId: "SynthPad0",
                 sfx: DataToppingsSfx.create(99),
                 transformSequenceDegrees,
@@ -58,14 +35,7 @@ export namespace DataToppings {
                 containerPivot: [65, 105],
             },
             GreenPepper: {
-                objFigure: function objGreenPepperTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsGreenPepper,
-                        80,
-                        objFace(txsGreenPepperFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("GreenPepper"),
                 instrumentId: "Ukelele",
                 sfx: DataToppingsSfx.create(625),
                 transformSequenceDegrees,
@@ -73,14 +43,7 @@ export namespace DataToppings {
                 containerPivot: [55, 120],
             },
             Tomato: {
-                objFigure: function objTomatoTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsTomato,
-                        80,
-                        objFace(txsTomatoFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("Tomato"),
                 instrumentId: "DrumKit0",
                 sfx: DataToppingsSfx.create(1451),
                 transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
@@ -88,14 +51,7 @@ export namespace DataToppings {
                 containerPivot: [70, 85],
             },
             Onion: {
-                objFigure: function objOnionTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsOnion,
-                        80,
-                        objFace(txsOnionFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("Onion"),
                 instrumentId: "Bass",
                 sfx: DataToppingsSfx.create(1490),
                 transformSequenceDegrees,
@@ -103,14 +59,7 @@ export namespace DataToppings {
                 containerPivot: [62, 97],
             },
             Kiwi: {
-                objFigure: function objOnionTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsOnion,
-                        80,
-                        objFace(txsOnionFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("Kiwi"),
                 instrumentId: "WaterBottle",
                 sfx: DataToppingsSfx.create(1690),
                 transformSequenceDegrees,
@@ -119,14 +68,7 @@ export namespace DataToppings {
                 containerPivot: [48, 98],
             },
             MandarinOrange: {
-                objFigure: function objOnionTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsOnion,
-                        80,
-                        objFace(txsOnionFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("MandarinOrange"),
                 instrumentId: "Glockenspiel",
                 sfx: DataToppingsSfx.create(1600),
                 transformSequenceDegrees,
@@ -134,14 +76,7 @@ export namespace DataToppings {
                 containerPivot: [66, 91],
             },
             Pineapple: {
-                objFigure: function objOnionTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsOnion,
-                        80,
-                        objFace(txsOnionFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("Pineapple"),
                 instrumentId: "Melodica",
                 sfx: DataToppingsSfx.create(1700),
                 transformSequenceDegrees,
@@ -149,14 +84,7 @@ export namespace DataToppings {
                 containerPivot: [58, 227],
             },
             Strawberry: {
-                objFigure: function objOnionTopping (seed) {
-                    return objToppingSprite(
-                        seed,
-                        txsOnion,
-                        80,
-                        objFace(txsOnionFace),
-                    );
-                },
+                objFigure: createStandardFigureObjFactory("Strawberry"),
                 instrumentId: "DrumKit0",
                 sfx: DataToppingsSfx.create(1700),
                 transformSequenceDegrees,
@@ -185,20 +113,31 @@ export namespace DataToppings {
     export type Id = DataLib.Id<typeof manifest>;
 }
 
-const shadowTextureMap = (() => {
-    const map = new Map<Texture, Texture>();
-    map.set(txsTomato[0], Tx.Shadows.Tomato);
-    return map;
-})();
+type TextureKeys<T> = PropertiesLike<T, Texture>;
+
+type StandardFigureKey =
+    & keyof TextureKeys<typeof Tx["Toppings"]["Pixel"]>
+    & keyof TextureKeys<typeof Tx["Faces"]["Pixel"]>;
+
+function createStandardFigureObjFactory(key: StandardFigureKey) {
+    const txs = [Tx.Toppings.Pixel[key]];
+    const faceTxs = Tx.Faces.Pixel[key].split({ count: 2 });
+
+    return function () {
+        return objToppingSprite(
+            0,
+            txs,
+            80,
+            objFace(faceTxs),
+        );
+    };
+}
 
 function objToppingSprite(seed: Integer, textures: Texture[], targetWidth: Integer, ...children: DisplayObject[]) {
     const texture = textures[seed % textures.length];
     const scale = (targetWidth / texture.width) * toppingScale.x;
 
-    const shadowTexture = shadowTextureMap.get(texture);
-
     return container(
-        // ...(shadowTexture ? [Sprite.from(shadowTexture)] : []),
         Sprite.from(texture),
         ...children,
     )
