@@ -85,7 +85,7 @@ export namespace DataToppings {
             },
             Strawberry: {
                 objFigure: createStandardFigureObjFactory("Strawberry"),
-                instrumentId: "DrumKit0",
+                instrumentId: "Moog",
                 sfx: DataToppingsSfx.create(1700),
                 transformSequenceDegrees,
                 tint: 0xFF474A,

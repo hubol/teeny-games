@@ -91,7 +91,15 @@ export namespace DataInstruments {
                 sample: {
                     kind: "multi",
                     sfxs: Sfx.Samples.WaterBottle,
-                    gain: 0.8,
+                    gain: 0.7,
+                    polyphony: true,
+                },
+            },
+            Moog: {
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.Moog,
+                    gain: 1,
                     polyphony: true,
                 },
             },
