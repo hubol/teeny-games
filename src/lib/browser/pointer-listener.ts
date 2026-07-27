@@ -32,11 +32,16 @@ export class PointerListener implements PointerListener.Public {
             const x = v.x + Math.round(e.width / 2) - consts.radius;
             const y = v.y + Math.round(e.height / 2) - consts.radius;
 
+            const width = e.width + consts.radius * 2;
+            const height = e.height + consts.radius * 2;
+
             for (let i = 0; i < this._states.length; i++) {
                 const state = this._states[i];
                 if (state.id === id) {
                     state.x = x;
                     state.y = y;
+                    state.width = width;
+                    state.height = height;
                     if (e.pointerType === "mouse" && e.type === "pointerdown") {
                         state.down = true;
                     }
@@ -49,8 +54,8 @@ export class PointerListener implements PointerListener.Public {
                 id,
                 x,
                 y,
-                width: consts.radius * 2,
-                height: consts.radius * 2,
+                width,
+                height,
                 type: pointerType,
             };
             this._states.push(state);
