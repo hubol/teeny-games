@@ -1,5 +1,6 @@
 import { Graphics } from "pixi.js";
 import { Coro } from "../../../lib/game-engine/routines/coro";
+import { factor, interpv } from "../../../lib/game-engine/routines/interp";
 import { onMutate } from "../../../lib/game-engine/routines/on-mutate";
 import { vdeg } from "../../../lib/math/angle";
 import { container } from "../../../lib/pixi/container";
@@ -22,6 +23,13 @@ export function objFigureToppingBanks(banks: PizzaToppingBanks.Model) {
                     continue;
                 }
 
+                const containerObj = container()
+                    .scaled(1.5, 1.5)
+                    .coro(function* (self) {
+                        yield interpv(self.scale).factor(factor.sine).to(1, 1).over(250);
+                    })
+                    .show(self);
+
                 new Graphics()
                     .beginFill(0xe73f21)
                     .drawCircle(0, 0, 50)
@@ -32,7 +40,7 @@ export function objFigureToppingBanks(banks: PizzaToppingBanks.Model) {
                     .beginFill(0x5dbbe0)
                     .drawCircle(0, 0, 20)
                     .zIndexed(-9999)
-                    .show(self);
+                    .show(containerObj);
 
                 const bank = banks.next;
 
@@ -44,7 +52,7 @@ export function objFigureToppingBanks(banks: PizzaToppingBanks.Model) {
                         .scaled(0.2, 0.2)
                         .at(position)
                         .zIndexed(position.y)
-                        .show(self);
+                        .show(containerObj);
                 }
             }
         });

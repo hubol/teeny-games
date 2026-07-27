@@ -13,16 +13,15 @@ import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, Pointer, scene } from "../globals";
-import { mxnPointerPress } from "../mixins/mxn-pointer-press";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
-import { objFigureToppingBanks } from "../objects/figures/obj-figure-topping-banks";
 import { objCondiment } from "../objects/obj-condiment";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objToppingContainerPillar } from "../objects/obj-topping-container-pillar";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
+import { objToolBankSwapper } from "../objects/tools/obj-tool-bank-swapper";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
 export function scnMain() {
@@ -207,15 +206,7 @@ export function scnMain() {
         })
         .show();
 
-    objFigureToppingBanks(banks)
+    objToolBankSwapper(banks)
         .at(515, 100)
-        .mixin(mxnPointerPress)
-        .handles("mxnPointerPress:pressed", (self) => {
-            if (self.children.length === 0) {
-                return;
-            }
-
-            banks.swap();
-        })
         .show();
 }

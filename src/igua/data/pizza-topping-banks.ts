@@ -1,3 +1,4 @@
+import { Integer } from "../../lib/math/number-alias-types";
 import { DataToppings } from "./data-toppings";
 
 export namespace PizzaToppingBanks {
@@ -15,6 +16,7 @@ export namespace PizzaToppingBanks {
         swapTo(id: Id): void;
         readonly current: DataToppings.Id[];
         readonly next: DataToppings.Id[];
+        readonly unlockedCount: Integer;
     }
 
     export function create(): Model {
@@ -44,6 +46,9 @@ export namespace PizzaToppingBanks {
             swapTo(id: Id) {
                 const index = unlockedBankIds.indexOf(id);
                 currentIndex = index > -1 ? index : 0;
+            },
+            get unlockedCount() {
+                return unlockedBankIds.length;
             },
         };
     }
