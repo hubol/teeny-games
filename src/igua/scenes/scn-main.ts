@@ -7,7 +7,7 @@ import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
-import { nlerp } from "../../lib/math/number";
+import { approachLinear, nlerp } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
@@ -249,7 +249,11 @@ export function scnMain() {
             });
 
             self.step(() => {
-                pizzaObj.objPizza.sauceCheeseUnit = self.objControlArc.value;
+                pizzaObj.objPizza.sauceCheeseUnit = approachLinear(
+                    pizzaObj.objPizza.sauceCheeseUnit,
+                    self.objControlArc.value,
+                    0.1,
+                );
 
                 if (
                     self.objControlArc.isBeingHandled

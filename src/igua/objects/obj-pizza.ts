@@ -3,7 +3,7 @@ import { Tx } from "../../assets/textures";
 import { Instances } from "../../lib/game-engine/instances";
 import { factor, interp, interpv } from "../../lib/game-engine/routines/interp";
 import { vdeg, vrad } from "../../lib/math/angle";
-import { cyclic } from "../../lib/math/number";
+import { approachLinear, cyclic } from "../../lib/math/number";
 import { Integer, Seconds } from "../../lib/math/number-alias-types";
 import { PseudoRng, Rng } from "../../lib/math/rng";
 import { vdir, vlerp } from "../../lib/math/vector";
@@ -385,31 +385,49 @@ function objPizzaSauceCheese() {
                 return;
             }
 
-            const threshold = value < 0.04 ? 0 : (obj.children.length - 2) * value;
+            visibleUnit = value;
+
+            const threshold = (obj.children.length - 2) * value;
             for (let i = 0; i < obj.children.length; i++) {
-                obj.children[i].visible = i < threshold;
+                const child = obj.children[i];
+                const previousVisible = child.visible;
+                child.visible = i < threshold;
+                if (!previousVisible && child.visible) {
+                    child.pivot.y = Rng.float(10, 40);
+                }
             }
         },
     };
 
     const obj = container(
         ...range(200).map(() =>
-            Sprite.from(Tx.Pizza.Sauce)
-                .anchored(0.5, 0.5)
-                .angled(Rng.int(4) * 90)
-                .scaled(2, 2)
+            container(
+                Sprite.from(Tx.Pizza.Sauce)
+                    .anchored(0.5, 0.5)
+                    .angled(Rng.int(4) * 90)
+                    .scaled(2, 2),
+            )
                 .at(p.vunit(), Rng.float(30, 450))
                 .invisible()
         ),
         ...range(200).map(() =>
-            Sprite.from(Tx.Pizza.Cheese)
-                .anchored(0.5, 0.5)
-                .angled(Rng.int(4) * 90)
-                .scaled(2, 2)
+            container(
+                Sprite.from(Tx.Pizza.Cheese)
+                    .anchored(0.5, 0.5)
+                    .angled(Rng.int(4) * 90)
+                    .scaled(2, 2),
+            )
                 .at(p.vunit(), Rng.float(30, 450))
                 .invisible()
         ),
-    );
+    )
+        .step(self => {
+            for (const child of self.children) {
+                if (child.visible && child.pivot.y !== 0) {
+                    child.pivot.y = approachLinear(child.pivot.y * 0.9, 0, 2 + Rng.float(3));
+                }
+            }
+        });
 
     return obj
         .merge({ objPizzaSauceCheese: api });
