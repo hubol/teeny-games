@@ -71,7 +71,7 @@ function showFatalError(error: any) {
     const message = typeof error === "string" ? error : (error?.message ? error.message : JSON.stringify(error));
     document.body.id = "fatal_error";
     document.body.innerHTML = `<h1>Error in initialization</h1>
-<h2>${message}</h2>`;
+<h2>${Environment.isDev ? message : "See console for details"}</h2>`;
 }
 
 window.onload = initialize;
@@ -82,7 +82,9 @@ window.addEventListener(
 );
 window.addEventListener("error", (e) => Logger.logUnhandledError("window.on('error')", e));
 
-Logger.target = new DomLogTarget();
+if (Environment.isDev) {
+    Logger.target = new DomLogTarget();
+}
 
 function addGameCanvasToDocument(element: HTMLCanvasElement) {
     element.id = "game_canvas";
