@@ -207,7 +207,6 @@ export function scnMain() {
         .step(self => {
             self.objCharacterMystery.isRevealed = !banks.isUnlocked("Sweetzza") && mysteryRevealConditions
                 .every(({ count, toppingId }) => pizzaObj.objPizza.getToppingCount(toppingId) === count);
-            self.objCharacterMystery.isRevealed = !banks.isUnlocked("Sweetzza");
         })
         .handles("objCharacterMystery:pressed", () => {
             if (banks.unlock("Sweetzza")) {
