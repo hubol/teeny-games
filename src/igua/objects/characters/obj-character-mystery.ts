@@ -17,6 +17,7 @@ export function objCharacterMystery() {
     )
         .merge({ objCharacterMystery: api })
         .mixin(mxnPointerPress)
+        .step(self => self.mxnPointerPress.canPress = api.isRevealed)
         .dispatches<"objCharacterMystery:pressed">()
         .handles("mxnPointerPress:pressed", (self) => {
             if (api.isRevealed) {
