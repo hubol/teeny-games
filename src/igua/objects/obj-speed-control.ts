@@ -1,16 +1,14 @@
 import { Graphics, Point, TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Sfx } from "../../assets/sounds";
-import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
 import { interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { nlerp } from "../../lib/math/number";
 import { container } from "../../lib/pixi/container";
-import { Null } from "../../lib/types/null";
 import { DataSpeedControlCharacters } from "../data/data-speed-control-characters";
+import { mxnPointerClaim } from "../mixins/mxn-pointer-claim";
 import { mxnPointerPress } from "../mixins/mxn-pointer-press";
-import { PizzaPointer } from "../utils/pizza-pointer";
 import { objCharacterSpeedControl } from "./characters/obj-character-speed-control";
 import { objAnnouncer } from "./obj-announcer";
 
@@ -22,8 +20,6 @@ const consts = {
 const p = new Point();
 
 export function objSpeedControl() {
-    let thisPointer = Null<PointerListener.State>();
-
     const orderedCharacterIds: Array<DataSpeedControlCharacters.Id> = [
         "Pete",
         "George",
@@ -117,23 +113,15 @@ export function objSpeedControl() {
                 .drawRoundedRect(-consts.trackRadius, -10, consts.trackRadius * 2, 20, 10),
             handleObj,
         )
+            .mixin(mxnPointerClaim)
             .step(self => {
-                if (thisPointer?.down) {
-                    return;
-                }
-                const pointer = PizzaPointer.claim(self);
-                if (pointer) {
-                    thisPointer = pointer;
-                }
-            })
-            .step(self => {
-                if (!thisPointer) {
+                if (!self.mxnPointerClaim.pointer) {
                     return;
                 }
 
                 const previousSpeed = api.speed;
 
-                const point = self.worldTransform.applyInverse(thisPointer, p);
+                const point = self.worldTransform.applyInverse(self.mxnPointerClaim.pointer, p);
                 const x = point.x;
                 handleObj.x = Math.max(-consts.trackRadius, Math.min(x, consts.trackRadius));
 
