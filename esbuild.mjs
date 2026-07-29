@@ -16,7 +16,7 @@ const serve = process.argv[2] === "serve";
 function options(overrides) {
     /** @type {import('esbuild').BuildOptions} */
     const options = {
-        entryPoints: ["src/index.ts"],
+        entryPoints: ["src/index.ts", "src/audio-worklet-processors.js"],
         assetNames: "assets/[name]-[hash]",
         bundle: true,
         sourcemap: true,
@@ -44,7 +44,7 @@ if (!serve) {
         outdir: "dist",
         assetNames: `assets/[name]-${signature}`,
         entryNames: `[name]-${signature}`,
-        define: { IS_PRODUCTION: "true" },
+        define: { IS_PRODUCTION: "true", AUDIO_WORKLET_PROCESSORS_JS_URL: `"audio-worklet-processors-${signature}.js"` },
     }));
 
     const indexHtmlSource = (await readFile("public/index.html", "utf8"))
@@ -57,7 +57,7 @@ if (!serve) {
 else {
     const ctx = await context(options({
         outdir: "public",
-        define: { IS_PRODUCTION: "false" },
+        define: { IS_PRODUCTION: "false", AUDIO_WORKLET_PROCESSORS_JS_URL: `"audio-worklet-processors.js"` },
     }));
 
     await watch(ctx);

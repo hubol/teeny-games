@@ -5,6 +5,7 @@ import { Sound } from "../../lib/game-engine/audio/sound";
 import { StereoDelay } from "../../lib/game-engine/audio/stereo-delay";
 import { Logging } from "../../lib/logging";
 import { Unit } from "../../lib/math/number-alias-types";
+import { PizzaSynth } from "./pizza-synth";
 
 class IguaAudioImpl {
     private readonly _globalGainNode: GainNode;
@@ -54,6 +55,14 @@ class IguaAudioImpl {
     set globalGain(value: Unit) {
         this._globalGainNode.gain.value = value;
     }
+
+    // createWorkletNode(id: "frequency-modulator") {
+    //     return new AudioWorkletNode(this._context, id);
+    // }
+
+    createPizzaSynth() {
+        return new PizzaSynth(this._context, this._globalGainNode);
+    }
 }
 
 export let IguaAudio: IguaAudioImpl;
@@ -62,6 +71,7 @@ export let Jukebox: AsshatJukebox;
 export const IguaAudioInitializer = {
     async initialize() {
         await intervalWait(() => !!AsshatAudioContext);
+        await AsshatAudioContext.audioWorklet.addModule(AUDIO_WORKLET_PROCESSORS_JS_URL);
         IguaAudio = new IguaAudioImpl(AsshatAudioContext);
         Jukebox = IguaAudio.jukebox;
     },

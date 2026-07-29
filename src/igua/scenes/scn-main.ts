@@ -9,6 +9,7 @@ import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-m
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
+import { IguaAudio } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaToppingBanks } from "../data/pizza-topping-banks";
@@ -16,6 +17,7 @@ import { Key, Pointer, scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCondiment } from "../objects/obj-condiment";
+import { objControlArc } from "../objects/obj-control-arc";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
@@ -25,7 +27,10 @@ import { objToolBankSwapper } from "../objects/tools/obj-tool-bank-swapper";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
 export function scnMain() {
-    Sprite.from(Tx.Background).at(-38, -16).show();
+    Sprite.from(Tx.Background)
+        .at(-38, -16)
+        .zIndexed(-999)
+        .show();
 
     const banks = PizzaToppingBanks.create();
 
@@ -208,5 +213,27 @@ export function scnMain() {
 
     objToolBankSwapper(banks)
         .at(515, 100)
+        .show();
+
+    const pizzaSynth = IguaAudio.createPizzaSynth();
+
+    objControlArc({
+        startDegrees: -20,
+        endDegrees: 50,
+        radius: 630,
+        handleTint: 0xffffff,
+        trackTint: 0x000000,
+    })
+        .step(self => {
+            pizzaSynth.setTargetGain(self.objControlArc.isBeingHandled ? 1 : 0);
+        })
+        .coro(function* (self) {
+            while (true) {
+                yield onPrimitiveMutate(() => self.objControlArc.value);
+                pizzaSynth.setFrequency(110 + self.objControlArc.value * 770);
+            }
+        })
+        .at(pizzaObj)
+        .zIndexed(-1)
         .show();
 }
