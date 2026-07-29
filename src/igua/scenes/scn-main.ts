@@ -17,6 +17,7 @@ import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
+import { objAnnouncer } from "../objects/obj-announcer";
 import { objCondiment } from "../objects/obj-condiment";
 import { objControlArc } from "../objects/obj-control-arc";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
@@ -206,9 +207,13 @@ export function scnMain() {
         .step(self => {
             self.objCharacterMystery.isRevealed = !banks.isUnlocked("Sweetzza") && mysteryRevealConditions
                 .every(({ count, toppingId }) => pizzaObj.objPizza.getToppingCount(toppingId) === count);
+            self.objCharacterMystery.isRevealed = !banks.isUnlocked("Sweetzza");
         })
         .handles("objCharacterMystery:pressed", () => {
-            banks.unlock("Sweetzza");
+            if (banks.unlock("Sweetzza")) {
+                Sfx.Effects.Unlock.play();
+                objAnnouncer.singleton.announce(Sfx.Dialog.Events.NewToppingsUnlocked);
+            }
             banks.swapTo("Sweetzza");
         })
         .show();

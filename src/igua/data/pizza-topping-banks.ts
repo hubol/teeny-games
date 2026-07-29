@@ -11,7 +11,7 @@ export namespace PizzaToppingBanks {
 
     export interface Model {
         isUnlocked(id: Id): boolean;
-        unlock(id: Id): void;
+        unlock(id: Id): boolean;
         swap(): void;
         swapTo(id: Id): void;
         readonly current: DataToppings.Id[];
@@ -29,10 +29,11 @@ export namespace PizzaToppingBanks {
             },
             unlock(id: Id) {
                 if (unlockedBankIds.includes(id)) {
-                    return;
+                    return false;
                 }
 
                 unlockedBankIds.push(id);
+                return true;
             },
             get current() {
                 return manifest[unlockedBankIds[currentIndex]];
