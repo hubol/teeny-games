@@ -26,6 +26,7 @@ import { objToppingContainerPillar } from "../objects/obj-topping-container-pill
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objToolBankSwapper } from "../objects/tools/obj-tool-bank-swapper";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
+import { PizzaSamples } from "../utils/pizza-samples";
 
 export function scnMain() {
     Sprite.from(Tx.Background)
@@ -226,7 +227,10 @@ export function scnMain() {
     })
         .coro(function* (self) {
             function playSample() {
-                self.play(Sfx.Samples.Wah.rate(nlerp(0.5, 2, self.objControlArc.value)));
+                const rawRate = nlerp(0.5, 2, self.objControlArc.value);
+                const rate = PizzaSamples.getNearestCScaleRate(rawRate);
+                console.log(rate);
+                self.play(Sfx.Samples.Wah.rate(rate));
             }
 
             pizzaObj.handles("objPizza:sequence16", () => {
