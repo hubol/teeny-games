@@ -19,10 +19,14 @@ export function objControlArc(args: objControlArc.Args) {
     }
 
     let value = 0.5;
+    let isBeingHandled = false;
 
     const api = {
         get value() {
             return value;
+        },
+        get isBeingHandled() {
+            return isBeingHandled;
         },
     };
 
@@ -32,6 +36,8 @@ export function objControlArc(args: objControlArc.Args) {
         .mixin(mxnPointerClaim)
         .at(getPosition(value))
         .step(self => {
+            isBeingHandled = Boolean(self.mxnPointerClaim.pointer);
+
             if (!self.mxnPointerClaim.pointer) {
                 return;
             }
