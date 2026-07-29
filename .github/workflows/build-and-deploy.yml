@@ -1,5 +1,8 @@
 name: Build and deploy on push
-on: push
+on:
+  push:
+    branches:
+     - icm-pizza
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
