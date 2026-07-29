@@ -1,7 +1,8 @@
-import { Graphics, LINE_CAP, Point } from "pixi.js";
+import { Graphics, LINE_CAP, Point, RAD_TO_DEG } from "pixi.js";
 import { ToRad } from "../../lib/math/angle";
 import { nlerp } from "../../lib/math/number";
 import { RgbInt, Unit } from "../../lib/math/number-alias-types";
+import { vdir } from "../../lib/math/vector";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { mxnPointerClaim } from "../mixins/mxn-pointer-claim";
@@ -10,9 +11,11 @@ const p = new Point();
 const v = vnew();
 
 export function objControlArc(args: objControlArc.Args) {
+    const { startDegrees, endDegrees } = args;
+
     function getPosition(f: Unit): VectorSimple {
-        const radians = nlerp(args.startDegrees, args.endDegrees, f) * ToRad;
-        return v.at(Math.cos(radians), Math.sin(radians)).scale(args.radius);
+        const radians = nlerp(startDegrees, endDegrees, f) * ToRad;
+        return v.at(Math.cos(radians), -Math.sin(radians)).scale(args.radius);
     }
 
     let value = 0.5;
@@ -35,6 +38,12 @@ export function objControlArc(args: objControlArc.Args) {
 
             self.at(self.parent.worldTransform.applyInverse(self.mxnPointerClaim.pointer, p));
             self.position.vlength = args.radius;
+
+            const degrees = vdir(p) * RAD_TO_DEG;
+            value = Math.max(0, Math.min(1, nlerp.inverse(startDegrees, endDegrees, degrees)));
+            if (value <= 0 || value >= 1) {
+                self.at(getPosition(value));
+            }
         });
 
     const trackObj = new Graphics()
