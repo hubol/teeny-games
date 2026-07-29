@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 101 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 102 }];
 
 interface TxData {
   id: string;
@@ -22,43 +22,43 @@ function txs<T>(tx: (data: TxData) => T) {
         Runners: {
           Black: {
             East: tx({ id: "Characters.Chicken.Runners.Black.East", atlas: 0, x: 3767, y: 91, width: 76, height: 34 }),
-            North: tx({ id: "Characters.Chicken.Runners.Black.North", atlas: 0, x: 3920, y: 1882, width: 76, height: 34 }),
-            South: tx({ id: "Characters.Chicken.Runners.Black.South", atlas: 0, x: 3920, y: 1917, width: 76, height: 34 }),
+            North: tx({ id: "Characters.Chicken.Runners.Black.North", atlas: 0, x: 3985, y: 1886, width: 76, height: 34 }),
+            South: tx({ id: "Characters.Chicken.Runners.Black.South", atlas: 0, x: 3985, y: 1921, width: 76, height: 34 }),
           },
           Brown: {
-            East: tx({ id: "Characters.Chicken.Runners.Brown.East", atlas: 0, x: 3997, y: 1920, width: 76, height: 34 }),
-            North: tx({ id: "Characters.Chicken.Runners.Brown.North", atlas: 0, x: 3920, y: 1952, width: 76, height: 34 }),
-            South: tx({ id: "Characters.Chicken.Runners.Brown.South", atlas: 0, x: 3997, y: 1955, width: 76, height: 34 }),
+            East: tx({ id: "Characters.Chicken.Runners.Brown.East", atlas: 0, x: 3985, y: 1956, width: 76, height: 34 }),
+            North: tx({ id: "Characters.Chicken.Runners.Brown.North", atlas: 0, x: 3920, y: 1991, width: 76, height: 34 }),
+            South: tx({ id: "Characters.Chicken.Runners.Brown.South", atlas: 0, x: 3997, y: 1991, width: 76, height: 34 }),
           },
           Gray: {
-            East: tx({ id: "Characters.Chicken.Runners.Gray.East", atlas: 0, x: 3920, y: 1987, width: 76, height: 34 }),
-            North: tx({ id: "Characters.Chicken.Runners.Gray.North", atlas: 0, x: 3997, y: 1990, width: 76, height: 34 }),
-            South: tx({ id: "Characters.Chicken.Runners.Gray.South", atlas: 0, x: 3920, y: 2022, width: 76, height: 34 }),
+            East: tx({ id: "Characters.Chicken.Runners.Gray.East", atlas: 0, x: 3920, y: 2026, width: 76, height: 34 }),
+            North: tx({ id: "Characters.Chicken.Runners.Gray.North", atlas: 0, x: 3997, y: 2026, width: 76, height: 34 }),
+            South: tx({ id: "Characters.Chicken.Runners.Gray.South", atlas: 0, x: 3456, y: 1935, width: 76, height: 34 }),
           },
         },
       },
       George: {
         Runner: {
           East: tx({ id: "Characters.George.Runner.East", atlas: 0, x: 3054, y: 1839, width: 84, height: 42 }),
-          North: tx({ id: "Characters.George.Runner.North", atlas: 0, x: 3982, y: 1757, width: 84, height: 40 }),
-          South: tx({ id: "Characters.George.Runner.South", atlas: 0, x: 3982, y: 1798, width: 84, height: 40 }),
+          North: tx({ id: "Characters.George.Runner.North", atlas: 0, x: 3982, y: 1802, width: 84, height: 40 }),
+          South: tx({ id: "Characters.George.Runner.South", atlas: 0, x: 3920, y: 1843, width: 84, height: 40 }),
         },
         Walk: tx({ id: "Characters.George.Walk", atlas: 0, x: 3763, y: 1228, width: 318, height: 112 }),
       },
       Magnet: tx({ id: "Characters.Magnet", atlas: 0, x: 3763, y: 1341, width: 312, height: 106 }),
-      Mystery: tx({ id: "Characters.Mystery", atlas: 0, x: 2556, y: 1932, width: 48, height: 48 }),
+      Mystery: tx({ id: "Characters.Mystery", atlas: 0, x: 3141, y: 1613, width: 48, height: 48 }),
       Pete: {
         Runner: {
-          East: tx({ id: "Characters.Pete.Runner.East", atlas: 0, x: 3997, y: 2025, width: 76, height: 46 }),
-          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 3456, y: 1935, width: 76, height: 46 }),
-          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 3533, y: 1935, width: 76, height: 46 }),
+          East: tx({ id: "Characters.Pete.Runner.East", atlas: 0, x: 3533, y: 1935, width: 76, height: 46 }),
+          North: tx({ id: "Characters.Pete.Runner.North", atlas: 0, x: 3456, y: 1970, width: 76, height: 46 }),
+          South: tx({ id: "Characters.Pete.Runner.South", atlas: 0, x: 3533, y: 1982, width: 76, height: 46 }),
         },
         Walk: tx({ id: "Characters.Pete.Walk", atlas: 0, x: 3846, y: 0, width: 240, height: 112 }),
       },
       Runner: {
-        HoldingStringNorth: tx({ id: "Characters.Runner.HoldingStringNorth", atlas: 0, x: 3456, y: 1982, width: 68, height: 38 }),
-        HoldingStringSouth: tx({ id: "Characters.Runner.HoldingStringSouth", atlas: 0, x: 3525, y: 1982, width: 68, height: 38 }),
-        Shadow: tx({ id: "Characters.Runner.Shadow", atlas: 0, x: 3725, y: 1507, width: 34, height: 38 }),
+        HoldingStringNorth: tx({ id: "Characters.Runner.HoldingStringNorth", atlas: 0, x: 3456, y: 2017, width: 68, height: 38 }),
+        HoldingStringSouth: tx({ id: "Characters.Runner.HoldingStringSouth", atlas: 0, x: 3525, y: 2029, width: 68, height: 38 }),
+        Shadow: tx({ id: "Characters.Runner.Shadow", atlas: 0, x: 4062, y: 1886, width: 34, height: 38 }),
       },
       Tuna: tx({ id: "Characters.Tuna", atlas: 0, x: 0, y: 0, width: 2970, height: 146 }),
     },
@@ -97,19 +97,19 @@ function txs<T>(tx: (data: TxData) => T) {
       CondimentDrip: tx({ id: "Effects.CondimentDrip", atlas: 0, x: 915, y: 4007, width: 136, height: 88 }),
       HeartBurst: tx({ id: "Effects.HeartBurst", atlas: 0, x: 3763, y: 1448, width: 308, height: 52 }),
       Shadow256: tx({ id: "Effects.Shadow256", atlas: 0, x: 1081, y: 1348, width: 1024, height: 1024 }),
-      Spark: tx({ id: "Effects.Spark", atlas: 0, x: 4070, y: 1757, width: 26, height: 38 }),
+      Spark: tx({ id: "Effects.Spark", atlas: 0, x: 4067, y: 1802, width: 26, height: 38 }),
     },
     Faces: {
       Idle: tx({ id: "Faces.Idle", atlas: 0, x: 2113, y: 1228, width: 1136, height: 150 }),
       Pepperoni: tx({ id: "Faces.Pepperoni", atlas: 0, x: 0, y: 4064, width: 128, height: 30 }),
       Pixel: {
         GreenPepper: tx({ id: "Faces.Pixel.GreenPepper", atlas: 0, x: 3557, y: 91, width: 108, height: 52 }),
-        Kiwi: tx({ id: "Faces.Pixel.Kiwi", atlas: 0, x: 3982, y: 1710, width: 96, height: 46 }),
+        Kiwi: tx({ id: "Faces.Pixel.Kiwi", atlas: 0, x: 3982, y: 1755, width: 96, height: 46 }),
         MandarinOrange: tx({ id: "Faces.Pixel.MandarinOrange", atlas: 0, x: 3293, y: 109, width: 96, height: 34 }),
         Mushroom: tx({ id: "Faces.Pixel.Mushroom", atlas: 0, x: 2363, y: 1707, width: 100, height: 42 }),
         Onion: tx({ id: "Faces.Pixel.Onion", atlas: 0, x: 3666, y: 91, width: 100, height: 50 }),
         Pineapple: tx({ id: "Faces.Pixel.Pineapple", atlas: 0, x: 2464, y: 1707, width: 100, height: 38 }),
-        Strawberry: tx({ id: "Faces.Pixel.Strawberry", atlas: 0, x: 3920, y: 1839, width: 84, height: 42 }),
+        Strawberry: tx({ id: "Faces.Pixel.Strawberry", atlas: 0, x: 4005, y: 1843, width: 84, height: 42 }),
         Tomato: tx({ id: "Faces.Pixel.Tomato", atlas: 0, x: 3390, y: 109, width: 96, height: 34 }),
       },
       Sing: tx({ id: "Faces.Sing", atlas: 0, x: 0, y: 3314, width: 852, height: 150 }),
@@ -124,10 +124,11 @@ function txs<T>(tx: (data: TxData) => T) {
     },
     Overlay: {
       CursorDown: tx({ id: "Overlay.CursorDown", atlas: 0, x: 2761, y: 1986, width: 64, height: 80 }),
-      Cursor: tx({ id: "Overlay.Cursor", atlas: 0, x: 4005, y: 1839, width: 64, height: 80 }),
+      Cursor: tx({ id: "Overlay.Cursor", atlas: 0, x: 3920, y: 1884, width: 64, height: 80 }),
+      WarningError: tx({ id: "Overlay.WarningError", atlas: 0, x: 3982, y: 1710, width: 108, height: 44 }),
     },
     Pizza: {
-      Cheese: tx({ id: "Pizza.Cheese", atlas: 0, x: 3594, y: 1982, width: 68, height: 56 }),
+      Cheese: tx({ id: "Pizza.Cheese", atlas: 0, x: 3594, y: 2029, width: 68, height: 56 }),
       CutLines: tx({ id: "Pizza.CutLines", atlas: 0, x: 0, y: 2429, width: 894, height: 884 }),
       Dough: tx({ id: "Pizza.Dough", atlas: 0, x: 0, y: 3465, width: 552, height: 541 }),
       Mask: tx({ id: "Pizza.Mask", atlas: 0, x: 553, y: 3465, width: 552, height: 541 }),
@@ -150,13 +151,13 @@ function txs<T>(tx: (data: TxData) => T) {
       Pineapple1: tx({ id: "Toppings.Pineapple1", atlas: 0, x: 2363, y: 1751, width: 256, height: 180 }),
       Pixel: {
         GreenPepper: tx({ id: "Toppings.Pixel.GreenPepper", atlas: 0, x: 3195, y: 1379, width: 54, height: 52 }),
-        Kiwi: tx({ id: "Toppings.Pixel.Kiwi", atlas: 0, x: 3141, y: 1664, width: 48, height: 46 }),
+        Kiwi: tx({ id: "Toppings.Pixel.Kiwi", atlas: 0, x: 3141, y: 1662, width: 48, height: 46 }),
         MandarinOrange: tx({ id: "Toppings.Pixel.MandarinOrange", atlas: 0, x: 3487, y: 109, width: 48, height: 34 }),
         Mushroom: tx({ id: "Toppings.Pixel.Mushroom", atlas: 0, x: 2565, y: 1707, width: 50, height: 42 }),
-        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 3141, y: 1613, width: 50, height: 50 }),
-        Pineapple: tx({ id: "Toppings.Pixel.Pineapple", atlas: 0, x: 3610, y: 1935, width: 50, height: 38 }),
-        Strawberry: tx({ id: "Toppings.Pixel.Strawberry", atlas: 0, x: 3149, y: 1508, width: 42, height: 42 }),
-        Tomato: tx({ id: "Toppings.Pixel.Tomato", atlas: 0, x: 3141, y: 1711, width: 48, height: 34 }),
+        Onion: tx({ id: "Toppings.Pixel.Onion", atlas: 0, x: 3610, y: 1935, width: 50, height: 50 }),
+        Pineapple: tx({ id: "Toppings.Pixel.Pineapple", atlas: 0, x: 3610, y: 1986, width: 50, height: 38 }),
+        Strawberry: tx({ id: "Toppings.Pixel.Strawberry", atlas: 0, x: 3141, y: 1744, width: 42, height: 42 }),
+        Tomato: tx({ id: "Toppings.Pixel.Tomato", atlas: 0, x: 3141, y: 1709, width: 48, height: 34 }),
       },
       Tomato: tx({ id: "Toppings.Tomato", atlas: 0, x: 2106, y: 1379, width: 512, height: 200 }),
     },

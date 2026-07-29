@@ -17,6 +17,7 @@ import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, Pointer, scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
+import { objCharacterWarning } from "../objects/characters/obj-character-warning";
 import { objAnnouncer } from "../objects/obj-announcer";
 import { objCondiment } from "../objects/obj-condiment";
 import { objControlArc } from "../objects/obj-control-arc";
@@ -33,6 +34,10 @@ export function scnMain() {
     Sprite.from(Tx.Background)
         .at(-38, -16)
         .zIndexed(-999)
+        .show();
+
+    objCharacterWarning()
+        .at(20, 20)
         .show();
 
     const banks = PizzaToppingBanks.create();

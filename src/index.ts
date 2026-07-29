@@ -2,6 +2,7 @@ import { settings } from "pixi.js";
 import { setCurrentPixiRenderer } from "./igua/current-pixi-renderer";
 import { loadLaunchAssets } from "./igua/launch/load-launch-assets";
 import { showLoadingScreen } from "./igua/launch/show-loading-screen";
+import { PizzaLogTarget } from "./igua/utils/pizza-log-target";
 import { integralUpscaleCanvas } from "./lib/browser/integral-upscale-canvas";
 import { Environment } from "./lib/environment";
 import { initializeAsshatAudioContext } from "./lib/game-engine/audio/asshat-audiocontext";
@@ -82,9 +83,7 @@ window.addEventListener(
 );
 window.addEventListener("error", (e) => Logger.logUnhandledError("window.on('error')", e));
 
-if (Environment.isDev) {
-    Logger.target = new DomLogTarget();
-}
+Logger.target = Environment.isDev ? new DomLogTarget() : PizzaLogTarget.singleton;
 
 function addGameCanvasToDocument(element: HTMLCanvasElement) {
     element.id = "game_canvas";
