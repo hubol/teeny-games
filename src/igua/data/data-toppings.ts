@@ -1,8 +1,10 @@
 import { Container, DisplayObject, Sprite, Texture } from "pixi.js";
 import { Tx } from "../../assets/textures";
+import { cyclic } from "../../lib/math/number";
 import { DegreesFloat, Integer, RgbInt } from "../../lib/math/number-alias-types";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { range } from "../../lib/range";
 import { PropertiesLike } from "../../lib/types/properties-like";
 import { objFace } from "../mixins/mxn-face";
 import { DataInstruments } from "./data-instruments";
@@ -22,6 +24,14 @@ export namespace DataToppings {
     }
 
     const transformSequenceDegrees: Model["transformSequenceDegrees"] = (degrees) => degrees;
+    const transformSequenceDegrees16: Model["transformSequenceDegrees"] = (degrees) =>
+        Math.round(degrees / 22.5) * 22.5;
+
+    export const sequenceDegrees16 = [
+        ...new Set(range(360).map(degrees => cyclic(transformSequenceDegrees16(degrees, 0), 0, 360))),
+    ];
+
+    console.log(sequenceDegrees16);
 
     export const { manifest, getById } = DataLib.create(
         "DataToppings",
@@ -46,7 +56,7 @@ export namespace DataToppings {
                 objFigure: createStandardFigureObjFactory("Tomato"),
                 instrumentId: "DrumKit0",
                 sfx: DataToppingsSfx.create(1451),
-                transformSequenceDegrees: (degrees) => Math.round(degrees / 22.5) * 22.5,
+                transformSequenceDegrees: transformSequenceDegrees16,
                 tint: 0xF43D1D,
                 containerPivot: [70, 85],
             },

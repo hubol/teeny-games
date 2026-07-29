@@ -173,6 +173,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
     const nailedStringObj = objNailedString(consts.radius.max + 45, characterRunnerObj);
 
     let lastStepTime = Null<number>();
+    let dispatchSequence16 = false;
 
     return container(
         Sprite.from(Tx.Pizza.Mask)
@@ -186,6 +187,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             toppingsObj,
         )
             .step(self => {
+                dispatchSequence16 = false;
                 toppingObjs.length = 0;
                 toppingObjs.push(...toppingsObj.children);
 
@@ -231,6 +233,14 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                         api.playedSequencedSamplesCount++;
                     }
                 }
+
+                for (const sequenceDegrees16 of DataToppings.sequenceDegrees16) {
+                    const sequenceDelta = cyclic(sequenceDegrees16 - angle, 0, 360);
+                    if (sequenceDelta <= absDelta) {
+                        dispatchSequence16 = true;
+                        break;
+                    }
+                }
             }),
         nailedStringObj,
         characterRunnerObj,
@@ -252,6 +262,12 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                     .factor(factor.sine)
                     .to(0)
                     .over(700);
+            }
+        })
+        .dispatches<"objPizza:sequence16">()
+        .step(self => {
+            if (dispatchSequence16) {
+                self.dispatch("objPizza:sequence16");
             }
         })
         .merge({ objPizza: api })
