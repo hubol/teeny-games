@@ -6,7 +6,7 @@ import { factor, interp, interpv } from "../../lib/game-engine/routines/interp";
 import { vdeg, vrad } from "../../lib/math/angle";
 import { cyclic } from "../../lib/math/number";
 import { Integer, Seconds } from "../../lib/math/number-alias-types";
-import { Rng } from "../../lib/math/rng";
+import { PseudoRng, Rng } from "../../lib/math/rng";
 import { vdir, vlerp } from "../../lib/math/vector";
 import { VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
@@ -97,6 +97,7 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
             return count;
         },
+        sauceCheeseUnit: 0,
     };
 
     const toppingsObj = container<objAttachedTopping.Type>();
@@ -270,6 +271,9 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
                 self.dispatch("objPizza:sequence16");
             }
         })
+        .step(() => {
+            crustObj.objPizzaCrust.pizzaSauceCheeseObj.objPizzaSauceCheese.visibleUnit = api.sauceCheeseUnit;
+        })
         .merge({ objPizza: api })
         .track(objPizza);
 
@@ -342,10 +346,10 @@ namespace objAttachedTopping {
 }
 
 const trackTints = [
-    0x2552e6,
-    0x25e675,
-    0xe6d325,
-    0xe23678,
+    0x4b70e7,
+    0x5de094,
+    0xf5e76c,
+    0xf07da9,
 ];
 
 function objPizzaCrust() {
@@ -357,23 +361,26 @@ function objPizzaCrust() {
             .scaled(pizzaObjScale, pizzaObjScale);
     }
 
+    const doughMaskObj = objDough();
+    const pizzaSauceCheeseObj = objPizzaSauceCheese();
+
     const api = {
         showTracks: false,
+        pizzaSauceCheeseObj,
     };
-
-    const doughMaskObj = objDough();
 
     return container(
         new Graphics().beginFill(0xF7D0BE)
             .drawCircle(0, 0, consts.radius.max),
         objDough(),
+        pizzaSauceCheeseObj,
         ...range(consts.tracksCount).map(i =>
             new Graphics()
                 .lineStyle(40, trackTints[i])
                 .drawCircle(0, 0, consts.radius.forTrack(i))
-                .step(self => self.alpha = 0.6)
                 .scaled(0, 0)
                 .coro(function* (self) {
+                    self.alpha = 0.9;
                     while (true) {
                         yield () => api.showTracks;
                         yield interpv(self.scale).factor(factor.sine).to(1, 1).over(300);
@@ -415,4 +422,48 @@ function objCutLines() {
     }
 
     return gfx;
+}
+
+function objPizzaSauceCheese() {
+    const p = new PseudoRng(240);
+
+    let visibleUnit = 0;
+
+    const api = {
+        get visibleUnit() {
+            return visibleUnit;
+        },
+        set visibleUnit(value) {
+            if (value === visibleUnit) {
+                return;
+            }
+
+            const threshold = value < 0.04 ? 0 : (obj.children.length - 2) * value;
+            for (let i = 0; i < obj.children.length; i++) {
+                obj.children[i].visible = i < threshold;
+            }
+        },
+    };
+
+    const obj = container(
+        ...range(200).map(() =>
+            Sprite.from(Tx.Pizza.Sauce)
+                .anchored(0.5, 0.5)
+                .angled(Rng.int(4) * 90)
+                .scaled(2, 2)
+                .at(p.vunit(), Rng.float(30, 450))
+                .invisible()
+        ),
+        ...range(200).map(() =>
+            Sprite.from(Tx.Pizza.Cheese)
+                .anchored(0.5, 0.5)
+                .angled(Rng.int(4) * 90)
+                .scaled(2, 2)
+                .at(p.vunit(), Rng.float(30, 450))
+                .invisible()
+        ),
+    );
+
+    return obj
+        .merge({ objPizzaSauceCheese: api });
 }

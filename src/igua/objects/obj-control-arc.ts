@@ -18,7 +18,7 @@ export function objControlArc(args: objControlArc.Args) {
         return v.at(Math.cos(radians), -Math.sin(radians)).scale(args.radius);
     }
 
-    let value = 0.5;
+    let value = args.defaultValue;
     let isBeingHandled = false;
 
     const api = {
@@ -76,5 +76,6 @@ namespace objControlArc {
         endDegrees: number;
         trackTint: RgbInt;
         handleTint: RgbInt;
+        defaultValue: Unit;
     }
 }

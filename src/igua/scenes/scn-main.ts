@@ -1,4 +1,5 @@
 import { Sprite } from "pixi.js";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Environment } from "../../lib/environment";
 import { Instances } from "../../lib/game-engine/instances";
@@ -6,6 +7,7 @@ import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
+import { nlerp } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
@@ -16,6 +18,7 @@ import { Key, Pointer, scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCondiment } from "../objects/obj-condiment";
+import { objControlArc } from "../objects/obj-control-arc";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
 import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
@@ -25,7 +28,10 @@ import { objToolBankSwapper } from "../objects/tools/obj-tool-bank-swapper";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
 
 export function scnMain() {
-    Sprite.from(Tx.Background).at(-38, -16).show();
+    Sprite.from(Tx.Background)
+        .at(-38, -16)
+        .zIndexed(-999)
+        .show();
 
     const banks = PizzaToppingBanks.create();
 
@@ -208,5 +214,40 @@ export function scnMain() {
 
     objToolBankSwapper(banks)
         .at(515, 100)
+        .show();
+
+    objControlArc({
+        startDegrees: -20,
+        endDegrees: 50,
+        radius: 630,
+        handleTint: 0x23B686,
+        trackTint: 0x780AFF,
+        defaultValue: 0,
+    })
+        .coro(function* (self) {
+            function playSample() {
+                self.play(Sfx.Samples.Wah.rate(nlerp(0.5, 2, self.objControlArc.value)));
+            }
+
+            pizzaObj.handles("objPizza:sequence16", () => {
+                if (self.objControlArc.isBeingHandled) {
+                    playSample();
+                }
+            });
+
+            self.step(() => {
+                pizzaObj.objPizza.sauceCheeseUnit = self.objControlArc.value;
+
+                if (
+                    self.objControlArc.isBeingHandled
+                    && (speedControlObj.objSpeedControl.speed === 0 || !pizzaObj.objPizza.areAnyToppingsAttached)
+                    && scene.ticker.ticks % 15 === 0
+                ) {
+                    playSample();
+                }
+            });
+        })
+        .at(pizzaObj)
+        .zIndexed(-1)
         .show();
 }
