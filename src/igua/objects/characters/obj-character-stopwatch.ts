@@ -47,5 +47,6 @@ export function objCharacterStopwatch() {
         maskObj,
         fillObj,
     )
+        .pivoted(16, 21)
         .merge({ objCharacterStopwatch: api });
 }
