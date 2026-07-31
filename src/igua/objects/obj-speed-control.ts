@@ -11,6 +11,7 @@ import { mxnPointerClaim } from "../mixins/mxn-pointer-claim";
 import { mxnPointerPress } from "../mixins/mxn-pointer-press";
 import { objCharacterSpeedControl } from "./characters/obj-character-speed-control";
 import { objAnnouncer } from "./obj-announcer";
+import { objToolAlarm } from "./tools/obj-tool-alarm";
 
 const consts = {
     trackRadius: 90,
@@ -60,11 +61,11 @@ export function objSpeedControl() {
             }
         });
 
+    function setToDefaultSpeed() {
+        handleObj.x = handleObjStartX;
+    }
+
     const api = {
-        // TODO method is unused
-        setToDefaultSpeed() {
-            handleObj.x = handleObjStartX;
-        },
         get speed() {
             const rawSpeed = (handleObj.x / consts.trackRadius) * 2;
             return Math.max(
@@ -112,6 +113,9 @@ export function objSpeedControl() {
                 .beginFill(0x780AFF)
                 .drawRoundedRect(-consts.trackRadius, -10, consts.trackRadius * 2, 20, 10),
             handleObj,
+            objToolAlarm(() => api.speed === 0, 10)
+                .handles("objToolAlarm:fire", () => setToDefaultSpeed())
+                .step(self => self.at(handleObj)),
         )
             .mixin(mxnPointerClaim)
             .step(self => {
