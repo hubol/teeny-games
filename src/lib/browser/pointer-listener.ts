@@ -11,7 +11,7 @@ export class PointerListener implements PointerListener.Public {
 
     private readonly _canvasSpaceTransformer: CanvasSpaceTransformer;
 
-    allowedType: PointerListener.PointerType.Allowed = "touch";
+    allowedType: PointerListener.PointerType.Allowed = "any";
 
     // TODO should be able to apply canvas after construction
     constructor(canvasEl: HTMLCanvasElement) {

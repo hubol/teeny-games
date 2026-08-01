@@ -1,7 +1,6 @@
 import { Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { Environment } from "../../lib/environment";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
@@ -14,7 +13,7 @@ import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaToppingBanks } from "../data/pizza-topping-banks";
-import { Key, Pointer, scene } from "../globals";
+import { Key, scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCharacterWarning } from "../objects/characters/obj-character-warning";
@@ -83,8 +82,6 @@ export function scnMain() {
     const pizzaObj = objPizza(speedControlObj)
         .at(renderer.width / 2, renderer.height / 2)
         .show();
-
-    Pointer.allowedType = (Environment.isDev || !Environment.isElectron) ? "any" : "touch";
 
     objOverlayCursor()
         .zIndexed(999999)
