@@ -41,7 +41,6 @@ jobs:
           path: dist
 
   build-win:
-    if: "contains(github.event.head_commit.message, 'deploy:itch')"
     runs-on: windows-2019
     needs: build
     steps:
