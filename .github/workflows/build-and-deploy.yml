@@ -44,7 +44,7 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
-      - uses: hubol/electric-lizard@electron-16
+      - uses: hubol/electric-lizard@icm-16
         with:
           src-artifact: build
           app-id: clayperson.beatzza
