@@ -1,15 +1,17 @@
-import { Graphics, Sprite } from "pixi.js";
+import { DisplayObject, Graphics, Sprite } from "pixi.js";
+import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { Instances } from "../../../lib/game-engine/instances";
 import { Coro } from "../../../lib/game-engine/routines/coro";
 import { holdf } from "../../../lib/game-engine/routines/hold";
-import { interpvr } from "../../../lib/game-engine/routines/interp";
+import { interp, interpvr } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
 import { Integer } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
+import { Null } from "../../../lib/types/null";
 import { renderer } from "../../current-pixi-renderer";
 import { DataToppings } from "../../data/data-toppings";
 import { PizzaTopping } from "../../data/pizza-topping";
@@ -43,11 +45,19 @@ export function objVisitorBalloon() {
 
             yield () => isPressed;
 
+            self.play(Sfx.Effects.Snap.rate(0.9, 1.1));
+
             self.objPuppetBalloon.isStringSnapped = true;
             yield sleep(100);
+
+            self.play(Sfx.Effects.Descend);
+
             yield* Coro.all([
                 interpvr(self.objPuppetBalloon.balloonOffset).steps(8).to(0, -400).over(800),
-                interpvr(self.objPuppetBalloon.boxOffset).to(0, 170).over(500),
+                Coro.chain([
+                    interpvr(self.objPuppetBalloon.boxOffset).to(0, 170).over(500),
+                    () => (self.play(Sfx.Effects.Land.rate(0.9, 1.1)), true),
+                ]),
             ]);
 
             self.objPuppetBalloon.isBoxOpen = true;
@@ -58,10 +68,8 @@ export function objVisitorBalloon() {
 
             yield () => prizeObj.destroyed;
 
-            for (let i = 0; i < 8; i++) {
-                self.visible = !self.visible;
-                yield sleepf(6);
-            }
+            self.play(Sfx.Effects.Depart.rate(0.9, 1.1));
+            yield interp(self, "alpha").steps(3).to(0.5).over(500);
 
             self.destroy();
         });
@@ -183,6 +191,8 @@ function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
 
             const prizePosition = vnew(self.getWorldPosition());
 
+            let lastToppingObj = Null<DisplayObject>();
+
             for (let i = 0; i < toppingPositions.length; i++) {
                 const { position, topping } = toppingPositions[i];
                 const pointer: objTopping.Pointer = {
@@ -190,7 +200,10 @@ function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
                     x: prizePosition.x + Rng.int(-50, 50),
                     y: prizePosition.y,
                 };
-                objTopping(topping, pointer, "tool")
+
+                self.play(Sfx.Effects.SummonPrize.rate(0.5, 2));
+
+                lastToppingObj = objTopping(topping, pointer, "tool")
                     .coro(function* () {
                         yield sleep(Rng.int(100, 300));
                         yield interpvr(pointer).to(position.x, position.y).over(Rng.int(700, 800));
@@ -198,6 +211,10 @@ function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
                     })
                     .show();
                 yield sleepf(Math.max(5, 25 - i * 2));
+            }
+
+            if (lastToppingObj) {
+                yield () => lastToppingObj!.destroyed;
             }
 
             self.destroy();
