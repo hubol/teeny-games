@@ -17,11 +17,11 @@ import { objFeatureFlags } from "../obj-feature-flags";
 import { objAttachedTopping } from "../obj-pizza";
 import { objIndexedSprite } from "../utils/obj-indexed-sprite";
 
-export function objCharacterTuna() {
+export function objVisitorTuna() {
     let isDiving = false;
     let pedometer = 0;
 
-    const puppetObj = objCharacterTunaPuppet()
+    const puppetObj = objPuppetTuna()
         .mixin(mxnFxBoil, "position")
         .mixin(mxnPointerPress, 999)
         .handles("mxnPointerPress:pressed", (self) => {
@@ -125,7 +125,7 @@ const [
     txEyeFront,
 ] = Tx.Characters.Tuna.split({ width: 330 });
 
-function objCharacterTunaPuppet() {
+function objPuppetTuna() {
     let forwardUnit = 0;
     let finExtendedUnit = 0;
     let isAgape = false;

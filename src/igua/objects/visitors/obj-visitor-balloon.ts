@@ -10,6 +10,7 @@ import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
+import { renderer } from "../../current-pixi-renderer";
 import { DataToppings } from "../../data/data-toppings";
 import { PizzaTopping } from "../../data/pizza-topping";
 import { scene } from "../../globals";
@@ -18,7 +19,7 @@ import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 import { objPizza } from "../obj-pizza";
 import { objTopping } from "../obj-topping";
 
-export function objCharacterBalloon() {
+export function objVisitorBalloon() {
     const balloonObj = objPuppetBalloon();
     return balloonObj
         .step(self => {
@@ -29,6 +30,11 @@ export function objCharacterBalloon() {
             const t = scene.ticker.ticks / 45 * Math.PI;
             self.objPuppetBalloon.balloonOffset.y = Math.sin(t) * 3;
             self.objPuppetBalloon.boxOffset.y = Math.sin(t + 1) * 2;
+
+            self.x += 1;
+            if (self.x >= renderer.width) {
+                self.destroy();
+            }
         })
         .coro(function* (self) {
             let isPressed = false;

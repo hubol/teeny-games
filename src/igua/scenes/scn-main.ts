@@ -1,30 +1,27 @@
 import { Sprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
-import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { holdf } from "../../lib/game-engine/routines/hold";
 import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { onPrimitiveMutate } from "../../lib/game-engine/routines/on-primitive-mutate";
 import { approachLinear, nlerp } from "../../lib/math/number";
 import { Integer } from "../../lib/math/number-alias-types";
-import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaToppingBanks } from "../data/pizza-topping-banks";
-import { Key, scene } from "../globals";
-import { objCharacterBalloon } from "../objects/characters/obj-character-balloon";
+import { scene } from "../globals";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
-import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCharacterWarning } from "../objects/characters/obj-character-warning";
 import { objAnnouncer } from "../objects/obj-announcer";
 import { objCondiment } from "../objects/obj-condiment";
 import { objControlArc } from "../objects/obj-control-arc";
 import { objFeatureFlags } from "../objects/obj-feature-flags";
-import { objAttachedTopping, objPizza } from "../objects/obj-pizza";
+import { objPizza } from "../objects/obj-pizza";
 import { objSpeedControl } from "../objects/obj-speed-control";
 import { objToppingContainerPillar } from "../objects/obj-topping-container-pillar";
+import { objVisitors } from "../objects/obj-visitors";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objToolBankSwapper } from "../objects/tools/obj-tool-bank-swapper";
 import { objToolMagnet } from "../objects/tools/obj-tool-magnet";
@@ -153,22 +150,8 @@ export function scnMain() {
         })
         .show();
 
-    scene.stage
-        .coro(function* () {
-            while (true) {
-                yield* Coro.race([
-                    holdf(
-                        () => speedControlObj.objSpeedControl.speed !== 0 && Instances(objAttachedTopping).length > 0,
-                        Rng.int(60 * 60, 90 * 60),
-                    ),
-                    () => Key.justWentDown("KeyT"),
-                ]);
-                const tunaObj = objCharacterTuna()
-                    .at(2000, 700)
-                    .show();
-                yield () => tunaObj.destroyed;
-            }
-        });
+    objVisitors()
+        .show();
 
     scene.stage
         .coro(function* () {
@@ -265,8 +248,4 @@ export function scnMain() {
         .at(pizzaObj)
         .zIndexed(-1)
         .show();
-
-    // objCharacterBalloon()
-    //     .at(600, 100)
-    //     .show();
 }
