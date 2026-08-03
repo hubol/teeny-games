@@ -94,10 +94,34 @@ export namespace DataToppings {
             Strawberry: {
                 objFigure: createStandardFigureObjFactory("Strawberry"),
                 instrumentId: "Moog",
-                sfx: DataToppingsSfx.create(1700),
+                sfx: DataToppingsSfx.create(1800),
                 transformSequenceDegrees,
                 tint: 0xFF474A,
                 containerPivot: [53, 103],
+            },
+            BlackOlive: {
+                objFigure: createStandardFigureObjFactory("BlackOlive"),
+                instrumentId: "Ukelele",
+                sfx: DataToppingsSfx.create(1900),
+                transformSequenceDegrees,
+                tint: 0x6B4E8E,
+                containerPivot: [0, 0],
+            },
+            Spinach: {
+                objFigure: createStandardFigureObjFactory("Spinach"),
+                instrumentId: "Ukelele",
+                sfx: DataToppingsSfx.create(2000),
+                transformSequenceDegrees,
+                tint: 0x177133,
+                containerPivot: [0, 0],
+            },
+            BananaPepper: {
+                objFigure: createStandardFigureObjFactory("BananaPepper"),
+                instrumentId: "Ukelele",
+                sfx: DataToppingsSfx.create(2100),
+                transformSequenceDegrees,
+                tint: 0xFFDD00,
+                containerPivot: [0, 0],
             },
             __Fallback__: {
                 objFigure: function objFallbackTopping () {
@@ -139,20 +163,18 @@ function createStandardFigureObjFactory(key: StandardFigureKey) {
         return objToppingSprite(
             0,
             txs,
-            80,
             objFace(faceTxs),
         );
     };
 }
 
-function objToppingSprite(seed: Integer, textures: Texture[], targetWidth: Integer, ...children: DisplayObject[]) {
+function objToppingSprite(seed: Integer, textures: Texture[], ...children: DisplayObject[]) {
     const texture = textures[seed % textures.length];
-    const scale = (targetWidth / texture.width) * toppingScale.x;
 
     return container(
         Sprite.from(texture),
         ...children,
     )
         .pivoted(texture.width / 2, texture.height / 2)
-        .scaled(scale, scale);
+        .scaled(2.2, 2.2);
 }

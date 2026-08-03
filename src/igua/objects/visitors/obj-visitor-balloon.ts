@@ -21,6 +21,11 @@ import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 import { objPizza } from "../obj-pizza";
 import { objTopping } from "../obj-topping";
 
+const balloonPrizeToppingIds = Rng.shuffle(
+    new Array<DataToppings.Id>("BananaPepper", "BlackOlive", "Spinach"),
+);
+let balloonPrizeIndex = 0;
+
 export function objVisitorBalloon() {
     const balloonObj = objPuppetBalloon();
     return balloonObj
@@ -62,7 +67,8 @@ export function objVisitorBalloon() {
 
             self.objPuppetBalloon.isBoxOpen = true;
 
-            const prizeObj = objBalloonPrize(10, "Kiwi")
+            const prizeToppingId = balloonPrizeToppingIds[balloonPrizeIndex++ % balloonPrizeToppingIds.length];
+            const prizeObj = objBalloonPrize(10, prizeToppingId)
                 .at(self.objPuppetBalloon.openedBoxWorldPosition)
                 .show();
 

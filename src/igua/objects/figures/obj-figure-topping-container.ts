@@ -15,7 +15,9 @@ export function objFigureToppingContainer(toppingId: DataToppings.Id) {
         .step(() => api.happyStepsCount--);
 
     if (toppingId in Tx.Containers && toppingId in Tx.Containers.Happy) {
+        // @ts-expect-error Why didn't previous check work nerd
         const txs = Tx.Containers[toppingId].split({ count: 2 });
+        // @ts-expect-error See above
         const happyTxs = Tx.Containers.Happy[toppingId].split({ count: 2 });
 
         container(
