@@ -260,7 +260,7 @@ function getRandomSequenceData() {
     const sourcePitchData = range(Rng.int(2, 5)).map(() => Rng.int(tracksCount));
     const startingSequenceIndex = Rng.int(sequenceIndicesCount);
 
-    while (result.length < 8) {
+    while (result.length < 6) {
         const offset = Rng.intc(-1, 1);
         for (const pitch of sourcePitchData) {
             const trackIndex = cyclic(pitch + offset, 0, tracksCount);
