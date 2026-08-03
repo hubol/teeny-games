@@ -7,12 +7,22 @@ import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
+import { scene } from "../../globals";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 
 export function objCharacterBalloon() {
     const balloonObj = objPuppetBalloon();
     return balloonObj
+        .step(self => {
+            if (self.objPuppetBalloon.isStringSnapped) {
+                return;
+            }
+
+            const t = scene.ticker.ticks / 45 * Math.PI;
+            self.objPuppetBalloon.balloonOffset.y = Math.sin(t) * 3;
+            self.objPuppetBalloon.boxOffset.y = Math.sin(t + 1) * 2;
+        })
         .coro(function* (self) {
             let isPressed = false;
             self.mixin(mxnPointerPress, 998)
