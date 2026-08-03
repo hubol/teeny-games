@@ -123,7 +123,7 @@ export namespace DataInstruments {
                 sample: {
                     kind: "pitched",
                     sfx: Sfx.Samples.Doo,
-                    gain: 0.8,
+                    gain: 0.5,
                     polyphony: true,
                 },
             },
