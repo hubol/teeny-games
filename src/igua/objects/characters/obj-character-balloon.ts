@@ -1,15 +1,22 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
+import { Instances } from "../../../lib/game-engine/instances";
 import { Coro } from "../../../lib/game-engine/routines/coro";
 import { holdf } from "../../../lib/game-engine/routines/hold";
-import { factor, interpvr } from "../../../lib/game-engine/routines/interp";
-import { sleep } from "../../../lib/game-engine/routines/sleep";
+import { interpvr } from "../../../lib/game-engine/routines/interp";
+import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
+import { Integer } from "../../../lib/math/number-alias-types";
+import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
+import { DataToppings } from "../../data/data-toppings";
+import { PizzaTopping } from "../../data/pizza-topping";
 import { scene } from "../../globals";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
+import { objPizza } from "../obj-pizza";
+import { objTopping } from "../obj-topping";
 
 export function objCharacterBalloon() {
     const balloonObj = objPuppetBalloon();
@@ -38,6 +45,19 @@ export function objCharacterBalloon() {
             ]);
 
             self.objPuppetBalloon.isBoxOpen = true;
+
+            const prizeObj = objBalloonPrize(10, "Kiwi")
+                .at(self.objPuppetBalloon.openedBoxWorldPosition)
+                .show();
+
+            yield () => prizeObj.destroyed;
+
+            for (let i = 0; i < 8; i++) {
+                self.visible = !self.visible;
+                yield sleepf(6);
+            }
+
+            self.destroy();
         });
 }
 
@@ -61,6 +81,9 @@ function objPuppetBalloon() {
         isStringSnapped: false,
         boxOffset: vnew(),
         balloonOffset: vnew(),
+        get openedBoxWorldPosition() {
+            return openBoxObj.getWorldCenter();
+        },
     };
 
     const collisionObjs = [
@@ -69,6 +92,8 @@ function objPuppetBalloon() {
         new Graphics().beginFill(0xff0000).drawRect(12, 227, 104, 83),
     ]
         .map(obj => obj.invisible());
+
+    const openBoxObj = new Graphics().beginFill(0xffff00).drawRect(58, 235, 9, 9);
 
     return container(
         container(
@@ -92,6 +117,7 @@ function objPuppetBalloon() {
                     self.destroy();
                 }),
             collisionObjs[2],
+            openBoxObj.invisible(),
         )
             .step(self => self.at(api.boxOffset)),
         container(
@@ -117,4 +143,84 @@ function objPuppetBalloon() {
         .collisionShape(CollisionShape.DisplayObjects, collisionObjs)
         .scaled(2, 2)
         .merge({ objPuppetBalloon: api });
+}
+
+function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
+    return container()
+        .coro(function* (self) {
+            const pizzaObj = Instances(objPizza)[0];
+
+            const toppingPositions = getRandomSequenceData(count)
+                .map(data => ({
+                    sequenceDegrees: DataToppings.sequenceDegrees16[data.sequenceIndex],
+                    trackIndex: data.trackIndex,
+                    topping: PizzaTopping.create(toppingId),
+                }))
+                .flatMap(data => {
+                    const position = pizzaObj.objPizza.getSequencedWorldPosition.fromDegreesTrackIndex(
+                        data.sequenceDegrees,
+                        data.trackIndex,
+                        data.topping,
+                    );
+
+                    if (!position) {
+                        return [];
+                    }
+
+                    return [
+                        {
+                            position: vnew(position),
+                            topping: data.topping,
+                        },
+                    ];
+                });
+
+            const prizePosition = vnew(self.getWorldPosition());
+
+            for (let i = 0; i < toppingPositions.length; i++) {
+                const { position, topping } = toppingPositions[i];
+                const pointer: objTopping.Pointer = {
+                    down: true,
+                    x: prizePosition.x + Rng.int(-50, 50),
+                    y: prizePosition.y,
+                };
+                objTopping(topping, pointer, "tool")
+                    .coro(function* () {
+                        yield sleep(Rng.int(100, 300));
+                        yield interpvr(pointer).to(position.x, position.y).over(Rng.int(700, 800));
+                        pointer.down = false;
+                    })
+                    .show();
+                yield sleepf(Math.max(5, 25 - i * 2));
+            }
+
+            self.destroy();
+        });
+}
+
+function getRandomSequenceData(count: Integer) {
+    const sequenceIndicesCount = DataToppings.sequenceDegrees16.length;
+    const tracksCount = objPizza.consts.tracksCount;
+    const usedTrackIndexSequenceIndices: Record<Integer, Set<Integer>> = {};
+
+    const result = new Array<{ trackIndex: Integer; sequenceIndex: Integer }>();
+
+    for (let i = 0; i < count; i++) {
+        // Only try 10 times
+        for (let j = 0; j < 10; j++) {
+            const sequenceIndex = Rng.int(sequenceIndicesCount);
+            const trackIndex = Rng.int(tracksCount);
+
+            if (usedTrackIndexSequenceIndices[trackIndex]?.has(sequenceIndex)) {
+                continue;
+            }
+
+            usedTrackIndexSequenceIndices[trackIndex] ??= new Set();
+            usedTrackIndexSequenceIndices[trackIndex].add(sequenceIndex);
+            result.push({ trackIndex, sequenceIndex });
+            break;
+        }
+    }
+
+    return result;
 }

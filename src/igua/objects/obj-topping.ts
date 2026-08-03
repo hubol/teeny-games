@@ -38,7 +38,7 @@ export function objTopping(topping: PizzaTopping, pointer: objTopping.Pointer, c
                 self.destroy();
             }
             else if (pizzaObj) {
-                const position = pizzaObj.objPizza.getSequencedPosition(
+                const position = pizzaObj.objPizza.getSequencedWorldPosition.fromWorldPosition(
                     self.x,
                     self.y,
                     figureToppingObj.objFigureTopping,

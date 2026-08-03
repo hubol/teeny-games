@@ -31,8 +31,6 @@ export namespace DataToppings {
         ...new Set(range(360).map(degrees => cyclic(transformSequenceDegrees16(degrees, 0), 0, 360))),
     ];
 
-    console.log(sequenceDegrees16);
-
     export const { manifest, getById } = DataLib.create(
         "DataToppings",
         {

@@ -65,7 +65,10 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
             return toppingsObj.children.length;
         },
         playedSequencedSamplesCount: 0,
-        getSequencedPosition,
+        getSequencedWorldPosition: {
+            fromWorldPosition: getSwpFromWorldPosition,
+            fromDegreesTrackIndex: getSwpFromDegreesTrackIndex,
+        },
         submit,
         getToppingCount(id: DataToppings.Id) {
             let count = 0;
@@ -82,15 +85,30 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
 
     const toppingsObj = container<objAttachedTopping.Type>();
 
-    function getSequencedPosition(x: number, y: number, topping: PizzaTopping): VectorSimple | null {
-        const data = toSequenceData(x, y, topping);
-
+    function getSwp(data: SequenceData | null) {
         if (!data) {
             return null;
         }
-
         toppingsObj.parent.worldTransform.apply(data.point, data.point);
         return v.at(data.point);
+    }
+
+    function getSwpFromWorldPosition(x: number, y: number, topping: PizzaTopping): VectorSimple | null {
+        const data = toSequenceData(x, y, topping);
+        return getSwp(data);
+    }
+
+    function getSwpFromDegreesTrackIndex(
+        sequenceDegrees: Integer,
+        trackIndex: Integer,
+        topping: PizzaTopping,
+    ): VectorSimple | null {
+        const position = vdeg(sequenceDegrees, v).scale(consts.radius.forTrack(trackIndex));
+        const point = toppingsObj.parent.worldTransform.apply(position);
+
+        const data = toSequenceData(point.x, point.y, topping);
+
+        return getSwp(data);
     }
 
     function toSequenceData(x: number, y: number, topping: PizzaTopping): SequenceData | null {
@@ -265,6 +283,8 @@ export function objPizza(speedControlObj: objSpeedControl.Type) {
         return toppingsObj.children.length > 0;
     }
 }
+
+objPizza.consts = consts;
 
 function playSample(obj: objAttachedTopping.Type, when: Seconds) {
     const faceObj = Undefined(obj.findIs(objFace)[0]);
