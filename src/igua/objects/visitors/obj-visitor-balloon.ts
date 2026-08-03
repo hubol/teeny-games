@@ -6,11 +6,13 @@ import { Coro } from "../../../lib/game-engine/routines/coro";
 import { holdf } from "../../../lib/game-engine/routines/hold";
 import { interp, interpvr } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
+import { cyclic } from "../../../lib/math/number";
 import { Integer } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
+import { range } from "../../../lib/range";
 import { Null } from "../../../lib/types/null";
 import { renderer } from "../../current-pixi-renderer";
 import { DataToppings } from "../../data/data-toppings";
@@ -171,7 +173,7 @@ function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
         .coro(function* (self) {
             const pizzaObj = Instances(objPizza)[0];
 
-            const toppingPositions = getRandomSequenceData(count)
+            const toppingPositions = getRandomSequenceData()
                 .map(data => ({
                     sequenceDegrees: DataToppings.sequenceDegrees16[data.sequenceIndex],
                     trackIndex: data.trackIndex,
@@ -238,27 +240,32 @@ function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
         });
 }
 
-function getRandomSequenceData(count: Integer) {
+function getRandomSequenceData() {
     const sequenceIndicesCount = DataToppings.sequenceDegrees16.length;
     const tracksCount = objPizza.consts.tracksCount;
     const usedTrackIndexSequenceIndices: Record<Integer, Set<Integer>> = {};
 
     const result = new Array<{ trackIndex: Integer; sequenceIndex: Integer }>();
 
-    for (let i = 0; i < count; i++) {
-        // Only try 10 times
-        for (let j = 0; j < 10; j++) {
-            const sequenceIndex = Rng.int(sequenceIndicesCount);
-            const trackIndex = Rng.int(tracksCount);
+    function push(trackIndex: Integer, sequenceIndex: Integer) {
+        if (usedTrackIndexSequenceIndices[trackIndex]?.has(sequenceIndex)) {
+            return;
+        }
 
-            if (usedTrackIndexSequenceIndices[trackIndex]?.has(sequenceIndex)) {
-                continue;
-            }
+        usedTrackIndexSequenceIndices[trackIndex] ??= new Set();
+        usedTrackIndexSequenceIndices[trackIndex].add(sequenceIndex);
+        result.push({ trackIndex, sequenceIndex });
+    }
 
-            usedTrackIndexSequenceIndices[trackIndex] ??= new Set();
-            usedTrackIndexSequenceIndices[trackIndex].add(sequenceIndex);
-            result.push({ trackIndex, sequenceIndex });
-            break;
+    const sourcePitchData = range(Rng.int(2, 5)).map(() => Rng.int(tracksCount));
+    const startingSequenceIndex = Rng.int(sequenceIndicesCount);
+
+    while (result.length < 8) {
+        const offset = Rng.intc(-1, 1);
+        for (const pitch of sourcePitchData) {
+            const trackIndex = cyclic(pitch + offset, 0, tracksCount);
+            const sequenceIndex = (startingSequenceIndex + result.length * 2) % sequenceIndicesCount;
+            push(trackIndex, sequenceIndex);
         }
     }
 
