@@ -117,7 +117,7 @@ export namespace DataToppings {
             },
             BananaPepper: {
                 objFigure: createStandardFigureObjFactory("BananaPepper"),
-                instrumentId: "Ukelele",
+                instrumentId: "DrumKit1",
                 sfx: DataToppingsSfx.create(2100),
                 transformSequenceDegrees,
                 tint: 0xFFDD00,

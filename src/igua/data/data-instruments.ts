@@ -47,6 +47,14 @@ export namespace DataInstruments {
                     polyphony: true,
                 },
             },
+            DrumKit1: {
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.Drum1,
+                    gain: 1,
+                    polyphony: true,
+                },
+            },
             Bass: {
                 sample: {
                     kind: "pitched",
