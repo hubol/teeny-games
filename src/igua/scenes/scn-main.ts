@@ -14,6 +14,7 @@ import { renderer } from "../current-pixi-renderer";
 import { DataToppings } from "../data/data-toppings";
 import { PizzaToppingBanks } from "../data/pizza-topping-banks";
 import { Key, scene } from "../globals";
+import { objCharacterBalloon } from "../objects/characters/obj-character-balloon";
 import { objCharacterMystery } from "../objects/characters/obj-character-mystery";
 import { objCharacterTuna } from "../objects/characters/obj-character-tuna";
 import { objCharacterWarning } from "../objects/characters/obj-character-warning";
@@ -264,4 +265,8 @@ export function scnMain() {
         .at(pizzaObj)
         .zIndexed(-1)
         .show();
+
+    // objCharacterBalloon()
+    //     .at(600, 100)
+    //     .show();
 }

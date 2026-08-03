@@ -1,17 +1,34 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
+import { Coro } from "../../../lib/game-engine/routines/coro";
 import { holdf } from "../../../lib/game-engine/routines/hold";
+import { factor, interpvr } from "../../../lib/game-engine/routines/interp";
 import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { vnew } from "../../../lib/math/vector-type";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
+import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
 
 export function objCharacterBalloon() {
     const balloonObj = objPuppetBalloon();
-    return container(
-        balloonObj,
-    );
+    return balloonObj
+        .coro(function* (self) {
+            let isPressed = false;
+            self.mixin(mxnPointerPress, 998)
+                .handles("mxnPointerPress:pressed", () => isPressed = true);
+
+            yield () => isPressed;
+
+            self.objPuppetBalloon.isStringSnapped = true;
+            yield sleep(100);
+            yield* Coro.all([
+                interpvr(self.objPuppetBalloon.balloonOffset).steps(8).to(0, -400).over(800),
+                interpvr(self.objPuppetBalloon.boxOffset).to(0, 170).over(500),
+            ]);
+
+            self.objPuppetBalloon.isBoxOpen = true;
+        });
 }
 
 function objPuppetBalloon() {
