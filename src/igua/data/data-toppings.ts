@@ -109,7 +109,7 @@ export namespace DataToppings {
             },
             Spinach: {
                 objFigure: createStandardFigureObjFactory("Spinach"),
-                instrumentId: "Ukelele",
+                instrumentId: "Doo",
                 sfx: DataToppingsSfx.create(2000),
                 transformSequenceDegrees,
                 tint: 0x177133,

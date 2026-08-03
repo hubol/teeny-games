@@ -107,7 +107,23 @@ export namespace DataInstruments {
                 sample: {
                     kind: "multi",
                     sfxs: Sfx.Samples.PocketPiano,
+                    gain: 0.7,
+                    polyphony: true,
+                },
+            },
+            Voice: {
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.Voice,
                     gain: 1,
+                    polyphony: true,
+                },
+            },
+            Doo: {
+                sample: {
+                    kind: "pitched",
+                    sfx: Sfx.Samples.Doo,
+                    gain: 0.8,
                     polyphony: true,
                 },
             },
