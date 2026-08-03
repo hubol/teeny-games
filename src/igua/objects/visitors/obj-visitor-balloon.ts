@@ -18,6 +18,7 @@ import { PizzaTopping } from "../../data/pizza-topping";
 import { scene } from "../../globals";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { mxnPointerPress } from "../../mixins/mxn-pointer-press";
+import { objAnnouncer } from "../obj-announcer";
 import { objPizza } from "../obj-pizza";
 import { objTopping } from "../obj-topping";
 
@@ -209,13 +210,23 @@ function objBalloonPrize(count: Integer, toppingId: DataToppings.Id) {
 
                 self.play(Sfx.Effects.SummonPrize.rate(0.5, 2));
 
-                lastToppingObj = objTopping(topping, pointer, "tool")
+                const toppingObj = objTopping(topping, pointer, "tool")
+                    .show();
+
+                if (i === 0) {
+                    const sfx = Sfx.Dialog.Toppings[toppingId];
+                    yield objAnnouncer.singleton.announce(sfx);
+                }
+
+                toppingObj
                     .coro(function* () {
                         yield sleep(Rng.int(100, 300));
                         yield interpvr(pointer).to(position.x, position.y).over(Rng.int(700, 800));
                         pointer.down = false;
-                    })
-                    .show();
+                    });
+
+                lastToppingObj = toppingObj;
+
                 yield sleepf(Math.max(5, 25 - i * 2));
             }
 

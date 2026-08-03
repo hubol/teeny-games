@@ -12,7 +12,9 @@ export function objAnnouncer() {
                 previousSoundInstance.linearRamp("gain", 0, 0.1);
             }
 
-            previousSoundInstance = sfx.rate(0.9, 1.1).playInstance();
+            const soundInstance = sfx.rate(0.9, 1.1).playInstance();
+            previousSoundInstance = soundInstance;
+            return () => soundInstance.ended;
         },
     };
 
