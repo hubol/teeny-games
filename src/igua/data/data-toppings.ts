@@ -101,7 +101,7 @@ export namespace DataToppings {
             },
             BlackOlive: {
                 objFigure: createStandardFigureObjFactory("BlackOlive"),
-                instrumentId: "Ukelele",
+                instrumentId: "PocketPiano",
                 sfx: DataToppingsSfx.create(1900),
                 transformSequenceDegrees,
                 tint: 0x6B4E8E,

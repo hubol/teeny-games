@@ -103,6 +103,14 @@ export namespace DataInstruments {
                     polyphony: true,
                 },
             },
+            PocketPiano: {
+                sample: {
+                    kind: "multi",
+                    sfxs: Sfx.Samples.PocketPiano,
+                    gain: 1,
+                    polyphony: true,
+                },
+            },
             __Fallback__: {
                 sample: {
                     kind: "pitched",
