@@ -47,6 +47,22 @@ export function objVisitorBalloon() {
             }
         })
         .coro(function* (self) {
+            while (true) {
+                const soundInstance = self.playInstance(Sfx.Effects.Flight.rate(0.9, 1.1));
+                yield* Coro.race([
+                    () => soundInstance.ended,
+                    () => self.objPuppetBalloon.isStringSnapped,
+                ]);
+
+                if (self.objPuppetBalloon.isStringSnapped) {
+                    soundInstance.stop();
+                    return;
+                }
+
+                yield sleep(Rng.int(300, 500));
+            }
+        })
+        .coro(function* (self) {
             let isPressed = false;
             self.mixin(mxnPointerPress, 998)
                 .handles("mxnPointerPress:pressed", () => isPressed = true);
