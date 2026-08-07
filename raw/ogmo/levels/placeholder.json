@@ -1,7 +1,7 @@
 {
   "ogmoVersion": "3.4.0-hubol",
-  "width": 500,
-  "height": 280,
+  "width": 2032,
+  "height": 448,
   "offsetX": 0,
   "offsetY": 0,
   "values": {"Terrain Color": "#000000"},
@@ -14,8 +14,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 254,
+      "gridCellsY": 56,
       "entities": [
         {
           "name": "Marker",
@@ -70,8 +70,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 254,
+      "gridCellsY": 56,
       "entities": [
         {
           "name": "Region",
@@ -95,8 +95,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 254,
+      "gridCellsY": 56,
       "decals": [
         {
           "x": 408,
@@ -121,20 +121,111 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 254,
+      "gridCellsY": 56,
       "entities": [
         {
           "name": "Block",
-          "id": 0,
+          "id": 1,
           "_eid": "93117141",
           "x": 0,
-          "y": 192,
-          "width": 176,
-          "height": 88,
+          "y": 64,
+          "width": 280,
+          "height": 224,
           "originX": 0,
           "originY": 0,
           "tint": "#000000",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Slope",
+          "id": 2,
+          "_eid": "95675713",
+          "x": 0,
+          "y": 112,
+          "width": 320,
+          "height": 176,
+          "flippedX": true,
+          "flippedY": false,
+          "tint": "#6d1111",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Block",
+          "id": 5,
+          "_eid": "93117141",
+          "x": 240,
+          "y": 104,
+          "width": 280,
+          "height": 224,
+          "originX": 0,
+          "originY": 0,
+          "tint": "#000000",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Slope",
+          "id": 7,
+          "_eid": "95675713",
+          "x": 192,
+          "y": 88,
+          "width": 320,
+          "height": 176,
+          "flippedX": false,
+          "flippedY": false,
+          "tint": "#6d1111",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Block",
+          "id": 8,
+          "_eid": "93117141",
+          "x": 512,
+          "y": 88,
+          "width": 1344,
+          "height": 56,
+          "originX": 0,
+          "originY": 0,
+          "tint": "#000000",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Block",
+          "id": 9,
+          "_eid": "93117141",
+          "x": 512,
+          "y": 128,
+          "width": 1344,
+          "height": 56,
+          "originX": 0,
+          "originY": 0,
+          "tint": "#6d1111",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Block",
+          "id": 10,
+          "_eid": "93117141",
+          "x": 512,
+          "y": 168,
+          "width": 1344,
+          "height": 56,
+          "originX": 0,
+          "originY": 0,
+          "tint": "#6d4e11",
+          "values": {"name": "", "visible": true}
+        },
+        {
+          "name": "Block",
+          "id": 11,
+          "_eid": "93117141",
+          "x": 512,
+          "y": 208,
+          "width": 1344,
+          "height": 56,
+          "originX": 0,
+          "originY": 0,
+          "tint": "#ed9e04",
           "values": {"name": "", "visible": true}
         }
       ]
@@ -146,8 +237,8 @@
       "offsetY": 0,
       "gridCellWidth": 8,
       "gridCellHeight": 8,
-      "gridCellsX": 64,
-      "gridCellsY": 35,
+      "gridCellsX": 254,
+      "gridCellsY": 56,
       "decals": [
         {
           "x": 160,
