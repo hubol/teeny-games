@@ -3,8 +3,10 @@ import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { factor, interpv } from "../../../lib/game-engine/routines/interp";
 import { vdeg } from "../../../lib/math/angle";
+import { RgbInt } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
 import { container } from "../../../lib/pixi/container";
+import { Null } from "../../../lib/types/null";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 
 const [txBody, txFaceDefault, txFaceSparking] = Tx.Characters.Magnet.split({ count: 3 });
@@ -19,6 +21,7 @@ const sfxs = [
 export function objCharacterMagnet() {
     const api = {
         isSparking: false,
+        tint: Null<RgbInt>(),
     };
 
     const sprites = [txBody, txFaceDefault].map(tx =>
@@ -27,6 +30,18 @@ export function objCharacterMagnet() {
             .scaled(2, 2)
             .mixin(mxnFxBoil, "position")
     );
+
+    sprites[0]
+        .step(self => {
+            if (api.tint === null) {
+                self.texture = txBody;
+                self.tint = 0xffffff;
+            }
+            else {
+                self.texture = Tx.Characters.MagnetTinted;
+                self.tint = api.tint;
+            }
+        });
 
     sprites[1]
         .step(self => self.texture = api.isSparking ? txFaceSparking : txFaceDefault);
