@@ -103,7 +103,7 @@ export function scnMain() {
                         holdf(
                             () =>
                                 pizzaObj.objPizza.attachedToppingsCount >= 5
-                                && speedControlObj.objSpeedControl.speed > 0,
+                                && speedControlObj.objSpeedControl.speed !== 0,
                             120,
                         ),
                     ]),
