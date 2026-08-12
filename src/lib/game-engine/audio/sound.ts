@@ -48,10 +48,10 @@ export class Sound {
         this._resetParams();
     }
 
-    playInstance(offset?: Seconds) {
+    playInstance(when?: Seconds, offset?: Seconds) {
         const source = this._createSourceNode();
         const stereoGainNode = this._createStereoGainNode(source);
-        source.start(undefined, offset);
+        source.start(when, offset);
         this._resetParams();
         return new SoundInstance(source, stereoGainNode, offset ?? 0);
     }
@@ -84,6 +84,7 @@ type RampableParam = "rate" | "gain" | "pan";
 export class SoundInstance {
     private _lastRateSetContextTime: Seconds;
     private _lastRateSetElapsedTime: Seconds;
+    private _ended = false;
 
     constructor(
         private readonly _sourceNode: AudioBufferSourceNode,
@@ -92,6 +93,11 @@ export class SoundInstance {
     ) {
         this._lastRateSetElapsedTime = offsetSeconds;
         this._lastRateSetContextTime = this._sourceNode.context.currentTime;
+        this._sourceNode.addEventListener("ended", () => this._ended = true);
+    }
+
+    get ended() {
+        return this._ended;
     }
 
     private _getAudioParam(param: RampableParam) {

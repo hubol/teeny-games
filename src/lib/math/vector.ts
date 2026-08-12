@@ -40,7 +40,7 @@ export function vlerp(a: Vector, b: VectorSimple, factor: number): Vector {
     return a;
 }
 
-export function moveTowards(a: Vector, b: VectorSimple, d: number) {
+export function moveTowards(a: VectorSimple, b: VectorSimple, d: number) {
     if (d <= 0) {
         return a;
     }
