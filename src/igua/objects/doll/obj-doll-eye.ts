@@ -4,6 +4,7 @@ import { interpv } from "../../../lib/game-engine/routines/interp";
 import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { Rng } from "../../../lib/math/rng";
 import { container } from "../../../lib/pixi/container";
+import { mxnSerialize } from "../../mixins/mxn-serialize";
 
 export function objDollEye() {
     return container(
@@ -16,6 +17,7 @@ export function objDollEye() {
                 }
             }),
     )
+        .mixin(mxnSerialize, objDollEye)
         .pivoted(15, 14)
         .scaled(3, 3);
 }

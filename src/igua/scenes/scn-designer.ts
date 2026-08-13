@@ -3,11 +3,19 @@ import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Tx } from "../../assets/textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Rng } from "../../lib/math/rng";
+import { vnew } from "../../lib/math/vector-type";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
+import { mxnSerialize } from "../mixins/mxn-serialize";
+import { objDollArm } from "../objects/doll/obj-doll-arm";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { DollPointer } from "../utils/doll-pointer";
+
+const sourceFns = [
+    objDollEye,
+    objDollArm,
+];
 
 export function scnDesigner() {
     Sprite.from(Tx.Doll.Base)
@@ -17,8 +25,8 @@ export function scnDesigner() {
         .show();
 
     for (let i = 0; i < 32; i++) {
-        objDollEye()
-            .mixin(mxnDragPiece, objDollEye)
+        Rng.item(sourceFns)()
+            .mixin(mxnDragPiece)
             .at(Rng.int(renderer.width), Rng.int(renderer.height))
             .show();
     }
@@ -28,22 +36,21 @@ export function scnDesigner() {
         .show();
 }
 
-function mxnDragPiece(obj: DisplayObject, sourceFn: () => DisplayObject) {
+function mxnDragPiece(obj: mxnSerialize.Type) {
     let pointer = Null<PointerListener.State>();
-
-    const api = {
-        sourceFn,
-    };
+    const pointerOffset = vnew();
 
     return obj
-        .merge({ mxnDragPiece: api })
         .track(mxnDragPiece)
         .step(self => {
             if (!pointer || !pointer.down) {
                 pointer = DollPointer.claim(self);
+                if (pointer) {
+                    pointerOffset.at(self).add(pointer, -1);
+                }
             }
             else {
-                self.at(pointer);
+                self.at(pointer).add(pointerOffset);
             }
         });
 }
