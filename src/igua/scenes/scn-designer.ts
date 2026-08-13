@@ -5,6 +5,7 @@ import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Rng } from "../../lib/math/rng";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
+import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { DollPointer } from "../utils/doll-pointer";
 
 export function scnDesigner() {
@@ -19,6 +20,10 @@ export function scnDesigner() {
             .at(Rng.int(renderer.width), Rng.int(renderer.height))
             .show();
     }
+
+    objOverlayCursor()
+        .zIndexed(999999)
+        .show();
 }
 
 function objDragPiece(tx = Tx.Doll.Eye0) {
