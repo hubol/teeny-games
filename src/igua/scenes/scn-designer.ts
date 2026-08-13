@@ -11,6 +11,7 @@ import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
 import { mxnSerialize } from "../mixins/mxn-serialize";
 import { objDollArm } from "../objects/doll/obj-doll-arm";
+import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { DollPointer } from "../utils/doll-pointer";
@@ -18,6 +19,7 @@ import { DollPointer } from "../utils/doll-pointer";
 const sourceFns = [
     objDollEye,
     objDollArm,
+    objDollEar,
 ];
 
 export function scnDesigner() {

@@ -1,17 +1,17 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
-import { blendColor } from "../../../lib/color/blend-color";
 import { factor, interp } from "../../../lib/game-engine/routines/interp";
 import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { Rng } from "../../../lib/math/rng";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
 import { mxnSerialize } from "../../mixins/mxn-serialize";
+import { DollSkinTint } from "./doll-skin-tint";
 
 const txs = Tx.Doll.Arm0.split({ count: 3, trimFrame: true });
-const skinTints = [0x1a1109, 0xcea488];
 
-export function objDollArm(tint = blendColor(skinTints[0], skinTints[1], Rng.float()), angle = Rng.int(360)) {
+export function objDollArm(tintValue = DollSkinTint.createValue(), angle = Rng.int(360), flipV = Rng.bool()) {
+    const tint = DollSkinTint.getPrimary(tintValue);
     const sprites = txs.map(tx => Sprite.from(tx).tinted(tint));
 
     const upperArmCollisionObjs = [
@@ -26,7 +26,7 @@ export function objDollArm(tint = blendColor(skinTints[0], skinTints[1], Rng.flo
         new Graphics().beginFill(0xff0000).drawCircle(110 + 17, 14 + 17, 17).invisible(),
     ];
 
-    const sourceFn = () => objDollArm(tint, angle);
+    const sourceFn = () => objDollArm(tintValue, angle, flipV);
     return container(
         sprites[0],
         ...upperArmCollisionObjs,
@@ -40,13 +40,13 @@ export function objDollArm(tint = blendColor(skinTints[0], skinTints[1], Rng.flo
             .coro(function* (self) {
                 while (true) {
                     yield sleep(Rng.int(200, 500));
-                    yield interp(self, "angle").factor(factor.sine).to(Rng.int(-90, 90)).over(Rng.int(500, 1500));
+                    yield interp(self, "angle").factor(factor.sine).to(Rng.int(0, -90)).over(Rng.int(500, 1500));
                 }
             }),
     )
         .collisionShape(CollisionShape.DisplayObjects, [...upperArmCollisionObjs, ...forearmCollisionObjs])
         .pivoted(17, 24)
-        .scaled(3, 3)
+        .scaled(3, flipV ? -3 : 3)
         .angled(angle)
         .mixin(mxnSerialize, sourceFn);
 }
