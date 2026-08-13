@@ -1,17 +1,18 @@
-import { Sprite, TilingSprite } from "pixi.js";
+import { TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
-import { Tx } from "../../assets/textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
+import { Instances } from "../../lib/game-engine/instances";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { vnew } from "../../lib/math/vector-type";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
-import { scene } from "../globals";
+import { Key, scene } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnSerialize } from "../mixins/mxn-serialize";
 import { objDollArm } from "../objects/doll/obj-doll-arm";
+import { objDollBase } from "../objects/doll/obj-doll-base";
 import { objDollButton } from "../objects/doll/obj-doll-button";
 import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
@@ -36,10 +37,22 @@ export function scnDesigner() {
         .scaled(3, 3)
         .show();
 
-    Sprite.from(Tx.Doll.Base)
-        .anchored(0.5, 0.5)
-        .scaled(3, 3)
+    objDollBase()
         .at(renderer.width / 2 + 200, renderer.height / 2)
+        .step(self => {
+            // TODO
+            if (Key.justWentDown("KeyS")) {
+                const data = self.objDollBase.serialize(
+                    Instances(mxnDragPiece, obj => !obj.mxnDragPiece.isOnConveyorBelt),
+                );
+
+                objDollBase.deserialize(data)
+                    .at(0, 0)
+                    .scaled(0.5, 0.5)
+                    .step(self => self.add(1, 1))
+                    .show();
+            }
+        })
         .show();
 
     scene.stage
@@ -68,7 +81,14 @@ function mxnDragPiece(obj: mxnSerialize.Type) {
     let pointer = Null<PointerListener.State>();
     const pointerOffset = vnew();
 
+    const api = {
+        get isOnConveyorBelt() {
+            return isOnConveyorBelt;
+        },
+    };
+
     return obj
+        .merge({ mxnDragPiece: api })
         .track(mxnDragPiece)
         .step(self => {
             if (isDying) {

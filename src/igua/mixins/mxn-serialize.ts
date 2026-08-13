@@ -4,7 +4,8 @@ export function mxnSerialize(obj: Container, sourceFn: () => DisplayObject) {
     const api = { sourceFn };
 
     return obj
-        .merge({ mxnSerialize: api });
+        .merge({ mxnSerialize: api })
+        .track(mxnSerialize);
 }
 
 export namespace mxnSerialize {
