@@ -4,7 +4,9 @@ import { Rng } from "../../../lib/math/rng";
 import { AdjustColor } from "../../../lib/pixi/adjust-color";
 import { mxnSerialize } from "../../mixins/mxn-serialize";
 
-export function objDollButton(tint = AdjustColor.hsv(Rng.float(360), Rng.float(50, 100), 100).toPixi()) {
+export function objDollButton(
+    tint = AdjustColor.hsv(Rng.float(360), Rng.float(10, Rng.float(80, 100)), Rng.float(50, 85)).toPixi(),
+) {
     const sourceFn = () => objDollButton(tint);
 
     return Sprite.from(Tx.Doll.Button)

@@ -15,6 +15,7 @@ import { objDollArm } from "../objects/doll/obj-doll-arm";
 import { objDollButton } from "../objects/doll/obj-doll-button";
 import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
+import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { DollPointer } from "../utils/doll-pointer";
 
@@ -23,6 +24,7 @@ const sourceFns = [
     objDollArm,
     objDollEar,
     objDollButton,
+    objDollMouth,
 ];
 
 export function scnDesigner() {
