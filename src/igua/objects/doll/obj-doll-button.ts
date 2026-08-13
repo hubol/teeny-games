@@ -1,0 +1,15 @@
+import { Sprite } from "pixi.js";
+import { Tx } from "../../../assets/textures";
+import { Rng } from "../../../lib/math/rng";
+import { AdjustColor } from "../../../lib/pixi/adjust-color";
+import { mxnSerialize } from "../../mixins/mxn-serialize";
+
+export function objDollButton(tint = AdjustColor.hsv(Rng.float(360), Rng.float(50, 100), 100).toPixi()) {
+    const sourceFn = () => objDollButton(tint);
+
+    return Sprite.from(Tx.Doll.Button)
+        .mixin(mxnSerialize, sourceFn)
+        .tinted(tint)
+        .anchored(0.5, 0.5)
+        .scaled(3, 3);
+}

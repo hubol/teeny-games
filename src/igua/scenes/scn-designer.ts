@@ -1,5 +1,5 @@
-import { DisplayObject, Sprite } from "pixi.js";
-import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Sprite, TilingSprite } from "pixi.js";
+import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { Tx } from "../../assets/textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { interp } from "../../lib/game-engine/routines/interp";
@@ -9,8 +9,10 @@ import { vnew } from "../../lib/math/vector-type";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
+import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnSerialize } from "../mixins/mxn-serialize";
 import { objDollArm } from "../objects/doll/obj-doll-arm";
+import { objDollButton } from "../objects/doll/obj-doll-button";
 import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
@@ -20,9 +22,18 @@ const sourceFns = [
     objDollEye,
     objDollArm,
     objDollEar,
+    objDollButton,
 ];
 
 export function scnDesigner() {
+    TilingSprite.from(NoAtlasTx.Designer.ConveyorBelt, { width: 256, height: 512 })
+        .step(self => {
+            self.tilePosition.y += 2 / 3;
+        })
+        .mixin(mxnFxBoilDisplacement, { rate: 0.05, scale: 50 })
+        .scaled(3, 3)
+        .show();
+
     Sprite.from(Tx.Doll.Base)
         .anchored(0.5, 0.5)
         .scaled(3, 3)
@@ -61,6 +72,11 @@ function mxnDragPiece(obj: mxnSerialize.Type) {
             if (isDying) {
                 return;
             }
+
+            if (pointer?.down === false && pointer.x < 740) {
+                isOnConveyorBelt = true;
+            }
+
             if (!pointer || !pointer.down) {
                 pointer = DollPointer.claim(self);
                 if (pointer) {
