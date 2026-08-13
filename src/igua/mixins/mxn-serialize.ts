@@ -1,6 +1,6 @@
-import { DisplayObject } from "pixi.js";
+import { Container, DisplayObject } from "pixi.js";
 
-export function mxnSerialize(obj: DisplayObject, sourceFn: () => DisplayObject) {
+export function mxnSerialize(obj: Container, sourceFn: () => DisplayObject) {
     const api = { sourceFn };
 
     return obj
