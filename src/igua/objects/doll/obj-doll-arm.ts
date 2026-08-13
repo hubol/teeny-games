@@ -1,4 +1,4 @@
-import { Graphics, Sprite } from "pixi.js";
+import { DisplayObject, Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { factor, interp } from "../../../lib/game-engine/routines/interp";
 import { sleep } from "../../../lib/game-engine/routines/sleep";
@@ -26,7 +26,7 @@ export function objDollArm(tintValue = DollSkinTint.createValue(), angle = Rng.i
         new Graphics().beginFill(0xff0000).drawCircle(110 + 17, 14 + 17, 17).invisible(),
     ];
 
-    const sourceFn = () => objDollArm(tintValue, angle, flipV);
+    const sourceFn = (): DisplayObject => objDollArm(tintValue, angle, flipV);
     return container(
         sprites[0],
         ...upperArmCollisionObjs,

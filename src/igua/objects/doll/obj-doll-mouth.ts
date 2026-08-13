@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { DisplayObject, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { interpv } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
@@ -13,7 +13,7 @@ const txs = [
     .map(tx => tx.trimmed);
 
 export function objDollMouth(tx = Rng.item(txs)) {
-    const sourceFn = () => objDollMouth(tx);
+    const sourceFn = (): DisplayObject => objDollMouth(tx);
 
     return Sprite.from(tx)
         .coro(function* (self) {
