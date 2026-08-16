@@ -34,6 +34,7 @@ export function scnDesigner() {
         })
         .mixin(mxnFxBoilDisplacement, { rate: 0.05, scale: 50 })
         .scaled(3, 3)
+        .zIndexed(-2)
         .show();
 
     objDollBase()
@@ -61,6 +62,7 @@ export function scnDesigner() {
                 const obj = Rng.item(sourceFns)();
                 obj
                     .mixin(mxnDragPiece)
+                    .zIndexed(-1)
                     .at(obj.width + Rng.int(50, 300), -obj.height)
                     .show();
 
