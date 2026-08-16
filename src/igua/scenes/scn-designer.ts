@@ -1,15 +1,15 @@
 import { TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
-import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
-import { vnew } from "../../lib/math/vector-type";
-import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
+import { mxnFxDie } from "../mixins/fx/mxn-fx-die";
+import { mxnPointer } from "../mixins/mxn-pointer";
+import { mxnPointerDrag } from "../mixins/mxn-pointer-drag";
 import { mxnSerialize } from "../mixins/mxn-serialize";
 import { objDollArm } from "../objects/doll/obj-doll-arm";
 import { objDollBase } from "../objects/doll/obj-doll-base";
@@ -18,7 +18,6 @@ import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
-import { DollPointer } from "../utils/doll-pointer";
 
 const sourceFns = [
     objDollEye,
@@ -43,7 +42,8 @@ export function scnDesigner() {
             // TODO
             if (Key.justWentDown("KeyS")) {
                 const data = self.objDollBase.serialize(
-                    Instances(mxnDragPiece, obj => !obj.mxnDragPiece.isOnConveyorBelt),
+                    Instances(mxnDragPiece, obj => !obj.mxnDragPiece.isOnConveyorBelt)
+                        .sort((a, b) => a.zIndex - b.zIndex),
                 );
 
                 objDollBase.deserialize(data)
@@ -75,11 +75,10 @@ export function scnDesigner() {
         .show();
 }
 
+let zIndexMax = 0;
+
 function mxnDragPiece(obj: mxnSerialize.Type) {
     let isOnConveyorBelt = true;
-    let isDying = false;
-    let pointer = Null<PointerListener.State>();
-    const pointerOffset = vnew();
 
     const api = {
         get isOnConveyorBelt() {
@@ -89,36 +88,20 @@ function mxnDragPiece(obj: mxnSerialize.Type) {
 
     return obj
         .merge({ mxnDragPiece: api })
+        .mixin(mxnPointer, (obj) => obj.zIndex)
+        .mixin(mxnPointerDrag)
+        .handles("mxnPointer.claimed", (self) => self.zIndex = ++zIndexMax)
         .track(mxnDragPiece)
         .step(self => {
-            if (isDying) {
-                return;
+            if (self.mxnPointer.maybeCurrent) {
+                isOnConveyorBelt = self.mxnPointer.maybeCurrent.down === false && self.mxnPointer.maybeCurrent.x < 740;
             }
 
-            if (pointer?.down === false && pointer.x < 740) {
-                isOnConveyorBelt = true;
-            }
-
-            if (!pointer || !pointer.down) {
-                pointer = DollPointer.claim(self);
-                if (pointer) {
-                    pointerOffset.at(self).add(pointer, -1);
-                    isOnConveyorBelt = false;
+            if (isOnConveyorBelt) {
+                self.y += 2;
+                if (self.y >= renderer.height + self.height && !mxnFxDie.isDying(self)) {
+                    self.mixin(mxnFxDie);
                 }
-                else if (isOnConveyorBelt) {
-                    self.y += 2;
-                    if (self.y >= renderer.height + self.height) {
-                        isDying = true;
-                        self
-                            .coro(function* () {
-                                yield interp(self, "alpha").to(0).over(200);
-                            });
-                        return;
-                    }
-                }
-            }
-            else {
-                self.at(pointer).add(pointerOffset);
             }
         });
 }
