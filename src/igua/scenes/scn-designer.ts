@@ -1,9 +1,11 @@
 import { TilingSprite } from "pixi.js";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
+import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
+import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { Key, scene } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
@@ -17,6 +19,7 @@ import { objDollButton } from "../objects/doll/obj-doll-button";
 import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
+import { objDollScrew } from "../objects/doll/obj-doll-screw";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 
 const sourceFns = [
@@ -25,6 +28,7 @@ const sourceFns = [
     objDollEar,
     objDollButton,
     objDollMouth,
+    objDollScrew,
 ];
 
 export function scnDesigner() {
@@ -43,7 +47,7 @@ export function scnDesigner() {
             // TODO
             if (Key.justWentDown("KeyS")) {
                 const data = self.objDollBase.serialize(
-                    Instances(mxnDragPiece, obj => !obj.mxnDragPiece.isOnConveyorBelt)
+                    getAttachedDollObjs()
                         .sort((a, b) => a.zIndex - b.zIndex),
                 );
 
@@ -81,6 +85,7 @@ let zIndexMax = 0;
 
 function mxnDragPiece(obj: mxnSerialize.Type) {
     let isOnConveyorBelt = true;
+    let lastEvaluatedPointer = Null<PointerListener.State>();
 
     const api = {
         get isOnConveyorBelt() {
@@ -95,8 +100,11 @@ function mxnDragPiece(obj: mxnSerialize.Type) {
         .handles("mxnPointer.claimed", (self) => self.zIndex = ++zIndexMax)
         .track(mxnDragPiece)
         .step(self => {
-            if (self.mxnPointer.maybeCurrent) {
-                isOnConveyorBelt = self.mxnPointer.maybeCurrent.down === false && self.mxnPointer.maybeCurrent.x < 740;
+            const maybeCurrent = self.mxnPointer.maybeCurrent;
+            if (maybeCurrent && maybeCurrent.down === false && lastEvaluatedPointer !== maybeCurrent) {
+                isOnConveyorBelt = maybeCurrent.x < 740
+                    && !self.collidesOne(getAttachedDollObjs());
+                lastEvaluatedPointer = maybeCurrent;
             }
 
             if (isOnConveyorBelt) {
@@ -106,4 +114,8 @@ function mxnDragPiece(obj: mxnSerialize.Type) {
                 }
             }
         });
+}
+
+function getAttachedDollObjs() {
+    return Instances(mxnDragPiece, obj => !obj.mxnDragPiece.isOnConveyorBelt);
 }
