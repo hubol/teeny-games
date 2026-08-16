@@ -10,7 +10,6 @@ import { objCamera } from "../../objects/obj-camera";
 import { IguaLayers } from "../igua-layers";
 
 interface IguaSceneMeta {
-    useGameplay: boolean;
 }
 
 function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMeta) {

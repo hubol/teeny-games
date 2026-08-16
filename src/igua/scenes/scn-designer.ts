@@ -4,10 +4,11 @@ import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
-import { Key, scene } from "../globals";
+import { scene, sceneStack } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnFxDie } from "../mixins/fx/mxn-fx-die";
 import { mxnPointer } from "../mixins/mxn-pointer";
@@ -21,6 +22,8 @@ import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objDollScrew } from "../objects/doll/obj-doll-screw";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
+import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
+import { scnLaunch } from "./scn-launch";
 
 const sourceFns = [
     objDollEye,
@@ -41,23 +44,8 @@ export function scnDesigner() {
         .zIndexed(-2)
         .show();
 
-    objDollBase()
+    const dollObj = objDollBase()
         .at(renderer.width / 2 + 200, renderer.height / 2)
-        .step(self => {
-            // TODO
-            if (Key.justWentDown("KeyS")) {
-                const data = self.objDollBase.serialize(
-                    getAttachedDollObjs()
-                        .sort((a, b) => a.zIndex - b.zIndex),
-                );
-
-                objDollBase.deserialize(data)
-                    .at(0, 0)
-                    .scaled(0.5, 0.5)
-                    .step(self => self.add(1, 1))
-                    .show();
-            }
-        })
         .show();
 
     scene.stage
@@ -78,6 +66,23 @@ export function scnDesigner() {
 
     objOverlayCursor()
         .zIndexed(999999)
+        .show();
+
+    objOverlayGoButton()
+        .zIndexed(99999)
+        .at(1590, 800)
+        .handles("mxnPointer.claimed", () => {
+            const data = dollObj.objDollBase.serialize(
+                getAttachedDollObjs()
+                    .sort((a, b) => a.zIndex - b.zIndex),
+            );
+
+            sceneStack.replace(() => scnLaunch(data), {});
+        })
+        .step(self => {
+            const target = getAttachedDollObjs().length >= 3 ? 1 : 0;
+            self.objPuppetGoButton.visible = approachLinear(self.objPuppetGoButton.visible, target, 0.02);
+        })
         .show();
 }
 

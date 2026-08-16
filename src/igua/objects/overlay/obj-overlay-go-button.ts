@@ -1,26 +1,18 @@
 import { Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { factor, interp } from "../../../lib/game-engine/routines/interp";
-import { sleep } from "../../../lib/game-engine/routines/sleep";
 import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
 import { mxnFxBoilDisplacement } from "../../mixins/fx/mxn-fx-boil-displacement";
+import { mxnPointer } from "../../mixins/mxn-pointer";
 
 const [txAura, txBody, txFace] = Tx.Overlay.GoButton.split({ count: 3, trimFrame: true });
 
 export function objOverlayGoButton() {
     return objPuppetGoButton()
-        .scaled(2, 2)
-        .coro(function* (self) {
-            while (true) {
-                yield sleep(500);
-                yield interp(self.objPuppetGoButton, "visible").to(1).over(1500);
-
-                yield sleep(1000);
-                yield interp(self.objPuppetGoButton, "visible").to(0).over(1500);
-            }
-        });
+        .mixin(mxnPointer, () => Number.MAX_SAFE_INTEGER)
+        .scaled(2, 2);
 }
 
 function objPuppetGoButton() {
