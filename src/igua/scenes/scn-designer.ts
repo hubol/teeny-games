@@ -1,6 +1,7 @@
 import { Container, Rectangle, TilingSprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
+import { Sfx } from "../../assets/sounds";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
 import { Coro } from "../../lib/game-engine/routines/coro";
@@ -131,6 +132,12 @@ export function scnDesigner() {
 
 let zIndexMax = 0;
 
+const manipulateSfxs = Object.values(Sfx.Manipulate);
+
+function getManipulateSfx() {
+    return Rng.item(manipulateSfxs).rate(Rng.float(0.6, 1));
+}
+
 function mxnDragPiece(obj: mxnSerialize.Type, dollObj: Container, draggingObj: Container) {
     let isOnConveyorBelt = true;
     let lastEvaluatedPointer = Null<PointerListener.State>();
@@ -145,7 +152,10 @@ function mxnDragPiece(obj: mxnSerialize.Type, dollObj: Container, draggingObj: C
         .merge({ mxnDragPiece: api })
         .mixin(mxnPointer, (obj) => obj.zIndex)
         .mixin(mxnPointerDrag)
-        .handles("mxnPointer.claimed", (self) => self.zIndex = ++zIndexMax)
+        .handles("mxnPointer.claimed", (self) => {
+            self.zIndex = ++zIndexMax;
+            self.play(getManipulateSfx());
+        })
         .track(mxnDragPiece)
         .step(self => {
             const maybeCurrent = self.mxnPointer.maybeCurrent;
@@ -153,6 +163,7 @@ function mxnDragPiece(obj: mxnSerialize.Type, dollObj: Container, draggingObj: C
                 self.setParent(draggingObj);
             }
             else if (maybeCurrent && maybeCurrent.down === false && lastEvaluatedPointer !== maybeCurrent) {
+                self.play(getManipulateSfx());
                 isOnConveyorBelt = maybeCurrent.x < 740
                     && !self.collidesOne(getAttachedDollObjs());
                 lastEvaluatedPointer = maybeCurrent;
