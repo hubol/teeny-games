@@ -3,7 +3,8 @@ import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
-import { interp } from "../../lib/game-engine/routines/interp";
+import { Coro } from "../../lib/game-engine/routines/coro";
+import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
@@ -61,9 +62,21 @@ export function scnDesigner() {
         .at(renderer.width / 2 + 200, renderer.height / 2);
 
     const dollContainerObj = container(dollObj)
-        .step(self => {
-            self.y = Math.round(Math.sin(scene.ticker.ticks / 60 * Math.PI) * 6);
-            lvl.Shadow.scale.set(self.y > 0 ? 3.2 : 3);
+        .coro(function* (self) {
+            lvl.Shadow.alpha = 0;
+
+            self.y = -1080;
+
+            yield* Coro.all([
+                interpvr(self).factor(factor.sine).to(0, 0).over(1000),
+                interp(lvl.Shadow, "alpha").steps(4).to(1).over(1000),
+            ]);
+
+            self
+                .step(() => {
+                    self.y = Math.round(Math.sin(scene.ticker.ticks / 60 * Math.PI) * 6);
+                    lvl.Shadow.scale.set(self.y > 0 ? 3.2 : 3);
+                });
         })
         .show();
 
