@@ -23,6 +23,9 @@ export function objDollArm(tintValue = DollSkinTint.createValue(), angle = Rng.i
     const forearmCollisionObjs = [
         new Graphics().beginFill(0xff0000).drawCircle(63 + 12, 15 + 12, 12).invisible(),
         new Graphics().beginFill(0xff0000).drawCircle(88 + 11, 17 + 11, 11).invisible(),
+    ];
+
+    const handCollisionObjs = [
         new Graphics().beginFill(0xff0000).drawCircle(110 + 17, 14 + 17, 17).invisible(),
     ];
 
@@ -32,8 +35,19 @@ export function objDollArm(tintValue = DollSkinTint.createValue(), angle = Rng.i
         ...upperArmCollisionObjs,
         container(
             sprites[1],
-            sprites[2],
             ...forearmCollisionObjs,
+            container(
+                sprites[2],
+                ...handCollisionObjs,
+            )
+                .pivoted(121, 31)
+                .at(121, 31)
+                .coro(function* (self) {
+                    while (true) {
+                        yield sleep(Rng.int(200, 500));
+                        yield interp(self, "angle").factor(factor.sine).to(Rng.int(-10, 10)).over(Rng.int(500, 1500));
+                    }
+                }),
         )
             .pivoted(73, 28)
             .at(73, 28)
@@ -44,7 +58,11 @@ export function objDollArm(tintValue = DollSkinTint.createValue(), angle = Rng.i
                 }
             }),
     )
-        .collisionShape(CollisionShape.DisplayObjects, [...upperArmCollisionObjs, ...forearmCollisionObjs])
+        .collisionShape(CollisionShape.DisplayObjects, [
+            ...upperArmCollisionObjs,
+            ...forearmCollisionObjs,
+            ...handCollisionObjs,
+        ])
         .pivoted(17, 24)
         .scaled(3, flipV ? -3 : 3)
         .angled(angle)
