@@ -1,4 +1,4 @@
-import { TilingSprite } from "pixi.js";
+import { Container, TilingSprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
@@ -7,6 +7,7 @@ import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
+import { container } from "../../lib/pixi/container";
 import { Null } from "../../lib/types/null";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
@@ -38,7 +39,7 @@ const sourceFns = [
 ];
 
 export function scnDesigner() {
-    Lvl.Designer();
+    const lvl = Lvl.Designer();
 
     Search.findMarkers(0xb7ace2)
         .forEach(position => objFxStar().at(position).show());
@@ -53,7 +54,16 @@ export function scnDesigner() {
         .show();
 
     const dollObj = objDollBase()
-        .at(renderer.width / 2 + 200, renderer.height / 2)
+        .at(renderer.width / 2 + 200, renderer.height / 2);
+
+    const dollContainerObj = container(dollObj)
+        .step(self => {
+            self.y = Math.round(Math.sin(scene.ticker.ticks / 60 * Math.PI) * 6);
+            lvl.Shadow.scale.set(self.y > 0 ? 3.2 : 3);
+        })
+        .show();
+
+    const draggingObj = container()
         .show();
 
     scene.stage
@@ -61,7 +71,7 @@ export function scnDesigner() {
             while (true) {
                 const obj = Rng.item(sourceFns)();
                 obj
-                    .mixin(mxnDragPiece)
+                    .mixin(mxnDragPiece, dollContainerObj, draggingObj)
                     .zIndexed(-1)
                     .at(obj.width + Rng.int(50, 300), -obj.height)
                     .show();
@@ -96,7 +106,7 @@ export function scnDesigner() {
 
 let zIndexMax = 0;
 
-function mxnDragPiece(obj: mxnSerialize.Type) {
+function mxnDragPiece(obj: mxnSerialize.Type, dollObj: Container, draggingObj: Container) {
     let isOnConveyorBelt = true;
     let lastEvaluatedPointer = Null<PointerListener.State>();
 
@@ -114,10 +124,15 @@ function mxnDragPiece(obj: mxnSerialize.Type) {
         .track(mxnDragPiece)
         .step(self => {
             const maybeCurrent = self.mxnPointer.maybeCurrent;
-            if (maybeCurrent && maybeCurrent.down === false && lastEvaluatedPointer !== maybeCurrent) {
+            if (maybeCurrent?.down) {
+                self.setParent(draggingObj);
+            }
+            else if (maybeCurrent && maybeCurrent.down === false && lastEvaluatedPointer !== maybeCurrent) {
                 isOnConveyorBelt = maybeCurrent.x < 740
                     && !self.collidesOne(getAttachedDollObjs());
                 lastEvaluatedPointer = maybeCurrent;
+                self.setParent(isOnConveyorBelt ? scene.stage : dollObj);
+                self.add(self.parent, -1);
             }
 
             if (isOnConveyorBelt) {

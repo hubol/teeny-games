@@ -228,6 +228,18 @@
           "originX": 0,
           "originY": 0,
           "values": {"name": ""}
+        },
+        {
+          "x": 1156,
+          "y": 1024,
+          "scaleX": 3,
+          "scaleY": 3,
+          "rotation": 0,
+          "tint": "#1a0f44",
+          "texture": "fx/shadow messy.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": "Shadow"}
         }
       ],
       "folder": "../textures"

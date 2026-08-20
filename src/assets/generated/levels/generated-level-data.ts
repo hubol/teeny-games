@@ -13,6 +13,7 @@ export const Lvl = {
     applyLevel({ width: 1920, height: 1080, backgroundTint: 0x408000 });
     return {
       DesignerBackground: d(Tx.Designer.Background, { x: 0, y: 0, scaleX: 3.05, scaleY: 3.05, rotation: 0, originX: 0, originY: 0, tint: 0xffffff }, "BackDecals"),
+      Shadow: d(Tx.Fx.ShadowMessy, { x: 1156, y: 1024, scaleX: 3, scaleY: 3, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x1a0f44 }, "BackDecals"),
       Marker: e(r["Marker"], { x: 1336, y: 472, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_1: e(r["Marker"], { x: 1576, y: 600, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_2: e(r["Marker"], { x: 1743, y: 488, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
@@ -57,6 +58,7 @@ export const Lvl = {
 export namespace LvlType {
   export type Designer = {
     DesignerBackground: Sprite;
+    Shadow: Sprite;
     Marker: ReturnType<(typeof r)["Marker"]>;
     Marker_1: ReturnType<(typeof r)["Marker"]>;
     Marker_2: ReturnType<(typeof r)["Marker"]>;
