@@ -1,4 +1,4 @@
-import { Container, TilingSprite } from "pixi.js";
+import { Container, Rectangle, TilingSprite } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
@@ -21,6 +21,7 @@ import { objDollBase } from "../objects/doll/obj-doll-base";
 import { objDollButton } from "../objects/doll/obj-doll-button";
 import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
+import { objDollHair } from "../objects/doll/obj-doll-hair";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objDollScrew } from "../objects/doll/obj-doll-screw";
 import { objFxStar } from "../objects/fx/obj-fx-star";
@@ -30,13 +31,16 @@ import { Search } from "../utils/search";
 import { scnLaunch } from "./scn-launch";
 
 const sourceFns = [
-    objDollEye,
     objDollArm,
-    objDollEar,
     objDollButton,
+    objDollEar,
+    objDollEye,
+    objDollHair,
     objDollMouth,
     objDollScrew,
 ];
+
+const r = new Rectangle();
 
 export function scnDesigner() {
     const lvl = Lvl.Designer();
@@ -69,16 +73,24 @@ export function scnDesigner() {
     scene.stage
         .coro(function* () {
             while (true) {
-                const obj = Rng.item(sourceFns)();
-                obj
-                    .mixin(mxnDragPiece, dollContainerObj, draggingObj)
-                    .zIndexed(-1)
-                    .at(obj.width + Rng.int(50, 300), -obj.height)
-                    .show();
+                for (const sourceFn of Rng.shuffle(sourceFns)) {
+                    const obj = sourceFn();
+                    obj
+                        .mixin(mxnDragPiece, dollContainerObj, draggingObj)
+                        .zIndexed(-1)
+                        .at(obj.width + Rng.int(50, 300), -obj.height)
+                        .show();
 
-                obj.alpha = 0;
-                yield interp(obj, "alpha").to(1).over(200);
-                yield sleep(1000);
+                    const bounds = obj.getBounds(false, r);
+
+                    if (bounds.x < 0) {
+                        obj.x += -bounds.x;
+                    }
+
+                    obj.alpha = 0;
+                    yield interp(obj, "alpha").to(1).over(200);
+                    yield sleep(1000);
+                }
             }
         });
 
