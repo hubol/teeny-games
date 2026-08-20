@@ -26,6 +26,7 @@ import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objDollHair } from "../objects/doll/obj-doll-hair";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objDollScrew } from "../objects/doll/obj-doll-screw";
+import { objFxGhostBurst } from "../objects/fx/obj-fx-ghost-burst";
 import { objFxStar } from "../objects/fx/obj-fx-star";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
@@ -46,6 +47,7 @@ const r = new Rectangle();
 
 export function scnDesigner() {
     const lvl = Lvl.Designer();
+    let isExiting = false;
 
     Search.findMarkers(0xb7ace2)
         .forEach(position => objFxStar().at(position).show());
@@ -73,11 +75,20 @@ export function scnDesigner() {
                 interp(lvl.Shadow, "alpha").steps(4).to(1).over(1000),
             ]);
 
-            self
+            const bobbingObj = container()
                 .step(() => {
                     self.y = Math.round(Math.sin(scene.ticker.ticks / 60 * Math.PI) * 6);
                     lvl.Shadow.scale.set(self.y > 0 ? 3.2 : 3);
-                });
+                })
+                .show(self);
+
+            yield () => isExiting;
+
+            bobbingObj.destroy();
+            yield* Coro.all([
+                interpvr(self).factor(factor.sine).to(0, -1540).over(1000),
+                interp(lvl.Shadow, "alpha").steps(4).to(0).over(1000),
+            ]);
         })
         .show();
 
@@ -86,8 +97,12 @@ export function scnDesigner() {
 
     scene.stage
         .coro(function* () {
+            Sfx.Designer.Begin.play();
             while (true) {
                 for (const sourceFn of Rng.shuffle(sourceFns)) {
+                    if (isExiting) {
+                        return;
+                    }
                     const obj = sourceFn();
                     obj
                         .mixin(mxnDragPiece, dollContainerObj, draggingObj)
@@ -115,13 +130,27 @@ export function scnDesigner() {
     objOverlayGoButton()
         .zIndexed(99999)
         .at(1590, 800)
-        .handles("mxnPointer.claimed", () => {
+        .handles("mxnPointer.claimed", (self) => {
             const data = dollObj.objDollBase.serialize(
                 getAttachedDollObjs()
                     .sort((a, b) => a.zIndex - b.zIndex),
             );
 
-            sceneStack.replace(() => scnLaunch(data), {});
+            Sfx.Designer.PressGo.play();
+            Sfx.Designer.Transition.play();
+
+            objFxGhostBurst()
+                .at(self)
+                .add(-38, -44)
+                .show();
+
+            isExiting = true;
+            self.destroy();
+
+            scene.stage.coro(function* () {
+                yield sleep(1000);
+                sceneStack.replace(() => scnLaunch(data), {});
+            });
         })
         .step(self => {
             const target = getAttachedDollObjs().length >= 3 ? 1 : 0;
