@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 27 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 28 }];
 
 interface TxData {
   id: string;
@@ -20,16 +20,17 @@ function txs<T>(tx: (data: TxData) => T) {
     Doll: {
       Arm0: tx({ id: "Doll.Arm0", atlas: 0, x: 635, y: 175, width: 486, height: 54 }),
       Base: tx({ id: "Doll.Base", atlas: 0, x: 1682, y: 0, width: 164, height: 280 }),
-      Button: tx({ id: "Doll.Button", atlas: 0, x: 1371, y: 335, width: 30, height: 30 }),
+      Button: tx({ id: "Doll.Button", atlas: 0, x: 1371, y: 368, width: 30, height: 30 }),
       EarShadow0: tx({ id: "Doll.EarShadow0", atlas: 0, x: 1342, y: 175, width: 26, height: 42 }),
       Ear0: tx({ id: "Doll.Ear0", atlas: 0, x: 1371, y: 236, width: 26, height: 42 }),
       Eye0: tx({ id: "Doll.Eye0", atlas: 0, x: 1992, y: 61, width: 32, height: 28 }),
       Hair: tx({ id: "Doll.Hair", atlas: 0, x: 1847, y: 35, width: 144, height: 60 }),
       Mouth0: tx({ id: "Doll.Mouth0", atlas: 0, x: 1847, y: 117, width: 66, height: 22 }),
-      Mouth1: tx({ id: "Doll.Mouth1", atlas: 0, x: 1371, y: 366, width: 30, height: 30 }),
+      Mouth1: tx({ id: "Doll.Mouth1", atlas: 0, x: 1371, y: 399, width: 30, height: 30 }),
       Mouth2: tx({ id: "Doll.Mouth2", atlas: 0, x: 1283, y: 175, width: 58, height: 22 }),
       Sclera0: tx({ id: "Doll.Sclera0", atlas: 0, x: 1371, y: 279, width: 32, height: 28 }),
       Screw0: tx({ id: "Doll.Screw0", atlas: 0, x: 1371, y: 308, width: 32, height: 26 }),
+      Washer0: tx({ id: "Doll.Washer0", atlas: 0, x: 1371, y: 335, width: 32, height: 32 }),
     },
     Font: {
       Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 1122, y: 210, width: 128, height: 8 }),
