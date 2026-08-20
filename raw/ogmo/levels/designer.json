@@ -1,0 +1,236 @@
+{
+  "ogmoVersion": "3.4.0-hubol",
+  "width": 1920,
+  "height": 1080,
+  "offsetX": 0,
+  "offsetY": 0,
+  "backgroundColor": "#408000",
+  "values": {"Terrain Color": "#000000"},
+  "layers": [
+    {
+      "name": "MarkerEntities",
+      "_eid": "73166939",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "entities": [
+        {
+          "name": "Marker",
+          "id": 0,
+          "_eid": "73148747",
+          "x": 1336,
+          "y": 472,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 1,
+          "_eid": "73148747",
+          "x": 1576,
+          "y": 600,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 2,
+          "_eid": "73148747",
+          "x": 1743,
+          "y": 488,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 3,
+          "_eid": "73148747",
+          "x": 1528,
+          "y": 365,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 4,
+          "_eid": "73148747",
+          "x": 1616,
+          "y": 269,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 5,
+          "_eid": "73148747",
+          "x": 1840,
+          "y": 149,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 6,
+          "_eid": "73148747",
+          "x": 1648,
+          "y": 293,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 7,
+          "_eid": "73148747",
+          "x": 1520,
+          "y": 141,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 8,
+          "_eid": "73148747",
+          "x": 847,
+          "y": 424,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 9,
+          "_eid": "73148747",
+          "x": 720,
+          "y": 205,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 10,
+          "_eid": "73148747",
+          "x": 944,
+          "y": 85,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 11,
+          "_eid": "73148747",
+          "x": 752,
+          "y": 229,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 12,
+          "_eid": "73148747",
+          "x": 72,
+          "y": 405,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 13,
+          "_eid": "73148747",
+          "x": 24,
+          "y": 245,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#b7ace2",
+          "values": {"name": "", "depth": 0}
+        }
+      ]
+    },
+    {
+      "name": "RegionEntities",
+      "_eid": "01831167",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "entities": []
+    },
+    {
+      "name": "FrontDecals",
+      "_eid": "17577176",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "decals": [],
+      "folder": "../textures"
+    },
+    {
+      "name": "Entities",
+      "_eid": "93086020",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "entities": []
+    },
+    {
+      "name": "BackDecals",
+      "_eid": "64691217",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "decals": [
+        {
+          "x": 0,
+          "y": 0,
+          "scaleX": 3.05,
+          "scaleY": 3.05,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "designer/background.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        }
+      ],
+      "folder": "../textures"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 export enum ZIndex {
     BackDecals = -200,
+    FxStar = -170,
     TerrainEntities = -150,
     Entities = -130,
     FrontDecals = -30,

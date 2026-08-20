@@ -1,4 +1,5 @@
 import { TilingSprite } from "pixi.js";
+import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { NoAtlasTx } from "../../assets/no-atlas-textures";
 import { PointerListener } from "../../lib/browser/pointer-listener";
 import { Instances } from "../../lib/game-engine/instances";
@@ -21,8 +22,10 @@ import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objDollScrew } from "../objects/doll/obj-doll-screw";
+import { objFxStar } from "../objects/fx/obj-fx-star";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
+import { Search } from "../utils/search";
 import { scnLaunch } from "./scn-launch";
 
 const sourceFns = [
@@ -35,6 +38,11 @@ const sourceFns = [
 ];
 
 export function scnDesigner() {
+    Lvl.Designer();
+
+    Search.findMarkers(0xb7ace2)
+        .forEach(position => objFxStar().at(position).show());
+
     TilingSprite.from(NoAtlasTx.Designer.ConveyorBelt, { width: 256, height: 512 })
         .step(self => {
             self.tilePosition.y += 2 / 3;

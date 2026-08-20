@@ -9,6 +9,26 @@ import { Tx } from "../../../assets/textures";
 const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = OgmoFactory;
 
 export const Lvl = {
+  Designer: (): LvlType.Designer => {
+    applyLevel({ width: 1920, height: 1080, backgroundTint: 0x408000 });
+    return {
+      DesignerBackground: d(Tx.Designer.Background, { x: 0, y: 0, scaleX: 3.05, scaleY: 3.05, rotation: 0, originX: 0, originY: 0, tint: 0xffffff }, "BackDecals"),
+      Marker: e(r["Marker"], { x: 1336, y: 472, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_1: e(r["Marker"], { x: 1576, y: 600, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_2: e(r["Marker"], { x: 1743, y: 488, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_3: e(r["Marker"], { x: 1528, y: 365, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_4: e(r["Marker"], { x: 1616, y: 269, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_5: e(r["Marker"], { x: 1840, y: 149, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_6: e(r["Marker"], { x: 1648, y: 293, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_7: e(r["Marker"], { x: 1520, y: 141, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_8: e(r["Marker"], { x: 847, y: 424, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_9: e(r["Marker"], { x: 720, y: 205, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_10: e(r["Marker"], { x: 944, y: 85, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_11: e(r["Marker"], { x: 752, y: 229, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_12: e(r["Marker"], { x: 72, y: 405, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_13: e(r["Marker"], { x: 24, y: 245, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+    };
+  },
   Placeholder: (): LvlType.Placeholder => {
     applyLevel({ width: 2032, height: 448, backgroundTint: 0x408000 });
     return {
@@ -35,6 +55,23 @@ export const Lvl = {
 };
 
 export namespace LvlType {
+  export type Designer = {
+    DesignerBackground: Sprite;
+    Marker: ReturnType<(typeof r)["Marker"]>;
+    Marker_1: ReturnType<(typeof r)["Marker"]>;
+    Marker_2: ReturnType<(typeof r)["Marker"]>;
+    Marker_3: ReturnType<(typeof r)["Marker"]>;
+    Marker_4: ReturnType<(typeof r)["Marker"]>;
+    Marker_5: ReturnType<(typeof r)["Marker"]>;
+    Marker_6: ReturnType<(typeof r)["Marker"]>;
+    Marker_7: ReturnType<(typeof r)["Marker"]>;
+    Marker_8: ReturnType<(typeof r)["Marker"]>;
+    Marker_9: ReturnType<(typeof r)["Marker"]>;
+    Marker_10: ReturnType<(typeof r)["Marker"]>;
+    Marker_11: ReturnType<(typeof r)["Marker"]>;
+    Marker_12: ReturnType<(typeof r)["Marker"]>;
+    Marker_13: ReturnType<(typeof r)["Marker"]>;
+  };
   export type Placeholder = {
     FontFlaccid: Sprite;
     Group1: Container<Sprite>;

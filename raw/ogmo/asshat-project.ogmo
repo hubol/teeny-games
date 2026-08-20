@@ -1,5 +1,5 @@
 {
-  "name": "Asshat Project",
+  "name": "Haunted Doll Launch",
   "ogmoVersion": "3.4.0-hubol",
   "levelPaths": ["./levels"],
   "backgroundColor": "#408000",
@@ -8,7 +8,7 @@
   "directoryDepth": 5,
   "layerGridDefaultSize": {"x": 8, "y": 8},
   "levelDefaultSize": {"x": 256, "y": 256},
-  "levelMinSize": {"x": 500, "y": 280},
+  "levelMinSize": {"x": 1920, "y": 1080},
   "levelMaxSize": {"x": 4096, "y": 4096},
   "levelValues": [
     {"name": "Terrain Color", "definition": "RGB", "display": 0, "defaults": "#000000"}
@@ -44,7 +44,7 @@
       "includeImageSequence": true,
       "scaleable": true,
       "rotatable": true,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": null, "useDefaultTint": false},
+      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": "", "useDefaultTint": false},
       "values": [
         {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
       ]
@@ -66,7 +66,7 @@
       "includeImageSequence": true,
       "scaleable": true,
       "rotatable": true,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": null, "useDefaultTint": true},
+      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": "", "useDefaultTint": true},
       "values": [
         {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
       ]
