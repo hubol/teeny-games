@@ -1,42 +1,69 @@
 import { DisplayObject } from "pixi.js";
+import { createDebugKey } from "../../lib/game-engine/debug/debug-key";
+import { Instances } from "../../lib/game-engine/instances";
+import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Toast } from "../../lib/game-engine/toast";
+import { approachLinear } from "../../lib/math/number";
+import { Rng } from "../../lib/math/rng";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
+import { mxnCameraSubject } from "../mixins/mxn-camera-subject";
+import { objPlayer } from "./obj-player";
 import { StepOrder } from "./step-order";
 
-type CameraMode = "follow_player";
+type CameraMode = "follow_player" | "controlled";
+
+let zoomEnabled = true;
+
+createDebugKey("KeyZ", "zoomDisable", (_, keydown) => {
+    if (keydown) {
+        zoomEnabled = !zoomEnabled;
+        Toast.info(zoomEnabled ? "Zoom ON" : "Zoom OFF", "^_^");
+    }
+});
 
 function getCameraPositionToFrameSubject(vector: DisplayObject | Vector, subjectObj: DisplayObject) {
     if (subjectObj && !subjectObj.destroyed) {
-        vector.at(subjectObj).add(-renderer.width / 2, -renderer.height / 2);
-        vector.x = Math.max(0, Math.min(vector.x, scene.level.width - renderer.width));
-        vector.y = Math.max(0, Math.min(vector.y, scene.level.height - renderer.height));
+        vector.at(subjectObj).add(20, 20).add(-renderer.width / 2, -renderer.height / 2);
         return vector;
     }
 
     return null;
 }
 
-const v = vnew();
-
 export function objCamera() {
+    const shakeVector = vnew();
+
     // TODO not sure if mode should be exposed...
-    const obj = container().merge({ mode: <CameraMode> "follow_player" }).step(self => {
-        if (self.mode === "follow_player") {
-            // getCameraPositionToFrameSubject(self, playerObj);
-        }
+    const obj = container()
+        .merge({ mode: <CameraMode> "follow_player", zoom: 1, shake: 0 })
+        .step(self => {
+            if (self.mode === "follow_player") {
+                const cameraSubjectObj = Instances(mxnCameraSubject).last;
+                if (cameraSubjectObj) {
+                    getCameraPositionToFrameSubject(self, cameraSubjectObj);
+                }
+            }
 
-        // TODO switch for this?
-        self.x = Math.max(0, Math.min(self.x, scene.level.width - renderer.width));
-        self.y = Math.max(0, Math.min(self.y, scene.level.height - renderer.height));
+            const zoom = zoomEnabled ? self.zoom : 1;
+            scene.stage.scale.set(zoom);
 
-        scene.stage.x = Math.round(-self.x);
-        scene.stage.y = Math.round(-self.y);
+            scene.stage.pivot.x = Math.round(self.x + renderer.width / 2 + shakeVector.x * self.shake * 3);
+            scene.stage.pivot.y = Math.round(self.y + renderer.height / 2 + shakeVector.y * self.shake * 3);
 
-        scene.parallaxStage.x = Math.round(-self.x * 0.8);
-        scene.parallaxStage.y = Math.round(-self.y * 0.8);
-    }, StepOrder.Camera);
+            scene.stage.x = Math.round(renderer.width / 2);
+            scene.stage.y = Math.round(renderer.height / 2);
+        }, StepOrder.Camera);
 
-    return obj;
+    return obj
+        .coro(function* (self) {
+            while (true) {
+                yield () => self.shake > 0;
+                shakeVector.at(Rng.vunit());
+                self.shake = approachLinear(self.shake * 0.9, 0, 0.1);
+                yield sleep(67);
+            }
+        });
 }

@@ -9,7 +9,7 @@
   "layerGridDefaultSize": {"x": 8, "y": 8},
   "levelDefaultSize": {"x": 256, "y": 256},
   "levelMinSize": {"x": 1920, "y": 1080},
-  "levelMaxSize": {"x": 4096, "y": 4096},
+  "levelMaxSize": {"x": 20000, "y": 20000},
   "levelValues": [
     {"name": "Terrain Color", "definition": "RGB", "display": 0, "defaults": "#000000"}
   ],

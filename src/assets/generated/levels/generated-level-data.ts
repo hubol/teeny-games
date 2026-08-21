@@ -53,6 +53,35 @@ export const Lvl = {
       Marker_3: e(r["Marker"], { x: 272, y: 64, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
+  Skate: (): LvlType.Skate => {
+    applyLevel({ width: 6272, height: 3800, backgroundTint: 0x408000 });
+    return {
+      Block: e(r["Block"], { x: 0, y: 2000, width: 416, height: 704, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope: e(r["Slope"], { x: 416, y: 2000, width: 216, height: 144, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_1: e(r["Slope"], { x: 632, y: 2144, width: 224, height: 264, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_2: e(r["Slope"], { x: 856, y: 2408, width: 208, height: 96, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Block_1: e(r["Block"], { x: 1064, y: 2504, width: 320, height: 200, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_3: e(r["Slope"], { x: 1384, y: 2408, width: 208, height: 96, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_4: e(r["Slope"], { x: 1592, y: 2144, width: 224, height: 264, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_5: e(r["Slope"], { x: 1816, y: 1880, width: 224, height: 264, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Block_2: e(r["Block"], { x: 2248, y: 1784, width: 416, height: 704, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_6: e(r["Slope"], { x: 2664, y: 1784, width: 216, height: 144, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_7: e(r["Slope"], { x: 2880, y: 1928, width: 224, height: 264, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_8: e(r["Slope"], { x: 2040, y: 1784, width: 208, height: 96, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_9: e(r["Slope"], { x: 3104, y: 2192, width: 224, height: 384, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_10: e(r["Slope"], { x: 3328, y: 2576, width: 224, height: 480, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_11: e(r["Slope"], { x: 3552, y: 3056, width: 224, height: 264, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_12: e(r["Slope"], { x: 3776, y: 3312, width: 216, height: 144, flippedX: true, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Block_3: e(r["Block"], { x: 4000, y: 3456, width: 416, height: 704, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_13: e(r["Slope"], { x: 4416, y: 3312, width: 216, height: 144, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_14: e(r["Slope"], { x: 4632, y: 3048, width: 224, height: 264, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_15: e(r["Slope"], { x: 4856, y: 2568, width: 224, height: 480, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_16: e(r["Slope"], { x: 5080, y: 2088, width: 224, height: 480, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_17: e(r["Slope"], { x: 5304, y: 1608, width: 224, height: 480, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      Slope_18: e(r["Slope"], { x: 5528, y: 1128, width: 224, height: 480, flippedX: false, flippedY: false, values: { name: "", visible: true }, tint: 0x000000 }, "Entities"),
+      StartMarker: e(r["Marker"], { x: 208, y: 1976, values: { name: "StartMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+    };
+  },
 };
 
 export namespace LvlType {
@@ -93,5 +122,31 @@ export namespace LvlType {
     Marker_1: ReturnType<(typeof r)["Marker"]>;
     Marker_2: ReturnType<(typeof r)["Marker"]>;
     Marker_3: ReturnType<(typeof r)["Marker"]>;
+  };
+  export type Skate = {
+    Block: ReturnType<(typeof r)["Block"]>;
+    Slope: ReturnType<(typeof r)["Slope"]>;
+    Slope_1: ReturnType<(typeof r)["Slope"]>;
+    Slope_2: ReturnType<(typeof r)["Slope"]>;
+    Block_1: ReturnType<(typeof r)["Block"]>;
+    Slope_3: ReturnType<(typeof r)["Slope"]>;
+    Slope_4: ReturnType<(typeof r)["Slope"]>;
+    Slope_5: ReturnType<(typeof r)["Slope"]>;
+    Block_2: ReturnType<(typeof r)["Block"]>;
+    Slope_6: ReturnType<(typeof r)["Slope"]>;
+    Slope_7: ReturnType<(typeof r)["Slope"]>;
+    Slope_8: ReturnType<(typeof r)["Slope"]>;
+    Slope_9: ReturnType<(typeof r)["Slope"]>;
+    Slope_10: ReturnType<(typeof r)["Slope"]>;
+    Slope_11: ReturnType<(typeof r)["Slope"]>;
+    Slope_12: ReturnType<(typeof r)["Slope"]>;
+    Block_3: ReturnType<(typeof r)["Block"]>;
+    Slope_13: ReturnType<(typeof r)["Slope"]>;
+    Slope_14: ReturnType<(typeof r)["Slope"]>;
+    Slope_15: ReturnType<(typeof r)["Slope"]>;
+    Slope_16: ReturnType<(typeof r)["Slope"]>;
+    Slope_17: ReturnType<(typeof r)["Slope"]>;
+    Slope_18: ReturnType<(typeof r)["Slope"]>;
+    StartMarker: ReturnType<(typeof r)["Marker"]>;
   };
 }
