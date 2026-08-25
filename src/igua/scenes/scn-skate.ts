@@ -8,26 +8,26 @@ import { approachLinear } from "../../lib/math/number";
 import { vdir } from "../../lib/math/vector";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
-import { scene } from "../globals";
+import { scene, sceneStack } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnCameraSubject } from "../mixins/mxn-camera-subject";
 import { mxnPhysics } from "../mixins/mxn-physics";
 import { objDollBase } from "../objects/doll/obj-doll-base";
-import { objFxGhostBurst } from "../objects/fx/obj-fx-ghost-burst";
 import { StepOrder } from "../objects/step-order";
 import { DollPointer } from "../utils/doll-pointer";
+import { scnDesigner } from "./scn-designer";
 
 export function scnSkate(dollData: objDollBase.Serialized = { objects: [] }) {
     const lvl = Lvl.Skate();
 
-    const dollObj = objSkatingDoll(dollData, lvl).at(lvl.StartMarker).show();
+    objSkatingDoll(dollData, lvl).at(lvl.StartMarker).show();
     scene.camera.zoom = 2;
 }
 
-const deltas = new Array<Vector>();
-const sum = vnew();
-
 function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
+    const deltas = new Array<Vector>();
+    const sum = vnew();
+
     const previousPosition = vnew();
 
     const tombstoneObj = objTombstonePuppet()
@@ -118,6 +118,11 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
             yield sleep(1000);
             shuttleObj.objShuttle.isBroken = true;
             shuttleObj.step(self => self.add(-4, -4));
+            scene.stage
+                .coro(function* () {
+                    yield sleep(2000);
+                    sceneStack.replace(scnDesigner, {});
+                });
             self.destroy();
         })
         .step(self => {

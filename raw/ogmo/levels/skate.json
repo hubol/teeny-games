@@ -4,8 +4,8 @@
   "height": 8736,
   "offsetX": 0,
   "offsetY": 0,
-  "values": {"Terrain Color": "#000000"},
-  "backgroundColor": "#408000",
+  "values": {"Terrain Color": "#291f51"},
+  "backgroundColor": "#1a0f44",
   "layers": [
     {
       "name": "MarkerEntities",
@@ -87,7 +87,7 @@
           "height": 712,
           "originX": 0,
           "originY": 0,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -100,7 +100,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -113,7 +113,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -126,7 +126,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -139,7 +139,7 @@
           "height": 704,
           "originX": 0,
           "originY": 0,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -152,7 +152,7 @@
           "height": 144,
           "flippedX": false,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -165,7 +165,7 @@
           "height": 264,
           "flippedX": false,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -178,7 +178,7 @@
           "height": 480,
           "flippedX": false,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -191,7 +191,7 @@
           "height": 480,
           "flippedX": false,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -204,7 +204,7 @@
           "height": 480,
           "flippedX": false,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -217,7 +217,7 @@
           "height": 480,
           "flippedX": false,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -230,7 +230,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -243,7 +243,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -256,7 +256,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -269,7 +269,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -282,7 +282,7 @@
           "height": 144,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -295,7 +295,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -308,7 +308,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -321,7 +321,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -334,7 +334,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -347,7 +347,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -360,7 +360,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -373,7 +373,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -386,7 +386,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -399,7 +399,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -412,7 +412,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -425,7 +425,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -438,7 +438,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -451,7 +451,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         },
         {
@@ -464,7 +464,7 @@
           "height": 264,
           "flippedX": true,
           "flippedY": false,
-          "tint": "#000000",
+          "tint": "#291f51",
           "values": {"name": "", "visible": true}
         }
       ]
@@ -478,7 +478,81 @@
       "gridCellHeight": 8,
       "gridCellsX": 1566,
       "gridCellsY": 1092,
-      "decals": [],
+      "decals": [
+        {
+          "x": -2896,
+          "y": 5824,
+          "scaleX": 3.05,
+          "scaleY": 3.05,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "designer/background.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""},
+          "groupName": null
+        },
+        {
+          "x": 1560,
+          "y": 1997,
+          "scaleX": 46,
+          "scaleY": 36,
+          "rotation": 33.981616608327556,
+          "tint": "#291f51",
+          "texture": "shapes/square32.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        },
+        {
+          "x": 2784,
+          "y": 2808,
+          "scaleX": 170,
+          "scaleY": 36,
+          "rotation": 49.71225247777801,
+          "tint": "#291f51",
+          "texture": "shapes/square32.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        },
+        {
+          "x": 4092,
+          "y": 6925,
+          "scaleX": 331,
+          "scaleY": 45,
+          "rotation": 0,
+          "tint": "#291f51",
+          "texture": "shapes/square32.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        },
+        {
+          "x": 6312,
+          "y": 8540,
+          "scaleX": 135,
+          "scaleY": 8,
+          "rotation": 294.80180001289955,
+          "tint": "#291f51",
+          "texture": "shapes/square32.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        },
+        {
+          "x": 7016,
+          "y": 6784,
+          "scaleX": 17,
+          "scaleY": 11,
+          "rotation": 0,
+          "tint": "#291f51",
+          "texture": "shapes/square32.png",
+          "originX": 0,
+          "originY": 0,
+          "values": {"name": ""}
+        }
+      ],
       "folder": "../textures"
     }
   ]

@@ -32,6 +32,7 @@ import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
 import { Search } from "../utils/search";
 import { scnLaunch } from "./scn-launch";
+import { scnSkate } from "./scn-skate";
 
 const sourceFns = [
     objDollArm,
@@ -149,7 +150,7 @@ export function scnDesigner() {
 
             scene.stage.coro(function* () {
                 yield sleep(1000);
-                sceneStack.replace(() => scnLaunch(data), {});
+                sceneStack.replace(() => scnSkate(data), {});
             });
         })
         .step(self => {
