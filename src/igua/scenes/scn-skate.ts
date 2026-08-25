@@ -9,15 +9,18 @@ import { vdir } from "../../lib/math/vector";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { scene } from "../globals";
+import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnCameraSubject } from "../mixins/mxn-camera-subject";
 import { mxnPhysics } from "../mixins/mxn-physics";
 import { objDollBase } from "../objects/doll/obj-doll-base";
+import { objFxGhostBurst } from "../objects/fx/obj-fx-ghost-burst";
 import { StepOrder } from "../objects/step-order";
 import { DollPointer } from "../utils/doll-pointer";
 
 export function scnSkate(dollData: objDollBase.Serialized = { objects: [] }) {
     const lvl = Lvl.Skate();
-    objSkatingDoll(dollData, lvl).at(lvl.StartMarker).show();
+
+    const dollObj = objSkatingDoll(dollData, lvl).at(lvl.StartMarker).show();
     scene.camera.zoom = 2;
 }
 
@@ -103,6 +106,19 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
             dollObj.rotation = self.rotation;
             tombstoneObj.rotation = self.rotation;
             self.gravity = 0;
+
+            yield sleep(1000);
+
+            const shuttleObj = objShuttle()
+                .at(self)
+                .add(self.speed.vcpy().scale(60))
+                .zIndexed(-1)
+                .show();
+
+            yield sleep(1000);
+            shuttleObj.objShuttle.isBroken = true;
+            shuttleObj.step(self => self.add(-4, -4));
+            self.destroy();
         })
         .step(self => {
             if (phase !== "fly") {
@@ -127,4 +143,22 @@ function objTombstonePuppet() {
         Sprite.from(txTombstoneShadow).step(self => self.alpha = api.shadowUnit),
     )
         .merge({ objTombstonePuppet: api });
+}
+
+const [txShuttle, txShuttleBreak] = Tx.Shuttle.Layers.split({ count: 2 });
+
+function objShuttle() {
+    const api = {
+        isBroken: false,
+    };
+
+    return container(
+        Sprite.from(txShuttle),
+        Sprite.from(txShuttleBreak).step(self => self.visible = api.isBroken),
+        Sprite.from(Tx.Shuttle.Flames)
+            .at(500, 730)
+            .mixin(mxnFxBoilDisplacement, { scale: 20, rate: 0.2 }),
+    )
+        .merge({ objShuttle: api })
+        .pivoted(334, 385);
 }
