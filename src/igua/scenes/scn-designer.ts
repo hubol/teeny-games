@@ -198,7 +198,9 @@ function mxnDragPiece(obj: mxnSerialize.Type, dollObj: Container, draggingObj: C
                     && !self.collidesOne(getAttachedDollObjs());
                 lastEvaluatedPointer = maybeCurrent;
                 self.setParent(isOnConveyorBelt ? scene.stage : dollObj);
-                self.add(self.parent, -1);
+                if (self.parent !== scene.stage) {
+                    self.add(self.parent, -1);
+                }
             }
 
             if (isOnConveyorBelt) {
