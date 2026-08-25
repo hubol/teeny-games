@@ -34,4 +34,16 @@ export namespace DollPointer {
 
         return null;
     }
+
+    export function getJustWentDownCount() {
+        let count = 0;
+
+        for (const pointer of Pointer.states) {
+            if (pointer.down && Pointer.claim(pointer)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
 }
