@@ -24,6 +24,7 @@ import { objDollButton } from "../objects/doll/obj-doll-button";
 import { objDollEar } from "../objects/doll/obj-doll-ear";
 import { objDollEye } from "../objects/doll/obj-doll-eye";
 import { objDollHair } from "../objects/doll/obj-doll-hair";
+import { objDollLeg } from "../objects/doll/obj-doll-leg";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objDollScrew } from "../objects/doll/obj-doll-screw";
 import { objFxGhostBurst } from "../objects/fx/obj-fx-ghost-burst";
@@ -31,7 +32,6 @@ import { objFxStar } from "../objects/fx/obj-fx-star";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
 import { Search } from "../utils/search";
-import { scnLaunch } from "./scn-launch";
 import { scnSkate } from "./scn-skate";
 
 const sourceFns = [
@@ -40,6 +40,7 @@ const sourceFns = [
     objDollEar,
     objDollEye,
     objDollHair,
+    objDollLeg,
     objDollMouth,
     objDollScrew,
 ];
