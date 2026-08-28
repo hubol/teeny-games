@@ -188,10 +188,11 @@ Object.defineProperties(DisplayObject.prototype, {
                 return this.getWorldPosition();
             }
 
+            stage.transform.localTransform.applyInverse(bounds, bounds);
+
             return bounds
                 .getCenter()
-                .vround()
-                .add(-stage.x, -stage.y);
+                .vround();
         },
     },
     getWorldPosition: {
@@ -202,8 +203,7 @@ Object.defineProperties(DisplayObject.prototype, {
             }
 
             this.getGlobalPosition(point, false);
-            // TODO maybe a little naive
-            point.add(-stage.x, -stage.y);
+            stage.transform.localTransform.applyInverse(point, point);
             return point;
         },
     },

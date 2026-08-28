@@ -22,7 +22,10 @@ import { scnDesigner } from "./scn-designer";
 export function scnSkate(dollData: objDollBase.Serialized = { objects: [] }) {
     const lvl = Lvl.Skate();
 
-    objSkatingDoll(dollData, lvl).at(lvl.StartMarker).show();
+    objSkatingDoll(dollData, lvl)
+        .at(lvl.StartMarker)
+        .zIndexed(2)
+        .show();
     scene.camera.zoom = 2;
 }
 
@@ -89,11 +92,15 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
             const target = Math.round(-vdir(sum) * 4) / 4;
             self.rotation = approachLinear(self.rotation, target, Math.PI / 8);
 
-            // if (Rng.bool()) {
-            //     objFxHeart(vnew(0, 0))
-            //         .at(self)
-            //         .show();
-            // }
+            if (Rng.bool()) {
+                const speed = vnew(sum).normalize().scale(-self.speed.vlength);
+                speed.y -= Rng.float(0.5, 1.5);
+
+                objFxHeart(speed)
+                    .at(tombstoneObj.objTombstonePuppet.skidPosition)
+                    .zIndexed(1)
+                    .show();
+            }
         }, StepOrder.Physics - 1)
         .coro(function* (self) {
             yield* Coro.all([
@@ -148,7 +155,7 @@ const [txTombstone, txTombstoneShadow] = Tx.Skate.Tombstone.split({ count: 2 });
 
 function objTombstonePuppet() {
     const v = vnew();
-    const skidObj = new Graphics().beginFill(0xff0000).drawRect(0, 0, 5, 5).at(25, 77);
+    const skidObj = new Graphics().beginFill(0xff0000).drawRect(0, 0, 5, 5).at(29, 38);
 
     const api = {
         shadowUnit: 0,
