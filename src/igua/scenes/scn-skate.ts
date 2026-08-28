@@ -160,7 +160,7 @@ function objTombstonePuppet() {
     return container(
         Sprite.from(txTombstone),
         Sprite.from(txTombstoneShadow).step(self => self.alpha = api.shadowUnit),
-        skidObj, // .invisible(),
+        skidObj.invisible(),
     )
         .merge({ objTombstonePuppet: api });
 }
