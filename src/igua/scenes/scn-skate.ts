@@ -1,10 +1,11 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { Lvl, LvlType } from "../../assets/generated/levels/generated-level-data";
 import { Tx } from "../../assets/textures";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
+import { Rng } from "../../lib/math/rng";
 import { vdir } from "../../lib/math/vector";
 import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
@@ -13,6 +14,7 @@ import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnCameraSubject } from "../mixins/mxn-camera-subject";
 import { mxnPhysics } from "../mixins/mxn-physics";
 import { objDollBase } from "../objects/doll/obj-doll-base";
+import { objFxHeart } from "../objects/fx/obj-fx-heart";
 import { StepOrder } from "../objects/step-order";
 import { DollPointer } from "../utils/doll-pointer";
 import { scnDesigner } from "./scn-designer";
@@ -86,6 +88,12 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
 
             const target = Math.round(-vdir(sum) * 4) / 4;
             self.rotation = approachLinear(self.rotation, target, Math.PI / 8);
+
+            // if (Rng.bool()) {
+            //     objFxHeart(vnew(0, 0))
+            //         .at(self)
+            //         .show();
+            // }
         }, StepOrder.Physics - 1)
         .coro(function* (self) {
             yield* Coro.all([
@@ -139,13 +147,20 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
 const [txTombstone, txTombstoneShadow] = Tx.Skate.Tombstone.split({ count: 2 });
 
 function objTombstonePuppet() {
+    const v = vnew();
+    const skidObj = new Graphics().beginFill(0xff0000).drawRect(0, 0, 5, 5).at(25, 77);
+
     const api = {
         shadowUnit: 0,
+        get skidPosition() {
+            return v.at(skidObj.getWorldPosition());
+        },
     };
 
     return container(
         Sprite.from(txTombstone),
         Sprite.from(txTombstoneShadow).step(self => self.alpha = api.shadowUnit),
+        skidObj, // .invisible(),
     )
         .merge({ objTombstonePuppet: api });
 }
