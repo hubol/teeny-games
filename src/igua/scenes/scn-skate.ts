@@ -10,6 +10,7 @@ import { Rng } from "../../lib/math/rng";
 import { vdir } from "../../lib/math/vector";
 import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { ZIndex } from "../core/scene/z-index";
 import { scene, sceneStack } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnCameraSubject } from "../mixins/mxn-camera-subject";
@@ -25,7 +26,7 @@ export function scnSkate(dollData: objDollBase.Serialized = { objects: [] }) {
 
     objSkatingDoll(dollData, lvl)
         .at(lvl.StartMarker)
-        .zIndexed(2)
+        .zIndexed(ZIndex.SkaterEntities)
         .show();
     scene.camera.zoom = 2;
 }
@@ -237,16 +238,12 @@ function objFxShuttleDebrisBurst() {
     return container()
         .coro(function* (self) {
             Sfx.Skate.Crash.rate(0.95, 1.05).play();
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 8; j++) {
-                    const distance = Rng.float(60, 90);
-                    const unit = Rng.vunit();
-                    objFxShuttleDebris(unit.vcpy().scale((distance / 60 + Rng.float(0.5)) * 1.5))
-                        .add(unit, distance)
-                        .show(self);
-                }
-
-                yield sleepf(2);
+            for (let j = 0; j < 24; j++) {
+                const distance = Rng.float(60, 90);
+                const unit = Rng.vunit();
+                objFxShuttleDebris(unit.vcpy().scale((distance / 60 + Rng.float(0.5)) * 1.5))
+                    .add(unit, distance)
+                    .show(self);
             }
         });
 }

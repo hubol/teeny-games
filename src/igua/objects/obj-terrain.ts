@@ -100,7 +100,7 @@ export const CtxTerrain = new SceneLocal(createLocalTerrain, "CtxTerrain");
 
 export const CtxTerrainObj = new SceneLocal(() => {
     // TODO renderable hack is weird, PixiJS sucks
-    return container().step(self => self.renderable = true).show();
+    return container().step(self => self.renderable = true).zIndexed(ZIndex.TerrainEntities).show();
 }, "CtxTerrainObj");
 
 export function objSolidBlock() {

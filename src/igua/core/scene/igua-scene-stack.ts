@@ -4,6 +4,7 @@ import { SceneStack } from "../../../lib/game-engine/scene-stack";
 import { TickerContainer } from "../../../lib/game-engine/ticker-container";
 import { Logging } from "../../../lib/logging";
 import { merge } from "../../../lib/object/merge";
+import { range } from "../../../lib/range";
 import { renderer } from "../../current-pixi-renderer";
 import { forceGameLoop } from "../../globals";
 import { objCamera } from "../../objects/obj-camera";
@@ -17,13 +18,13 @@ function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMe
     const root = layers.scene.addChild(new TickerContainer(ticker, false).named(`Scene: ${source.name}`));
 
     const background = new Container().named("Background");
-    const parallaxStage = new Container().named("Parallax Stage");
+    const parallaxStages = range(2).map(i => new Container().named("Parallax Stage " + i));
     const stage = new Container().named("Stage");
     stage.sortableChildren = true;
 
     const camera = objCamera();
 
-    root.addChild(background, parallaxStage, stage, camera);
+    root.addChild(background, ...[...parallaxStages].reverse(), stage, camera);
 
     const backgroundGfx = new Graphics().tinted(0x000000).beginFill(0xffffff).drawRect(
         0,
@@ -35,7 +36,7 @@ function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMe
     return {
         root,
         source,
-        parallaxStage,
+        parallaxStages,
         stage,
         camera,
         ticker,

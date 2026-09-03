@@ -33,6 +33,11 @@ function getCameraPositionToFrameSubject(vector: DisplayObject | Vector, subject
     return null;
 }
 
+const parallaxFactors = [
+    0.8,
+    0.6,
+];
+
 export function objCamera() {
     const shakeVector = vnew();
 
@@ -55,6 +60,14 @@ export function objCamera() {
 
             scene.stage.x = Math.round(renderer.width / 2);
             scene.stage.y = Math.round(renderer.height / 2);
+
+            for (let i = 0; i < scene.parallaxStages.length; i++) {
+                const factor = parallaxFactors[i];
+                const stage = scene.parallaxStages[i];
+
+                stage.x = Math.round(-self.x * factor);
+                stage.y = Math.round(-self.y * factor);
+            }
         }, StepOrder.Camera);
 
     return obj
