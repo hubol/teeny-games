@@ -5,15 +5,14 @@ import { Tx } from "../../assets/textures";
 import { blendColor } from "../../lib/color/blend-color";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
-import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { vdir } from "../../lib/math/vector";
-import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
+import { Vector, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { ZIndex } from "../core/scene/z-index";
 import { scene, sceneStack } from "../globals";
-import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { mxnCameraSubject } from "../mixins/mxn-camera-subject";
 import { mxnPhysics } from "../mixins/mxn-physics";
 import { objDollBase } from "../objects/doll/obj-doll-base";
@@ -133,6 +132,7 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                 interp(tombstoneObj.objTombstonePuppet, "shadowUnit").to(1).over(1000),
             ]);
 
+            Sfx.Skate.Land.rate(0.95, 1.05).play();
             scene.camera.shake = 1;
 
             yield sleep(500);
@@ -236,7 +236,12 @@ function objShuttle() {
         Sprite.from(txShuttleBreak).step(self => self.visible = api.isBroken),
         Sprite.from(Tx.Shuttle.Flames)
             .at(500, 730)
-            .mixin(mxnFxBoilDisplacement, { scale: 20, rate: 0.2 }),
+            .coro(function* (self) {
+                while (true) {
+                    yield sleep(222);
+                    self.pivot.at(Rng.int(-6, 6), Rng.int(-6, 6));
+                }
+            }),
     )
         .merge({ objShuttle: api })
         .pivoted(484, 385);

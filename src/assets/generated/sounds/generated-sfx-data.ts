@@ -29,6 +29,7 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
       "placeholder.ogg",
       "skate/crash.ogg",
       "skate/drone.ogg",
+      "skate/land.ogg",
       "skate/nudge.ogg",
     ].map(sfx),
   );
@@ -64,7 +65,8 @@ async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
     Skate: {
       Crash: sounds[24],
       Drone: sounds[25],
-      Nudge: sounds[26],
+      Land: sounds[26],
+      Nudge: sounds[27],
     },
   };
 }
