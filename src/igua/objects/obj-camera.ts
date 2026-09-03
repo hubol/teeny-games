@@ -41,7 +41,7 @@ export function objCamera() {
         .merge({ mode: <CameraMode> "follow_player", zoom: 1, shake: 0 })
         .step(self => {
             if (self.mode === "follow_player") {
-                const cameraSubjectObj = Instances(mxnCameraSubject).last;
+                const cameraSubjectObj = Instances(mxnCameraSubject, obj => obj.mxnCameraSubject.isEnabled).last;
                 if (cameraSubjectObj) {
                     getCameraPositionToFrameSubject(self, cameraSubjectObj);
                 }

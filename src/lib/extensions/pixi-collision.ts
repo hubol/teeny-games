@@ -1,4 +1,4 @@
-import { DisplayObject } from "pixi.js";
+import { DisplayObject, Rectangle } from "pixi.js";
 import { Vector, vnew } from "../math/vector-type";
 import { _Internal_Collision, CollisionShape } from "../pixi/collision";
 
@@ -20,10 +20,14 @@ declare module "pixi.js" {
             offset?: Vector,
             result?: {},
         ): TDisplayObject[];
+
+        getCollisionRectangles(): Rectangle[];
     }
 }
 
 const vector0 = vnew();
+
+const fallbackRectangles = new Array<Rectangle>();
 
 Object.defineProperties(DisplayObject.prototype, {
     collides: {
@@ -53,6 +57,17 @@ Object.defineProperties(DisplayObject.prototype, {
         ) {
             _Internal_Collision.configureDisplayObject(this, shape, scale_xscale_displayObjects, yscale);
             return this;
+        },
+        configurable: true,
+    },
+    getCollisionRectangles: {
+        value: function (this: DisplayObject): Rectangle[] {
+            const rectangles = _Internal_Collision.getCollisionRectangles(this) ?? fallbackRectangles;
+            fallbackRectangles.length = 0;
+            if (rectangles === fallbackRectangles) {
+                fallbackRectangles.push(this.getBounds());
+            }
+            return rectangles;
         },
         configurable: true,
     },

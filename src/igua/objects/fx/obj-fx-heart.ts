@@ -1,10 +1,12 @@
-import { Sprite } from "pixi.js";
+import { DisplayObject, Rectangle, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { blendColor } from "../../../lib/color/blend-color";
 import { Coro } from "../../../lib/game-engine/routines/coro";
 import { interpc } from "../../../lib/game-engine/routines/interp";
+import { Integer } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
 import { VectorSimple } from "../../../lib/math/vector-type";
+import { _Internal_Collision } from "../../../lib/pixi/collision";
 
 const tints = {
     start: 0x776F97,
@@ -28,3 +30,22 @@ export function objFxHeart(speed: VectorSimple) {
         })
         .step(self => self.add(speed));
 }
+
+objFxHeart.burstAroundCollisionRectangles = function burstAroundCollisionRectangles (
+    obj: DisplayObject,
+    count: Integer,
+) {
+    const rectangles = obj.getCollisionRectangles();
+
+    for (let i = 0; i < count; i++) {
+        const rectangle = Rng.item(rectangles);
+        const unit = Rng.vunit();
+        const wh = rectangle.width / 2;
+        const hh = rectangle.height / 2;
+
+        objFxHeart(unit)
+            .at(rectangle.x + wh + unit.x * wh, rectangle.y + hh + unit.y * hh)
+            .zIndexed(9999)
+            .show();
+    }
+};

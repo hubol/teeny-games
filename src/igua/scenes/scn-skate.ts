@@ -1,13 +1,14 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Lvl, LvlType } from "../../assets/generated/levels/generated-level-data";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Coro } from "../../lib/game-engine/routines/coro";
-import { interp, interpvr } from "../../lib/game-engine/routines/interp";
-import { sleep } from "../../lib/game-engine/routines/sleep";
+import { interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
+import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { vdir } from "../../lib/math/vector";
-import { Vector, vnew } from "../../lib/math/vector-type";
+import { Vector, VectorSimple, vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { scene, sceneStack } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
@@ -39,6 +40,8 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
         .pivoted(133, 34)
         .scaled(0.5, 0.5);
     const dollObj = objDollBase.deserialize(data);
+
+    const droneSoundInstance = Sfx.Skate.Drone.gain(0).rate(0.25).loop(true).playInstance();
 
     let phase: "appear" | "skate" | "fly" = "appear";
 
@@ -92,16 +95,25 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
             const target = Math.round(-vdir(sum) * 4) / 4;
             self.rotation = approachLinear(self.rotation, target, Math.PI / 8);
 
-            if (Rng.bool()) {
+            for (let i = 0; i < Math.ceil(self.speed.vlength / 8); i++) {
+                if (Rng.bool()) {
+                    continue;
+                }
+                const offset = vnew(sum).normalize().scale(i * 8);
                 const speed = vnew(sum).normalize().scale(-self.speed.vlength);
                 speed.y -= Rng.float(0.5, 1.5);
 
                 objFxHeart(speed)
                     .at(tombstoneObj.objTombstonePuppet.skidPosition)
+                    .add(offset)
                     .zIndexed(1)
                     .show();
             }
         }, StepOrder.Physics - 1)
+        .step(self => {
+            const rate = phase === "fly" ? droneSoundInstance.rate - 0.05 : 0.25 + self.speed.vlength / 64;
+            droneSoundInstance.linearRamp("rate", rate, 0.1);
+        })
         .coro(function* (self) {
             yield* Coro.all([
                 interpvr(dollObj).to(0, -80).over(1000),
@@ -131,7 +143,16 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                 .show();
 
             yield sleep(1000);
+
+            droneSoundInstance.stop();
+            self.speed.vlength = 15;
+            self.mxnCameraSubject.isEnabled = false;
             shuttleObj.objShuttle.isBroken = true;
+            objFxShuttleDebrisBurst()
+                .at(self)
+                .show();
+
+            yield interpv(self.scale).to(0, 0).over(100);
             shuttleObj.step(self => self.add(-4, -4));
             scene.stage
                 .coro(function* () {
@@ -139,6 +160,12 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                     sceneStack.replace(scnDesigner, {});
                 });
             self.destroy();
+        })
+        .coro(function* (self) {
+            yield () => self.speed.x > 0;
+            droneSoundInstance.linearRamp("gain", 1, 1);
+            yield () => phase === "fly";
+            droneSoundInstance.linearRamp("gain", 0, 3);
         })
         .step(self => {
             if (phase !== "fly") {
@@ -187,5 +214,39 @@ function objShuttle() {
             .mixin(mxnFxBoilDisplacement, { scale: 20, rate: 0.2 }),
     )
         .merge({ objShuttle: api })
-        .pivoted(334, 385);
+        .pivoted(484, 385);
+}
+
+const shuttleDebrisTxs = Tx.Shuttle.Debris.split({ count: 3 });
+
+function objFxShuttleDebris(speed: Vector) {
+    const scale = Rng.float(1.5, 2.5);
+
+    return Sprite.from(Rng.item(shuttleDebrisTxs))
+        .anchored(0.5, 0.5)
+        .scaled(scale, scale)
+        .angled(Rng.float(360))
+        .step(self => {
+            self.add(speed);
+            self.angle += Math.sign(speed.x) * speed.vlength * 0.8;
+            speed.y += 0.01;
+        });
+}
+
+function objFxShuttleDebrisBurst() {
+    return container()
+        .coro(function* (self) {
+            Sfx.Skate.Crash.rate(0.95, 1.05).play();
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 8; j++) {
+                    const distance = Rng.float(60, 90);
+                    const unit = Rng.vunit();
+                    objFxShuttleDebris(unit.vcpy().scale((distance / 60 + Rng.float(0.5)) * 1.5))
+                        .add(unit, distance)
+                        .show(self);
+                }
+
+                yield sleepf(2);
+            }
+        });
 }

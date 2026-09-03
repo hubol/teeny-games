@@ -28,6 +28,7 @@ import { objDollLeg } from "../objects/doll/obj-doll-leg";
 import { objDollMouth } from "../objects/doll/obj-doll-mouth";
 import { objDollScrew } from "../objects/doll/obj-doll-screw";
 import { objFxGhostBurst } from "../objects/fx/obj-fx-ghost-burst";
+import { objFxHeart } from "../objects/fx/obj-fx-heart";
 import { objFxStar } from "../objects/fx/obj-fx-star";
 import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
@@ -202,6 +203,7 @@ function mxnDragPiece(obj: mxnSerialize.Type, dollObj: Container, draggingObj: C
                 if (self.parent !== scene.stage) {
                     self.add(self.parent, -1);
                 }
+                objFxHeart.burstAroundCollisionRectangles(self, 10);
             }
 
             if (isOnConveyorBelt) {
