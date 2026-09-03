@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 45 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 48 }];
 
 interface TxData {
   id: string;
@@ -64,8 +64,11 @@ function txs<T>(tx: (data: TxData) => T) {
     },
     Skate: {
       Caution0: tx({ id: "Skate.Caution0", atlas: 0, x: 1962, y: 0, width: 84, height: 150 }),
+      Celestial0: tx({ id: "Skate.Celestial0", atlas: 0, x: 1962, y: 239, width: 82, height: 72 }),
+      Celestial1: tx({ id: "Skate.Celestial1", atlas: 0, x: 1746, y: 786, width: 54, height: 54 }),
+      Celestial2: tx({ id: "Skate.Celestial2", atlas: 0, x: 1801, y: 786, width: 54, height: 54 }),
       Cloud0: tx({ id: "Skate.Cloud0", atlas: 0, x: 1705, y: 513, width: 326, height: 40 }),
-      Grass0: tx({ id: "Skate.Grass0", atlas: 0, x: 2032, y: 239, width: 16, height: 32 }),
+      Grass0: tx({ id: "Skate.Grass0", atlas: 0, x: 2032, y: 312, width: 16, height: 32 }),
       Hill0: tx({ id: "Skate.Hill0", atlas: 0, x: 0, y: 1395, width: 634, height: 512 }),
       LetterI: tx({ id: "Skate.LetterI", atlas: 0, x: 1401, y: 1592, width: 18, height: 30 }),
       LetterP: tx({ id: "Skate.LetterP", atlas: 0, x: 1401, y: 1261, width: 22, height: 32 }),

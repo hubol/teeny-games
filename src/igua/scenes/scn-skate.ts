@@ -137,13 +137,19 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
 
             yield sleep(1000);
 
+            const shuttleSpeed = vnew(-4, -4);
+
             const shuttleObj = objShuttle()
                 .at(self)
-                .add(self.speed.vcpy().scale(60))
+                .add(self.speed, 60)
+                .add(shuttleSpeed, -60)
+                .step(self => self.add(shuttleSpeed))
                 .zIndexed(-1)
                 .show();
 
             yield sleep(1000);
+
+            scene.camera.shake = 1;
 
             droneSoundInstance.stop();
             self.speed.vlength = 15;
@@ -154,7 +160,6 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                 .show();
 
             yield interpv(self.scale).to(0, 0).over(100);
-            shuttleObj.step(self => self.add(-4, -4));
             scene.stage
                 .coro(function* () {
                     yield sleep(2000);
