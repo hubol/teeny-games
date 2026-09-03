@@ -2,6 +2,7 @@ import { Graphics, Sprite } from "pixi.js";
 import { Lvl, LvlType } from "../../assets/generated/levels/generated-level-data";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { blendColor } from "../../lib/color/blend-color";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { interp, interpv, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
@@ -18,6 +19,7 @@ import { mxnPhysics } from "../mixins/mxn-physics";
 import { objDollBase } from "../objects/doll/obj-doll-base";
 import { objFxHeart } from "../objects/fx/obj-fx-heart";
 import { StepOrder } from "../objects/step-order";
+import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
 import { DollPointer } from "../utils/doll-pointer";
 import { scnDesigner } from "./scn-designer";
 
@@ -83,7 +85,17 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                 return;
             }
 
-            self.speed.x += DollPointer.getJustWentDownCount() * 2;
+            const pointerPressesCount = DollPointer.getJustWentDownCount();
+            self.speed.x += pointerPressesCount * 2;
+
+            if (pointerPressesCount) {
+                Sfx.Skate.Nudge.rate(1 + self.speed.vlength / 200).play();
+                tombstoneObj.objTombstonePuppet.nudgeFactorAuto = 1;
+                objFxDash()
+                    .at(-50, -2)
+                    .show(self);
+            }
+
             previousPosition.at(self);
             const zoomTarget = self.speed.vlength < 6 ? 2 : 1;
             scene.camera.zoom = approachLinear(scene.camera.zoom, zoomTarget, 0.01);
@@ -107,7 +119,7 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                 objFxHeart(speed)
                     .at(tombstoneObj.objTombstonePuppet.skidPosition)
                     .add(offset)
-                    .zIndexed(1)
+                    .zIndexed(ZIndex.SkaterEntities - 1)
                     .show();
             }
         }, StepOrder.Physics - 1)
@@ -195,12 +207,19 @@ function objTombstonePuppet() {
         get skidPosition() {
             return v.at(skidObj.getWorldPosition());
         },
+        nudgeFactorAuto: 0,
     };
 
     return container(
-        Sprite.from(txTombstone),
-        Sprite.from(txTombstoneShadow).step(self => self.alpha = api.shadowUnit),
-        skidObj.invisible(),
+        container(
+            Sprite.from(txTombstone),
+            Sprite.from(txTombstoneShadow).step(self => self.alpha = api.shadowUnit),
+            skidObj.invisible(),
+        )
+            .step(self => {
+                self.pivot.x = api.nudgeFactorAuto * -8;
+                api.nudgeFactorAuto = approachLinear(api.nudgeFactorAuto, 0, 0.2);
+            }),
     )
         .merge({ objTombstonePuppet: api });
 }
@@ -251,4 +270,22 @@ function objFxShuttleDebrisBurst() {
                     .show(self);
             }
         });
+}
+
+const txsDash = Tx.Skate.Dash.split({ width: 82 });
+
+function objFxDash() {
+    return objIndexedSprite(txsDash)
+        .step(self => {
+            self.textureIndex += 0.1 + Rng.float(0.1);
+            const f = self.textureIndex / self.textures.length;
+            if (f >= 1) {
+                self.destroy();
+                return;
+            }
+            self.tint = blendColor(0xffffff, 0x291F51, f);
+            self.x -= 2 + Rng.float(2);
+        })
+        .scaled(1, -1)
+        .pivoted(80, 25);
 }
