@@ -1,0 +1,3 @@
+- For multi-display, electric-lizard will need to accept an argument for # of browser windows to create
+  - Could use approach like branch `steamy`. Use this other fucking action: https://github.com/maxgfr/github-change-json
+- To determine positioning, experiment with electron.screen.getAllDisplays()[0].workArea
