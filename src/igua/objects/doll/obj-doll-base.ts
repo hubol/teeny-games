@@ -1,8 +1,9 @@
 import { DisplayObject, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
-import { Vector } from "../../../lib/math/vector-type";
+import { VectorSimple } from "../../../lib/math/vector-type";
 import { container } from "../../../lib/pixi/container";
 import { mxnSerialize } from "../../mixins/mxn-serialize";
+import { DataDollBodyParts } from "./data-doll-body-parts";
 
 export function objDollBase() {
     const api = {
@@ -18,9 +19,11 @@ export function objDollBase() {
                     continue;
                 }
 
+                const { x, y } = serializeObj.vcpy().add(offset);
+
                 result.objects.push({
-                    position: serializeObj.vcpy().add(offset),
-                    sourceFn: serializeObj.mxnSerialize.sourceFn,
+                    position: { x, y },
+                    source: serializeObj.mxnSerialize.source,
                 });
             }
 
@@ -42,7 +45,9 @@ objDollBase.deserialize = function deserialize (data: objDollBase.Serialized) {
     const baseObj = objDollBase();
 
     for (const object of data.objects) {
-        baseObj.addChild(object.sourceFn().at(object.position));
+        const fn = DataDollBodyParts.findById(object.source.id);
+        const displayObject = fn(...object.source.args);
+        baseObj.addChild(displayObject.at(object.position));
     }
 
     return baseObj;
@@ -55,8 +60,8 @@ export namespace objDollBase {
 
     export namespace Serialized {
         export interface Object {
-            sourceFn: () => DisplayObject;
-            position: Vector;
+            source: mxnSerialize.Source;
+            position: VectorSimple;
         }
     }
 }

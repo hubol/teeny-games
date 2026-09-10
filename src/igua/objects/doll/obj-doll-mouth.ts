@@ -1,21 +1,20 @@
-import { DisplayObject, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { interpv } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
 import { Rng } from "../../../lib/math/rng";
 import { mxnSerialize } from "../../mixins/mxn-serialize";
 
-const txs = [
-    Tx.Doll.Mouth0,
-    Tx.Doll.Mouth1,
-    Tx.Doll.Mouth2,
-]
-    .map(tx => tx.trimmed);
+const textureKeys = new Array<keyof typeof Tx["Doll"]>(
+    "Mouth0",
+    "Mouth1",
+    "Mouth2",
+);
 
-export function objDollMouth(tx = Rng.item(txs)) {
-    const sourceFn = (): DisplayObject => objDollMouth(tx);
+export function objDollMouth(textureKey = Rng.item(textureKeys)) {
+    const source: mxnSerialize.Source = mxnSerialize.createSource(objDollMouth, textureKey);
 
-    return Sprite.from(tx)
+    return Sprite.from(Tx.Doll[textureKey])
         .coro(function* (self) {
             while (true) {
                 yield sleep(Rng.int(500, 1000));
@@ -35,7 +34,7 @@ export function objDollMouth(tx = Rng.item(txs)) {
                 self.tint = 0xffffff;
             }
         })
-        .mixin(mxnSerialize, sourceFn)
+        .mixin(mxnSerialize, source)
         .anchored(0.5, 0.5)
         .scaled(3, 3);
 }

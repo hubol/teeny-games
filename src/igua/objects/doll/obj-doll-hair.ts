@@ -1,4 +1,4 @@
-import { DisplayObject, Graphics, Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { RgbInt } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
@@ -24,9 +24,8 @@ export function objDollHair(
     angle = Rng.int(2) * -90,
     scaleX = Rng.intp(),
     tints = Rng.item(hairTints),
-    highlightOffset = Rng.vunit().scale(Rng.float(6)).vround(),
 ) {
-    const sourceFn = (): DisplayObject => objDollHair(angle, scaleX, tints);
+    const source: mxnSerialize.Source = mxnSerialize.createSource(objDollHair, angle, scaleX, tints);
 
     const collisionShapeObjs = [
         new Graphics().beginFill(0xff0000).drawCircle(4 + 16, 6 + 16, 16).invisible(),
@@ -35,11 +34,11 @@ export function objDollHair(
 
     return container(
         Sprite.from(txs[0]).tinted(tints[0]),
-        Sprite.from(txs[1]).tinted(tints[1]).at(highlightOffset),
+        Sprite.from(txs[1]).tinted(tints[1]),
         ...collisionShapeObjs,
     )
         .collisionShape(CollisionShape.DisplayObjects, collisionShapeObjs)
-        .mixin(mxnSerialize, sourceFn)
+        .mixin(mxnSerialize, source)
         .pivoted(14, 16)
         .scaled(3 * scaleX, 3)
         .angled(angle * -Math.sign(scaleX));

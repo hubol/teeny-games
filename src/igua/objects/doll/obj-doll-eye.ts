@@ -7,6 +7,8 @@ import { container } from "../../../lib/pixi/container";
 import { mxnSerialize } from "../../mixins/mxn-serialize";
 
 export function objDollEye() {
+    const source: mxnSerialize.Source = mxnSerialize.createSource(objDollEye);
+
     return container(
         Sprite.from(Tx.Doll.Eye0),
         Sprite.from(Tx.Doll.Sclera0.trimmed)
@@ -17,7 +19,7 @@ export function objDollEye() {
                 }
             }),
     )
-        .mixin(mxnSerialize, objDollEye)
+        .mixin(mxnSerialize, source)
         .pivoted(15, 14)
         .scaled(3, 3);
 }

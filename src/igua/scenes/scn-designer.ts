@@ -18,15 +18,8 @@ import { mxnFxDie } from "../mixins/fx/mxn-fx-die";
 import { mxnPointer } from "../mixins/mxn-pointer";
 import { mxnPointerDrag } from "../mixins/mxn-pointer-drag";
 import { mxnSerialize } from "../mixins/mxn-serialize";
-import { objDollArm } from "../objects/doll/obj-doll-arm";
+import { DataDollBodyParts } from "../objects/doll/data-doll-body-parts";
 import { objDollBase } from "../objects/doll/obj-doll-base";
-import { objDollButton } from "../objects/doll/obj-doll-button";
-import { objDollEar } from "../objects/doll/obj-doll-ear";
-import { objDollEye } from "../objects/doll/obj-doll-eye";
-import { objDollHair } from "../objects/doll/obj-doll-hair";
-import { objDollLeg } from "../objects/doll/obj-doll-leg";
-import { objDollMouth } from "../objects/doll/obj-doll-mouth";
-import { objDollScrew } from "../objects/doll/obj-doll-screw";
 import { objFxGhostBurst } from "../objects/fx/obj-fx-ghost-burst";
 import { objFxHeart } from "../objects/fx/obj-fx-heart";
 import { objFxStar } from "../objects/fx/obj-fx-star";
@@ -34,17 +27,6 @@ import { objOverlayCursor } from "../objects/overlay/obj-overlay-cursor";
 import { objOverlayGoButton } from "../objects/overlay/obj-overlay-go-button";
 import { Search } from "../utils/search";
 import { scnSkate } from "./scn-skate";
-
-const sourceFns = [
-    objDollArm,
-    objDollButton,
-    objDollEar,
-    objDollEye,
-    objDollHair,
-    objDollLeg,
-    objDollMouth,
-    objDollScrew,
-];
 
 const r = new Rectangle();
 
@@ -101,8 +83,9 @@ export function scnDesigner() {
     scene.stage
         .coro(function* () {
             Sfx.Designer.Begin.play();
+            const manifest = DataDollBodyParts.getManifestCopy();
             while (true) {
-                for (const sourceFn of Rng.shuffle(sourceFns)) {
+                for (const sourceFn of Rng.shuffle(manifest)) {
                     if (isExiting) {
                         return;
                     }

@@ -1,4 +1,4 @@
-import { DisplayObject, Sprite } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { Rng } from "../../../lib/math/rng";
 import { AdjustColor } from "../../../lib/pixi/adjust-color";
@@ -8,10 +8,10 @@ export function objDollButton(
     isWasher = Rng.bool(),
     tint = AdjustColor.hsv(Rng.float(360), Rng.float(10, Rng.float(80, 100)), Rng.float(50, 85)).toPixi(),
 ) {
-    const sourceFn = (): DisplayObject => objDollButton(isWasher, tint);
+    const source: mxnSerialize.Source = mxnSerialize.createSource(objDollButton, isWasher, tint);
 
     return Sprite.from(isWasher ? Tx.Doll.Washer0 : Tx.Doll.Button)
-        .mixin(mxnSerialize, sourceFn)
+        .mixin(mxnSerialize, source)
         .tinted(isWasher ? 0xffffff : tint)
         .anchored(0.5, 0.5)
         .scaled(3, 3);

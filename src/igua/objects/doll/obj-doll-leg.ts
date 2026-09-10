@@ -1,4 +1,4 @@
-import { DisplayObject, Graphics, Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { factor, interp } from "../../../lib/game-engine/routines/interp";
 import { sleep } from "../../../lib/game-engine/routines/sleep";
@@ -44,7 +44,8 @@ export function objDollLeg(
         femurAngle: 0,
     };
 
-    const sourceFn = (): DisplayObject => objDollLeg(tintValue, flipH, socks);
+    const source: mxnSerialize.Source = mxnSerialize.createSource(objDollLeg, tintValue, flipH, socks);
+
     return container(
         objs[0],
         ...thighCollisionObjs,
@@ -93,5 +94,5 @@ export function objDollLeg(
             }
         })
         .step(self => state.thighAngle = self.angle)
-        .mixin(mxnSerialize, sourceFn);
+        .mixin(mxnSerialize, source);
 }
