@@ -19,6 +19,7 @@ import { objDollBase } from "../objects/doll/obj-doll-base";
 import { objFxHeart } from "../objects/fx/obj-fx-heart";
 import { StepOrder } from "../objects/step-order";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
+import { PfsHauntedDoll } from "../pfs/pfs-haunted-doll";
 import { DollPointer } from "../utils/doll-pointer";
 import { scnDesigner } from "./scn-designer";
 
@@ -177,6 +178,7 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
                     yield sleep(2000);
                     sceneStack.replace(scnDesigner, {});
                 });
+            PfsHauntedDoll.Launched.value = data;
             self.destroy();
         })
         .coro(function* (self) {
