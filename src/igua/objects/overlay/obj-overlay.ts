@@ -1,7 +1,10 @@
-import { Container } from "pixi.js";
+import { container } from "../../../lib/pixi/container";
+import { objOverlayWarning } from "./obj-overlay-warning";
 
 export function objOverlay() {
-    return new Container();
+    return container(
+        objOverlayWarning().at(20, 20),
+    );
 }
 
 export type ObjOverlay = ReturnType<typeof objOverlay>;

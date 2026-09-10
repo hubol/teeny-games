@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 49 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 50 }];
 
 interface TxData {
   id: string;
@@ -53,6 +53,7 @@ function txs<T>(tx: (data: TxData) => T) {
       CursorDown: tx({ id: "Overlay.CursorDown", atlas: 0, x: 1358, y: 1690, width: 40, height: 60 }),
       Cursor: tx({ id: "Overlay.Cursor", atlas: 0, x: 1968, y: 312, width: 40, height: 60 }),
       GoButton: tx({ id: "Overlay.GoButton", atlas: 0, x: 549, y: 1908, width: 426, height: 118 }),
+      WarningError: tx({ id: "Overlay.WarningError", atlas: 0, x: 1141, y: 1948, width: 108, height: 44 }),
     },
     Shapes: {
       Square32: tx({ id: "Shapes.Square32", atlas: 0, x: 1401, y: 2009, width: 32, height: 32 }),
@@ -65,8 +66,8 @@ function txs<T>(tx: (data: TxData) => T) {
     Skate: {
       Caution0: tx({ id: "Skate.Caution0", atlas: 0, x: 1962, y: 0, width: 84, height: 150 }),
       Celestial0: tx({ id: "Skate.Celestial0", atlas: 0, x: 1962, y: 239, width: 82, height: 72 }),
-      Celestial1: tx({ id: "Skate.Celestial1", atlas: 0, x: 1141, y: 1948, width: 54, height: 54 }),
-      Celestial2: tx({ id: "Skate.Celestial2", atlas: 0, x: 1196, y: 1948, width: 54, height: 54 }),
+      Celestial1: tx({ id: "Skate.Celestial1", atlas: 0, x: 1968, y: 373, width: 54, height: 54 }),
+      Celestial2: tx({ id: "Skate.Celestial2", atlas: 0, x: 1968, y: 428, width: 54, height: 54 }),
       Cloud0: tx({ id: "Skate.Cloud0", atlas: 0, x: 635, y: 1038, width: 326, height: 40 }),
       Dash: tx({ id: "Skate.Dash", atlas: 0, x: 976, y: 1038, width: 410, height: 88 }),
       Grass0: tx({ id: "Skate.Grass0", atlas: 0, x: 1119, y: 1127, width: 16, height: 32 }),
