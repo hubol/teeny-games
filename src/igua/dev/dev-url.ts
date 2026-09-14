@@ -1,7 +1,8 @@
+import { UrlParams } from "../../lib/browser/url-params";
+
 export const DevUrl = {
     get sceneName() {
-        const params = new URLSearchParams(window.location.search);
-        return params.get("sceneName");
+        return UrlParams.get("sceneName");
     },
     set sceneName(value) {
         if (!value) {
