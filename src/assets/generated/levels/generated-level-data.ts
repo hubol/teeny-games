@@ -9,6 +9,55 @@ import { Tx } from "../../../assets/textures";
 const { createEntity: e, createDecal: d, applyLevel, createDecalGroup: dg } = OgmoFactory;
 
 export const Lvl = {
+  Attract: (): LvlType.Attract => {
+    applyLevel({ width: 1920, height: 1080, backgroundTint: 0x1a0f44 });
+    return {
+      TitleGroup: dg(960, 533, "TitleGroup", "BackDecals"),
+      AttractTitle: d(Tx.Attract.Title, { x: 960, y: 546, scaleX: 2.5, scaleY: 2.5, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0x291f51 }, "BackDecals"),
+      AttractTitle_1: d(Tx.Attract.Title, { x: 960, y: 533, scaleX: 2.5, scaleY: 2.5, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0xffffff }, "BackDecals"),
+      FxStar: d(Tx.Fx.Star, { x: 1448, y: 1232, scaleX: 4, scaleY: 4, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      Marker: e(r["Marker"], { x: 960, y: 504, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_1: e(r["Marker"], { x: 1200, y: 632, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_2: e(r["Marker"], { x: 1367, y: 520, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_3: e(r["Marker"], { x: 1152, y: 397, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_4: e(r["Marker"], { x: 1240, y: 301, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_5: e(r["Marker"], { x: 1840, y: 149, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_6: e(r["Marker"], { x: 1272, y: 325, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_7: e(r["Marker"], { x: 1520, y: 141, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_8: e(r["Marker"], { x: 471, y: 456, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_9: e(r["Marker"], { x: 344, y: 237, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_10: e(r["Marker"], { x: 944, y: 85, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_11: e(r["Marker"], { x: 376, y: 261, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_12: e(r["Marker"], { x: 72, y: 405, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_13: e(r["Marker"], { x: 24, y: 245, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_14: e(r["Marker"], { x: 1312, y: 864, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_15: e(r["Marker"], { x: 1552, y: 992, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_16: e(r["Marker"], { x: 1719, y: 880, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_17: e(r["Marker"], { x: 1504, y: 757, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_18: e(r["Marker"], { x: 1592, y: 661, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_19: e(r["Marker"], { x: 1624, y: 685, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_20: e(r["Marker"], { x: 1872, y: 501, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_21: e(r["Marker"], { x: 1296, y: 445, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_22: e(r["Marker"], { x: -24, y: 920, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_23: e(r["Marker"], { x: 216, y: 1048, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_24: e(r["Marker"], { x: 455, y: 920, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_25: e(r["Marker"], { x: 168, y: 813, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_26: e(r["Marker"], { x: 240, y: 613, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_27: e(r["Marker"], { x: 856, y: 565, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_28: e(r["Marker"], { x: 272, y: 573, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_29: e(r["Marker"], { x: 536, y: 557, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_30: e(r["Marker"], { x: 520, y: 1173, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_31: e(r["Marker"], { x: 608, y: 1077, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_32: e(r["Marker"], { x: 560, y: 1037, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_33: e(r["Marker"], { x: 888, y: 917, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_34: e(r["Marker"], { x: 384, y: 845, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_35: e(r["Marker"], { x: 568, y: 53, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_36: e(r["Marker"], { x: 536, y: 77, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_37: e(r["Marker"], { x: 128, y: 125, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_38: e(r["Marker"], { x: 120, y: 61, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      Marker_39: e(r["Marker"], { x: -232, y: 45, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+    };
+  },
   Designer: (): LvlType.Designer => {
     applyLevel({ width: 1920, height: 1080, backgroundTint: 0x408000 });
     return {
@@ -315,6 +364,52 @@ export const Lvl = {
 };
 
 export namespace LvlType {
+  export type Attract = {
+    TitleGroup: Container<Sprite>;
+    AttractTitle: Sprite;
+    AttractTitle_1: Sprite;
+    FxStar: Sprite;
+    Marker: ReturnType<(typeof r)["Marker"]>;
+    Marker_1: ReturnType<(typeof r)["Marker"]>;
+    Marker_2: ReturnType<(typeof r)["Marker"]>;
+    Marker_3: ReturnType<(typeof r)["Marker"]>;
+    Marker_4: ReturnType<(typeof r)["Marker"]>;
+    Marker_5: ReturnType<(typeof r)["Marker"]>;
+    Marker_6: ReturnType<(typeof r)["Marker"]>;
+    Marker_7: ReturnType<(typeof r)["Marker"]>;
+    Marker_8: ReturnType<(typeof r)["Marker"]>;
+    Marker_9: ReturnType<(typeof r)["Marker"]>;
+    Marker_10: ReturnType<(typeof r)["Marker"]>;
+    Marker_11: ReturnType<(typeof r)["Marker"]>;
+    Marker_12: ReturnType<(typeof r)["Marker"]>;
+    Marker_13: ReturnType<(typeof r)["Marker"]>;
+    Marker_14: ReturnType<(typeof r)["Marker"]>;
+    Marker_15: ReturnType<(typeof r)["Marker"]>;
+    Marker_16: ReturnType<(typeof r)["Marker"]>;
+    Marker_17: ReturnType<(typeof r)["Marker"]>;
+    Marker_18: ReturnType<(typeof r)["Marker"]>;
+    Marker_19: ReturnType<(typeof r)["Marker"]>;
+    Marker_20: ReturnType<(typeof r)["Marker"]>;
+    Marker_21: ReturnType<(typeof r)["Marker"]>;
+    Marker_22: ReturnType<(typeof r)["Marker"]>;
+    Marker_23: ReturnType<(typeof r)["Marker"]>;
+    Marker_24: ReturnType<(typeof r)["Marker"]>;
+    Marker_25: ReturnType<(typeof r)["Marker"]>;
+    Marker_26: ReturnType<(typeof r)["Marker"]>;
+    Marker_27: ReturnType<(typeof r)["Marker"]>;
+    Marker_28: ReturnType<(typeof r)["Marker"]>;
+    Marker_29: ReturnType<(typeof r)["Marker"]>;
+    Marker_30: ReturnType<(typeof r)["Marker"]>;
+    Marker_31: ReturnType<(typeof r)["Marker"]>;
+    Marker_32: ReturnType<(typeof r)["Marker"]>;
+    Marker_33: ReturnType<(typeof r)["Marker"]>;
+    Marker_34: ReturnType<(typeof r)["Marker"]>;
+    Marker_35: ReturnType<(typeof r)["Marker"]>;
+    Marker_36: ReturnType<(typeof r)["Marker"]>;
+    Marker_37: ReturnType<(typeof r)["Marker"]>;
+    Marker_38: ReturnType<(typeof r)["Marker"]>;
+    Marker_39: ReturnType<(typeof r)["Marker"]>;
+  };
   export type Designer = {
     DesignerBackground: Sprite;
     Shadow: Sprite;
