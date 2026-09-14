@@ -1,8 +1,8 @@
 import { Environment } from "../../lib/environment";
-import { VectorSimple } from "../../lib/math/vector-type";
 import { SceneLibrary } from "../core/scene/scene-library";
 import { DevGameStartConfig } from "../dev/dev-game-start-config";
 import { sceneStack, startAnimator } from "../globals";
+import { IcmUrl } from "../utils/icm-url";
 
 export function startGame() {
     const config = getConfig();
@@ -16,7 +16,7 @@ function getConfig(): GameStartConfig {
 
     if (devConfig === null) {
         return {
-            sceneName: "scnDesigner",
+            sceneName: IcmUrl.screenIndex === 0 ? "scnDesigner" : "scnAttract",
         };
     }
 
