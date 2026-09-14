@@ -56,6 +56,7 @@ export const Lvl = {
       Marker_37: e(r["Marker"], { x: 128, y: 125, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_38: e(r["Marker"], { x: 120, y: 61, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_39: e(r["Marker"], { x: -232, y: 45, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
+      DollMarker: e(r["Marker"], { x: 960, y: 540, values: { name: "DollMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
   Designer: (): LvlType.Designer => {
@@ -409,6 +410,7 @@ export namespace LvlType {
     Marker_37: ReturnType<(typeof r)["Marker"]>;
     Marker_38: ReturnType<(typeof r)["Marker"]>;
     Marker_39: ReturnType<(typeof r)["Marker"]>;
+    DollMarker: ReturnType<(typeof r)["Marker"]>;
   };
   export type Designer = {
     DesignerBackground: Sprite;

@@ -456,6 +456,17 @@
           "originY": 8,
           "tint": "#b7ace2",
           "values": {"name": "", "depth": 0}
+        },
+        {
+          "name": "Marker",
+          "id": 40,
+          "_eid": "73148747",
+          "x": 960,
+          "y": 540,
+          "originX": 8,
+          "originY": 8,
+          "tint": "#00ff00",
+          "values": {"name": "DollMarker", "depth": 0}
         }
       ]
     },
