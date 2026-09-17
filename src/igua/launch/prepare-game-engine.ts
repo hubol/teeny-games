@@ -40,11 +40,10 @@ export function prepareGameEngine(renderer: PixiRenderer) {
             keyListener.tick();
         }
         while (gameLoopForced);
-
-        renderer.render(rootStage);
     }
 
-    animator.add(gameLoop);
+    animator.add(gameLoop, false);
+    animator.add(() => renderer.render(rootStage), true);
 
     setEngineConfig({
         get showDefaultStage() {

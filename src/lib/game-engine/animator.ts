@@ -2,18 +2,21 @@ import { Logging } from "../logging";
 import { Force } from "../types/force";
 
 export class Animator {
-    private readonly _work: Function[] = [];
+    private readonly _work: Animator.Work[] = [];
     private readonly _targetInterval: number;
     private readonly _animationFrameCallback: () => void;
 
     constructor(readonly targetFps: number) {
         this._targetInterval = 1000 / this.targetFps;
-        this._animationFrameCallback = () => this._maybeUpdate();
+        this._animationFrameCallback = () => {
+            this._maybeUpdate();
+            requestAnimationFrame(this._animationFrameCallback);
+        };
         console.log(...Logging.componentArgs(this));
     }
 
-    add(work: Function) {
-        this._work.unshift(work);
+    add(fn: Function, commit: boolean) {
+        this._work.unshift({ fn, commit });
     }
 
     private _then = Force<number>();
@@ -28,18 +31,20 @@ export class Animator {
             this._then = now - 2 * this._targetInterval;
         }
         const delta = this._then ? (now - this._then) : Number.MAX_VALUE;
-        if (delta > this._targetInterval) {
+        const count = Math.ceil((delta / this._targetInterval) - 0.5);
+        for (let i = 0; i < count; i++) {
             // Setting then to now and adding the targetInterval could result in non-determinism!
             // So instead, do this
             this._then += this._targetInterval;
-            this._update();
+            this._update(i === count - 1);
         }
-        requestAnimationFrame(this._animationFrameCallback);
     }
 
-    private _update() {
+    private _update(commit: boolean) {
         for (const work of this._work) {
-            work();
+            if (!work.commit || commit) {
+                work.fn();
+            }
         }
     }
 
@@ -49,7 +54,14 @@ export class Animator {
             return;
         }
         this._then = performance.now();
-        this._update();
+        this._update(true);
         requestAnimationFrame(this._animationFrameCallback);
+    }
+}
+
+export namespace Animator {
+    export interface Work {
+        fn: Function;
+        commit: boolean;
     }
 }
