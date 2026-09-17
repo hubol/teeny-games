@@ -57,7 +57,7 @@ export function moveTowards(a: Vector, b: VectorSimple, d: number) {
 }
 
 export function vdir(v: VectorSimple) {
-    return Math.atan2(-v.y, v.x);
+    return Math.atan2(v.y, v.x);
 }
 
 export function vequals(vector0: VectorSimple, vector1: VectorSimple) {
