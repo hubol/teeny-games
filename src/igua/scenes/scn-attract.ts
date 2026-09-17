@@ -22,6 +22,8 @@ export function scnAttract() {
             .step(self => self.angle += 0.1)
     );
 
+    lvl.AttractOverlay.mixin(mxnFxBoilDisplacement, { rate: 0.1, scale: 20 });
+
     let dollData = Null<objDollBase.Serialized>();
 
     container()

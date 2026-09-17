@@ -16,6 +16,7 @@ export const Lvl = {
       AttractTitle: d(Tx.Attract.Title, { x: 960, y: 546, scaleX: 2.5, scaleY: 2.5, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0x291f51 }, "BackDecals"),
       AttractTitle_1: d(Tx.Attract.Title, { x: 960, y: 533, scaleX: 2.5, scaleY: 2.5, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0xffffff }, "BackDecals"),
       FxStar: d(Tx.Fx.Star, { x: 1448, y: 1232, scaleX: 4, scaleY: 4, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
+      AttractOverlay: d(Tx.Attract.Overlay, { x: 960, y: 540, scaleX: 1.67, scaleY: 1.67, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x000000 }, "FrontDecals"),
       Marker: e(r["Marker"], { x: 960, y: 504, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_1: e(r["Marker"], { x: 1200, y: 632, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_2: e(r["Marker"], { x: 1367, y: 520, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
@@ -370,6 +371,7 @@ export namespace LvlType {
     AttractTitle: Sprite;
     AttractTitle_1: Sprite;
     FxStar: Sprite;
+    AttractOverlay: Sprite;
     Marker: ReturnType<(typeof r)["Marker"]>;
     Marker_1: ReturnType<(typeof r)["Marker"]>;
     Marker_2: ReturnType<(typeof r)["Marker"]>;

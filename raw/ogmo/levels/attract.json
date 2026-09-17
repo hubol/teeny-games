@@ -490,7 +490,20 @@
       "gridCellHeight": 8,
       "gridCellsX": 240,
       "gridCellsY": 135,
-      "decals": [],
+      "decals": [
+        {
+          "x": 960,
+          "y": 540,
+          "scaleX": 1.67,
+          "scaleY": 1.67,
+          "rotation": 0,
+          "tint": "#000000",
+          "texture": "attract/overlay.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        }
+      ],
       "folder": "../textures"
     },
     {
@@ -562,7 +575,8 @@
           "texture": "fx/star.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         }
       ],
       "folder": "../textures"
