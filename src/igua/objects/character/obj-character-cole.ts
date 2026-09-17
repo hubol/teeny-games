@@ -1,4 +1,5 @@
 import { DEG_TO_RAD, Sprite, Texture } from "pixi.js";
+import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { cyclic } from "../../../lib/math/number";
 import { VectorSimple } from "../../../lib/math/vector-type";
@@ -103,12 +104,13 @@ export function objCharacterCole() {
                 bounceSpeed = 0;
             }
         })
-        .coro(function* () {
+        .coro(function* (self) {
             while (true) {
                 let previousPedometer = api.pedometer;
                 yield () => api.pedometer !== previousPedometer;
                 bounceSpeed = -1.3;
                 yield () => bounceY === 0 && bounceSpeed === 0;
+                self.play(Sfx.Step.rate(0.95, 1.05));
             }
         });
 }
