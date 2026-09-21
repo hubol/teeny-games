@@ -1,10 +1,11 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { Sfx } from "../../../assets/sounds";
 import { Tx } from "../../../assets/textures";
 import { factor, interpv } from "../../../lib/game-engine/routines/interp";
 import { vdeg } from "../../../lib/math/angle";
 import { RgbInt } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
+import { CollisionShape } from "../../../lib/pixi/collision";
 import { container } from "../../../lib/pixi/container";
 import { Null } from "../../../lib/types/null";
 import { mxnFxBoil } from "../../mixins/fx/mxn-fx-boil";
@@ -46,9 +47,15 @@ export function objCharacterMagnet() {
     sprites[1]
         .step(self => self.texture = api.isSparking ? txFaceSparking : txFaceDefault);
 
+    const collisionObjs = [
+        new Graphics().beginFill(0x0b9942).drawCircle(10, 10, 70).invisible(),
+    ];
+
     return container(
         ...sprites,
+        ...collisionObjs,
     )
+        .collisionShape(CollisionShape.DisplayObjects, collisionObjs)
         .merge({ objCharacterMagnet: api })
         .coro(function* (self) {
             while (true) {
