@@ -462,7 +462,7 @@
           "id": 40,
           "_eid": "73148747",
           "x": 960,
-          "y": 540,
+          "y": 572,
           "originX": 8,
           "originY": 8,
           "tint": "#00ff00",
@@ -501,7 +501,8 @@
           "texture": "attract/overlay.png",
           "originX": 0.5,
           "originY": 0.5,
-          "values": {"name": ""}
+          "values": {"name": ""},
+          "groupName": null
         }
       ],
       "folder": "../textures"
@@ -541,9 +542,9 @@
       "decals": [
         {
           "x": 960,
-          "y": 546,
-          "scaleX": 2.5,
-          "scaleY": 2.5,
+          "y": 572,
+          "scaleX": 2.2,
+          "scaleY": 2.2,
           "rotation": 0,
           "tint": "#291f51",
           "texture": "attract/title.png",
@@ -554,9 +555,9 @@
         },
         {
           "x": 960,
-          "y": 533,
-          "scaleX": 2.5,
-          "scaleY": 2.5,
+          "y": 565,
+          "scaleX": 2.2,
+          "scaleY": 2.2,
           "rotation": 0,
           "tint": "#ffffff",
           "texture": "attract/title.png",

@@ -12,9 +12,9 @@ export const Lvl = {
   Attract: (): LvlType.Attract => {
     applyLevel({ width: 1920, height: 1080, backgroundTint: 0x1a0f44 });
     return {
-      TitleGroup: dg(960, 533, "TitleGroup", "BackDecals"),
-      AttractTitle: d(Tx.Attract.Title, { x: 960, y: 546, scaleX: 2.5, scaleY: 2.5, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0x291f51 }, "BackDecals"),
-      AttractTitle_1: d(Tx.Attract.Title, { x: 960, y: 533, scaleX: 2.5, scaleY: 2.5, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0xffffff }, "BackDecals"),
+      TitleGroup: dg(960, 565, "TitleGroup", "BackDecals"),
+      AttractTitle: d(Tx.Attract.Title, { x: 960, y: 572, scaleX: 2.2, scaleY: 2.2, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0x291f51 }, "BackDecals"),
+      AttractTitle_1: d(Tx.Attract.Title, { x: 960, y: 565, scaleX: 2.2, scaleY: 2.2, rotation: 0, originX: 0.5, originY: 0.5, groupName: "TitleGroup", tint: 0xffffff }, "BackDecals"),
       FxStar: d(Tx.Fx.Star, { x: 1448, y: 1232, scaleX: 4, scaleY: 4, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals"),
       AttractOverlay: d(Tx.Attract.Overlay, { x: 960, y: 540, scaleX: 1.67, scaleY: 1.67, rotation: 0, originX: 0.5, originY: 0.5, tint: 0x000000 }, "FrontDecals"),
       Marker: e(r["Marker"], { x: 960, y: 504, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
@@ -57,7 +57,7 @@ export const Lvl = {
       Marker_37: e(r["Marker"], { x: 128, y: 125, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_38: e(r["Marker"], { x: 120, y: 61, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
       Marker_39: e(r["Marker"], { x: -232, y: 45, values: { name: "", depth: 0 }, tint: 0xb7ace2 }, "MarkerEntities"),
-      DollMarker: e(r["Marker"], { x: 960, y: 540, values: { name: "DollMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      DollMarker: e(r["Marker"], { x: 960, y: 572, values: { name: "DollMarker", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
   Designer: (): LvlType.Designer => {

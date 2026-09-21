@@ -16,9 +16,9 @@ export function scnAttract() {
     Search.findMarkers(0xb7ace2)
         .forEach(position => objFxStar().at(position).zIndexed(-999).show());
 
-    lvl.TitleGroup.children.forEach(obj =>
+    lvl.TitleGroup.children.forEach((obj, i) =>
         obj
-            .mixin(mxnFxBoilDisplacement, { rate: 0.1, scale: 5 })
+            .mixin(mxnFxBoilDisplacement, { rate: 0.1, scale: 5 * (1 - i) })
             .step(self => self.angle += 0.1)
     );
 
@@ -45,7 +45,7 @@ export function scnAttract() {
                         .scaled(0, 0)
                         .step(self => self.angle -= 0.08)
                         .coro(function* (self) {
-                            yield interpv(self.scale).to(0.6, 0.6).over(1000);
+                            yield interpv(self.scale).to(0.5, 0.5).over(1000);
                         })
                         .show(self);
                     yield sleep(1000);
