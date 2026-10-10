@@ -43,6 +43,10 @@ class IguaAudioImpl {
         return new Sound(audio, this._sfxGainNode);
     }
 
+    createAnalyser() {
+        return this._context.createAnalyser();
+    }
+
     set sfxDelayFeedback(value: Unit) {
         this._stereoDelay.leftGain.value = value;
         this._stereoDelay.rightGain.value = value;
