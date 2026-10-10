@@ -1,9 +1,14 @@
 // This file is generated
 
 async function sfxs<T>(sfx: (ogg: string) => Promise<T>) {
-  const sounds = await Promise.all(["placeholder.ogg"].map(sfx));
+  const sounds = await Promise.all(
+    ["hubol.ogg", "kirsi.ogg", "placeholder.ogg", "podcast.ogg"].map(sfx),
+  );
   return {
-    Placeholder: sounds[0],
+    Hubol: sounds[0],
+    Kirsi: sounds[1],
+    Placeholder: sounds[2],
+    Podcast: sounds[3],
   };
 }
 

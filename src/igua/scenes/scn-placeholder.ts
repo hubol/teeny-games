@@ -1,43 +1,54 @@
-import { Graphics } from "pixi.js";
+import { Graphics, Sprite, Texture, TilingSprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
-import { interp } from "../../lib/game-engine/routines/interp";
+import { Tx } from "../../assets/textures";
+import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { Rng } from "../../lib/math/rng";
+import { container } from "../../lib/pixi/container";
 import { ForceTintFilter } from "../../lib/pixi/filters/force-tint-filter";
 import { Key } from "../globals";
 import { mxnActionRepeater } from "../mixins/mxn-action-repeater";
+import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
+
+const [txBackground, txClouds, txTitle, txChairs] = Tx.Background.split({ width: 640 });
+const txsHubol = Tx.Hubol.split({ width: 320 });
+const txsKirsi = Tx.Kirsi.split({ width: 290 });
 
 export function scnPlaceholder() {
-    const lvl = Lvl.Placeholder();
-    lvl.Block.step(self => {
-        if (Key.isDown("ArrowUp")) {
-            self.y -= 3;
-        }
-    });
-
-    objText.Large("Yoooooooo!").show();
-
-    objText.Medium("Asdf")
-        .mixin(mxnActionRepeater, ["KeyP"])
+    Sprite.from(txBackground).show();
+    new TilingSprite(txClouds, 640, 360)
         .step(self => {
-            if (self.mxnActionRepeater.justWentDown("KeyP")) {
-                self.text += "P";
+            if (Rng.float() > 0.8) {
+                self.tilePosition.x += 1;
             }
         })
-        .at(100, 100)
         .show();
+    Sprite.from(txTitle).mixin(mxnBoilPivot).show();
+    Sprite.from(txChairs).show();
+    objCharacter(txsHubol).at(320, 0).show();
+    objCharacter(txsKirsi).show();
+}
 
-    new Graphics().beginFill(0x000000).drawCircle(0, 0, 3).show(lvl.Group1);
-    lvl.Group1.step(self => self.angle += 1);
-
-    const filter = new ForceTintFilter(0xf00000);
-    lvl.Group1.filters = [filter];
-
-    lvl.Group1.coro(function* () {
-        while (true) {
-            yield sleep(333);
-            yield interp(filter, "factor").to(0).over(1000);
-            yield interp(filter, "factor").to(1).over(1000);
-        }
-    });
+function objCharacter(
+    [txBody, txHeadphones, txPupils, txMouthClosed, txMouthOpen0, txMouthOpen1, txEyesClosed]: Texture[],
+) {
+    const pupilObj = Sprite.from(txPupils);
+    const mouthObj = Sprite.from(txMouthClosed);
+    return container(
+        Sprite.from(txBody),
+        Sprite.from(txHeadphones)
+            .mixin(mxnBoilPivot),
+        pupilObj
+            .coro(function* (self) {
+                while (true) {
+                    yield sleep(Rng.int(500, 2000));
+                    yield interpvr(self.pivot)
+                        .factor(factor.sine)
+                        .to(Rng.vunit().scale(Rng.float(5, 13), Rng.float(1, 6)).vround())
+                        .over(Rng.int(500, 2000));
+                }
+            }),
+        mouthObj.mixin(mxnBoilPivot),
+    );
 }
