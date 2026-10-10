@@ -1,13 +1,17 @@
 import { Graphics, Sprite, Texture, TilingSprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { Sound } from "../../lib/game-engine/audio/sound";
 import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
+import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { ForceTintFilter } from "../../lib/pixi/filters/force-tint-filter";
-import { Key } from "../globals";
+import { IguaAudio } from "../core/igua-audio";
+import { Key, scene } from "../globals";
 import { mxnActionRepeater } from "../mixins/mxn-action-repeater";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
@@ -27,20 +31,32 @@ export function scnPlaceholder() {
         .show();
     Sprite.from(txTitle).mixin(mxnBoilPivot).show();
     Sprite.from(txChairs).show();
-    objCharacter(txsHubol).at(320, 0).show();
-    objCharacter(txsKirsi).show();
+    objCharacter(txsHubol)
+        .mixin(mxnCharacterSpeak, Sfx.Hubol)
+        .at(320, 0)
+        .show();
+    objCharacter(txsKirsi)
+        .mixin(mxnCharacterSpeak, Sfx.Kirsi)
+        .show();
+    Sfx.Podcast.play();
 }
 
 function objCharacter(
     [txBody, txHeadphones, txPupils, txMouthClosed, txMouthOpen0, txMouthOpen1, txEyesClosed]: Texture[],
 ) {
+    let mouthAgapeUnit = 0;
     const mouthObj = objIndexedSprite([txMouthClosed, txMouthOpen0, txMouthOpen1]);
     const api = {
         get mouthAgapeUnit() {
-            return mouthObj.textureIndex / mouthObj.textures.length;
+            return mouthAgapeUnit;
         },
         set mouthAgapeUnit(value) {
-            mouthObj.textureIndex = value * mouthObj.textures.length;
+            mouthAgapeUnit = value;
+            if (value === 0) {
+                mouthObj.textureIndex = 0;
+                return;
+            }
+            mouthObj.textureIndex = Math.ceil(value * 2);
         },
     };
 
@@ -79,6 +95,25 @@ function objCharacter(
         mouthObj.mixin(mxnBoilPivot),
     )
         .merge({ objCharacter: api });
+}
+
+function mxnCharacterSpeak(obj: objCharacter.Type, sfx: Sound) {
+    const instance = sfx.gain(0).playInstance();
+    const analyser = IguaAudio.createAnalyser();
+    instance.connect(analyser);
+    const speechAnalyser = createSpeechAnalyser(analyser);
+
+    return obj
+        .step(self => {
+            const target = speechAnalyser.speakingIntensity > 0.05
+                ? ((Math.sin(scene.ticker.ticks / 5) + 1) / 2 + 0.1)
+                : 0;
+            self.objCharacter.mouthAgapeUnit = approachLinear(self.objCharacter.mouthAgapeUnit, target, 0.05);
+        });
+}
+
+namespace objCharacter {
+    export type Type = ReturnType<typeof objCharacter>;
 }
 
 function createSpeechAnalyser(analyser: AnalyserNode) {
