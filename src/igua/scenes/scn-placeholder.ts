@@ -1,18 +1,14 @@
 import { Graphics, Sprite, Texture, TilingSprite } from "pixi.js";
-import { objText } from "../../assets/fonts";
-import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
-import { factor, interp, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
-import { ForceTintFilter } from "../../lib/pixi/filters/force-tint-filter";
 import { IguaAudio } from "../core/igua-audio";
-import { Key, scene } from "../globals";
-import { mxnActionRepeater } from "../mixins/mxn-action-repeater";
+import { scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
 import { objIndexedSprite } from "../objects/utils/obj-indexed-sprite";
 
@@ -38,7 +34,23 @@ export function scnPlaceholder() {
     objCharacter(txsKirsi)
         .mixin(mxnCharacterSpeak, Sfx.Kirsi)
         .show();
-    Sfx.Podcast.play();
+    const podcastSfx = Sfx.Podcast.playInstance();
+
+    new Graphics()
+        .beginFill(0x000000)
+        .drawRect(0, 0, 640, 360)
+        .invisible()
+        .coro(function* (self) {
+            self.alpha = 0.2;
+            yield () => podcastSfx.estimatedPlayheadPosition >= 153;
+            for (let i = 0; i < 2; i++) {
+                self.visible = true;
+                yield sleepf(10);
+                self.visible = false;
+                yield sleepf(10);
+            }
+        })
+        .show();
 }
 
 function objCharacter(
