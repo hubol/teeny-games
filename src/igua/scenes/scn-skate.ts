@@ -175,7 +175,7 @@ function objSkatingDoll(data: objDollBase.Serialized, lvl: LvlType.Skate) {
             yield interpv(self.scale).to(0, 0).over(100);
             scene.stage
                 .coro(function* () {
-                    yield sleep(2000);
+                    yield sleep(3500);
                     sceneStack.replace(scnDesigner, {});
                 });
             PfsHauntedDoll.Launched.value = data;
