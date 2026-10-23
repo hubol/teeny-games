@@ -5,6 +5,7 @@ import { showLoadingScreen } from "./igua/launch/show-loading-screen";
 import { integralUpscaleCanvas } from "./lib/browser/integral-upscale-canvas";
 import { Environment } from "./lib/environment";
 import { initializeAsshatAudioContext } from "./lib/game-engine/audio/asshat-audiocontext";
+import { CountingLogTarget } from "./lib/game-engine/counting-log-target";
 import { DomLogTarget } from "./lib/game-engine/dom-log-target";
 import { JobProgress } from "./lib/game-engine/job-progress";
 import { Logger } from "./lib/game-engine/logger";
@@ -82,7 +83,7 @@ window.addEventListener(
 );
 window.addEventListener("error", (e) => Logger.logUnhandledError("window.on('error')", e));
 
-Logger.target = new DomLogTarget();
+Logger.target = Environment.isDev ? new DomLogTarget() : CountingLogTarget.singleton;
 
 function addGameCanvasToDocument(element: HTMLCanvasElement) {
     element.id = "game_canvas";
