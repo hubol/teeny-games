@@ -1,9 +1,11 @@
-import { Graphics } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { interp } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
+import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
 import { ForceTintFilter } from "../../lib/pixi/filters/force-tint-filter";
+import { renderer } from "../current-pixi-renderer";
 import { Key } from "../globals";
 import { mxnActionRepeater } from "../mixins/mxn-action-repeater";
 
@@ -40,4 +42,15 @@ export function scnPlaceholder() {
             yield interp(filter, "factor").to(1).over(1000);
         }
     });
+
+    UserMediaTexture
+        .load()
+        .then(tx => {
+            const scale = renderer.height / tx.height;
+            Sprite.from(tx)
+                .anchored(0.5, 0.5)
+                .at(renderer.width / 2, renderer.height / 2)
+                .scaled(-scale, scale)
+                .show();
+        });
 }
