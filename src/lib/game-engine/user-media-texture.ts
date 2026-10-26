@@ -13,7 +13,7 @@ export namespace UserMediaTexture {
     }
 
     async function makeUserMediaVideoElement() {
-        const media = await navigator.mediaDevices.getUserMedia({ audio: false, video: {} });
+        const media = await navigator.mediaDevices.getUserMedia({ audio: false, video: { width: 1080, height: 1080 } });
         const videoElement = document.createElement("video");
         videoElement.srcObject = media;
         // https://stackoverflow.com/a/54678952
