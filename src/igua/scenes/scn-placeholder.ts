@@ -2,11 +2,13 @@ import { Graphics, Sprite, Texture, TilingSprite } from "pixi.js";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
 import { Sound } from "../../lib/game-engine/audio/sound";
-import { factor, interpvr } from "../../lib/game-engine/routines/interp";
+import { factor, interpc, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
-import { approachLinear } from "../../lib/math/number";
+import { approachLinear, cyclic } from "../../lib/math/number";
 import { Rng } from "../../lib/math/rng";
+import { AdjustColor } from "../../lib/pixi/adjust-color";
 import { container } from "../../lib/pixi/container";
+import { SpriteAlphaMaskFilter } from "../../lib/pixi/filters/sprite-alpha-mask-filter";
 import { IguaAudio } from "../core/igua-audio";
 import { scene } from "../globals";
 import { mxnBoilPivot } from "../mixins/mxn-boil-pivot";
@@ -17,6 +19,61 @@ const txsHubol = Tx.Hubol.split({ width: 320 });
 const txsKirsi = Tx.Kirsi.split({ width: 290 });
 
 export function scnPlaceholder() {
+    new Graphics().beginFill(0x1e31d8).drawRect(0, 0, 640, 360).show();
+
+    Sprite.from(Tx.Clouds)
+        .pivoted(640, 0)
+        .coro(function* (self) {
+            while (true) {
+                yield interpvr(self).to(640 * 2, 40).over(30_000);
+                self.at(0, 0);
+            }
+        })
+        .show();
+
+    const mysteryObj = Sprite.from(Tx.Mystery)
+        .mixin(mxnBoilPivot);
+
+    new Graphics()
+        .beginFill(0xffffff)
+        .drawRect(0, 0, 640, 360)
+        .coro(function* (self) {
+            while (true) {
+                for (let i = 0; i < 60; i++) {
+                    const hue = i * 6;
+                    self.tint = AdjustColor.hsv(cyclic(hue - 6, 0, 360), 50, 100).toPixi();
+                    yield interpc(self, "tint").to(AdjustColor.hsv(hue, 50, 100).toPixi()).over(1000);
+                }
+            }
+        })
+        .step(self => {
+            const hsv = AdjustColor.pixi(self.tint as number).toHsv();
+            mysteryObj.tint = AdjustColor.hsv(cyclic(hsv.h + 180, 0, 360), 75, 90).toPixi();
+        })
+        .filtered(new SpriteAlphaMaskFilter(Sprite.from(Tx.Mask)))
+        .show();
+
+    mysteryObj.show();
+    Sprite.from(Tx.Mall).show();
+
+    container(
+        objIndexedSprite(Tx.KirsiWalk.split({ count: 2 }).reverse())
+            .step(self => self.textureIndex = (scene.ticker.ticks / 30) % 2)
+            .at(-40, -10),
+        objIndexedSprite(Tx.HubolWalk.split({ count: 2 }))
+            .step(self => self.textureIndex = (scene.ticker.ticks / 30) % 2),
+    )
+        .at(690, 240)
+        .coro(function* (self) {
+            while (true) {
+                yield interpvr(self.pivot).to(780, -40).over(20_000);
+                yield sleep(10_000);
+                self.pivot.at(0, 0);
+            }
+        })
+        .show();
+
+    return;
     Sprite.from(txBackground).show();
     new TilingSprite(txClouds, 640, 360)
         .step(self => {
