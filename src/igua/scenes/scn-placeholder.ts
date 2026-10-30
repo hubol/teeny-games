@@ -20,7 +20,7 @@ export function scnPlaceholder() {
 
     objOverlayFov()
         .at(renderer.width / 2, renderer.height / 2)
-        .scaled(1080 / 1024, 1080 / 1024)
+        .scaled(-1080 / 1024, 1080 / 1024)
         .show()
         .objOverlayFov
         .tint = 0x260080;
