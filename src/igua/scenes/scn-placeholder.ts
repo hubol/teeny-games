@@ -73,6 +73,9 @@ export function scnPlaceholder() {
         })
         .show();
 
+    Sprite.from(Tx.Cameo)
+        .show();
+
     return;
     Sprite.from(txBackground).show();
     new TilingSprite(txClouds, 640, 360)
