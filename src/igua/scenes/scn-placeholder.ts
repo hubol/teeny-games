@@ -35,14 +35,14 @@ export function scnPlaceholder() {
         .coro(function* () {
             while (true) {
                 const [startPosition, targetPosition] = getOutOfBoundsPositions();
-                objCellHuman()
+                const cellObj = objCellHuman()
                     .at(startPosition)
                     .coro(function* (self) {
-                        self.step(() => self.moveTowards(targetPosition, 2));
                         yield () => vequals(self, targetPosition);
                         self.destroy();
                     })
                     .show();
+                cellObj.objCellHuman.targetPosition.at(targetPosition);
                 yield sleep(Rng.intc(300, 700));
             }
         })
