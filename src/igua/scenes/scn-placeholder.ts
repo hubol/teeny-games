@@ -2,6 +2,7 @@ import { BlurFilter, Graphics, Sprite } from "pixi.js";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { vequals } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
@@ -42,7 +43,7 @@ export function scnPlaceholder() {
     //     .objOverlayFov
     //     .tint = 0x260080;
 
-    objCellsLayer()
+    objCellsLayer(24)
         .filtered(new BlurFilter(10, 5))
         .pivoted(renderer.width / 2, renderer.height / 2)
         .at(renderer.width / 2, renderer.height / 2)
@@ -50,16 +51,16 @@ export function scnPlaceholder() {
         .show()
         .alpha = 0.5;
 
-    objCellsLayer()
+    objCellsLayer(32)
         .show();
 }
 
-function objCellsLayer() {
+function objCellsLayer(detail: Integer) {
     return container()
         .coro(function* (self) {
             while (true) {
                 const [startPosition, targetPosition] = getOutOfBoundsPositions();
-                const cellObj = objCellHuman()
+                const cellObj = objCellHuman(detail)
                     .at(startPosition)
                     .coro(function* (self) {
                         yield () => vequals(self, targetPosition);

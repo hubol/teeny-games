@@ -2,6 +2,7 @@ import { Container, DisplayObject, Graphics, Sprite } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { factor, interp, interpv, interpvr } from "../../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../../lib/game-engine/routines/sleep";
+import { Integer } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
 import { distance, vlerp } from "../../../lib/math/vector";
 import { VectorSimple, vnew } from "../../../lib/math/vector-type";
@@ -15,7 +16,7 @@ const v3 = vnew();
 
 const faceTxs = Tx.Cell.Human.Face.split({ width: 38 });
 
-export function objCellHuman() {
+export function objCellHuman(detail: Integer) {
     const state = {
         force: 0,
         fxSpeed: vnew(),
@@ -71,8 +72,6 @@ export function objCellHuman() {
             maxRadius += v1.vlength + getRadius(obj);
         }
 
-        const segmentsCount = 32;
-
         gfx
             .clear()
             .beginFill(0x8259b1)
@@ -80,8 +79,8 @@ export function objCellHuman() {
 
         const previousPosition = v3;
 
-        for (let i = 0; i <= segmentsCount; i++) {
-            const r = (Math.PI * 2) * (i / segmentsCount) + scene.ticker.ticks;
+        for (let i = 0; i <= detail; i++) {
+            const r = (Math.PI * 2) * (i / detail) + scene.ticker.ticks;
             const linePosition = v2.at(Math.sin(r), Math.cos(r)).scale(maxRadius);
             let minDistance = Number.MAX_SAFE_INTEGER;
             for (const obj of organelleObjs) {
