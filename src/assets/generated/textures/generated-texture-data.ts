@@ -1,6 +1,6 @@
 // This file is generated
 
-const atlases = [{ url: require("./atlas0.png"), texturesCount: 13 }];
+const atlases = [{ url: require("./atlas0.png"), texturesCount: 14 }];
 
 interface TxData {
   id: string;
@@ -15,16 +15,17 @@ function txs<T>(tx: (data: TxData) => T) {
   return {
     Cell: {
       Human: {
-        Mitochondrion0: tx({ id: "Cell.Human.Mitochondrion0", atlas: 0, x: 2520, y: 170, width: 26, height: 24 }),
-        Mitochondrion1: tx({ id: "Cell.Human.Mitochondrion1", atlas: 0, x: 2597, y: 129, width: 18, height: 26 }),
-        Nucleus: tx({ id: "Cell.Human.Nucleus", atlas: 0, x: 2520, y: 129, width: 42, height: 40 }),
+        Face: tx({ id: "Cell.Human.Face", atlas: 0, x: 2359, y: 199, width: 152, height: 38 }),
+        Mitochondrion0: tx({ id: "Cell.Human.Mitochondrion0", atlas: 0, x: 2331, y: 209, width: 26, height: 24 }),
+        Mitochondrion1: tx({ id: "Cell.Human.Mitochondrion1", atlas: 0, x: 2331, y: 234, width: 18, height: 26 }),
+        Nucleus: tx({ id: "Cell.Human.Nucleus", atlas: 0, x: 2288, y: 209, width: 42, height: 40 }),
       },
     },
     Font: {
-      Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 2359, y: 199, width: 128, height: 8 }),
+      Diggit: tx({ id: "Font.Diggit", atlas: 0, x: 2050, y: 209, width: 128, height: 8 }),
       ErotixLight: tx({ id: "Font.ErotixLight", atlas: 0, x: 2359, y: 129, width: 160, height: 34 }),
       Erotix: tx({ id: "Font.Erotix", atlas: 0, x: 2359, y: 164, width: 160, height: 34 }),
-      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 2359, y: 208, width: 102, height: 24 }),
+      Flaccid: tx({ id: "Font.Flaccid", atlas: 0, x: 2512, y: 199, width: 102, height: 24 }),
       GoodBoy: tx({ id: "Font.GoodBoy", atlas: 0, x: 2359, y: 0, width: 256, height: 128 }),
       OldMaiden: tx({ id: "Font.OldMaiden", atlas: 0, x: 2050, y: 0, width: 308, height: 208 }),
     },
@@ -34,7 +35,7 @@ function txs<T>(tx: (data: TxData) => T) {
     Overlay: {
       FovInner: tx({ id: "Overlay.FovInner", atlas: 0, x: 0, y: 0, width: 1024, height: 1024 }),
       Fov: tx({ id: "Overlay.Fov", atlas: 0, x: 1025, y: 0, width: 1024, height: 1024 }),
-      WarningError: tx({ id: "Overlay.WarningError", atlas: 0, x: 2488, y: 199, width: 108, height: 44 }),
+      WarningError: tx({ id: "Overlay.WarningError", atlas: 0, x: 2179, y: 209, width: 108, height: 44 }),
     },
   };
 }

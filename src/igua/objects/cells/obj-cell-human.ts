@@ -13,12 +13,15 @@ const v1 = vnew();
 const v2 = vnew();
 const v3 = vnew();
 
+const faceTxs = Tx.Cell.Human.Face.split({ width: 38 });
+
 export function objCellHuman() {
     const state = {
         force: 0,
         fxSpeed: vnew(),
     };
 
+    const nucleusObj = Sprite.from(Tx.Cell.Human.Nucleus);
     const organelleObjs = [
         Sprite.from(Tx.Cell.Human.Mitochondrion0)
             .mixin(mxnForceWiggle, -0.3, state)
@@ -28,7 +31,7 @@ export function objCellHuman() {
             .mixin(mxnForceWiggle, -0.4, state)
             .anchored(0.5, 0.5)
             .angled(Rng.int(4) * 90),
-        Sprite.from(Tx.Cell.Human.Nucleus)
+        nucleusObj
             .mixin(mxnForceWiggle, 1, state)
             .angled(Rng.int(4) * 90)
             .anchored(0.5, 0.5),
@@ -124,6 +127,13 @@ export function objCellHuman() {
         })
         .coro(function* (self) {
             state.fxSpeed.at(api.targetPosition).add(self, -1).normalize().scale(35);
+            if (Rng.bool()) {
+                Sprite.from(Rng.item(faceTxs))
+                    .anchored(0.5, 0.5)
+                    .at(nucleusObj)
+                    .step(self => self.moveTowards(nucleusObj, 0.6))
+                    .show(self);
+            }
         })
         .step(self => self.moveTowards(api.targetPosition, (1 - state.force) * 2 + 0.1));
 }
