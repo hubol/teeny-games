@@ -1,4 +1,4 @@
-import { Sprite } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
@@ -7,11 +7,21 @@ import { vequals } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
+import { scene } from "../globals";
 import { objCellHuman } from "../objects/cells/obj-cell-human";
 import { objOverlayFov } from "../objects/overlay/obj-overlay-fov";
 
 export function scnPlaceholder() {
-    const userObj = container().show();
+    scene.style.backgroundTint = 0x260080;
+
+    const userObj = container()
+        .zIndexed(999)
+        .show();
+
+    const maskObj = new Graphics()
+        .beginFill(0xffffff)
+        .drawCircle(renderer.width / 2, renderer.height / 2, renderer.height / 2 - 20)
+        .show();
 
     UserMediaTexture
         .load()
@@ -21,15 +31,16 @@ export function scnPlaceholder() {
                 .anchored(0.5, 0.5)
                 .at(renderer.width / 2, renderer.height / 2)
                 .scaled(-scale, scale)
+                .masked(maskObj)
                 .show(userObj);
         });
 
-    objOverlayFov()
-        .at(renderer.width / 2, renderer.height / 2)
-        .scaled(-1080 / 1024, 1080 / 1024)
-        .show()
-        .objOverlayFov
-        .tint = 0x260080;
+    // objOverlayFov()
+    //     .at(renderer.width / 2, renderer.height / 2)
+    //     .scaled(-1080 / 1024, 1080 / 1024)
+    //     .show()
+    //     .objOverlayFov
+    //     .tint = 0x260080;
 
     container()
         .coro(function* () {
