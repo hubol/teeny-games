@@ -1,5 +1,10 @@
 import { Sprite } from "pixi.js";
+import { factor, interpvr } from "../../lib/game-engine/routines/interp";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
+import { Rng } from "../../lib/math/rng";
+import { vequals } from "../../lib/math/vector";
+import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { objCellHuman } from "../objects/cells/obj-cell-human";
@@ -26,7 +31,26 @@ export function scnPlaceholder() {
         .objOverlayFov
         .tint = 0x260080;
 
-    objCellHuman()
-        .at(100, 300)
+    container()
+        .coro(function* () {
+            while (true) {
+                objCellHuman()
+                    .at(getOutOfBoundsPosition())
+                    .coro(function* (self) {
+                        const targetPosition = getOutOfBoundsPosition();
+                        self.step(() => self.moveTowards(targetPosition, 2));
+                        yield () => vequals(self, targetPosition);
+                        self.destroy();
+                    })
+                    .show();
+                yield sleep(Rng.intc(300, 700));
+            }
+        })
         .show();
+}
+
+function getOutOfBoundsPosition() {
+    return Rng.bool()
+        ? vnew(renderer.width / 2 + Rng.intp() * (renderer.width + 100), Rng.int(renderer.height))
+        : vnew(Rng.int(renderer.width), renderer.height / 2 + Rng.intp() * (renderer.height + 100));
 }
