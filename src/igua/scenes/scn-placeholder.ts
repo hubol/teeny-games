@@ -1,4 +1,4 @@
-import { Graphics, Sprite } from "pixi.js";
+import { BlurFilter, Graphics, Sprite } from "pixi.js";
 import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
@@ -42,8 +42,21 @@ export function scnPlaceholder() {
     //     .objOverlayFov
     //     .tint = 0x260080;
 
-    container()
-        .coro(function* () {
+    objCellsLayer()
+        .filtered(new BlurFilter(10, 5))
+        .pivoted(renderer.width / 2, renderer.height / 2)
+        .at(renderer.width / 2, renderer.height / 2)
+        .scaled(1.3, 1.3)
+        .show()
+        .alpha = 0.5;
+
+    objCellsLayer()
+        .show();
+}
+
+function objCellsLayer() {
+    return container()
+        .coro(function* (self) {
             while (true) {
                 const [startPosition, targetPosition] = getOutOfBoundsPositions();
                 const cellObj = objCellHuman()
@@ -52,12 +65,11 @@ export function scnPlaceholder() {
                         yield () => vequals(self, targetPosition);
                         self.destroy();
                     })
-                    .show();
+                    .show(self);
                 cellObj.objCellHuman.targetPosition.at(targetPosition);
                 yield sleep(Rng.intc(300, 700));
             }
-        })
-        .show();
+        });
 }
 
 function getOutOfBoundsPositions() {
