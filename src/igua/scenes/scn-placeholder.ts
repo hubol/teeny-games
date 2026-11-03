@@ -34,10 +34,10 @@ export function scnPlaceholder() {
     container()
         .coro(function* () {
             while (true) {
+                const [startPosition, targetPosition] = getOutOfBoundsPositions();
                 objCellHuman()
-                    .at(getOutOfBoundsPosition())
+                    .at(startPosition)
                     .coro(function* (self) {
-                        const targetPosition = getOutOfBoundsPosition();
                         self.step(() => self.moveTowards(targetPosition, 2));
                         yield () => vequals(self, targetPosition);
                         self.destroy();
@@ -49,8 +49,9 @@ export function scnPlaceholder() {
         .show();
 }
 
-function getOutOfBoundsPosition() {
-    return Rng.bool()
-        ? vnew(renderer.width / 2 + Rng.intp() * (renderer.width + 100), Rng.int(renderer.height))
-        : vnew(Rng.int(renderer.width), renderer.height / 2 + Rng.intp() * (renderer.height + 100));
+function getOutOfBoundsPositions() {
+    return Rng.shuffle([
+        vnew(renderer.width / 2 + Rng.intp() * (renderer.width / 2 + 100), Rng.int(renderer.height)),
+        vnew(Rng.int(renderer.width), renderer.height / 2 + Rng.intp() * (renderer.height / 2 + 100)),
+    ]);
 }
