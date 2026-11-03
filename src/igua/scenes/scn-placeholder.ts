@@ -2,6 +2,7 @@ import { Sprite } from "pixi.js";
 import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
 import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
+import { objCellHuman } from "../objects/cells/obj-cell-human";
 import { objOverlayFov } from "../objects/overlay/obj-overlay-fov";
 
 export function scnPlaceholder() {
@@ -24,4 +25,8 @@ export function scnPlaceholder() {
         .show()
         .objOverlayFov
         .tint = 0x260080;
+
+    objCellHuman()
+        .at(100, 300)
+        .show();
 }
