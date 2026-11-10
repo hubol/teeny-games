@@ -74,7 +74,7 @@ export function objCellHuman(detail: Integer) {
 
         gfx
             .clear()
-            .beginFill(0x8259b1)
+            .beginFill(0x8259b1, 0.8)
             .lineStyle(3, 0xffffff);
 
         const previousPosition = v3;

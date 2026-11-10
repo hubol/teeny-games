@@ -1,5 +1,4 @@
 import { BlurFilter, Graphics, Sprite } from "pixi.js";
-import { factor, interpvr } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
 import { UserMediaTexture } from "../../lib/game-engine/user-media-texture";
 import { Integer } from "../../lib/math/number-alias-types";
@@ -10,9 +9,9 @@ import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
 import { objCellHuman } from "../objects/cells/obj-cell-human";
-import { objOverlayFov } from "../objects/overlay/obj-overlay-fov";
 
 export function scnPlaceholder() {
+    const margin = 20;
     scene.style.backgroundTint = 0x260080;
 
     const userObj = container()
@@ -21,13 +20,13 @@ export function scnPlaceholder() {
 
     const maskObj = new Graphics()
         .beginFill(0xffffff)
-        .drawCircle(renderer.width / 2, renderer.height / 2, renderer.height / 2 - 20)
+        .drawCircle(renderer.width / 2, renderer.height / 2, renderer.height / 2 - margin)
         .show();
 
     UserMediaTexture
         .load()
         .then(tx => {
-            const scale = renderer.height / tx.height;
+            const scale = (renderer.height - (margin * 2)) / tx.height;
             Sprite.from(tx)
                 .anchored(0.5, 0.5)
                 .at(renderer.width / 2, renderer.height / 2)
@@ -36,20 +35,16 @@ export function scnPlaceholder() {
                 .show(userObj);
         });
 
-    // objOverlayFov()
-    //     .at(renderer.width / 2, renderer.height / 2)
-    //     .scaled(-1080 / 1024, 1080 / 1024)
-    //     .show()
-    //     .objOverlayFov
-    //     .tint = 0x260080;
+    const blurFilter = new BlurFilter(10, 3, 0.5);
+    blurFilter.repeatEdgePixels = true;
 
     objCellsLayer(24)
-        .filtered(new BlurFilter(10, 5))
+        .filtered(blurFilter)
         .pivoted(renderer.width / 2, renderer.height / 2)
         .at(renderer.width / 2, renderer.height / 2)
         .scaled(1.3, 1.3)
         .show()
-        .alpha = 0.5;
+        .alpha = 0.45;
 
     objCellsLayer(32)
         .show();
