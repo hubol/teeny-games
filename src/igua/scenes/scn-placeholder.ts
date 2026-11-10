@@ -7,6 +7,10 @@ import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { objFish } from "../objects/obj-fish";
 import { objKelp } from "../objects/obj-kelp";
 
+// TODO all get scared sometimes
+// TODO a colorful one
+// TODO they are happy with it so far
+
 export function scnPlaceholder() {
     scene.style.backgroundTint = 0x808080;
 
