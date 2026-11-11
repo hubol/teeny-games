@@ -45,7 +45,7 @@ export function scnPlaceholder() {
 
     new Graphics()
         .step(self => {
-            self.clear().beginFill(0x101010, 0.5);
+            self.clear().beginFill(0x101010, 0.1);
             for (const obj of Instances(mxnShadowCaster)) {
                 if (!dyMap.has(obj)) {
                     dyMap.set(obj, prng.int(-200, 0));
@@ -53,12 +53,11 @@ export function scnPlaceholder() {
                 const bounds = obj.getBounds();
                 const center = bounds.getCenter();
                 const dy = dyMap.get(obj)!;
-                self.drawEllipse(
-                    center.x,
-                    Math.max(center.y + bounds.height / 2, 1050 + dy),
-                    bounds.width / 2,
-                    8 + bounds.height / 32,
-                );
+                const y = Math.max(center.y + bounds.height / 2, 1050 + dy);
+                const halfHeight = 18 + bounds.height / 20;
+
+                self.drawRoundedRect(bounds.x + 30, y - halfHeight, bounds.width - 60, halfHeight * 2, 999);
+                self.drawRoundedRect(bounds.x + 50, y - halfHeight / 2, bounds.width - 100, halfHeight, 999);
             }
         })
         .show(entitiesObj);
