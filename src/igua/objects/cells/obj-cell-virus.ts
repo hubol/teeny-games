@@ -20,10 +20,15 @@ export function objCellVirus() {
     let stepsCount = 0;
     let angleDelta = Rng.float(0.5, 1) * Rng.intp();
 
+    const scale = Rng.float() < 0.1 ? 2 : 1;
+    const outlineScale = 1 - (scale - 1) / 16;
+
     return container(
         container(
             Sprite.from(Tx.Virus.Outline)
-                .at(-3, -3),
+                .pivoted(26 + 3, 28 + 3)
+                .at(26, 28)
+                .scaled(outlineScale, outlineScale),
             objIndexedSprite(txsBody)
                 .tinted(tint)
                 .coro(function* (self) {
@@ -33,15 +38,19 @@ export function objCellVirus() {
                     }
                 }),
         )
+            .scaled(scale, scale)
             .angled(Rng.int(4) * 90)
             .pivoted(26, 28)
             .at(26, 28)
             .step(self => self.angle += angleDelta),
         Sprite.from(txHighlight)
             .tinted(highlightTint)
+            .pivoted(26, 28)
+            .scaled(scale, scale)
+            .at(26, 28)
             .step(self => {
                 if (Rng.float() > 0.9) {
-                    self.pivot.y = Rng.intc(-1, 1);
+                    self.pivot.y = 28 + Rng.intc(-1, 1) / scale;
                 }
             }),
         Sprite.from(Rng.item(txsFace))
