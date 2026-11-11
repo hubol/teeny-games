@@ -36,6 +36,17 @@ export const Lvl = {
       FoliageKelp1_5: d(Tx.Foliage.Kelp1, { x: 360, y: 968, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "KelpGroup5", tint: 0x454545 }, "FrontDecals"),
       FoliageKelp0_10: d(Tx.Foliage.Kelp0, { x: 1555, y: 1024, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "KelpGroup5", tint: 0x454545 }, "FrontDecals"),
       FoliageKelp1_6: d(Tx.Foliage.Kelp1, { x: 1472, y: 952, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "KelpGroup5", tint: 0x454545 }, "FrontDecals"),
+      Marker: e(r["Marker"], { x: 112, y: 592, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_1: e(r["Marker"], { x: 280, y: 344, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_2: e(r["Marker"], { x: 504, y: 568, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_3: e(r["Marker"], { x: 704, y: 272, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_4: e(r["Marker"], { x: 848, y: 424, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_5: e(r["Marker"], { x: 1120, y: 696, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_6: e(r["Marker"], { x: 1336, y: 416, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_7: e(r["Marker"], { x: 1688, y: 296, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_8: e(r["Marker"], { x: 1696, y: 768, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_9: e(r["Marker"], { x: -72, y: 192, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
+      Marker_10: e(r["Marker"], { x: 1168, y: 136, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
   Placeholder: (): LvlType.Placeholder => {
@@ -82,6 +93,17 @@ export namespace LvlType {
     FoliageKelp1_5: Sprite;
     FoliageKelp0_10: Sprite;
     FoliageKelp1_6: Sprite;
+    Marker: ReturnType<(typeof r)["Marker"]>;
+    Marker_1: ReturnType<(typeof r)["Marker"]>;
+    Marker_2: ReturnType<(typeof r)["Marker"]>;
+    Marker_3: ReturnType<(typeof r)["Marker"]>;
+    Marker_4: ReturnType<(typeof r)["Marker"]>;
+    Marker_5: ReturnType<(typeof r)["Marker"]>;
+    Marker_6: ReturnType<(typeof r)["Marker"]>;
+    Marker_7: ReturnType<(typeof r)["Marker"]>;
+    Marker_8: ReturnType<(typeof r)["Marker"]>;
+    Marker_9: ReturnType<(typeof r)["Marker"]>;
+    Marker_10: ReturnType<(typeof r)["Marker"]>;
   };
   export type Placeholder = {
     FontFlaccid: Sprite;

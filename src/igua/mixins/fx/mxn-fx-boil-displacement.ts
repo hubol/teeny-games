@@ -30,7 +30,7 @@ export function mxnFxBoilDisplacement(obj: DisplayObject, args: MxnBoilDisplacem
                 .filtered(filter)
                 .step(() => {
                     filter.scale.set(args.scale);
-                    const time = seed + scene.ticker.ticks * args.rate;
+                    const time = Math.round(seed + scene.ticker.ticks * args.rate);
                     displacementObj.position.at(0, 0).add(self, 1).add(time * 16, time * 16);
                 });
         });
