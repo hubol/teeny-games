@@ -31,7 +31,7 @@ export function scnPlaceholder() {
             Sprite.from(tx)
                 .anchored(0.5, 0.5)
                 .at(renderer.width / 2, renderer.height / 2)
-                .scaled(-scale, scale)
+                .scaled(scale, scale)
                 .masked(maskObj)
                 .show(userObj);
         });
