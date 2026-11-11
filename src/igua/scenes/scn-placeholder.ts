@@ -2,7 +2,7 @@ import { ColorMatrixFilter, DisplayObject, Graphics } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Instances } from "../../lib/game-engine/instances";
 import { Integer } from "../../lib/math/number-alias-types";
-import { PseudoRng, Rng } from "../../lib/math/rng";
+import { PseudoRng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { ZIndex } from "../core/scene/z-index";
 import { renderer } from "../current-pixi-renderer";
@@ -46,12 +46,17 @@ export function scnPlaceholder() {
             self.clear().beginFill(0x101010, 0.5);
             for (const obj of Instances(mxnShadowCaster)) {
                 if (!dyMap.has(obj)) {
-                    dyMap.set(obj, Rng.int(-100, 0));
+                    dyMap.set(obj, prng.int(-200, 0));
                 }
                 const bounds = obj.getBounds();
                 const center = bounds.getCenter();
                 const dy = dyMap.get(obj)!;
-                self.drawEllipse(center.x, 1000 + dy, bounds.width / 2, 8 + bounds.height / 32);
+                self.drawEllipse(
+                    center.x,
+                    Math.max(center.y + bounds.height / 2, 1050 + dy),
+                    bounds.width / 2,
+                    8 + bounds.height / 32,
+                );
             }
         })
         .show(entitiesObj);
@@ -60,12 +65,20 @@ export function scnPlaceholder() {
         .filtered(filter)
         .show(entitiesObj);
 
-    [lvl.KelpGroup0, lvl.KelpGroup1, lvl.KelpGroup2, lvl.KelpGroup4, lvl.KelpGroup5, lvl.KelpGroup6]
+    [lvl.KelpGroup0, lvl.KelpGroup1, lvl.KelpGroup2, lvl.KelpGroup4, lvl.KelpGroup5, lvl.KelpGroup6, lvl.WaterSurface]
         .forEach(obj => obj.mixin(mxnFxBoilDisplacement, { scale: 10, rate: 0.1 }));
+
+    [lvl.FxWaterSurface, lvl.FxWaterSurface_1]
+        .forEach((obj, i) =>
+            obj.step(() => {
+                const f = Math.sin(i * 2 + scene.ticker.ticks / (25 + i)) * 24;
+                obj.x = Math.round(f / 10) * 6;
+            })
+        );
 
     for (const fishPosition of fishPositions) {
         // const scale = Rng.float(1, 3);
-        objNyfish()
+        objNyfish(prng)
             .at(fishPosition)
             .coro(function* (self) {
                 const position = self.vcpy();
@@ -73,7 +86,7 @@ export function scnPlaceholder() {
                     position.x += 0.5;
                     position.y += Math.sin(fishPosition.x + scene.ticker.ticks / 30) * 0.3;
                     if (position.x >= renderer.width) {
-                        position.x = -self.width;
+                        position.x = -362;
                     }
                     self.at(position).vround();
                 });

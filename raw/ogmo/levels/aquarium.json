@@ -290,6 +290,32 @@
           "originY": 0.5,
           "values": {"name": ""},
           "groupName": "KelpGroup5"
+        },
+        {
+          "x": 968,
+          "y": 32,
+          "scaleX": 2,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "fx/water surface.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": "WaterSurface"
+        },
+        {
+          "x": 1015,
+          "y": 18,
+          "scaleX": 2.125,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#2a2a2a",
+          "texture": "fx/water surface.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""},
+          "groupName": "WaterSurface"
         }
       ],
       "folder": "../textures"

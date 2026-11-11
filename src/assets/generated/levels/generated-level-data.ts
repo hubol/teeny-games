@@ -36,6 +36,9 @@ export const Lvl = {
       FoliageKelp1_5: d(Tx.Foliage.Kelp1, { x: 360, y: 968, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "KelpGroup5", tint: 0x454545 }, "FrontDecals"),
       FoliageKelp0_10: d(Tx.Foliage.Kelp0, { x: 1555, y: 1024, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "KelpGroup5", tint: 0x454545 }, "FrontDecals"),
       FoliageKelp1_6: d(Tx.Foliage.Kelp1, { x: 1472, y: 952, scaleX: -1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "KelpGroup5", tint: 0x454545 }, "FrontDecals"),
+      WaterSurface: dg(968, 18, "WaterSurface", "FrontDecals"),
+      FxWaterSurface: d(Tx.Fx.WaterSurface, { x: 968, y: 32, scaleX: 2, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "WaterSurface", tint: 0xffffff }, "FrontDecals"),
+      FxWaterSurface_1: d(Tx.Fx.WaterSurface, { x: 1015, y: 18, scaleX: 2.125, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, groupName: "WaterSurface", tint: 0x2a2a2a }, "FrontDecals"),
       Marker: e(r["Marker"], { x: 112, y: 592, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       Marker_1: e(r["Marker"], { x: 280, y: 344, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
       Marker_2: e(r["Marker"], { x: 504, y: 568, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
@@ -93,6 +96,9 @@ export namespace LvlType {
     FoliageKelp1_5: Sprite;
     FoliageKelp0_10: Sprite;
     FoliageKelp1_6: Sprite;
+    WaterSurface: Container<Sprite>;
+    FxWaterSurface: Sprite;
+    FxWaterSurface_1: Sprite;
     Marker: ReturnType<(typeof r)["Marker"]>;
     Marker_1: ReturnType<(typeof r)["Marker"]>;
     Marker_2: ReturnType<(typeof r)["Marker"]>;
