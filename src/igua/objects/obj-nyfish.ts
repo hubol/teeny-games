@@ -5,7 +5,7 @@ import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 
-const txs = Tx.Nyfish.Layers.split({ width: 362 });
+const txs = Tx.Nyfish.Layers.split({ width: 362, trimFrame: true });
 const txsBody = txs.slice(0, -2);
 const [txSclera, txPupil] = txs.slice(-2);
 
