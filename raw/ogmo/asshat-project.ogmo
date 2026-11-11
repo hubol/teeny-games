@@ -59,6 +59,20 @@
     },
     {
       "definition": "decal",
+      "name": "SandDecals",
+      "gridSize": {"x": 8, "y": 8},
+      "exportID": "36337906",
+      "folder": "../textures",
+      "includeImageSequence": false,
+      "scaleable": true,
+      "rotatable": true,
+      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": null, "useDefaultTint": true},
+      "values": [
+        {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
+      ]
+    },
+    {
+      "definition": "decal",
       "name": "BackDecals",
       "gridSize": {"x": 8, "y": 8},
       "exportID": "64691217",

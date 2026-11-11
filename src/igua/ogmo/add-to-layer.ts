@@ -12,6 +12,10 @@ export function ogmoAddToLayer(obj: DisplayObject, layerName: string) {
         obj.show(scene.parallaxStage);
     }
 
+    if (layerName === "SandDecals") {
+        obj.show(scene.sandStage);
+    }
+
     if (!obj.parent) {
         // @ts-expect-error Don't care
         const zIndex = ZIndex[layerName];

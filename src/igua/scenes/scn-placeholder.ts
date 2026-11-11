@@ -37,7 +37,10 @@ export function scnPlaceholder() {
         .beginFill(0xffffff)
         .drawEllipse(renderer.width / 2, renderer.height, renderer.width * 1.5, 400)
         .mixin(mxnFxBoilDisplacement)
-        .show(entitiesObj);
+        .zIndexed(ZIndex.BackDecals)
+        .show();
+
+    scene.sandStage.mixin(mxnFxBoilDisplacement);
 
     const dyMap = new WeakMap<DisplayObject, Integer>();
 

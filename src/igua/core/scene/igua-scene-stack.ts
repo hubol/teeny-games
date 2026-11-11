@@ -8,6 +8,7 @@ import { renderer } from "../../current-pixi-renderer";
 import { forceGameLoop } from "../../globals";
 import { objCamera } from "../../objects/obj-camera";
 import { IguaLayers } from "../igua-layers";
+import { ZIndex } from "./z-index";
 
 interface IguaSceneMeta {
     useGameplay: boolean;
@@ -21,6 +22,11 @@ function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMe
     const parallaxStage = new Container().named("Parallax Stage");
     const stage = new Container().named("Stage");
     stage.sortableChildren = true;
+
+    const sandStage = new Container()
+        .named("Sand Stage")
+        .zIndexed(ZIndex.SandStage)
+        .show(stage);
 
     const camera = objCamera();
 
@@ -38,6 +44,7 @@ function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMe
         source,
         parallaxStage,
         stage,
+        sandStage,
         camera,
         ticker,
         level: {
