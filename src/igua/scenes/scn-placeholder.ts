@@ -8,8 +8,7 @@ import { ZIndex } from "../core/scene/z-index";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
-import { objFish } from "../objects/obj-fish";
-import { objKelp } from "../objects/obj-kelp";
+import { objFxGodRay } from "../objects/fx/obj-fx-god-ray";
 import { objNyfish } from "../objects/obj-nyfish";
 import { Search } from "../utils/search";
 
@@ -103,6 +102,10 @@ export function scnPlaceholder() {
         //         .show(fishesObj);
         // }
     }
+
+    objFxGodRay(prng)
+        .zIndexed(ZIndex.Entities)
+        .show();
 }
 
 function mxnShadowCaster(obj: DisplayObject) {
