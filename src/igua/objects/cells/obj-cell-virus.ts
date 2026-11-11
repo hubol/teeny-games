@@ -21,12 +21,12 @@ export function objCellVirus() {
     let angleDelta = Rng.float(0.5, 1) * Rng.intp();
 
     const scale = Rng.float() < 0.1 ? 2 : 1;
-    const outlineScale = 1 - (scale - 1) / 16;
+    const outlineScale = (1 - (scale - 1) / 20) / 3;
 
     return container(
         container(
             Sprite.from(Tx.Virus.Outline)
-                .pivoted(26 + 3, 28 + 3)
+                .pivoted((26 + 3) * 3, (28 + 3) * 3)
                 .at(26, 28)
                 .scaled(outlineScale, outlineScale),
             objIndexedSprite(txsBody)
