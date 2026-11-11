@@ -9,6 +9,7 @@ import { container } from "../../lib/pixi/container";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
 import { objCellHuman } from "../objects/cells/obj-cell-human";
+import { objCellVirus } from "../objects/cells/obj-cell-virus";
 
 export function scnPlaceholder() {
     const margin = 20;
@@ -55,14 +56,28 @@ function objCellsLayer(detail: Integer) {
         .coro(function* (self) {
             while (true) {
                 const [startPosition, targetPosition] = getOutOfBoundsPositions();
-                const cellObj = objCellHuman(detail)
-                    .at(startPosition)
-                    .coro(function* (self) {
-                        yield () => vequals(self, targetPosition);
-                        self.destroy();
-                    })
-                    .show(self);
-                cellObj.objCellHuman.targetPosition.at(targetPosition);
+                if (Rng.float() > 0.25) {
+                    const cellObj = objCellHuman(detail)
+                        .at(startPosition)
+                        .coro(function* (self) {
+                            yield () => vequals(self, targetPosition);
+                            self.destroy();
+                        })
+                        .show(self);
+                    cellObj.objCellHuman.targetPosition.at(targetPosition);
+                }
+                else {
+                    objCellVirus()
+                        .step(self => {
+                            self.moveTowards(targetPosition, 1);
+                            if (vequals(self, targetPosition)) {
+                                self.destroy();
+                            }
+                        })
+                        .at(startPosition)
+                        .show(self);
+                }
+
                 yield sleep(Rng.intc(300, 700));
             }
         });
