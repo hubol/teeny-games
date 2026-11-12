@@ -121,13 +121,16 @@ export function scnPlaceholder() {
                     .at(1600, 1080 + 710)
                     .show(peteRootObj);
 
-                yield interpv(peteObj).factor(factor.sine).to(1600, 1080).over(3000);
+                yield interpv(peteObj).factor(factor.sine).to(1600, 1080 - 100).over(3000);
 
-                peteObj.objCharacterPeteUpClose.isWalking = true;
+                yield sleep(3000);
+
                 peteObj.objCharacterPeteUpClose.isWaving = true;
 
-                // .at(-450, 1080)
-                yield interpv(peteObj).to(-450, 1080).over(15000);
+                yield sleep(6000);
+
+                yield interpv(peteObj).factor(factor.sine).to(1600, 1080 + 710).over(3000);
+
                 peteObj.destroy();
             }
         })
