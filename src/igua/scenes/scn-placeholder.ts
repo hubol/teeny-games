@@ -1,13 +1,16 @@
 import { ColorMatrixFilter, DisplayObject, Graphics } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
 import { Instances } from "../../lib/game-engine/instances";
+import { factor, interpv } from "../../lib/game-engine/routines/interp";
+import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Integer } from "../../lib/math/number-alias-types";
-import { PseudoRng } from "../../lib/math/rng";
+import { PseudoRng, Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { ZIndex } from "../core/scene/z-index";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
+import { objCharacterPeteUpClose } from "../objects/character/obj-character-pete-up-close";
 import { objFxGodRay } from "../objects/fx/obj-fx-god-ray";
 import { objNyfish } from "../objects/obj-nyfish";
 import { Search } from "../utils/search";
@@ -104,6 +107,30 @@ export function scnPlaceholder() {
 
     objFxGodRay(prng)
         .zIndexed(ZIndex.Entities)
+        .show();
+
+    container()
+        .coro(function* () {
+            const peteRootObj = container()
+                .at(0, -200)
+                .zIndexed(ZIndex.BackDecals - 1)
+                .show();
+            while (true) {
+                yield sleep(Rng.int(45_000, 90_000));
+                const peteObj = objCharacterPeteUpClose()
+                    .at(1600, 1080 + 710)
+                    .show(peteRootObj);
+
+                yield interpv(peteObj).factor(factor.sine).to(1600, 1080).over(3000);
+
+                peteObj.objCharacterPeteUpClose.isWalking = true;
+                peteObj.objCharacterPeteUpClose.isWaving = true;
+
+                // .at(-450, 1080)
+                yield interpv(peteObj).to(-450, 1080).over(15000);
+                peteObj.destroy();
+            }
+        })
         .show();
 }
 
