@@ -6,34 +6,71 @@ import { Rng } from "../../lib/math/rng";
 import { vequals } from "../../lib/math/vector";
 import { vnew } from "../../lib/math/vector-type";
 import { container } from "../../lib/pixi/container";
+import { range } from "../../lib/range";
 import { renderer } from "../current-pixi-renderer";
 import { scene } from "../globals";
 import { objCellHuman } from "../objects/cells/obj-cell-human";
 import { objCellVirus } from "../objects/cells/obj-cell-virus";
 
+const MicroscopeZIndex = {
+    blurryCells: 0,
+    focusedCells: 100,
+    mediaOpaque: 50,
+    mediaTransparent: 150,
+};
+
 export function scnPlaceholder() {
-    const margin = 20;
+    const centerPosition = vnew(renderer.width / 2, renderer.height / 2);
     scene.style.backgroundTint = 0x260080;
 
-    const userObj = container()
-        .zIndexed(999)
-        .show();
-
-    const maskObj = new Graphics()
-        .beginFill(0xffffff)
-        .drawCircle(renderer.width / 2, renderer.height / 2, renderer.height / 2 - margin)
+    const cameraMaskObj = new Graphics()
+        .at(centerPosition)
         .show();
 
     UserMediaTexture
         .load()
         .then(tx => {
-            const scale = (renderer.height - (margin * 2)) / tx.height;
-            Sprite.from(tx)
-                .anchored(0.5, 0.5)
-                .at(renderer.width / 2, renderer.height / 2)
-                .scaled(scale, scale)
-                .masked(maskObj)
-                .show(userObj);
+            const shape = "round_rect" as "circle" | "round_rect";
+            const margin = shape === "circle" ? 20 : 90;
+            const height = renderer.height - (margin * 2);
+            const scale = height / tx.height;
+
+            const transparentMediaObjsCount = 20;
+
+            const [opaqueMediaObj, ...transparentMediaObjs] = range(1 + transparentMediaObjsCount)
+                .map(() =>
+                    Sprite.from(tx)
+                        .at(centerPosition)
+                        .anchored(0.5, 0.5)
+                        .scaled(scale, scale)
+                        .masked(cameraMaskObj)
+                );
+
+            opaqueMediaObj.zIndexed(MicroscopeZIndex.mediaOpaque).show();
+
+            const transparentMediaMaskObjs = range(transparentMediaObjsCount)
+                .map(i => {
+                    const scale = 1 - (i / (transparentMediaObjsCount * 8));
+                    const maskObj = new Graphics().at(centerPosition).scaled(scale, scale).zIndexed(99999).show();
+                    transparentMediaObjs[i]
+                        .zIndexed(MicroscopeZIndex.mediaTransparent)
+                        .masked(maskObj)
+                        .show()
+                        .alpha = 0.1;
+                    return maskObj;
+                });
+
+            for (const obj of [cameraMaskObj, ...transparentMediaMaskObjs]) {
+                obj.beginFill(0xffffff);
+
+                if (shape === "circle") {
+                    obj.drawCircle(0, 0, height / 2);
+                }
+                else {
+                    const width = scale * tx.width;
+                    obj.drawRoundedRect(-width / 2, -height / 2, width, height, 150);
+                }
+            }
         });
 
     const blurFilter = new BlurFilter(10, 3, 0.5);
@@ -45,9 +82,11 @@ export function scnPlaceholder() {
         .at(renderer.width / 2, renderer.height / 2)
         .scaled(1.3, 1.3)
         .show()
+        .zIndexed(MicroscopeZIndex.blurryCells)
         .alpha = 0.45;
 
     objCellsLayer(32)
+        .zIndexed(MicroscopeZIndex.focusedCells)
         .show();
 }
 
