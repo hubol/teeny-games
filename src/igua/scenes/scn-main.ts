@@ -19,7 +19,7 @@ const MicroscopeZIndex = {
     mediaTransparent: 150,
 };
 
-export function scnPlaceholder() {
+export function scnMain() {
     const centerPosition = vnew(renderer.width / 2, renderer.height / 2);
     scene.style.backgroundTint = 0x260080;
 
