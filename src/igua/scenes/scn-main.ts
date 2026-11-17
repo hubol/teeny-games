@@ -7,6 +7,7 @@ import { sleep } from "../../lib/game-engine/routines/sleep";
 import { Integer } from "../../lib/math/number-alias-types";
 import { PseudoRng, Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
+import { IguaAudio } from "../core/igua-audio";
 import { ZIndex } from "../core/scene/z-index";
 import { renderer } from "../current-pixi-renderer";
 import { scene, sceneStack } from "../globals";
@@ -22,6 +23,7 @@ import { scnColorTest } from "./scn-color-test";
 // TODO they are happy with it so far
 
 export function scnMain() {
+    IguaAudio.sfxDelayFeedback = 0.3;
     const lvl = Lvl.Aquarium();
     scene.camera.y = -20;
 

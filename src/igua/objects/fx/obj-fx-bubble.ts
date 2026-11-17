@@ -1,8 +1,18 @@
 import { Graphics } from "pixi.js";
+import { Sfx } from "../../../assets/sounds";
 import { sleepf } from "../../../lib/game-engine/routines/sleep";
 import { approachLinear } from "../../../lib/math/number";
 import { Rng } from "../../../lib/math/rng";
 import { vnew } from "../../../lib/math/vector-type";
+
+const bubbleSfxs = [
+    Sfx.Fx.Bubble0,
+    Sfx.Fx.Bubble1,
+    Sfx.Fx.Bubble2,
+    Sfx.Fx.Bubble3,
+    Sfx.Fx.Bubble4,
+    Sfx.Fx.Bubble5,
+];
 
 export function objFxBubble(maxSize: number) {
     const gfx = new Graphics();
@@ -33,6 +43,7 @@ export function objFxBubble(maxSize: number) {
             }
         })
         .coro(function* (self) {
+            self.play(Rng.item(bubbleSfxs).rate(0.5, 1.2));
             self.alpha = 0.5;
             yield sleepf(15);
             self.alpha = 1;
