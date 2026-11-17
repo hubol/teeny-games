@@ -19,7 +19,7 @@ import { Search } from "../utils/search";
 // TODO a colorful one
 // TODO they are happy with it so far
 
-export function scnPlaceholder() {
+export function scnMain() {
     const lvl = Lvl.Aquarium();
     scene.camera.y = -20;
 
