@@ -11,7 +11,7 @@ export function objFxGodRay(prng: PseudoRng) {
             self.alpha = 0;
             while (true) {
                 yield sleep(prng.int(8000, 15000));
-                self.x = prng.int(0, 1920);
+                self.x = 270 + prng.int(1250);
                 yield interp(self, "alpha").steps(5).to(prng.float(0.3, 0.5)).over(prng.int(5000, 6000));
                 yield sleep(prng.int(5000, 6000));
                 yield interp(self, "alpha").steps(5).to(0).over(prng.int(5000, 6000));
@@ -20,7 +20,8 @@ export function objFxGodRay(prng: PseudoRng) {
         .coro(function* (self) {
             while (true) {
                 yield () => self.alpha >= 0;
-                Sfx.Fx.Glock.rate(Rng.item(cScaleRates) / 4).gain(Rng.float(0.02, 0.1) * self.alpha).play();
+                const sfx = self.playInstance(Sfx.Fx.Glock.rate(Rng.item(cScaleRates) / 4));
+                sfx.gain = Rng.float(0.02, 0.1) * self.alpha;
                 yield sleep(Rng.intc(1, 4) * 250);
             }
         });
