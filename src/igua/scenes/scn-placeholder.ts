@@ -21,6 +21,7 @@ import { Search } from "../utils/search";
 
 export function scnPlaceholder() {
     const lvl = Lvl.Aquarium();
+    scene.camera.y = -20;
 
     const fishPositions = Search.findMarkers(0x00ff00);
 
@@ -118,7 +119,7 @@ export function scnPlaceholder() {
             while (true) {
                 yield sleep(Rng.int(45_000, 90_000));
                 const peteObj = objCharacterPeteUpClose()
-                    .at(1600, 1080 + 710)
+                    .at(1550, 1080 + 710)
                     .show(peteRootObj);
 
                 yield interpv(peteObj).factor(factor.sine).to(1600, 1080 - 100).over(3000);

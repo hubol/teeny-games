@@ -28,8 +28,8 @@ export function objCamera() {
         }
 
         // TODO switch for this?
-        self.x = Math.max(0, Math.min(self.x, scene.level.width - renderer.width));
-        self.y = Math.max(0, Math.min(self.y, scene.level.height - renderer.height));
+        // self.x = Math.max(0, Math.min(self.x, scene.level.width - renderer.width));
+        // self.y = Math.max(0, Math.min(self.y, scene.level.height - renderer.height));
 
         scene.stage.x = Math.round(-self.x);
         scene.stage.y = Math.round(-self.y);
