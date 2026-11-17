@@ -11,7 +11,6 @@ import { IguaLayers } from "../igua-layers";
 import { ZIndex } from "./z-index";
 
 interface IguaSceneMeta {
-    useGameplay: boolean;
 }
 
 function createIguaScene(layers: IguaLayers, source: Function, meta: IguaSceneMeta) {

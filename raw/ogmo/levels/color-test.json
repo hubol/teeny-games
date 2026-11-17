@@ -1,0 +1,93 @@
+{
+  "ogmoVersion": "3.4.0-hubol",
+  "width": 1920,
+  "height": 1080,
+  "offsetX": 0,
+  "offsetY": 0,
+  "backgroundColor": "#303030",
+  "values": {"Terrain Color": "#000000"},
+  "layers": [
+    {
+      "name": "MarkerEntities",
+      "_eid": "73166939",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "entities": []
+    },
+    {
+      "name": "RegionEntities",
+      "_eid": "01831167",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "entities": []
+    },
+    {
+      "name": "FrontDecals",
+      "_eid": "17577176",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "decals": [],
+      "folder": "../textures"
+    },
+    {
+      "name": "Entities",
+      "_eid": "93086020",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "entities": []
+    },
+    {
+      "name": "SandDecals",
+      "_eid": "36337906",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "decals": [],
+      "folder": "../textures"
+    },
+    {
+      "name": "BackDecals",
+      "_eid": "64691217",
+      "offsetX": 0,
+      "offsetY": 0,
+      "gridCellWidth": 8,
+      "gridCellHeight": 8,
+      "gridCellsX": 240,
+      "gridCellsY": 135,
+      "decals": [
+        {
+          "x": 960,
+          "y": 540,
+          "scaleX": 1,
+          "scaleY": 1,
+          "rotation": 0,
+          "tint": "#ffffff",
+          "texture": "fx/color test.png",
+          "originX": 0.5,
+          "originY": 0.5,
+          "values": {"name": ""}
+        }
+      ],
+      "folder": "../textures"
+    }
+  ]
+}

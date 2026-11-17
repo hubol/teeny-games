@@ -84,6 +84,10 @@ export const Lvl = {
       Marker_10: e(r["Marker"], { x: 1168, y: 136, values: { name: "", depth: 0 }, tint: 0x00ff00 }, "MarkerEntities"),
     };
   },
+  ColorTest: (): LvlType.ColorTest => {
+    applyLevel({ width: 1920, height: 1080, backgroundTint: 0x303030 });
+    return { FxColorTest: d(Tx.Fx.ColorTest, { x: 960, y: 540, scaleX: 1, scaleY: 1, rotation: 0, originX: 0.5, originY: 0.5, tint: 0xffffff }, "BackDecals") };
+  },
   Placeholder: (): LvlType.Placeholder => {
     applyLevel({ width: 500, height: 280, backgroundTint: 0x408000 });
     return {
@@ -174,6 +178,9 @@ export namespace LvlType {
     Marker_8: ReturnType<(typeof r)["Marker"]>;
     Marker_9: ReturnType<(typeof r)["Marker"]>;
     Marker_10: ReturnType<(typeof r)["Marker"]>;
+  };
+  export type ColorTest = {
+    FxColorTest: Sprite;
   };
   export type Placeholder = {
     FontFlaccid: Sprite;

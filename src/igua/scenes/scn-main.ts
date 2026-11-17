@@ -1,5 +1,6 @@
 import { ColorMatrixFilter, DisplayObject, Graphics } from "pixi.js";
 import { Lvl } from "../../assets/generated/levels/generated-level-data";
+import { EscapeTickerAndExecute } from "../../lib/game-engine/asshat-ticker";
 import { Instances } from "../../lib/game-engine/instances";
 import { factor, interpv } from "../../lib/game-engine/routines/interp";
 import { sleep } from "../../lib/game-engine/routines/sleep";
@@ -8,12 +9,13 @@ import { PseudoRng, Rng } from "../../lib/math/rng";
 import { container } from "../../lib/pixi/container";
 import { ZIndex } from "../core/scene/z-index";
 import { renderer } from "../current-pixi-renderer";
-import { scene } from "../globals";
+import { scene, sceneStack } from "../globals";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { objCharacterPeteUpClose } from "../objects/character/obj-character-pete-up-close";
 import { objFxGodRay } from "../objects/fx/obj-fx-god-ray";
 import { objNyfish } from "../objects/obj-nyfish";
 import { Search } from "../utils/search";
+import { scnColorTest } from "./scn-color-test";
 
 // TODO all get scared sometimes
 // TODO a colorful one
@@ -136,6 +138,12 @@ export function scnMain() {
             }
         })
         .show();
+
+    scene.stage
+        .coro(function* () {
+            yield sleep(60_000 * 5);
+            throw new EscapeTickerAndExecute(() => sceneStack.replace(scnColorTest, {}));
+        });
 }
 
 function mxnShadowCaster(obj: DisplayObject) {

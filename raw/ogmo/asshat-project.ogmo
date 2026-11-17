@@ -1,5 +1,5 @@
 {
-  "name": "Asshat Project",
+  "name": "Aquarium",
   "ogmoVersion": "3.4.0-hubol",
   "levelPaths": ["./levels"],
   "backgroundColor": "#408000",
@@ -66,7 +66,7 @@
       "includeImageSequence": false,
       "scaleable": true,
       "rotatable": true,
-      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": null, "useDefaultTint": true},
+      "tintable": {"enabled": true, "defaultTint": "#ffffff", "rgbLevelValueName": "", "useDefaultTint": true},
       "values": [
         {"name": "name", "definition": "String", "display": 0, "defaults": "", "maxLength": 0, "trimWhitespace": true}
       ]
