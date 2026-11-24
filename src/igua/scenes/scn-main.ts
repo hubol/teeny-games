@@ -58,7 +58,7 @@ function objGuitarHeroNote() {
     return container(
         new Graphics()
             .beginFill(tint)
-            .drawCircle(0, 0, 40),
+            .drawCircle(0, 0, 50),
         // objText
         //     .MediumBoldIrregular(changeRequest.id, { tint: 0x000000, align: "center" })
         //     .anchored(0.5, 0.5),
@@ -124,6 +124,7 @@ function mxnFxRngTint(obj: DisplayObject & { tint: ColorSource }) {
 function objGuitarHero(critterObj: objMutableCritter.Type) {
     return container(
         new Graphics()
+            .mixin(mxnFxBoilDisplacement, { rate: 0.133, scale: 2 })
             .coro(function* (self) {
                 const xPositions = range(5).map(i => i * 140);
 
@@ -142,7 +143,6 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
                         const index = indices[i];
                         const x = xPositions[index];
                         objGuitarHeroNote()
-                            .scaled(1.5, 1.5)
                             .at(x, 0)
                             .step(self => {
                                 self.y += 5;
@@ -153,7 +153,7 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
                                     self.destroy();
                                 }
                             })
-                            .show(self);
+                            .show(self.parent);
                     }
                 }
 
