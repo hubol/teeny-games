@@ -11,8 +11,8 @@ export class StereoDelay {
         this._leftFeedbackNode = new GainNode(context, { gain: 0 });
         this._rightFeedbackNode = new GainNode(context, { gain: 0 });
 
-        this._leftDelayNode = new DelayNode(context, { delayTime: 0.3 });
-        this._rightDelayNode = new DelayNode(context, { delayTime: 0.4 });
+        this._leftDelayNode = new DelayNode(context, { delayTime: 0.25 });
+        this._rightDelayNode = new DelayNode(context, { delayTime: 0.125 });
 
         const stereo = new ChannelMergerNode(context, { numberOfInputs: 2 });
 

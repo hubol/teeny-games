@@ -1,22 +1,28 @@
 import { AlphaFilter, ColorSource, DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
+import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
+import { Sound } from "../../lib/game-engine/audio/sound";
 import { Coro } from "../../lib/game-engine/routines/coro";
 import { interp, interpc } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { Integer } from "../../lib/math/number-alias-types";
-import { Rng } from "../../lib/math/rng";
+import { PseudoRng, Rng } from "../../lib/math/rng";
 import { AdjustColor } from "../../lib/pixi/adjust-color";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
+import { IguaAudio } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { XbrFilter } from "../filters/xbr-filter";
 import { scene } from "../globals";
+import { GenerativeMusicUtils } from "../lib/generative-music-utils";
 import { mxnFxBoilDisplacement } from "../mixins/fx/mxn-fx-boil-displacement";
 import { objCharacterCritter } from "../objects/character/obj-character-critter";
 
 export function scnMain() {
     // scene.style.backgroundTint = 0x808080;
+
+    IguaAudio.sfxDelayFeedback = 0.5;
 
     new Graphics()
         .beginFill(0xffffff)
@@ -128,6 +134,8 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
                         .lineTo(x, renderer.height);
                 }
 
+                let rootIndex = 0;
+
                 function spawnNotes(count: Integer) {
                     const indices = Rng.shuffle(range(xPositions.length));
                     for (let i = 0; i < Math.min(indices.length, count); i++) {
@@ -139,6 +147,8 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
                             .step(self => {
                                 self.y += 5;
                                 if (self.y >= 1000) {
+                                    const sfx = sfxByIds[self.objGuitarHeroNote.changeRequest.id];
+                                    sfx.rate(GenerativeMusicUtils.getRate(rootIndex, "blues")).play();
                                     critterObj.objMutableCritter.submitChanges(self.objGuitarHeroNote.changeRequest);
                                     self.destroy();
                                 }
@@ -150,6 +160,10 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
                 const f = 3;
 
                 while (true) {
+                    if (Rng.float() < 0.25) {
+                        rootIndex += Rng.intc(-3, 3);
+                    }
+
                     // 0
                     if (Rng.float() > 0.1) {
                         spawnNotes(Rng.intc(1, 5));
@@ -209,3 +223,15 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
             }),
     );
 }
+
+type ChangeId = objCharacterCritter.ChangeRequest["id"];
+
+const sfxByIds = function () {
+    const dummy = objCharacterCritter.createArgs();
+    const ids = [...Object.keys(dummy.colors), ...Object.keys(dummy.partTxs)] as Array<ChangeId>;
+    const prng = new PseudoRng(9999.69);
+    prng.bool();
+    const sampleSfxs = Object.values(Sfx.Samples);
+    prng.shuffle(sampleSfxs);
+    return Object.fromEntries(ids.map(id => [id, sampleSfxs.pop()])) as Record<ChangeId, Sound>;
+}();
