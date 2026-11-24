@@ -1,12 +1,16 @@
-import { Sprite, Texture } from "pixi.js";
+import { Graphics, Sprite, Texture } from "pixi.js";
 import { Tx } from "../../../assets/textures";
 import { RgbInt } from "../../../lib/math/number-alias-types";
 import { Rng } from "../../../lib/math/rng";
 import { AdjustColor } from "../../../lib/pixi/adjust-color";
 import { container } from "../../../lib/pixi/container";
+import { MapRgbFilter } from "../../../lib/pixi/filters/map-rgb-filter";
 
 export function objCharacterCritter(args: objCharacterCritter.Args) {
     return container(
+        new Graphics()
+            .beginFill(0x202020)
+            .drawRoundedRect(40, 265, 200, 16, 99),
         objCharacterCritterPart("Back", args),
         objCharacterCritterPart("Mullet", args),
         objCharacterCritterPart("Ears", args),
@@ -20,7 +24,8 @@ export function objCharacterCritter(args: objCharacterCritter.Args) {
         objCharacterCritterPart("Hats", args),
         objCharacterCritterPart("Eyes", args),
         objCharacterCritterPart("Noses", args),
-    );
+    )
+        .filtered(new MapRgbFilter(args.colors.red, args.colors.green, args.colors.blue));
 }
 
 function objCharacterCritterPart(id: objCharacterCritter.PartId, args: objCharacterCritter.Args) {
