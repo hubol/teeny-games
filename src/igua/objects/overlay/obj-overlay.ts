@@ -4,6 +4,7 @@ import { Toast } from "../../../lib/game-engine/toast";
 import { container } from "../../../lib/pixi/container";
 import { renderer } from "../../current-pixi-renderer";
 import { Key } from "../../globals";
+import { mxnFxBoilDisplacement } from "../../mixins/fx/mxn-fx-boil-displacement";
 import { mxnActionRepeater } from "../../mixins/mxn-action-repeater";
 import { objOverlayWarning } from "./obj-overlay-warning";
 
@@ -15,8 +16,8 @@ export function objOverlay() {
 }
 
 function objScreen() {
-    const height = renderer.height - 36;
-    const width = Math.round((4 / 3) * height);
+    const height = renderer.height - 96;
+    const width = renderer.width - 96;
 
     const config = {
         left: Math.round((renderer.width - width) / 2),
@@ -92,7 +93,8 @@ function objScreen() {
                     );
                 yield onMutate(config);
             }
-        });
+        })
+        .mixin(mxnFxBoilDisplacement, { rate: 0.1, scale: 5 });
 }
 
 export type ObjOverlay = ReturnType<typeof objOverlay>;

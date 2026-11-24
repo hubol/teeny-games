@@ -1,5 +1,6 @@
 import { Container, DisplacementFilter, DisplayObject, Sprite } from "pixi.js";
 import { NoAtlasTx } from "../../../assets/no-atlas-textures";
+import { Rng } from "../../../lib/math/rng";
 import { layers, scene } from "../../globals";
 
 let globalSeed = 0;
@@ -28,10 +29,15 @@ export function mxnFxBoilDisplacement(obj: DisplayObject, args: MxnBoilDisplacem
 
             self
                 .filtered(filter)
+                .coro(function* (self) {
+                    while (true) {
+                        let x = 0;
+                        yield () => (x += args.rate) >= 1;
+                        displacementObj.position.at(0, 0).add(self, 1).add(Rng.float(256), Rng.float(256));
+                    }
+                })
                 .step(() => {
                     filter.scale.set(args.scale);
-                    const time = Math.round(seed + scene.ticker.ticks * args.rate);
-                    displacementObj.position.at(0, 0).add(self, 1).add(time * 16, time * 16);
                 });
         });
 }
