@@ -34,7 +34,8 @@ export namespace GenerativeMusicUtils {
     };
 
     export function getRate(rootIndex: Integer, scale: ScaleId) {
-        return cyclic(rootIndex + Rng.item(scales[scale]), 0, cScaleRates.length) * Rng.choose(0.125, 0.25, 0.5, 1);
+        return cScaleRates[cyclic(rootIndex + Rng.item(scales[scale]), 0, cScaleRates.length)]
+            * Rng.choose(0.5, 1, 2);
     }
 
     export type ScaleId = keyof typeof scales;
