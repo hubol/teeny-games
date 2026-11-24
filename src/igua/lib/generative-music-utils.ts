@@ -1,3 +1,5 @@
+import { cyclic } from "../../lib/math/number";
+import { Integer } from "../../lib/math/number-alias-types";
 import { Rng } from "../../lib/math/rng";
 import { ForceAliasType } from "../../lib/types/force-alias-type";
 
@@ -28,58 +30,12 @@ export namespace GenerativeMusicUtils {
     const scales = {
         major: [0, 2, 4, 5, 7, 9, 11] as RateIndex[],
         minor: [0, 2, 3, 5, 7, 9, 11] as RateIndex[],
+        blues: [0, 3, 5, 6, 7, 10] as RateIndex[],
     };
 
-    const scaleSets = {
-        major: new Set(scales.major),
-        minor: new Set(scales.minor),
-    };
-
-    function getRandomRateIndex(): RateIndex {
-        return Rng.int(cScaleRates.length);
+    export function getRate(rootIndex: Integer, scale: ScaleId) {
+        return cyclic(rootIndex + Rng.item(scales[scale]), 0, cScaleRates.length) * Rng.choose(0.5, 1, 2);
     }
 
-    function getIronicRateIndex(rootIndex: RootIndex, scaleSet: Set<RateIndex>): RateIndex {
-        let index: RateIndex;
-        do {
-            index = getRandomRateIndex();
-        }
-        while (scaleSet.has(index));
-
-        return (index + rootIndex) % 12;
-    }
-
-    export type Scale = keyof typeof scales;
-
-    export function* tune7(scale: Scale) {
-        const rootIndex = getRandomRateIndex();
-        const scaleRateIndices = scales[scale];
-        const scaleSet = scaleSets[scale];
-        const identityIndex = (rootIndex + scaleRateIndices[2]) % 12;
-        const ironicRateIndex = getIronicRateIndex(rootIndex, scaleSet);
-        yield cScaleRates[Rng.bool() ? rootIndex : identityIndex];
-        yield cScaleRates[ironicRateIndex] * (Rng.bool() ? 2 : 1);
-        for (let i = 0; i < 3; i++) {
-            const rawRateIndex = Rng.choose(...scaleRateIndices);
-            const rateIndex = (rootIndex + rawRateIndex) % 12;
-            yield cScaleRates[rateIndex];
-        }
-        yield cScaleRates[ironicRateIndex];
-        yield cScaleRates[rootIndex] * (Rng.bool() ? 0.5 : 2);
-    }
-
-    export function* tune4(scale: Scale) {
-        const rootIndex = getRandomRateIndex();
-        const scaleRateIndices = scales[scale];
-        const scaleSet = scaleSets[scale];
-        const identityIndex = (rootIndex + scaleRateIndices[2]) % 12;
-        const ironicRateIndex = getIronicRateIndex(rootIndex, scaleSet);
-        yield cScaleRates[Rng.bool() ? rootIndex : identityIndex];
-        for (let i = 0; i < 2; i++) {
-            const rawRateIndex = Rng.choose(...scaleRateIndices);
-            const rateIndex = (rootIndex + rawRateIndex) % 12;
-            yield cScaleRates[rateIndex];
-        }
-        yield Rng.bool() ? cScaleRates[ironicRateIndex] : (cScaleRates[rootIndex] * (Rng.bool() ? 0.5 : 2));
-    }
+    export type ScaleId = keyof typeof scales;
 }

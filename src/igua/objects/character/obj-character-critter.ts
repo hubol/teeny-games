@@ -97,6 +97,18 @@ objCharacterCritter.createArgs = function createArgs (): objCharacterCritter.Arg
     };
 };
 
+const changeRequestPartIds = objCharacterCritter.partIds.filter(id => txsManifest[id].length > 1);
+
+objCharacterCritter.createChangeRequest = function createChangeRequest (): objCharacterCritter.ChangeRequest {
+    if (Rng.float() < 0.2) {
+        return { kind: "color", id: Rng.choose("red", "green", "blue"), value: objCharacterCritter.createColor() };
+    }
+    return {
+        kind: "part",
+        id: Rng.item(changeRequestPartIds),
+    };
+};
+
 objCharacterCritter.applyChanges = function applyChanges (
     _args: objCharacterCritter.Args,
     changes: objCharacterCritter.ChangeRequest[],
