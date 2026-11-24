@@ -1,4 +1,4 @@
-import { AlphaFilter, ColorSource, DisplayObject, Graphics, Sprite } from "pixi.js";
+import { AlphaFilter, ColorSource, Container, DisplayObject, Graphics, Sprite } from "pixi.js";
 import { objText } from "../../assets/fonts";
 import { Sfx } from "../../assets/sounds";
 import { Tx } from "../../assets/textures";
@@ -8,9 +8,11 @@ import { interp, interpc } from "../../lib/game-engine/routines/interp";
 import { sleep, sleepf } from "../../lib/game-engine/routines/sleep";
 import { Integer } from "../../lib/math/number-alias-types";
 import { PseudoRng, Rng } from "../../lib/math/rng";
+import { vnew } from "../../lib/math/vector-type";
 import { AdjustColor } from "../../lib/pixi/adjust-color";
 import { container } from "../../lib/pixi/container";
 import { range } from "../../lib/range";
+import { Force } from "../../lib/types/force";
 import { IguaAudio } from "../core/igua-audio";
 import { renderer } from "../current-pixi-renderer";
 import { XbrFilter } from "../filters/xbr-filter";
@@ -55,15 +57,39 @@ function objGuitarHeroNote() {
         changeRequest,
     };
 
+    const position = vnew();
+    let parentObj = Force<Container>();
+
     return container(
         new Graphics()
             .beginFill(tint)
             .drawCircle(0, 0, 50),
-        // objText
-        //     .MediumBoldIrregular(changeRequest.id, { tint: 0x000000, align: "center" })
-        //     .anchored(0.5, 0.5),
     )
+        // Still so stupid that pixi kills position on destroy
+        .step(self => {
+            parentObj = self.parent;
+            position.at(self);
+        })
+        .on("destroyed", () => objGuitarHeroNoteBurst().at(position).tinted(tint).show(parentObj))
         .merge({ objGuitarHeroNote: api });
+}
+
+function objGuitarHeroNoteBurst() {
+    const state = {
+        width: 8,
+    };
+
+    return new Graphics()
+        .coro(function* (self) {
+            yield interp(state, "width").to(0).over(125);
+            self.destroy();
+        })
+        .step(self => {
+            self
+                .clear()
+                .lineStyle(state.width, 0xffffff, 1, 0)
+                .drawCircle(0, 0, 50 - state.width);
+        });
 }
 
 function objMutableCritter() {
@@ -146,7 +172,7 @@ function objGuitarHero(critterObj: objMutableCritter.Type) {
                             .at(x, 0)
                             .step(self => {
                                 self.y += 5;
-                                if (self.y >= 1000) {
+                                if (self.y >= 920) {
                                     const sfx = sfxByIds[self.objGuitarHeroNote.changeRequest.id];
                                     sfx.rate(GenerativeMusicUtils.getRate(rootIndex, "blues")).play();
                                     critterObj.objMutableCritter.submitChanges(self.objGuitarHeroNote.changeRequest);
