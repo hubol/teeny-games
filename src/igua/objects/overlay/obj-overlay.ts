@@ -8,10 +8,17 @@ import { mxnActionRepeater } from "../../mixins/mxn-action-repeater";
 import { objOverlayWarning } from "./obj-overlay-warning";
 
 export function objOverlay() {
+    const screenObj = objScreen();
+
+    const api = {
+        screenObj,
+    };
+
     return container(
         objOverlayWarning(),
-        objScreen(),
-    );
+        screenObj,
+    )
+        .merge({ objOverlay: api });
 }
 
 function objScreen() {
