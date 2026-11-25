@@ -76,7 +76,7 @@ function objGuitarHeroNote() {
 
 function objGuitarHeroNoteBurst() {
     const state = {
-        width: 8,
+        width: 20,
     };
 
     return new Graphics()
@@ -88,7 +88,7 @@ function objGuitarHeroNoteBurst() {
             self
                 .clear()
                 .lineStyle(state.width, 0xffffff, 1, 0)
-                .drawCircle(0, 0, 50 - state.width);
+                .drawCircle(0, 0, 65 - state.width);
         });
 }
 
